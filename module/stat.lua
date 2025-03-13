@@ -235,14 +235,14 @@ function RefreshProfile()
     GC.setColor(titleColor)
     GC.print("FULL  STATS", 7, 2, 0, .8)
     local l = {
-        { "Game",   { scoreColor, STAT.totalGame },                                   x = 26,  y = 35 },
-        { "Ascent", { scoreColor, STAT.totalF10 },                                    x = 26,  y = 60 },
-        { "Giga",   { scoreColor, STAT.totalGiga },                                   x = 26,  y = 85 },
-        { "Flip",   { scoreColor, STAT.totalFlip },                                   x = 196, y = 35 },
-        { "Quest",  { scoreColor, STAT.totalQuest },                                  x = 196, y = 60 },
-        { "Attack", { scoreColor, STAT.totalAttack },                                 x = 196, y = 85 },
-        { "Floor",  { scoreColor, STAT.totalFloor },                                  x = 380, y = 60 },
-        { "Height", { scoreColor, floor(STAT.totalHeight * .001), textColor, " km" }, x = 380, y = 85 },
+        { "Games played",   { scoreColor, STAT.totalGame },                                   x = 26,  y = 35 },
+        { "F10 runs", { scoreColor, STAT.totalF10 },                                    x = 26,  y = 60 },
+        { "Gigaspeeds",   { scoreColor, STAT.totalGiga },                                   x = 26,  y = 85 },
+        { "Cards flipped",   { scoreColor, STAT.totalFlip },                                   x = 196, y = 35 },
+        { "Quests completed",  { scoreColor, STAT.totalQuest },                                  x = 196, y = 60 },
+        { "Attacks sent", { scoreColor, STAT.totalAttack },                                 x = 196, y = 85 },
+        { "Floors total",  { scoreColor, STAT.totalFloor },                                  x = 380, y = 60 },
+        { "Total climbed", { scoreColor, floor(STAT.totalHeight * .001), textColor, " km" }, x = 380, y = 85 },
     }
     for i = 1, #l do
         local v = l[i]
