@@ -128,28 +128,28 @@ scene.widgetList = {
             newName = newName:trim()
             if TASK.lock('changeName', 2.6) then
                 SFX.play('notify')
-                MSG('dark', "Change name to clipboard text? ('" .. newName .. "')\nClick again to confirm", 2.6)
+                MSG('dark', "Change your name to clipboard text? ('" .. newName .. "')\nClick again to confirm", 2.6)
                 return
             end
             TASK.unlock('changeName')
             repeat
                 newName = newName:upper()
                 if #newName < 3 or #newName > 16 or newName:find('[^A-Z0-9_%-]') then
-                    MSG('dark', "New name can only be 3~16 characters with A-Z, 0-9, -, _")
+                    MSG('dark', "New name must be 3-16 characters long and contain the following: A-Z, 0-9, -, _")
                     break
                 end
                 if newName == STAT.uid then
-                    MSG('dark', "New name is the same as old one")
+                    MSG('dark', "New name is the same as the old one.")
                     break
                 end
                 if newName:sub(1, 4) == 'ANON-' or newName:sub(1, 4) == 'ANON_' then
-                    MSG('dark', "New name can't be ANON")
+                    MSG('dark', "You can’t enter ANON as your new name.")
                     break
                 end
                 STAT.uid = newName
                 SaveStat()
                 SFX.play('supporter')
-                MSG('dark', "Name changed to " .. STAT.uid)
+                MSG('dark', "Your name was changed to " .. STAT.uid)
                 if SCN.cur == 'stat' then RefreshProfile() end
                 IssueAchv('identity')
                 return
@@ -161,7 +161,7 @@ scene.widgetList = {
         name = 'changeAboutme', type = 'button',
         x = baseX + 610, y = baseY + 110, w = 360, h = 50,
         color = clr.L,
-        fontSize = 30, textColor = clr.LT, text = "CHANGE ABOUT-ME",
+        fontSize = 30, textColor = clr.LT, text = "CHANGE ABOUT ME",
         sound_hover = 'menutap',
         sound_release = 'menuclick',
         onClick = function()
@@ -174,7 +174,7 @@ scene.widgetList = {
             newText = newText:trim()
             if TASK.lock('changeAboutme', 2.6) then
                 SFX.play('notify')
-                MSG('dark', "Change about-me text to clipboard text?\nClick again to confirm", 2.6)
+                MSG('dark', "Change your about me text to clipboard text?\nClick again to confirm", 2.6)
                 return
             end
             TASK.unlock('changeAboutme')
@@ -184,17 +184,17 @@ scene.widgetList = {
                     break
                 end
                 if #newText < 1 or #newText > 260 or newText:find('[^\32-\126]') then
-                    MSG('dark', "New text can only be 1~260 characters with visiable ASCII characters")
+                    MSG('dark', "Text must be 1-260 characters long and contain visible ASCII characters")
                     break
                 end
                 if newText == STAT.aboutme then
-                    MSG('dark', "New text is the same as old one")
+                    MSG('dark', "New text is the same as the old one")
                     break
                 end
                 STAT.aboutme = newText
                 SaveStat()
                 SFX.play('supporter')
-                MSG('dark', "About text updated")
+                MSG('dark', "Your About Me text has been updated.")
                 if SCN.cur == 'stat' then RefreshProfile() end
                 IssueAchv('identity')
                 return
@@ -213,7 +213,7 @@ scene.widgetList = {
             MSG.clear()
             if TASK.lock('export', 2.6) then
                 SFX.play('notify')
-                MSG('dark', "Export progress to clipboard?\nClick again to confirm", 2.6)
+                MSG('dark', "Export your progress to clipboard?\nClick again to confirm", 2.6)
                 return
             end
             TASK.unlock('export')
@@ -240,7 +240,7 @@ scene.widgetList = {
             if TASK.lock('import', 4.2) then
                 SFX.play('notify')
                 MSG('dark',
-                    "Import data from clipboard text?\nVersion must match, and current progress will be lost forever!\nClick again to confirm",
+                    "Import data from clipboard text?\nThe version must match; all progress you made so far will be permanently lost!\nClick again to confirm",
                     4.2)
                 return
             end
