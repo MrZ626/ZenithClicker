@@ -184,7 +184,7 @@ end
 function scene.load()
     if SYSTEM == 'Web' and TASK.lock('web_warn') then
         MSG('warn',
-            "[WARNING]\nWeb version is only for trial purposes.\nYour progress can randomly lost without being saved (cannot fix)\nDownload desktop version to play more in the future, with far better performance.\nThank you for your support!",
+            "[WARNING]\nThe web version is for trial purposes only.\nPlease note that your progress may be lost without warning, and this cannot be fixed.\nDownload the desktop version to keep playing in the future, with far better performance.\nThank you for your support!",
             12.6)
     end
 
@@ -1194,10 +1194,10 @@ scene.widgetList = {
         labelPos = 'leftBottom',
         floatFontSize = 30,
         floatText = STRING.trimIndent [[
-            Welcome to Zenith Clicker! Select required tarots to send players to scale the tower.
-            The higher the tower, the more tricky players will come!
-            There's no leaderboard, but how high can you reach?
-            Space: commit    Z: reset    Esc: forfeit/quit
+            Welcome to Zenith Clicker! Choose the required tarot cards and send players to scale the tower.
+            The higher you go in the tower, the more tricky players you'll encounter!
+            There's no leaderboards, but how high can you reach?
+            Space: Commit    Z: Reset    Esc: Forfeit/Quit
         ]],
     },
     WIDGET.new {
