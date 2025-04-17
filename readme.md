@@ -6,37 +6,45 @@
 
 > All Arts & Sounds from [TETR.IO](https://tetr.io) by osk, an online stacker game with Awesome Graphics and Musics!
 
-Inspired by mod selection screen of tetr.io QP2, its interactive feel is really not good for quickly picking the mods needed,  
+**WARNING**: This game requires you know tetr.io QP2's systems and mods, or you won't get much fun.  
+If you like QP2 but don't know much about it, check another repo of mine: [QP2 Documentation](https://github.com/MrZ626/io_qp2_rule) (Chinese, but there are some translated forks). It's a full explanation (almost) of QP2, including many technical details behind the scene, helping you play QP2 with better strategies!
+
+**Zenith Clicker** is a game inspired by mod selection screen of tetr.io QP2.  
+But its interactive feel is really not good for quickly picking the mods needed,  
 and there's still no convenient way to know which mods are included in a specific combo.
 
 Powered by LÖVE & Zenitha & Lua ~~instead of slow web engine~~
 
-**MrZ**: Programming, game design, general development  
-**DJ Asriel**: Background reconstruction  
-**CreepercraftYT**: Detailed mod icons  
-**Dr Ocelot**: Audio & Music  
-**osk**: founder & lead producer of tetr.io  
-**Garbo**: game & world design of tetr.io  
-**Frutigеr**: Font designer (D-Din-Pro)  
-**Mooniak**: Font designer (AbhayaLibre-Regular)
+Credits:  
+*MrZ*: Programming, game design, general development  
+*DJ Asriel*: Background reconstruction  
+*CreepercraftYT*: Detailed mod icons  
+*Dr Ocelot*: Audio & Music  
+*osk*: Founder & lead producer of tetr.io  
+*Garbo*: Game & world design of tetr.io  
+*Frutigеr*: Font designer (D-Din-Pro)  
+*Mooniak*: Font designer (AbhayaLibre-Regular)
 
 ## Behind The Scene
 
 ### Clicker Rating (CR)
 
-CR is calculated from:
+Just like TR, the maximum value is 25000,  
+but CR is calculated from:
 
-1. Best Height (5K)
-1. Best Time (5K)
-1. Mod Completion (3K)
-1. Mod Speedrun (2K)
-1. Zenith Point (3K)
-1. Daily Challenge (2K)
-2. Achievement (5K)
+1. Best Height (5k)
+1. Best Time (5k)
+1. Mod Completion (3k)
+1. Mod Speedrun (2k)
+1. Zenith Point (3k)
+1. Daily Challenge (2k)
+2. Achievement (5k)
 
-About the formula, see function `calculateRating()` in [/module/scene/stat.lua]
+For the exactly formula, see function `calculateRating()` in this [file](/module/scene/stat.lua)
 
-### Zenith Points (ZP)
+### Zenith Point (ZP)
+
+You gain ZP after a run, with `ZP = altitude * multiplier`, which `multiplier` is taken from:
 
 |   Mod    |  EX   |  NH   |  MS   |    GV     |    VL     |     DH     |  IN   |  AS   |     DP     |
 | :------: | :---: | :---: | :---: | :-------: | :-------: | :--------: | :---: | :---: | :--------: |
@@ -46,8 +54,7 @@ About the formula, see function `calculateRating()` in [/module/scene/stat.lua]
 > M = (Other) Mod Count  
 > X = rNH ? (DP or rDP ? 2 : 2.2) : 1.6
 
-`Hard Mode Decay` = 0.99  
-applies `X-1` times, `X = number of "EX or Rev"`
+And `Hard Mode Decay` = 0.99, this applies `number_of_EX_or_Rev - 1` times.
 
 Total ZP is soft-capped by your skill:
 

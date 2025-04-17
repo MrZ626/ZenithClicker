@@ -1,8 +1,15 @@
-if love._os == 'Web' then
+if love['_os'] == 'Web' then
     local _read = love.filesystem.read
     local _getinfo = love.filesystem.getInfo
     love.filesystem[('read')] = function(name, size)
         if _getinfo(name) then return _read(name, size) end
+    end
+    if math.log(8, 2) ~= 3 then
+        -- Fix log function if it doesn't support base
+        local log = math.log
+        math[('log')] = function(x, base)
+            return base and log(x) / log(base) or log(x)
+        end
     end
 end
 
