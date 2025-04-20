@@ -16,6 +16,7 @@ local ins, rem = table.insert, table.remove
 
 ---@class Game
 ---@field playing boolean
+---@field practiceMode boolean
 ---
 ---@field prevPB number
 ---@field comboStr string
@@ -130,6 +131,7 @@ local GAME = {
 }
 
 GAME.playing = false
+GAME.practiceMode = false
 GAME.fullHealth = 20
 GAME.life = 0
 GAME.life2 = 0
@@ -1445,6 +1447,7 @@ function GAME.start()
     GAME.playing = true
 
     -- Statistics
+    GAME.practiceMode = false
     GAME.comboStr = table.concat(TABLE.sort(GAME.getHand(true)))
     GAME.prevPB = BEST.highScore[GAME.comboStr]
     if GAME.prevPB == 0 then GAME.prevPB = -260 end
@@ -1604,76 +1607,78 @@ function GAME.finish(reason)
             end
         end
 
-        -- Statistics
-        STAT.maxFloor = max(STAT.maxFloor, GAME.floor)
-        if GAME.height > STAT.maxHeight then
-            STAT.maxHeight = MATH.roundUnit(GAME.height, .01)
-            STAT.heightDate = os.date("%y.%m.%d %H:%M%p")
-        end
-        STAT.totalGame = STAT.totalGame + 1
-        STAT.totalTime = MATH.roundUnit(STAT.totalTime + GAME.time, .001)
-        STAT.totalFlip = STAT.totalFlip + GAME.totalFlip
-        STAT.totalQuest = STAT.totalQuest + GAME.totalQuest
-        STAT.totalPerfect = STAT.totalPerfect + GAME.totalPerfect
-        STAT.totalAttack = STAT.totalAttack + GAME.totalAttack
-        STAT.totalHeight = MATH.roundUnit(STAT.totalHeight + GAME.height, .01)
-        STAT.totalBonus = MATH.roundUnit(STAT.totalBonus + GAME.heightBonus, .01)
-        STAT.totalFloor = STAT.totalFloor + (GAME.floor - 1)
-        if GAME.gigaspeedEntered then STAT.totalGiga = STAT.totalGiga + 1 end
-        if GAME.floor >= 10 then STAT.totalF10 = STAT.totalF10 + 1 end
-
-        local oldZP, zpGain = STAT.zp, GAME.height * GAME.comboZP
-        if DailyActived then
-            STAT.dzp = max(STAT.dzp, zpGain)
-            STAT.dailyBest = max(STAT.dailyBest, zpGain)
-            -- TODO: send to online leaderboard
-        end
-        STAT.zp = max(
-            STAT.zp,
-            STAT.zp < zpGain * 16 and min(STAT.zp + zpGain, zpGain * 16) or
-            zpGain * 16 + (STAT.zp - zpGain * 16) * (9 / 10) + (zpGain * 10) * (1 / 10)
-        )
-        if DailyActived then STAT.zp = MATH.clamp(STAT.zp + (STAT.zp - oldZP) * 1.6, STAT.zp, 50 * zpGain) end
-        TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, 0, DailyActived and ", 260%" or ""))
-        local zpEarn = STAT.zp - oldZP
-        if zpEarn > 0 then
-            TASK.new(function()
-                TASK.yieldT(0.626)
-                TWEEN.new(function(t)
-                    TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, zpEarn * t, DailyActived and ", 260%" or ""))
-                end):setEase('InOutCubic'):setDuration(2):run()
-                SFX.play('ratingraise', zpEarn ^ .5 / 60)
-            end)
-        end
-        SaveStat()
-
         -- Best
-        local oldPB = BEST.highScore[GAME.comboStr]
-        if GAME.height > oldPB then
-            BEST.highScore[GAME.comboStr] = MATH.roundUnit(GAME.height, .01)
-            local modCount = #GAME.getHand(true)
-            if modCount > 0 and oldPB < Floors[9].top and GAME.floor >= 10 then
-                local t = modCount == 1 and "MOD MASTERED" or "COMBO MASTERED"
-                if GAME.anyRev then t = t:gsub(" ", "+ ", 1) end
-                TEXT:add {
-                    text = t,
-                    x = 800, y = 226, k = 2.26, fontSize = 70,
-                    style = 'beat', inPoint = .26, outPoint = .62,
-                    color = 'lC', duration = 6.2,
-                }
-                SFX.play('worldrecord', 1, 0, (modCount == 1 and -1 or 0) + M.GV)
-            elseif GAME.floor >= 2 then
-                TEXT:add {
-                    text = "PERSONAL BEST",
-                    x = 800, y = 226, k = 2.6, fontSize = 70,
-                    style = 'beat', inPoint = .26, outPoint = .62,
-                    color = 'lY', duration = 6.2,
-                }
-                SFX.play('personalbest', 1, 0, -.1 + M.GV)
+        if not GAME.practiceMode then
+            -- Statistics
+            STAT.maxFloor = max(STAT.maxFloor, GAME.floor)
+            if GAME.height > STAT.maxHeight then
+                STAT.maxHeight = MATH.roundUnit(GAME.height, .01)
+                STAT.heightDate = os.date("%y.%m.%d %H:%M%p")
             end
-            SFX.play('applause', GAME.floor / 10)
-            SaveBest()
+            STAT.totalGame = STAT.totalGame + 1
+            STAT.totalTime = MATH.roundUnit(STAT.totalTime + GAME.time, .001)
+            STAT.totalFlip = STAT.totalFlip + GAME.totalFlip
+            STAT.totalQuest = STAT.totalQuest + GAME.totalQuest
+            STAT.totalPerfect = STAT.totalPerfect + GAME.totalPerfect
+            STAT.totalAttack = STAT.totalAttack + GAME.totalAttack
+            STAT.totalHeight = MATH.roundUnit(STAT.totalHeight + GAME.height, .01)
+            STAT.totalBonus = MATH.roundUnit(STAT.totalBonus + GAME.heightBonus, .01)
+            STAT.totalFloor = STAT.totalFloor + (GAME.floor - 1)
+            if GAME.gigaspeedEntered then STAT.totalGiga = STAT.totalGiga + 1 end
+            if GAME.floor >= 10 then STAT.totalF10 = STAT.totalF10 + 1 end
+
+            local oldZP, zpGain = STAT.zp, GAME.height * GAME.comboZP
+            if DailyActived then
+                STAT.dzp = max(STAT.dzp, zpGain)
+                STAT.dailyBest = max(STAT.dailyBest, zpGain)
+                -- TODO: send to online leaderboard
+            end
+            STAT.zp = max(
+                STAT.zp,
+                STAT.zp < zpGain * 16 and min(STAT.zp + zpGain, zpGain * 16) or
+                zpGain * 16 + (STAT.zp - zpGain * 16) * (9 / 10) + (zpGain * 10) * (1 / 10)
+            )
+            if DailyActived then STAT.zp = MATH.clamp(STAT.zp + (STAT.zp - oldZP) * 1.6, STAT.zp, 50 * zpGain) end
+            TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, 0, DailyActived and ", 260%" or ""))
+            local zpEarn = STAT.zp - oldZP
+            if zpEarn > 0 then
+                TASK.new(function()
+                    TASK.yieldT(0.626)
+                    TWEEN.new(function(t)
+                        TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, zpEarn * t, DailyActived and ", 260%" or ""))
+                    end):setEase('InOutCubic'):setDuration(2):run()
+                    SFX.play('ratingraise', zpEarn ^ .5 / 60)
+                end)
+            end
+            SaveStat()
+            local oldPB = BEST.highScore[GAME.comboStr]
+            if GAME.height > oldPB then
+                BEST.highScore[GAME.comboStr] = MATH.roundUnit(GAME.height, .01)
+                local modCount = #GAME.getHand(true)
+                if modCount > 0 and oldPB < Floors[9].top and GAME.floor >= 10 then
+                    local t = modCount == 1 and "MOD MASTERED" or "COMBO MASTERED"
+                    if GAME.anyRev then t = t:gsub(" ", "+ ", 1) end
+                    TEXT:add {
+                        text = t,
+                        x = 800, y = 226, k = 2.26, fontSize = 70,
+                        style = 'beat', inPoint = .26, outPoint = .62,
+                        color = 'lC', duration = 6.2,
+                    }
+                    SFX.play('worldrecord', 1, 0, (modCount == 1 and -1 or 0) + M.GV)
+                elseif GAME.floor >= 2 then
+                    TEXT:add {
+                        text = "PERSONAL BEST",
+                        x = 800, y = 226, k = 2.6, fontSize = 70,
+                        style = 'beat', inPoint = .26, outPoint = .62,
+                        color = 'lY', duration = 6.2,
+                    }
+                    SFX.play('personalbest', 1, 0, -.1 + M.GV)
+                end
+                SFX.play('applause', GAME.floor / 10)
+                SaveBest()
+            end
         end
+
 
         TEXTS.endHeight:set(("%.1fm"):format(GAME.height))
         if GAME.gigaspeedEntered then

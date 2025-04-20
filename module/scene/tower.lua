@@ -1112,6 +1112,17 @@ scene.widgetList = {
         end,
     },
     WIDGET.new {
+        name = 'achv', type = 'button',
+        pos = { 0, 0 }, x = 60, y = 320, w = 160, h = 60,
+        color = { COLOR.HEX '1F4E2C' },
+        sound_hover = 'menutap',
+        fontSize = 30, text = "    ACHV", textColor = { COLOR.HEX '73E284' },
+        onClick = function()
+            love.keypressed('tab')
+            love.keyreleased('tab')
+        end,
+    },
+    WIDGET.new {
         name = 'conf', type = 'button',
         pos = { 1, 0 }, x = -60, y = 230, w = 160, h = 60,
         color = { COLOR.HEX '253355' },
