@@ -534,6 +534,8 @@ local NegTexts = {
         desc = [[A lively restaurant with a lovely atmosphere! Though the prices here are slightly outrageous...]],
         begin = [[The smell of food calms your senses...]],
         effStart = [[Illusions dance before your eyes...]],
+        noDP = [[You feel alone...]],
+        DPoff = [[You feel that the existence of your alter ego is messing with your thoughts...]],
         noVL = [[You feel yourself becoming weaker...]],
         VLoff = [[You feel your strength fading...]],
         noIN = [[Illusion before your eyes hasn't entirely faded...]],
@@ -591,6 +593,10 @@ local NegTexts = {
         desc3 = [[You reached the bottom... or it seemed to be at first glance... one last gateway was left...]],
         begin = [[The endless void beckons you...]],
         mid = [[RUN.]],
+        mid2 = [[RUN FASTER THAN YOU POSSIBLY CAN BECAUSE FEAR IS AWOKEN IN YOUR MIND.]],
+        NHon = [[Your fear came back...]],
+        INon = [[You are blinded by illusions...]],
+        DHon = [[You are shuddering more...]]
         -- begin = [[You feel nostalgia at the sight of a familiar tower.]],
     },
     b10 = { -- Endless Void
@@ -603,6 +609,7 @@ local NegTexts = {
         end3 = [[It's so empty... and vast...]],
         end4 = [[Yet it feels nostalgic somehow...]],
         end5 = [[And peaceful.]],
+        end6 = [[But you are not surprised.]],
     },
 }
 NegEvents = {
@@ -630,14 +637,25 @@ NegEvents = {
     { h = -55 }, { text = 'b2.begin' },
     { h = -60 },
     { text = 'b2.effStart', event = { 'nightcore', true } },
+    { h = -62 },
+    { text = 'b2.noDP', color = 'lB', cond = function() return GAME.mod.DP == 0 and STAT.clicker == true end },{
+        text = 'b2.DPoff',
+        color = 'lO',
+        cond = function() return GAME.mod.DP > 0 and STAT.clicker == true end,
+        event = function()
+            GAME.attackMul = GAME.attackMul + .1
+            GAME.reviveDifficulty = GAME.reviveDifficulty + 6
+            GAME.dmgWrong = GAME.dmgWrong + 4
+        end,
+    },
     { h = -90 },
-    { text = 'b2.noVL',     color = 'lB',                 cond = function() return GAME.mod.VL == 0 end },
+    { text = 'b2.noVL', color = 'lB', cond = function() return GAME.mod.VL == 0 end }, -- Did MrZ enabled volatile on his space button???
     {
         text = 'b2.VLoff',
         color = 'lO',
         cond = function() return GAME.mod.VL > 0 end,
         event = function()
-            GAME.attackMul = GAME.attackMul - .1
+            GAME.attackMul = GAME.attackMul - .1 * GAME.mod.VL + .1
             GAME.dmgTimerMul = GAME.dmgTimerMul + .01
             GAME.mod.VL = 0
             GAME.refreshModIcon()
@@ -811,6 +829,149 @@ NegEvents = {
             GAME.time = math.max(GAME.time, 419)
         end
     },
+    { h = -1400 },
+    {
+        text = 'b9.mid2',
+        color = 'lR',
+        size = 2.6,
+        duration = 16,
+        cond = function() return STAT.clicker == true end,
+        event = function()
+            GAME.attackMul = 0
+            GAME.dmgTimerMul = GAME.dmgTimerMul + .01
+            BGM.set('all', 'pitch', 2 ^ (5 / 24), .26)
+            BGM.set('piano2', 'pitch', 2 ^ (29 / 24), .26)
+        end
+    },
+    { h = -1403 }, { cond = function() return STAT.clicker == true end, sfx = 'b2bcharge_distance_3' },
+    { h = -1406 }, { cond = function() return STAT.clicker == true end, sfx = 'b2bcharge_distance_2' },
+    { h = -1409 }, { cond = function() return STAT.clicker == true end, sfx = 'b2bcharge_distance_1' },
+    { h = -1412 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', true } },
+    { h = -1416 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', false } },
+    { h = -1416.5 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', true } },
+    { h = -1418 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', false } },
+    { h = -1419 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', true } },
+    { h = -1423 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', false } },
+    { h = -1423.5 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', true } },
+    { h = -1425 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', false } },
+    { h = -1426 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', true } },
+    { h = -1430 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', false } },
+    { h = -1430.5 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', true } },
+    { h = -1432 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', false } },
+    { h = -1433 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', true } },
+    { h = -1435 }, { cond = function() return STAT.clicker == true end, event = function() GC.setWireframe(true) end },
+    { h = -1437 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', false } },
+    { h = -1437.5 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', true } },
+    { h = -1439 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', false } },
+    { h = -1445 }, { cond = function() return STAT.clicker == true end, event = { 'invisCard', true } },
+    { h = -1450 }, { cond = function() return STAT.clicker == true end, event = { 'invisCard', false } },
+    { h = -1455 }, { cond = function() return STAT.clicker == true end, event = { 'invisCard', true } },
+    { h = -1457 }, { cond = function() return STAT.clicker == true end, event = function() GC.setWireframe(false) end },
+    { h = -1460 }, { cond = function() return STAT.clicker == true end, event = { 'invisCard', false } },
+    { h = -1462 }, { cond = function() return STAT.clicker == true end, event = { 'glassCard', true } },
+    { h = -1465 }, { cond = function() return STAT.clicker == true end, event = { 'invisCard', true } },
+    { h = -1467 }, { cond = function() return STAT.clicker == true end, event = { 'glassCard', false } },
+    { h = -1470 }, { cond = function() return STAT.clicker == true end, event = { 'invisCard', false } },
+    { h = -1472 }, { cond = function() return STAT.clicker == true end, event = { 'glassCard', true } },
+    { h = -1475 }, { cond = function() return STAT.clicker == true end, event = { 'invisCard', true } },
+    { h = -1477 }, { cond = function() return STAT.clicker == true end, event = { 'glassCard', false } },
+    { h = -1480 }, { cond = function() return STAT.clicker == true end, event = { 'invisCard', false } },
+    { h = -1482 }, { cond = function() return STAT.clicker == true end, event = { 'glassCard', true } },
+    { h = -1485.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', true } },
+    { h = -1486.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', false } },
+    { h = -1487 }, { cond = function() return STAT.clicker == true end, event = { 'glassCard', false } },
+    { h = -1487.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', true } },
+    { h = -1488.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', false } },
+    { h = -1489.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', true } },
+    { h = -1490.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', false } },
+    { h = -1491.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', true } },
+    { h = -1492 }, { cond = function() return STAT.clicker == true end, event = { 'glassCard', true } },
+    { h = -1492.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', false } },
+    { h = -1493.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', true } },
+    { h = -1494.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', false } },
+    { h = -1495.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', true } },
+    { h = -1496.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', false } },
+    { h = -1497 }, { cond = function() return STAT.clicker == true end, event = { 'glassCard', false } },
+    { h = -1497.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', true } },
+    { h = -1498.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', false } },
+    { h = -1499.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', true } },
+    { h = -1500 }, { cond = function() return STAT.clicker == true end, event = { 'invisCard', true } },
+    { h = -1500.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', false } },
+    { h = -1501.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', true } },
+    { h = -1502.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', false } },
+    { h = -1503.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', true } },
+    { h = -1504.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', false } },
+    { h = -1505 }, { cond = function() return STAT.clicker == true end, event = { 'invisCard', false } },
+    { h = -1505.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', true } },
+    { h = -1506.5 }, { cond = function() return STAT.clicker == true end, event = { 'invisUI', false } },
+    { h = -1512 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', true } },
+    { h = -1516 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', false } },
+    { h = -1516.5 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', true } },
+    { h = -1518 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', false } },
+    { h = -1519 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', true } },
+    { h = -1523 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', false } },
+    { h = -1523.5 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', true } },
+    { h = -1525 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', false } },
+    { h = -1526 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', true } },
+    { h = -1530 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', false } },
+    { h = -1530.5 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', true } },
+    { h = -1532 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', false } },
+    { h = -1533 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', true } },
+    { h = -1537 }, { cond = function() return STAT.clicker == true end, event = { 'nightcore', false } },
+    { h = -1537.5 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', true } },
+    { h = -1539 }, { cond = function() return STAT.clicker == true end, event = { 'slowmo', false } },
+    { h = -1540 }, { cond = function() return STAT.clicker == true end, sfx = 'b2bcharge_distance_3' },
+    { h = -1541 }, { cond = function() return STAT.clicker == true end, sfx = 'b2bcharge_distance_3' },
+    { h = -1542 }, { cond = function() return STAT.clicker == true end, sfx = 'b2bcharge_distance_3' },
+    { h = -1543 }, { cond = function() return STAT.clicker == true end, sfx = 'b2bcharge_distance_2' },
+    { h = -1544 }, { cond = function() return STAT.clicker == true end, sfx = 'b2bcharge_distance_2' },
+    { h = -1545 }, { cond = function() return STAT.clicker == true end, sfx = 'b2bcharge_distance_2' },
+    { h = -1546 }, { cond = function() return STAT.clicker == true end, sfx = 'b2bcharge_distance_1' },
+    { h = -1547 }, { cond = function() return STAT.clicker == true end, sfx = 'b2bcharge_distance_1' },
+    { h = -1548 }, { cond = function() return STAT.clicker == true end, sfx = 'b2bcharge_distance_1' },
+    { h = -1550 },
+    {
+        cond = function() return STAT.clicker == true end,
+        event = function()
+            GAME.attackMul = -0.3
+            GAME.dmgTimerMul = GAME.dmgTimerMul - .02
+            BGM.set('all', 'pitch', 2 ^ (6 / 24), .26)
+            BGM.set('piano2', 'pitch', 2 ^ (30 / 24), .26)
+        end
+    },
+    { h = -1560 },
+    {
+        text = 'b9.NHon',
+        color = 'lO',
+        cond = function() return STAT.clicker == true end,
+        event = function()
+            GAME.mod.NH = 1
+            GAME.refreshModIcon()
+            GAME.refreshRPC()
+        end,
+    },
+    { h = -1590 },
+    {
+        text = 'b9.INon',
+        color = 'lO',
+        cond = function() return STAT.clicker == true end,
+        event = function()
+            GAME.mod.IN = 1
+            GAME.refreshModIcon()
+            GAME.refreshRPC()
+        end,
+    },
+    { h = -1620 },
+    {
+        text = 'b9.DHon',
+        color = 'lO',
+        cond = function() return STAT.clicker == true end,
+        event = function()
+            GAME.mod.DH = 1
+            GAME.refreshModIcon()
+            GAME.refreshRPC()
+        end,
+    },
 
     -- B10: Endless Void
     { h = -1650 },
@@ -837,6 +998,9 @@ NegEvents = {
             TEXTS.rank:set("R-" .. GAME.rank)
 
             GAME.mod.EX = 0
+            GAME.mod.NH = 0
+            GAME.mod.IN = 0
+            GAME.mod.DH = 0
             GAME.refreshModIcon()
             GAME.refreshRPC()
             GAME.mod.EX = 2
@@ -847,6 +1011,7 @@ NegEvents = {
     { h = -1720 }, { text = 'b10.end3', color = 'L', duration = 6.26, sfx = 'piece_change', event = function() BGM.setVol(STAT.bgm / 100 * .5) end },
     { h = -1750 }, { text = 'b10.end4', color = 'L', duration = 6.26, sfx = 'piece_change', event = function() BGM.setVol(STAT.bgm / 100 * .3) end },
     { h = -1780 }, { text = 'b10.end5', color = 'L', duration = 6.26, sfx = 'piece_change', event = function() BGM.setVol(STAT.bgm / 100 * 0) end },
+    { h = -1790 }, { text = 'b10.end6', color = 'L', duration = 6.26, sfx = 'piece_change', cond = function() return STAT.clicker == true end, event = function() BGM.setVol(STAT.bgm / 100 * 0) end },
     { h = -1800 },
     {
         event = function()
