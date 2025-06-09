@@ -1,17 +1,15 @@
 # Zenith Clicker
 
-    Welcome to Zenith Clicker! Select required tarots to send players to scale the tower.  
-    The higher the tower, the more tricky players will come!  
-    There's no leaderboard, but how high can you reach?
+    Welcome to Zenith Clicker, where the goal is to select required Tarot cards and send players to scale the tower.  
+    As you keep climbing, more tricky players will come!  
+    Leaderboards aren't available, but how high can you reach?
 
-> All Arts & Sounds from [TETR.IO](https://tetr.io) by osk, an online stacker game with Awesome Graphics and Musics!
+> Almost all art and sounds are from [TETR.IO](https://tetr.io), a modern yet familiar online stacker game by osk with amazing graphics and music.
 
-**WARNING**: This game requires you to know tetr.io QP2's systems and mods, or you won't get much fun.  
-If you like QP2 but don't know much about it, check another repo of mine: [QP2 Documentation](https://github.com/MrZ626/io_qp2_rule) (Chinese, but there are some translated forks). It's a full explanation (almost) of QP2, including many technical details behind the scene, helping you play QP2 with better strats!
+**WARNING**: This game requires tghe knowledge of the mechanics and mods of TETR.IO's Quick Play 2, or you won't get much fun.  
+If you like the Quick Play 2 mode but don't know much about it, check another repo of mine: [QP2 Documentation](https://github.com/MrZ626/io_qp2_rule) (in Chinese, with some translated forks). It's nearly a full explanation of QP2, including many technical details behind the scenes, which can allow you to play QP2 with better strats!
 
-**Zenith Clicker** is a game inspired by mod selection screen of tetr.io QP2.  
-Its interactive feel is really not good for quickly picking the mods needed,  
-and there's still no convenient way to know which mods are included in a specific combo.
+**Zenith Clicker** is a game inspired by the Quick Play 2 mod selection menu of TETR.IO. Its interactive feel is really not good for quickly picking the mods needed, and there's still no convenient way to know which mods are included in a specific combo.
 
 Powered by LÖVE & Zenitha & Lua ~~instead of slow web engine~~
 
@@ -32,7 +30,7 @@ Credits:
 
 After you start the game, you will see three mod combos, which are called "quests", shown at the top of the screen. Select the mods which are contained by the first (largest) one, then press the `Start` button to commit.
 
-Pass quests with one click at most on each card to get "perfect pass", which gives extra attack and chages Back-to-Back
+Pass quests with one click at most on each card to get "perfect pass", which gives extra attack and increases B2B. At B2Bx4, it starts charging up a huge Surge Attack that releases all at once at the end of your chain.
 
 Each mod creates a unique experience by twisting the rules, but also increases the difficulty.
 
@@ -50,7 +48,7 @@ Each mod creates a unique experience by twisting the rules, but also increases t
 
 - You cannot manually deselect cards.
 
-#### Messy (`MS`)
+#### Messiness (`MS`)
 
 - Cards are **lightly shuffled** at the start of **floors 1, 2, 5, and 8**. The cards will always be in or adjacent to their correct position.
 
@@ -58,33 +56,33 @@ Each mod creates a unique experience by twisting the rules, but also increases t
 
 - **Automatically commit** some time after the first card flip. The timer starts at **9s** at floor 1, and decreases every floor until **4s** at floor 10. The timer will also automatically start if you flip no cards for 2.6s.
 
-### Volatile (`VL`)
+### Volatility (`VL`)
 
 - Cards are **20px (18%)** further apart.
-- Cards must be pressed **twice** to activate (but deactivating still takes one press).
+- Cards must be pressed **twice** to activate, but deactivating still takes a single press.
 
 ### Double Hole (`DH`)
 
 - Quests are harder.
-- Quests sometimes slightly shuffled.
+- Quests can sometimes be slightly shuffled.
 - TODO: add specifics to difficulty change
 
 ### Invisible (`IN`)
 
-- Cards are flipped to be **face-down**.
+- All cards are **face down**.
 - Quest colours are desaturated.
 - Quest hints are only shown for a moment **every two seconds**..
 
 ### All-Spin (`AS`)
 
 - You can flip cards with your keyboard: on ANSI QWERTY layout, the inputs are 1-9, Q-O, or A-L. If cards are shuffled by `(r)MS`, they are flipped based on their *position*, not by which card they are.
-- The RESET button is replaced with **SPIN**, which quickly flips all cards one-by-one.
-- Flipping a card will apply **burn** to it, indicated by it flashing yellow. Burn lasts **3s** plus **0.5s per floor**, and can be removed by committing (even a wrong one), or by pressing SPIN. Flipping a burned card will **wound** you, force-flipping two cards. These cards do *not* get Burn.
+- The RESET button is replaced with **SPIN**. Using SPIN quickly flips all cards one-by-one.
+- Flipping a card will apply a **burn** to it, indicated by it flashing yellow. Burns last **3s** and increases by **0.5s per floor**. They be removed by committing (even if the selected card is a wrong one), or by pressing SPIN. Flipping a burned card will **wound** you, force-flipping two cards. These cards do *not* get a Burn.
 
 ### Duo (`DP`)
 
 - There are two "players" instead of one. You can swap players by activating the Duo card, or by completing the second quest in the queue (the cards will be highlighted pink while you do this).
-- If one player is incapacitated, your ascension is halved and quests becomes harder, but they can be revived by completing some tasks.
+- If one player is incapacitated, your ascension is halved and quests becomes harder, but they can be revived by completing some revive prompts.
 - Quests are a bit harder.
 - TODO: specifics on tasks
 
@@ -97,7 +95,7 @@ Make sure you've discovered most contents before reading this section!
 
 ### The Tyrant (`rEX`)
 
-- **ALL the effects of Expert.**
+- **Has ALL the effects of Expert.**
 - Fatigue is much harsher.
 - Passing a quest with Duo no longer gives +2 attack.
 - **You fall downward** instead of passively climbing. The speed increases quadratically from **0.6m/s** on Floor 1 to **6m/s** on Floor 10.
@@ -105,20 +103,20 @@ Make sure you've discovered most contents before reading this section!
 
 ### Asceticism (`rNH`)
 
-- The keyboard is disabled, unless (r)AS is enabled. 
-- The RESET (or SPIN) button is removed.
+- The keyboard is disabled if (r)AS is not enabled. 
+- The RESET/SPIN button is removed.
 - The **next queue** is removed. If (r)DP is enabled, it will show only one next quest.
 - Quest **colours** are faded.
 - Cards are **not deselected** after committing.
 
 ### Loaded Dice (`rMS`)
 
-- Cards are shuffled at the start of **every floor**. The shuffling gets stronger every odd-numbered floor, with cards straying further from their correct positions.
+- Cards are shuffled at the start of **every floor**. This effect gets stronger for every odd-numbered floor reached, with cards straying further from their correct positions.
 - On commit, **swap two cards**, three on Floor 9/10. The cards must be within a five-card range.
 
 ### Freefall (`rGV`)
 
-- The auto-commit timer is reduced, now starting at **3.2s** and decreasing every floor down to **2s**.
+- The auto-commit timer starts at **3.2s** and decreases every floor down to a minimum of **2s**.
 
 ### Last Stand (`rVL`)
 
@@ -133,9 +131,9 @@ Make sure you've discovered most contents before reading this section!
 
 ### The Exile (`rIN`)
 
-- **ALL the effects of Invisible, except...**
+- **Has ALL the effects of Invisible with some differences below:**
 - Quest hints are **not shown** at all!
-- Quests **fade away** after a short time (faster at higher floors), but reappear if you make a wrong commit.
+- Quests **fade away** after a short time, but reappear if you make a wrong commit. They disappear faster as you reach higher floors.
 
 | Floor | rNH Protection | Fade Time |
 | :---: | :------------: | :-------: |
@@ -152,18 +150,18 @@ Make sure you've discovered most contents before reading this section!
 
 ### The Warlock (`rAS`)
 
-- **ALL the effects of All-Spin, except...**
+- **Has ALL the effects of All-Spin with some differences below:**
 - SPIN faster
 - Wounds flip **four cards** instead of two.
-- Burn will **not be removed** over time, nor on SPIN, nor on wrong commit!
+- SPINs and wrong commits will **not remove Burns**, and they aren't removed over time!
 - B2B >= 4 sends **+1 attack**, but passing imperfectly **sends none**!
 
 ### Bleeding Hearts (`rDP`)
 
-- **ALL the effects of Duo, except...**
-- Special fatigue.
-- **Half of attack** goes to the inactive player.
-- If one player is incapacitated, **you can't climb** and half of attack goes to the **active player**!
+- **Has ALL the effects of Duo with some differences below:**
+- A special fatigue system is used.
+- **Half the amount of attack you send** goes to the inactive player.
+- If one player is incapacitated, **you won't be able to climb** and half the amount of attack sent goes to the **active player**!
 
 ### Hard Mode
 
@@ -260,20 +258,18 @@ PLAN B - both list includes first 5 scores, 10/25/50/75%-th score, and player, 1
 All lists are sorted by `rank`.
 ```
 
-## Design draft of Cliker League (Probably won't be implemented)
+## Design draft of Clicker League (Probably won't be implemented)
 
-**Main idea**: Sending mod effect to opponent
+**Main idea**: Sending mod effect to an opponent
 
-Two players start the run same with single player.
+Two players start the run, using most of the same gameplay as in single player.
 
-**Sending Buffer**: your attacks will be turned into time (1 atk = 1 sec) and stored in this buffer.  
-When it's not increasing for 3 seconds or taking time-damage, all times will be send to opponent.
+**Sending Buffer**: Your attack power is converted into a corresponding duration of "time" (1 attack = 1 second) and stored in this buffer.  
+When the buffer remains inactive (no increase) for 3 seconds or you take time-based damage, the stored time will be sent to the opponent. The last card you activated is the effect you will send.
 
-The last card you activated is the effect which you will send.
+**Cancelling**: Before sending `effect-time` to the opponent, it will try to cancel the same effect currently active on you, with a 2x multiplier.  
+For example, it's not possible to force EX on the opponent if you already have EX.
 
-**Cancelling**: Before sending `effect-time` to opponent, it will try to cancel the same effect you are carrying first, with a 2x multiplier.  
-So you cannot force opponent EX if you have EX already.
+**Sending**: After cancelling, any excess time in the sending buffer is sent to the opponent.
 
-**Sending**: After Cancelling, if there's extra time remain, your opponent will receive it.
-
-Game ends when one of the players lose all HP.
+The game ends when one player's HP reaches zero.
