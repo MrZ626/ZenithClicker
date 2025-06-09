@@ -6,7 +6,7 @@
 
 > Almost all art and sounds are from [TETR.IO](https://tetr.io), a modern yet familiar online stacker game by osk with amazing graphics and music.
 
-**WARNING**: This game requires tghe knowledge of the mechanics and mods of TETR.IO's Quick Play 2, or you won't get much fun.  
+**WARNING**: This game requires the knowledge of the mechanics and mods of TETR.IO's Quick Play 2, or you won't get much fun.  
 If you like the Quick Play 2 mode but don't know much about it, check another repo of mine: [QP2 Documentation](https://github.com/MrZ626/io_qp2_rule) (in Chinese, with some translated forks). It's nearly a full explanation of QP2, including many technical details behind the scenes, which can allow you to play QP2 with better strats!
 
 **Zenith Clicker** is a game inspired by the Quick Play 2 mod selection menu of TETR.IO. Its interactive feel is really not good for quickly picking the mods needed, and there's still no convenient way to know which mods are included in a specific combo.
@@ -77,7 +77,7 @@ Each mod creates a unique experience by twisting the rules, but also increases t
 
 - You can flip cards with your keyboard: on ANSI QWERTY layout, the inputs are 1-9, Q-O, or A-L. If cards are shuffled by `(r)MS`, they are flipped based on their *position*, not by which card they are.
 - The RESET button is replaced with **SPIN**. Using SPIN quickly flips all cards one-by-one.
-- Flipping a card will apply a **burn** to it, indicated by it flashing yellow. Burns last **3s** and increases by **0.5s per floor**. They be removed by committing (even if the selected card is a wrong one), or by pressing SPIN. Flipping a burned card will **wound** you, force-flipping two cards. These cards do *not* get a Burn.
+- Flipping a card will apply a **burn** to it, indicated by it flashing yellow. Burns last **3s** and this duration increases by **0.5s per floor**. They can be removed by committing (even if the selected card is a wrong one) or pressing SPIN. Flipping a burned card will cause you to get **wounded**, force-flipping two cards. These cards do *not* get a Burn.
 
 ### Duo (`DP`)
 
@@ -151,10 +151,10 @@ Make sure you've discovered most contents before reading this section!
 ### The Warlock (`rAS`)
 
 - **Has ALL the effects of All-Spin with some differences below:**
-- SPIN faster
+- SPINs are faster than normal.
 - Wounds flip **four cards** instead of two.
 - SPINs and wrong commits will **not remove Burns**, and they aren't removed over time!
-- B2B >= 4 sends **+1 attack**, but passing imperfectly **sends none**!
+- B2B >= 4 sends **+1 attack**, but passing imperfectly **sends nothing**!
 
 ### Bleeding Hearts (`rDP`)
 
@@ -169,7 +169,7 @@ Make sure you've discovered most contents before reading this section!
 - Activating a correct card for the first time no longer gives +1 Climb Speed XP.
 - Quest hints take longer to appear (**1.5s longer**, or on IN, **38% longer** between flashes)
 
-## Behind The Scene
+## Behind the Scenes
 
 ### Clicker Rating (CR)
 
