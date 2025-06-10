@@ -18,17 +18,17 @@ Credits:
 *CreepercraftYT*: Detailed mod icons  
 *DJ Asriel*: Background reconstruction  
 *Flowerling*: Text Revision  
-*flomikel & Spritzy Sheep*: Extra Texts Writing  
-*Dr Ocelot*: Audio & Music  
-*osk*: Founder & lead producer of tetr.io  
-*Garbo*: Game & world designer of tetr.io  
+*flomikel & Spritzy Sheep*: Additional text writing  
+*Dr Ocelot*: Audio & music
+*osk*: Founder & lead producer of TETR.IO  
+*Garbo*: Game & world designer of TETR.IO  
 *Frutigеr*: Font designer (D-Din-Pro)  
 *Mooniak*: Font designer (AbhayaLibre)  
 *Lorc & Delapouite & Quoting*: Some achievement icons (on https://game-icons.net, CC BY 3.0)
 
 ## How to Play
 
-After you start the game, you will see three mod combos, which are called "quests", shown at the top of the screen. Select the mods which are contained by the first (largest) one, then press the `Start` button to commit.
+After you start the game, you will see three mod combinations, which are called "quests", shown at the top of the screen. Select the mods which are contained by the first (largest) one, then press the `Start` button to commit.
 
 Pass quests with one click at most on each card to get "perfect pass", which gives extra attack and increases B2B. At B2Bx4, it starts charging up a huge Surge Attack that releases all at once at the end of your chain.
 
