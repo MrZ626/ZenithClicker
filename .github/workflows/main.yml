@@ -2,8 +2,8 @@ name: Main
 
 on:
   push:
+    branches: [main, ci-*, fix-*]
     tags: [v*]
-    # branches: [main, ci*]
   pull_request:
     branches: [main]
 env:
