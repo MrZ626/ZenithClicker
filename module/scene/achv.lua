@@ -83,12 +83,10 @@ local function refreshAchvList(canShuffle)
                 local r = A.rank(selfScore)
                 rank = floor(r)
                 progress = r < 5 and r % 1 or r % 1 / .9999
-                if r >= 5 then
-                    wreath = floor(MATH.clampInterpolate(0, 0, .9999, 6, r % 1))
-                end
+                wreath = r >= 5 and floor(MATH.clampInterpolate(0, 0, .9999, 6, r % 1)) or 0
                 if A.type ~= 'issued' then
                     overallProgress.rank[rank] = overallProgress.rank[rank] + 1
-                    if wreath then overallProgress.wreath[wreath] = overallProgress.wreath[wreath] + 1 end
+                    if wreath > 0 then overallProgress.wreath[wreath] = overallProgress.wreath[wreath] + 1 end
                     if A.type == 'competitive' then
                         overallProgress.ptGet = overallProgress.ptGet + floor(rank)
                         overallProgress.ptAll = overallProgress.ptAll + 5
@@ -455,7 +453,7 @@ function scene.draw()
                 if hyper then
                     if overallProgress.countStart == 6 then
                         gc_setColor(COLOR.rainbow_dark(i / 2.6 - t * 2.6, .42))
-                    elseif a.type == 'competitive' and (notAllRank5 and a.rank or a.wreath or 0) == overallProgress.countStart then
+                    elseif a.type == 'competitive' and (notAllRank5 and a.rank or a.wreath) == overallProgress.countStart then
                         gc_setColor(.26 + .1 * sin(t * 2.6 + ceil(i / 2) * 1.2), 0, 0, .626)
                     else
                         gc_setColor(0, 0, 0, .626)
@@ -508,18 +506,17 @@ function scene.draw()
 
                 -- Icon
                 local slice = texture.iconQuad[a.id]
-                if slice then
+                if slice and (a.rank > 0 or a.progress > 0) then
                     if a.rank > 0 then
                         gc_setColor(0, 0, 0, .872)
-                        gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, 0, .24)
-                    elseif a.progress > 0 then
+                    else
                         gc_setColor(1, 1, 1, .26)
-                        gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, 0, .24)
                     end
+                    gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, 0, .24)
                 end
 
                 -- Wreath
-                if a.wreath and a.wreath > 0 then
+                if a.wreath > 0 then
                     gc_setColor(1, 1, 1)
                     gc_mDraw(texture.wreath[a.wreath], 65, 65, 0, .42)
                 end
