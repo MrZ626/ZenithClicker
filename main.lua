@@ -568,6 +568,7 @@ AchvData = {
     { id = 'achv_issued',   bg = COLOR.DM,          fg = COLOR.lM, fg2 = COLOR.lM },
 }
 for i = 0, 6 do MSG.addCategory(AchvData[i].id, AchvData[i].bg, COLOR.L, TEXTURE.achievement.frame[i]) end
+for i = 1, 6 do MSG.addCategory("wreath_" .. i, AchvData[5].bg, COLOR.L, GC.load { w = 256, { 'draw', TEXTURE.achievement.frame[5] }, { 'draw', TEXTURE.achievement.wreath[i] } }) end
 
 local msgTime = 0
 local bufferedMsg = {}
@@ -596,6 +597,16 @@ function IssueAchv(id, silent)
     return true
 end
 
+local wreathName = {
+    [false] = "",
+    [0] = "",
+    [1] = "T100-",
+    [2] = "T50-",
+    [3] = "T25-",
+    [4] = "T10-",
+    [5] = "T5-",
+    [6] = "T3-",
+}
 ---@return true? success
 function SubmitAchv(id, score, silent, realSilent)
     if TestMode then return end
@@ -608,10 +619,11 @@ function SubmitAchv(id, score, silent, realSilent)
 
     if not silent and R1 >= 1 then
         local rank = math.floor(R1)
+        local wreath = R1 >= 5 and math.floor(MATH.clampInterpolate(0, 0, .9999, 6, R1 % 1)) or 0
         local scoreText = A.scoreSimp(score) .. (A.scoreFull and "  " .. A.scoreFull(score) or "")
         local oldScoreText = A.scoreSimp(oldScore) .. (A.scoreFull and "  " .. A.scoreFull(oldScore) or "")
-        table.insert(bufferedMsg, { AchvData[rank].id, {
-            AchvData[rank].fg, A.name .. "   >>   " .. scoreText,
+        table.insert(bufferedMsg, { wreath > 0 and 'wreath_' .. wreath or AchvData[rank].id, {
+            AchvData[rank].fg, wreathName[wreath] .. A.name .. "   >>   " .. scoreText,
             COLOR.LD, (ACHV[id] and "    Previous: " .. oldScoreText or "") .. "\n",
             COLOR.dL, A.desc .. "\n", COLOR.LD, A.quote,
         }, rank <= 2 and 1 or rank <= 4 and 2 or 3 })
