@@ -1450,16 +1450,18 @@ DiscordState = {}
 function Daemon_Slow()
     TASK.yieldT(1)
     local lib = BGM._srcLib
-    local length = BGM.getDuration()
+    local f0List = BgmSet.f0
+    local length
     while true do
-        -- Muisc syncing
+        -- Music syncing
         if BgmPlaying == 'f0' and BGM.isPlaying() then
-            local t0 = lib[BgmSet.f0[1]].source:tell()
-            for i = #BgmSet.f0, 2, -1 do
-                local obj = lib[BgmSet.f0[i]]
+            length = length or lib[f0List[1]].source:getDuration()
+            local t0 = lib[f0List[1]].source:tell() % length
+            for i = #f0List, 2, -1 do
+                local obj = lib[f0List[i]]
                 local T = t0
-                if BgmSet.f0[i] == 'piano2' then T = T * 2 % length end
-                if BgmSet.f0[i] == 'violin2' then T = (T - 8 * 60 / BgmData.f0.bpm) % length end
+                if f0List[i] == 'piano2' then T = T * 2 % length end
+                if f0List[i] == 'violin2' then T = (T - 8 * 60 / BgmData.f0.bpm) % length end
                 if math.abs(obj.source:tell() - T) > 0.026 then
                     -- print('Desync', set[i])
                     obj.source:seek(math.max(T, 0))
