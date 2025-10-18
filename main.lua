@@ -898,6 +898,12 @@ function PlayBGM(name, force)
     end
 end
 
+local normalHelp = {
+    COLOR.LL, "Welcome to ", COLOR.LF, "Zenith Clicker", COLOR.LL, "! Choose the required tarot cards and send players to scale the tower.\n",
+    "The higher you go in the tower, the more tricky players you'll encounter!\n",
+    "There's no leaderboards yet, but how high can you reach?\n",
+    "[DYNAMIC TEXT]",
+}
 local ultraHelp = {
     COLOR.LL, "Welcome to ", COLOR.LR, "Zenith Clicker: ", COLOR.R, "Ultra Reverse", COLOR.LL, ". Activate a reversed mod to start ", COLOR.lR, "suffering.\n",
     COLOR.LL, "The higher you go in the tower, the more likely you are to ", COLOR.R, "die.\n",
@@ -919,12 +925,8 @@ function RefreshHelpText()
         end
     else
         s.help.text = "?"
-        s.help.floatText = (STRING.trimIndent [[
-            Welcome to Zenith Clicker! Choose the required tarot cards and send players to scale the tower.
-            The higher you go in the tower, the more tricky players you'll encounter!
-            There's no leaderboards yet, but how high can you reach?
-            Commit: $1    Reset: $2    Forfeit/Quit: ESC
-        ]]):repD(STAT.keybind[19]:upper(), STAT.keybind[20]:upper())
+        normalHelp[#normalHelp] = ("Commit: $1    Reset: $2    Forfeit/Quit: ESC"):repD(STAT.keybind[19]:upper(), STAT.keybind[20]:upper())
+        s.help.floatText = normalHelp
         s.help2.text = "?"
         local hand = GAME.getHand(true)
         local lastLine = (
