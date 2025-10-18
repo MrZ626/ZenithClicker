@@ -1609,13 +1609,10 @@ scene.widgetList = {
                 else
                     SFX.play('allclear')
                 end
-                GAME.nightcore = PieceSFXID == 1
-                GAME.slowmo = PieceSFXID == 2
-                GAME.glassCard = PieceSFXID == 3
-                GAME.fastLeak = PieceSFXID == 4
-                GAME.invisUI = PieceSFXID == 5
-                GAME.invisCard = PieceSFXID == 6
-                GAME.closeCard = PieceSFXID == 7
+
+                for i = 1, 7 do
+                    GAME[PieceData[i].id] = PieceSFXID == i
+                end
 
                 GAME.refreshLayout()
                 RefreshBGM()
@@ -1623,7 +1620,7 @@ scene.widgetList = {
 
                 MSG({
                     cat = 'dark',
-                    str = ("1Z - Nightcore;2S - Sloooooow-mo;3J - Glass Card;4L - Fast Leak;5T - Invisible UI;6O - Invisible Card;7I - Close Card;8ALLCLEAR;"):match(PieceSFXID .. "(.-);"),
+                    str = PieceData[PieceSFXID].popup,
                     time = 1.2
                 })
             end

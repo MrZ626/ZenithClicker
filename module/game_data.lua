@@ -526,6 +526,17 @@ for _, sets in next, ComboData do
     end
 end
 
+PieceData = {
+    { id = 'nightcore', text = { COLOR.lR, "Z", }, popup = { COLOR.lR, "Z - Nightcore" } },
+    { id = 'slowmo',    text = { COLOR.lG, "S", }, popup = { COLOR.lG, "S - Sloooooow-mo" } },
+    { id = 'glassCard', text = { COLOR.lB, "J", }, popup = { COLOR.lB, "J - Glass Card" } },
+    { id = 'fastLeak',  text = { COLOR.lO, "L", }, popup = { COLOR.lO, "L - Fast Leak" } },
+    { id = 'invisUI',   text = { COLOR.lM, "T", }, popup = { COLOR.lM, "T - Invisible UI" } },
+    { id = 'invisCard', text = { COLOR.lY, "O", }, popup = { COLOR.lY, "O - Invisible Card" } },
+    { id = 'closeCard', text = { COLOR.lC, "I", }, popup = { COLOR.lC, "I - Close Card" } },
+    { id = 'allclear',  text = { COLOR.LL, "-", }, popup = { COLOR.LL, "All Clear" } },
+}
+
 RevSwampName = {
     "Z", "S", "J", "L", "T", "O", "I",
     [["BLIGHT"]],
