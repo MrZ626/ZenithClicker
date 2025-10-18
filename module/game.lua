@@ -282,7 +282,7 @@ function GAME.getComboZP(list)
     if m.AS then zp = zp * .85 elseif m.rAS then zp = zp * 1.1 end
     if m.DP then zp = zp * .95 elseif m.rDP then zp = zp * (m.rEX and 1.8 or 2.1) end
 
-    local hardCnt = STRING.count(table.concat(list), "r")
+    local hardCnt = table.concat(list):count('r')
     if m.EX then hardCnt = hardCnt + 1 end
     if hardCnt >= 2 then zp = zp * 0.99 ^ (hardCnt - 1) end
     if zp > 100 then zp = 100 end -- 101.22x if not capped
@@ -432,7 +432,7 @@ function GAME.getComboName(list, mode)
             end
         else
             local cmbID = table.concat(list)
-            if STRING.count(cmbID, "r") >= 2 then
+            if cmbID:count('r') >= 2 then
                 local mp = GAME.getComboMP(list)
                 if mp >= 8 then return RevSwampName[min(mp, #RevSwampName)] end
             else
@@ -2357,7 +2357,7 @@ function GAME.finish(reason)
             if #hand > 0 and oldPB < Floors[9].top and GAME.floor >= 10 then
                 local t
                 local size, color, duration
-                if GAME.comboMP >= 8 then
+                if GAME.comboMP >= 8 and GAME.comboStr:count('r') >= 2 then
                     if not YOU_LOST_THE_GAME then YOU_LOST_THE_GAME = love.data.decompress('string', 'deflate', love.data.decode('string', 'base64', "NY5bboMwEEW3MgvIJib2BE9lbOoHKv1DgRaUBCi0XX/HlfJ5jubeO+8w9ftwXYdxOEVYf8d96pfP+3gccJuvN7Ev8JiPYV+3TcAWmMb7cEpwbPOyiPPwvffL8bHuDyGGr5++tJ0tVyYBqBxInzRFbzGxdwCBlEWuxRpsvQIwaJNQg05T7R3nGuA1ky0n7C4UnAegt8SuyhxNOc2hwuRDB5ACuqhIoqIpaH6OaKJSoDChsl2UzphDy604dI4NP//BlkLZx1BjRVoXd/GBYkJriz93MUqa8J8ar9B2TSTgCI4kDMkQyAd/")):split(',') end
                     t = YOU_LOST_THE_GAME[GAME.comboMP]
                     local p = (GAME.comboMP - 8) / 10
@@ -2601,7 +2601,7 @@ function GAME.finish(reason)
             SubmitAchv('supercharged', GAME.achv_maxChain)
             SubmitAchv('the_spike_of_all_time_minus', GAME.maxSpikeWeak)
         else
-            local revCount = STRING.count(GAME.comboStr, 'r')
+            local revCount = GAME.comboStr:count('r')
             local len_noDP = #hand - (M.DP == 1 and 1 or 0)
             if len_noDP >= 7 then
                 local sw = {
