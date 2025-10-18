@@ -7,9 +7,11 @@ local distance, clamp = MATH.distance, MATH.clamp
 local interpolate, clampInterpolate = MATH.interpolate, MATH.clampInterpolate
 local lerp, iLerp, cLerp, icLerp, lLerp = MATH.lerp, MATH.iLerp, MATH.cLerp, MATH.icLerp, MATH.lLerp
 
+local GAME = GAME
 local M = GAME.mod
 local MD = ModData
 ShortCut = {}
+local ShortCut = ShortCut
 for i = 1, #MD.deck do ShortCut[i] = GC.newText(FONT.get(50)) end
 
 HoldingButtons = {}
