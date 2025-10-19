@@ -8,6 +8,7 @@ ZENITHA.setAppInfo("Zenith Clicker", SYSTEM .. " " .. (require 'version'.appVer)
 ZENITHA.setClickDist(62)
 
 STRING.install()
+HTTP.setHost("http://studio26f.org/zenithclicker/api")
 
 SCR.setSize(1600, 1000)
 
@@ -1488,6 +1489,17 @@ function Daemon_Slow()
             DiscordState.needUpdate = nil
             DiscordRPC.update(DiscordState)
         end
+
+        -- HTTP returns
+        local msg = HTTP.pollMsg()
+        if msg then
+            if msg.code == 200 then
+                MSG('dark', "Daily Challenge score submitted!", 2.6)
+            else
+                MSG('warn', "Daily Challenge submission failed (" .. tostring(msg.code) .. ")", 10)
+            end
+        end
+
         TASK.yieldT(1)
     end
 end
