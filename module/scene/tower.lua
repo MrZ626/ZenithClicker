@@ -1583,8 +1583,26 @@ scene.widgetList = {
         end,
     },
     WIDGET.new {
+        name = 'help', type = 'hint',
+        pos = { 1, 0 }, x = -50, y = 126, w = 80, cornerR = 40,
+        color = TextColor,
+        fontSize = 50, text = "", -- Dynamic text
+        sound_hover = 'menutap',
+        labelPos = 'leftBottom',
+        floatFontSize = 30,
+        floatText = "", -- Dynamic text
+        onPress = function()
+            if usingTouch then
+                switchVisitor(not GAME.zenithTraveler)
+            else
+                switchVisitor(true)
+            end
+        end,
+        visibleFunc = function() return not GAME.playing end,
+    },
+    WIDGET.new {
         name = 'help2', type = 'hint',
-        pos = { 1, 0 }, x = -190, y = 275, w = 60, cornerR = 30,
+        pos = { .5, 0 }, x = 610, y = 275, w = 60, cornerR = 30,
         color = TextColor,
         fontSize = 50, text = "", -- Dynamic text
         sound_hover = 'menutap',
@@ -1626,24 +1644,6 @@ scene.widgetList = {
             end
         end,
         visibleFunc = function() return not GAME.playing and TABLE.countAll(GAME.completion, 0) < 9 end,
-    },
-    WIDGET.new {
-        name = 'help', type = 'hint',
-        pos = { 1, 0 }, x = -50, y = 126, w = 80, cornerR = 40,
-        color = TextColor,
-        fontSize = 50, text = "", -- Dynamic text
-        sound_hover = 'menutap',
-        labelPos = 'leftBottom',
-        floatFontSize = 30,
-        floatText = "", -- Dynamic text
-        onPress = function()
-            if usingTouch then
-                switchVisitor(not GAME.zenithTraveler)
-            else
-                switchVisitor(true)
-            end
-        end,
-        visibleFunc = function() return not GAME.playing end,
     },
 }
 

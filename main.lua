@@ -1335,7 +1335,7 @@ WIDGET.setDefaultOption {
 
 function WIDGET._prototype.button:draw()
     gc.push('transform')
-    gc.translate(self._x, (not self.pos or self.pos[1] ~= .5) and self._y or self._y + DeckPress)
+    gc.translate(self._x, not (self.pos and self.pos[1] == .5) and self._y or self._y + DeckPress)
 
     if self._pressTime > 0 then
         gc.scale(1 - self._pressTime / self._pressTimeMax * .0626)

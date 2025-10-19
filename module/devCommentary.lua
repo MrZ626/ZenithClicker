@@ -1,3 +1,10 @@
+----------------------------------------------------------------------
+--                        SPOILER WARNING                           --
+-- This file contains contents that may spoil your game experience. --
+-- Be sure you've finished the game, including Ultra Reversed Mods  --
+--                     Read at your own risk.                       --
+----------------------------------------------------------------------
+
 return {
     [''] = STRING.trimIndent [[
         FLIP THE TAROT CARDS IN THIS MODERN YET UNFAMILIAR OFFLINE CLICKER.
@@ -91,7 +98,7 @@ return {
     ['rDH'] = STRING.trimIndent [[
         When I came to design this mod, QP2's rDH was still "messy garbage + no cancelling", not the current "messy garbage + dig to attack" one
         so I had no idea about how rDH should be, then I saw the "naming every combo" spreadsheet in tetrio community, it could be the answer...?
-        Anyways it became the answer, rDH changes all quests into "wtf is this thing", maybe it's not related but at least it's so fun!
+        Anyways it was chosen, rDH changes all quests into... maybe it's not much related but it introduces community interactions, so fun!
     ]],
     ['rIN'] = STRING.trimIndent [[
         Time to play real invisible! Reversed invisible should be really invisible. Let's hide quests after a few seconds...
@@ -111,7 +118,7 @@ return {
     ]],
 
     ['uEX'] = STRING.trimIndent [[
-        No more leniency. Let's tighten cards spacing.
+        No more leniency. Cards spacing tightened.
         I doubt is it possible to drop from F10 to...
     ]],
     ['uNH'] = STRING.trimIndent [[
@@ -136,7 +143,7 @@ return {
         No more leniency. Flipping a card twice ends the run.
     ]],
     ['uDP'] = STRING.trimIndent [[
-        No more leniency. 50% more damage to ally.
+        No more leniency. 54% more damage to ally.
     ]],
 
     ['NH GV'] = STRING.trimIndent [[
