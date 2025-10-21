@@ -8,7 +8,6 @@ ZENITHA.setAppInfo("Zenith Clicker", SYSTEM .. " " .. (require 'version'.appVer)
 ZENITHA.setClickDist(62)
 
 STRING.install()
-HTTP.setHost("http://studio26f.org/zenithclicker/api")
 
 SCR.setSize(1600, 1000)
 
@@ -1463,7 +1462,7 @@ end
 
 DiscordState = {}
 function Daemon_Slow()
-    TASK.yieldT(1)
+    TASK.yieldT(.626)
     local lib = BGM._srcLib
     local f0List = BgmSet.f0
     local length
@@ -1491,12 +1490,17 @@ function Daemon_Slow()
         end
 
         -- HTTP returns
-        local msg = HTTP.pollMsg()
+        local msg = ASYNC.get('submitDaily')
         if msg then
-            if msg.code == 200 then
-                MSG('dark', "Daily Challenge score submitted!", 2.6)
+            local suc, res = pcall(JSON.decode, msg)
+            if suc and res then
+                MSG('info',
+                    "Daily Challenge score submitted!\n" ..
+                    "Altitude rank: " .. tostring(res.altRank) .. " (of " .. tostring(res.altCount) .. ")\n" ..
+                    "Speedrun rank: " .. tostring(res.timeRank) .. " (of " .. tostring(res.timeCount) .. ")", 10
+                )
             else
-                MSG('warn', "Daily Challenge submission failed (" .. tostring(msg.code) .. ")", 10)
+                MSG('warn', "Invalid response: " .. msg, 12)
             end
         end
 

@@ -2320,7 +2320,23 @@ function GAME.finish(reason)
                     IssueAchv('its_kinda_rare')
                 end
             end
-            -- TODO: send to online leaderboard
+            if not TestMode then
+                MSG('dark', "Submitting Daily Challenge score...")
+                local curl =
+                    SYSTEM == 'Windows' and [[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H "Content-Type: application/json" -d "$1"]] or
+                    SYSTEM == 'Linux' and [[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H 'Content-Type: application/json' -d '$1']]
+                if curl then
+                    local json = JSON.encode {
+                        hid = STAT.hid,
+                        uid = STAT.uid,
+                        combo = GAME.comboStr,
+                        altitude = GAME.roundHeight,
+                        time = GAME.gigaTime,
+                    }
+                    if SYSTEM == 'Windows' then json = json:gsub('"', [[\"]]) end
+                    ASYNC.runCmd('submitDaily', curl:repD(json))
+                end
+            end
         end
 
         -- Update ZP
