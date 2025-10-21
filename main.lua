@@ -1494,10 +1494,10 @@ function Daemon_Slow()
         if msg then
             local suc, res = pcall(JSON.decode, msg)
             if suc and res then
-                MSG('info',
+                MSG('check',
                     "Daily Challenge score submitted!\n" ..
-                    "Altitude rank: " .. tostring(res.altRank) .. " (of " .. tostring(res.altCount) .. ")\n" ..
-                    "Speedrun rank: " .. tostring(res.timeRank) .. " (of " .. tostring(res.timeCount) .. ")", 10
+                    "Altitude rank: " .. tostring(res.altRank) .. " (of " .. tostring(res.altCount) .. " " .. tostring(res.altBest) .. "m)\n" ..
+                    "Speedrun rank: " .. tostring(res.timeRank) .. " (of " .. tostring(res.timeCount) .. " " .. tostring(res.timeBest) .. "s)", 10
                 )
                 SFX.play('pause_continue', 1, 0, Tone(-5))
                 DAILYCMD = nil

@@ -2330,7 +2330,7 @@ function GAME.finish(reason)
                         uid = STAT.uid,
                         combo = GAME.comboStr,
                         alt = GAME.roundHeight,
-                        time = GAME.gigaTime,
+                        time = GAME.gigaTime and roundUnit(GAME.gigaTime, .001),
                     }
                     if SYSTEM == 'Windows' then json = json:gsub('"', [[\"]]) end
                     DAILYCMD = curl:repD(json)
