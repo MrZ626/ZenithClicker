@@ -1496,8 +1496,8 @@ function Daemon_Slow()
             if suc and res then
                 MSG('check',
                     "Daily Challenge score submitted!\n" ..
-                    "Altitude rank: " .. tostring(res.altRank) .. " (of " .. tostring(res.altCount) .. " " .. tostring(res.altBest) .. "m)\n" ..
-                    "Speedrun rank: " .. tostring(res.timeRank) .. " (of " .. tostring(res.timeCount) .. " " .. tostring(res.timeBest) .. "s)", 10
+                    "Alt #" .. tostring(res.altRank) .. " of " .. tostring(res.altCount) .. ", top: " .. tostring(res.altBest) .. "m\n" ..
+                    "SR #" .. tostring(res.timeRank) .. " of " .. tostring(res.timeCount) .. ", top: " .. tostring(res.timeBest) .. "s", 10
                 )
                 SFX.play('pause_continue', 1, 0, Tone(-5))
                 DAILYCMD = nil
