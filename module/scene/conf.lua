@@ -584,6 +584,11 @@ scene.widgetList = {
                 elseif data == 'UseAltName' then
                     UseAltName()
                     SFX.play('social_dm')
+                elseif data == 'resubmit' then
+                    if DAILYCMD then
+                        ASYNC.runCmd('submitDaily', DAILYCMD)
+                        MSG('dark', "Re-submitting Daily Challenge score...")
+                    end
                 else
                     local msg = "Invalid code '" .. data .. "' in clipboard."
                     if MATH.roll(.26) then

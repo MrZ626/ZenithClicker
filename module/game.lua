@@ -2321,7 +2321,6 @@ function GAME.finish(reason)
                 end
             end
             if not TestMode then
-                MSG('dark', "Submitting Daily Challenge score...")
                 local curl =
                     SYSTEM == 'Windows' and [[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H "Content-Type: application/json" -d "$1"]] or
                     SYSTEM == 'Linux' and [[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H 'Content-Type: application/json' -d '$1']]
@@ -2334,7 +2333,9 @@ function GAME.finish(reason)
                         time = GAME.gigaTime,
                     }
                     if SYSTEM == 'Windows' then json = json:gsub('"', [[\"]]) end
-                    ASYNC.runCmd('submitDaily', curl:repD(json))
+                    DAILYCMD = curl:repD(json)
+                    ASYNC.runCmd('submitDaily', DAILYCMD)
+                    MSG('dark', "Submitting Daily Challenge score...")
                 end
             end
         end
