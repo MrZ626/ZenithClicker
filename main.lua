@@ -1462,7 +1462,7 @@ end
 
 DiscordState = {}
 function Daemon_Slow()
-    TASK.yieldT(.626)
+    TASK.yieldT(1)
     local lib = BGM._srcLib
     local f0List = BgmSet.f0
     local length
@@ -1507,7 +1507,7 @@ function Daemon_Slow()
             end
         end
 
-        TASK.yieldT(1)
+        TASK.yieldT(.6)
     end
 end
 
