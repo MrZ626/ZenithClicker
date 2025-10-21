@@ -2329,7 +2329,7 @@ function GAME.finish(reason)
                         hid = STAT.hid,
                         uid = STAT.uid,
                         combo = GAME.comboStr,
-                        altitude = GAME.roundHeight,
+                        alt = GAME.roundHeight,
                         time = GAME.gigaTime,
                     }
                     if SYSTEM == 'Windows' then json = json:gsub('"', [[\"]]) end
