@@ -589,6 +589,9 @@ scene.widgetList = {
                         ASYNC.runCmd('submitDaily', DAILYCMD)
                         MSG('info', "Re-submitting Daily Challenge score...")
                         SFX.play('social_invite')
+                    else
+                        MSG('warn', "No buffered Daily Challenge score")
+                        SFX.play('failure', 1, 0, Tone(0))
                     end
                 else
                     local msg = "Invalid code '" .. data .. "' in clipboard."

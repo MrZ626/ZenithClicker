@@ -183,7 +183,7 @@ return {
 
     applause = { 690, 7.4 },
     victory = { 259, 7.5 },
-    -- failure=                     {43,  3.1},
+    failure = { 43, 3.1 },
     personalbest = { 582, 3.5 },
     worldrecord = { 453, 3.7 },
     -- ranklower=                   {148, 3.3},

@@ -1499,11 +1499,11 @@ function Daemon_Slow()
                     "Altitude rank: " .. tostring(res.altRank) .. " (of " .. tostring(res.altCount) .. ")\n" ..
                     "Speedrun rank: " .. tostring(res.timeRank) .. " (of " .. tostring(res.timeCount) .. ")", 10
                 )
-                SFX.play('pause_continue')
+                SFX.play('pause_continue', 1, 0, Tone(-5))
                 DAILYCMD = nil
             else
                 MSG('warn', "Daily Challenge submission failed\nRetry with secret code 'resubmit'\ndata received from server: " .. msg, 16)
-                SFX.play('pause_retry')
+                SFX.play('pause_retry', 1, 0, Tone(-5))
             end
         end
 
