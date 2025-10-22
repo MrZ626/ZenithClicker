@@ -2082,7 +2082,7 @@ function GAME.start()
     -- Params
     GAME.maxQuestCount = M.NH == 2 and 2 or 3
     GAME.maxQuestSize = (M.NH < 2 and M.DH == 2) and 3 or 4
-    GAME.extraQuestBase = M.NH == 2 and (M.DH == 2 and 0.42 or 1.26) or M.DH == 1 and 0.26 or 0
+    GAME.extraQuestBase = M.NH == 2 and (M.DH > 0 and 2.42 - M.DH or 1.26) or M.DH == 1 and 0.26 or 0
     GAME.extraQuestVar = M.DH == 1 and .626 or 1
     GAME.questFavor = 0 -- Initialized in GAME.upFloor()
     GAME.dmgHeal = 2
