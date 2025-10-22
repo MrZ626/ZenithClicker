@@ -1207,7 +1207,7 @@ BadgeData = {
     {
         id = 'true_expert',
         name = "True Expert",
-        desc = "Finished a speedrun with rEX & closeCard",
+        desc = "Finished a speedrun with rEX & Close Card",
     },
     {
         id = 'true_master',
@@ -1217,7 +1217,7 @@ BadgeData = {
     {
         id = 'true_strength',
         name = "True Strength",
-        desc = "Finished a speedrun with rVL & fastLeak",
+        desc = "Finished a speedrun with rVL & Fast Leak",
     },
     {
         id = 'true_invis',
