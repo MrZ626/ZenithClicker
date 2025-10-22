@@ -901,13 +901,13 @@ end
 local normalHelp = {
     COLOR.LL, "Welcome to ", COLOR.LF, "Zenith Clicker", COLOR.LL, "! Choose the required tarot cards and send players to scale the tower.\n",
     "The higher you go in the tower, the more tricky players you'll encounter!\n",
-    "There's no leaderboards yet, but how high can you reach?\n",
+    "There's a leaderboard for daily challenge, how high can you reach?\n",
     "[DYNAMIC TEXT]",
 }
 local ultraHelp = {
     COLOR.LL, "Welcome to ", COLOR.LR, "Zenith Clicker: ", COLOR.R, "Ultra Reverse", COLOR.LL, ". Activate a reversed mod to start ", COLOR.lR, "suffering.\n",
     COLOR.LL, "The higher you go in the tower, the more likely you are to ", COLOR.R, "die.\n",
-    COLOR.LL, "There's no leaderboards yet, and ", COLOR.lR, "you are not expected to go very high up.\n",
+    COLOR.LL, "There's no more achievements, and ", COLOR.lR, "you are not expected to go very high up.\n",
     COLOR.R, "Give Up: ", COLOR.LL, "ESC    ", COLOR.R, "Forfeit: ", COLOR.LL, "ESC    ", COLOR.R, "Quit: ", COLOR.LL, "ESC"
 }
 function RefreshHelpText()
