@@ -708,6 +708,7 @@ function GAME.incrementPrompt(prompt, value)
                 SFX.play('boardlock_revive')
                 GAME.DPlock = false
                 GAME.reviveTime = false
+                GAME.switch_sickness = 0
                 GAME.achv_maxReviveH = max(GAME.achv_maxReviveH or 0, GAME.roundHeight)
                 if GAME.fatigueSet == Fatigue.rDP and GAME.fatigue > 19 then IssueAchv('benevolent_ambition') end
             end
@@ -1766,11 +1767,11 @@ function GAME.commit(auto)
             if not ACHV.lucky_coincidence then IssueAchv('lucky_coincidence') end
         end
         if GAME.switch_sickness >= 20 then
-            if GAME.switch_sickness >= 20 then xp = xp * .6 end
+            if GAME.switch_sickness >= 20 then xp = xp * .5 end
             if GAME.switch_sickness >= 30 then attack = attack * .5 end
-            if GAME.switch_sickness >= 40 then xp = xp * .5 end
+            if GAME.switch_sickness >= 40 then xp = xp * .4 end
             if GAME.switch_sickness >= 50 then attack = attack * .5 end
-            if GAME.switch_sickness >= 60 then xp = xp * .4 end
+            if GAME.switch_sickness >= 60 then xp = xp * .3 end
             if not GAME.hasseenDPnerf and GAME.switch_sickness >= 40 then
                 GAME.hasseenDPnerf = true
                 GAME.extraQuestBase = GAME.extraQuestBase + .626
