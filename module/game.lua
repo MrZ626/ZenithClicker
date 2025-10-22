@@ -1017,6 +1017,7 @@ function GAME.upFloor()
             if GAME.nightcore and GAME.comboStr == 'rGV' then IssueSecret('true_master') end
             if GAME.fastLeak and GAME.comboStr == 'rVL' then IssueSecret('true_strength') end
             if GAME.invisCard and GAME.comboStr == 'rIN' then IssueSecret('true_invis') end
+            if GAME.invisUI and GAME.comboStr == 'rDP' then IssueSecret('true_couple') end
         end
 
         SubmitAchv('the_pacifist', GAME.totalAttack)

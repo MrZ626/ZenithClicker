@@ -93,7 +93,7 @@ return {
         Double clicks? Quadruple clicks! Due to health reasons, Left+Right click is allowed here, it's still very tiring to double double clicks for each card,
         and you could even use keyboard to further reduce the inputs, but that's also harder to coordinate. Which strat is the best? Up to you.
         Oh and don't forget that in QP2 there's only triple garbages but no triple cancelling, so you need to click 4 times to cancel a card too :>
-        Tips: EX or any reversed mod activates "hard mode", reducing your XP gain from selecting (clearing single gives 1 atk in QP2). So what if XP leaks...
+        Tips: EX or any reversed mod activates "hard mode", reducing your XP gain from selecting (clearing single gives 1 atk in QP2). So what if XP lea...
     ]],
     ['rDH'] = STRING.trimIndent [[
         When I came to design this mod, QP2's rDH was still "messy garbage + no cancelling", not the current "messy garbage + dig to attack" one
@@ -115,6 +115,7 @@ return {
         Why we can only play rDP in QP2 for only 1 weeks :sob: :sob: :sob: Let's play rDP forever in Zenith Clicker!
         Same as DP, except your attacks will also be sent to the other player, you have to master switching players now.
         Though the "backfire" doesn't give you garbage to send more, your max rank is still limited just like in QP2.
+        Can you FEEL the rhythm of switching between players even you...
     ]],
 
     ['uEX'] = STRING.trimIndent [[

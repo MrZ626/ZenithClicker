@@ -1225,6 +1225,11 @@ BadgeData = {
         desc = "Finished a speedrun with rIN & Invisible Card",
     },
     {
+        id = 'true_couple',
+        name = "True Couple",
+        desc = "Finished a speedrun with rDP & Invisible UI",
+    },
+    {
         id = 'universal_gravitation',
         name = "Universal Gravitation",
         desc = "Finished a speedrun with negative altitude",
