@@ -498,7 +498,7 @@ end
 
 function GAME.task_fatigueWarn()
     for _ = 1, 3 do
-        for _ = 1, M.DP == 2 and 1 or 3 do SFX.play('warning', 1) end
+        for _ = 1, M.DP == 2 and 2 or 3 do SFX.play('warning', 1) end
         TASK.yieldT(1)
     end
 end
@@ -1957,7 +1957,7 @@ function GAME.commit(auto)
 
         if M.DP > 0 and (correct == 2 or dblCorrect) then
             if GAME.swapControl() then
-                SFX.play('party_ready', 1)
+                SFX.play('party_ready', MATH.clampInterpolate(15, 1, 40, .6, GAME.switch_sickness))
                 GAME.switch_sickness = GAME.switch_sickness + 1
             end
         else
