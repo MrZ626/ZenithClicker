@@ -164,6 +164,8 @@ local GAME = {
     reviveTasks = {},
     currentTask = false,
     lastFlip = false,
+    switch_sickness = 0,
+    hasseenDPnerf = false,
     gigaspeedFloor = {},
     teraspeedFloor = {},
 
@@ -1727,10 +1729,11 @@ function GAME.commit(auto)
             end
 
             SFX.play(MATH.roll(.626) and 'clearspin' or 'clearquad', .5)
+            if M.NH < 2 then attack = attack + 1 end
+            if M.AS == 2 and GAME.chain >= 4 then attack = attack + 1 end
+            xp = xp + 3
+
             if correct == 1 then
-                if M.NH < 2 then attack = attack + 1 end
-                if M.AS == 2 and GAME.chain >= 4 then attack = attack + 1 end
-                xp = xp + 3
                 GAME.chain = GAME.chain + 1
                 if GAME.chain < 4 then
                 elseif GAME.chain < 8 then
@@ -1761,6 +1764,17 @@ function GAME.commit(auto)
             GAME.chain = GAME.chain + 1
             GAME.achv_doublePass = GAME.achv_doublePass + 1
             if not ACHV.lucky_coincidence then IssueAchv('lucky_coincidence') end
+        end
+        if GAME.switch_sickness >= 20 then
+            if GAME.switch_sickness >= 20 then xp = xp * .6 end
+            if GAME.switch_sickness >= 30 then attack = attack * .5 end
+            if GAME.switch_sickness >= 40 then xp = xp * .5 end
+            if GAME.switch_sickness >= 50 then attack = attack * .5 end
+            if GAME.switch_sickness >= 60 then xp = xp * .4 end
+            if not GAME.hasseenDPnerf and GAME.switch_sickness >= 40 then
+                GAME.hasseenDPnerf = true
+                GAME.extraQuestBase = GAME.extraQuestBase + .626
+            end
         end
         if GAME.chain >= 4 then
             local chainCap = 6 * (max(GAME.floor, GAME.negFloor) + 2) ^ 2
@@ -1944,7 +1958,10 @@ function GAME.commit(auto)
         if M.DP > 0 and (correct == 2 or dblCorrect) then
             if GAME.swapControl() then
                 SFX.play('party_ready', 1)
+                GAME.switch_sickness = GAME.switch_sickness + 1
             end
+        else
+            GAME.switch_sickness = max(GAME.switch_sickness - .5, 0)
         end
 
         if GAME.shuffleMessiness then
@@ -2125,6 +2142,8 @@ function GAME.start()
     GAME.currentTask = false
     GAME.DPlock = false
     GAME.lastFlip = false
+    GAME.switch_sickness = 0
+    GAME.hasseenDPnerf = false
     if M.DP == 2 then
         GAME.rankLimit = 8 + 4 * M.EX
         GAME.dmgHeal = 3
