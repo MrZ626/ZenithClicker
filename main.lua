@@ -1493,20 +1493,21 @@ function Daemon_Slow()
         local msg = ASYNC.get('submitDaily')
         if msg then
             local suc, res = pcall(JSON.decode, msg)
+            local duration = GAME.playing and 0 or 10
             if suc and res then
                 if res.error then
-                    MSG('warn', "Daily Challenge submission failed:\n" .. res.error)
+                    MSG('warn', "Daily Challenge submission failed:\n" .. res.error, duration * .626)
                 else
                     MSG('check',
                         "Daily Challenge score submitted!\n" ..
                         "Alt #" .. tostring(res.altRank) .. " of " .. tostring(res.altCount) .. ", top: " .. tostring(res.altBest) .. "m\n" ..
-                        "SR #" .. tostring(res.timeRank) .. " of " .. tostring(res.timeCount) .. ", top: " .. tostring(res.timeBest) .. "s", 10
-                    )
+                        "SR #" .. tostring(res.timeRank) .. " of " .. tostring(res.timeCount) .. ", top: " .. tostring(res.timeBest) .. "s",
+                        duration)
                     SFX.play('pause_continue', 1, 0, Tone(-5))
                 end
                 DAILYCMD = nil
             else
-                MSG('warn', "Daily Challenge submission failed\nRetry with secret code 'resubmit'\ndata received from server: " .. msg, 16)
+                MSG('warn', "Daily Challenge submission failed\nRetry with secret code 'resubmit'\ndata received from server: " .. msg, 10 * 1.6)
                 SFX.play('pause_retry', 1, 0, Tone(-5))
             end
         end
