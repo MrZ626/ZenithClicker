@@ -78,6 +78,7 @@ local function refreshAchvList(canShuffle)
             if A.type == 'issued' then
                 rank = not TestMode and ACHV[A.id] and 6 or 0
                 progress = 0
+                wreath=0
             else
                 local selfScore = (not TestMode and ACHV[A.id]) or A.noScore or 0
                 local r = A.rank(selfScore)
