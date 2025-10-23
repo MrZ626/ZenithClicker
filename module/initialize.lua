@@ -160,6 +160,10 @@ function Initialize(save)
         ACHV.dazed = nil
         STAT.version = 188
     end
+    if STAT.version == 188 then
+        STAT.hid = STAT.hid:sub(1,12) .. math.random(26000, 42000) .. math.random(42000, 62000)
+        STAT.version = 189
+    end
 
     -- Some Initialization
     for i = 1, #Cards do
