@@ -880,7 +880,7 @@ function PlayBGM(name, force)
         BGM.play(BgmSet.f1, force and '' or '-sdin')
         local start = math.random(3, 5) * BgmData.f1.introLen
         BgmNeedSkip[1] = start + BgmData.f1.introLen
-        BGM.set('all', 'seek', start, start)
+        BGM.set('all', 'seek', start)
         RefreshBGM(name)
     elseif name == 'tera' then
         BGM.play('tera', '-sdin')
@@ -889,7 +889,7 @@ function PlayBGM(name, force)
         if startFrom then startFrom = startFrom - 1 end
         local start = (GAME.playing and GAME.floor or startFrom or math.random(0, 9)) * BgmData.tera.introLen
         BgmNeedSkip[1] = start + BgmData.tera.introLen
-        BGM.set('all', 'seek', start, start)
+        BGM.set('all', 'seek', start)
         RefreshBGM()
     else
         if BGM.play(name, force and '' or '-sdin') then
