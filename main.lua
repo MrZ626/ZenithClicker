@@ -404,6 +404,9 @@ FONT.load {
 }
 local fontNotLoaded = SYSTEM ~= 'Web' and MATH.roll(.42)
 FONT.setDefaultFont(fontNotLoaded and 'serif' or 'sans')
+FONT.setOnInit(function(font,size)
+    font:setFallbacks(FONT.get(size,'_norm'))
+end)
 
 BG.add('black', { draw = function() GC.clear(0, 0, 0) end })
 BG.set('black')
