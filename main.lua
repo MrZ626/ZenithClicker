@@ -127,7 +127,6 @@ TEXTURE = {
     towerBG = { assets 'tower/f1.jpg', assets 'tower/f2.jpg', assets 'tower/f3.jpg', assets 'tower/f4.jpg', assets 'tower/f5.jpg', assets 'tower/f6.jpg', assets 'tower/f7.jpg', assets 'tower/f8.jpg', assets 'tower/f9.jpg', assets 'tower/f10.png' },
     moon = assets 'tower/moon.png',
     stars = assets 'tower/stars.png',
-    ruler = assets 'ruler.png',
 
     revive = {
         norm = assets 'revive/norm.png',
@@ -369,6 +368,21 @@ TEXTURE = {
 }
 TEXTURE = IMG.init(TEXTURE, true)
 TEXTURE.pixel = GC.load { w = 1, h = 1, { 'clear', 1, 1, 1 } }
+TEXTURE.ruler = GC.newCanvas(32, 600)
+GC.setCanvas(TEXTURE.ruler)
+for y = 0, 199 do
+    local w =
+        y % 200 == 0 and 32 or
+        y % 40 == 0 and 20 or
+        y % 8 == 0 and 10 or
+        6
+    local l = .4 + .6 * w / 32
+    GC.setColor(l, l, l)
+    GC.rectangle('fill', 16 - w / 2, y * 3, w, 1)
+end
+GC.setColor(1,1,1)
+GC.rectangle('fill', 0, 1, 32, 1)
+GC.rectangle('fill', 0, 600, 32, -1)
 TEXTURE.transition = GC.newCanvas(128, 1)
 GC.setCanvas(TEXTURE.transition)
 for x = 0, 127 do
@@ -404,8 +418,8 @@ FONT.load {
 }
 local fontNotLoaded = SYSTEM ~= 'Web' and MATH.roll(.42)
 FONT.setDefaultFont(fontNotLoaded and 'serif' or 'sans')
-FONT.setOnInit(function(font,size)
-    font:setFallbacks(FONT.get(size,'_norm'))
+FONT.setOnInit(function(font, size)
+    font:setFallbacks(FONT.get(size, '_norm'))
 end)
 
 BG.add('black', { draw = function() GC.clear(0, 0, 0) end })

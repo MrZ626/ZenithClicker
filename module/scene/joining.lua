@@ -27,6 +27,7 @@ function scene.update(dt)
             for i = 2, 9 do TEXTURE.towerBG[i]:setWrap('mirroredrepeat', 'mirroredrepeat') end
             TEXTURE.towerBG[1]:setWrap('mirroredrepeat', 'clampzero')
             TEXTURE.towerBG[10]:setWrap('mirroredrepeat', 'clampzero')
+            TEXTURE.ruler:setFilter('nearest', 'nearest')
             TEXTURE.ruler:setWrap('repeat', 'repeat')
             _, _ = TEXTURE.moon, TEXTURE.stars
         end

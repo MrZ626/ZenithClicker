@@ -541,7 +541,7 @@ local Cards = Cards
 local TextColor = TextColor
 local ShadeColor = ShadeColor
 local bgQuad = GC.newQuad(0, 0, 0, 0, 0, 0)
-local rulerQuad = GC.newQuad(0, 0, 60, 960, TEXTURE.ruler)
+local rulerQuad = GC.newQuad(0, 0, 32, 300, TEXTURE.ruler)
 local reviveQuad = {
     GC.newQuad(0, 0, 1042, 296, TEXTURE.revive.norm),
     GC.newQuad(0, 355, 1042, 342, TEXTURE.revive.norm),
@@ -650,8 +650,8 @@ function DrawBG(brightness, showRuler)
         gc_replaceTransform(SCR.xOy_m)
         gc_setBlendMode('add')
         gc_setColor(1, 1, 1, GAME.bgH <= 1650 and .626 or .626 * (1700 - GAME.bgH) / 50 * brightness / 100)
-        rulerQuad:setViewport(0, 480 - 960 / 50 * GAME.bgH, 60, 960, TEXTURE.ruler:getDimensions())
-        gc_mDrawQ(TEXTURE.ruler, rulerQuad, 0, 0, 0, 2)
+        rulerQuad:setViewport(0, 150 - 300 / 25 * GAME.bgH, 32, 300, 32, 300)
+        gc_mDrawQ(TEXTURE.ruler, rulerQuad, 0, 0, 0, 4, 4)
         gc_setBlendMode('alpha')
     end
 
