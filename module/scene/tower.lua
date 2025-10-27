@@ -948,9 +948,9 @@ function scene.overDraw()
                     gc_mRect('fill', 800, 445, 10, 10)
                 end
             end
+            setFont(30)
             -- Quest counter
             if GAME.totalQuest <= 40 then
-                setFont(30)
                 gc_setColor(TextColor)
                 gc.print(GAME.totalQuest, 1210, 230)
             end
