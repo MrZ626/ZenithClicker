@@ -779,7 +779,9 @@ function GAME.takeDamage(dmg, reason, toAlly)
 
     if GAME[k] <= .01 then -- Prevent float number precision error
         GAME[k] = 0
-        if GAME[GAME.getLifeKey(not toAlly)] > 0 then
+        if GAME.invincible then
+            GAME[k] = 0.26
+        elseif GAME[GAME.getLifeKey(not toAlly)] > 0 then
             if toAlly then
                 SFX.play('elim')
                 GAME.killCount = GAME.killCount + 1
@@ -787,13 +789,9 @@ function GAME.takeDamage(dmg, reason, toAlly)
                 GAME.swapControl()
             end
             GAME.startRevive()
-            GAME.dmgWrongExtra = 0 -- Being tolerant!
+            GAME.dmgWrongExtra = 0     -- Being tolerant!
         else
-            if GAME.invincible then
-                GAME[k] = 0.26
-            else
-                GAME.finish(reason)
-            end
+            GAME.finish(reason)
         end
     else
         GAME.refreshLifeState()
