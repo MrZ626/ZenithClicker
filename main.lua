@@ -115,15 +115,17 @@ TEXTURE = {
         rEX = q2(0945, 1331, 315, 332),
         rDP = q2(1260, 1016, 419, 378),
     },
-    EX = { lock = assets 'card/lockover-9.png', front = assets 'card/expert.png', back = assets 'card/expert-back.png' },
-    NH = { lock = assets 'card/lockfull-2.png', front = assets 'card/nohold.png', back = assets 'card/nohold-back.png' },
-    MS = { lock = assets 'card/lockfull-3.png', front = assets 'card/messy.png', back = assets 'card/messy-back.png' },
-    GV = { lock = assets 'card/lockfull-4.png', front = assets 'card/gravity.png', back = assets 'card/gravity-back.png' },
-    VL = { lock = assets 'card/lockfull-5.png', front = assets 'card/volatile.png', back = assets 'card/volatile-back.png' },
-    DH = { lock = assets 'card/lockfull-6.png', front = assets 'card/doublehole.png', back = assets 'card/doublehole-back.png' },
-    IN = { lock = assets 'card/lockfull-7.png', front = assets 'card/invisible.png', back = assets 'card/invisible-back.png' },
-    AS = { lock = assets 'card/lockfull-8.png', front = assets 'card/allspin.png', back = assets 'card/allspin-back.png' },
-    DP = { lock = assets 'card/lockover-?.png', front = assets 'card/duo.png', back = assets 'card/duo-back.png' },
+    EX = { lock = '_lockover_9', front = assets 'card/expert.png', back = assets 'card/expert-back.png' },
+    NH = { lock = '_lockfull_2', front = assets 'card/nohold.png', back = assets 'card/nohold-back.png' },
+    MS = { lock = '_lockfull_3', front = assets 'card/messy.png', back = assets 'card/messy-back.png' },
+    GV = { lock = '_lockfull_4', front = assets 'card/gravity.png', back = assets 'card/gravity-back.png' },
+    VL = { lock = '_lockfull_5', front = assets 'card/volatile.png', back = assets 'card/volatile-back.png' },
+    DH = { lock = '_lockfull_6', front = assets 'card/doublehole.png', back = assets 'card/doublehole-back.png' },
+    IN = { lock = '_lockfull_7', front = assets 'card/invisible.png', back = assets 'card/invisible-back.png' },
+    AS = { lock = '_lockfull_8', front = assets 'card/allspin.png', back = assets 'card/allspin-back.png' },
+    DP = { lock = '_lockover_?', front = assets 'card/duo.png', back = assets 'card/duo-back.png' },
+    lockfull = assets 'card/lockfull.png',
+    lockover = assets 'card/lockover.png',
     towerBG = { assets 'tower/f1.jpg', assets 'tower/f2.jpg', assets 'tower/f3.jpg', assets 'tower/f4.jpg', assets 'tower/f5.jpg', assets 'tower/f6.jpg', assets 'tower/f7.jpg', assets 'tower/f8.jpg', assets 'tower/f9.jpg', assets 'tower/f10.png' },
     moon = assets 'tower/moon.png',
     stars = assets 'tower/stars.png',
@@ -366,28 +368,18 @@ TEXTURE = {
     logo = assets 'icon.png',
     logo_old = assets 'icon_old.png',
 }
-local cache = {}
 TEXTURE = TABLE.linkSource({}, TEXTURE, function(path)
     if type(path) ~= 'string' then return path end
-    local lockType = path:match('/lock(....)')
+    local lockType = path:match('_(lock....)')
     if lockType then
-        local char = path:match("%-(.)")
-        path = path:gsub("%-(.)", "")
-        if not cache[lockType] then
-            local suc, img = pcall(love.graphics.newImage, path)
-            if not suc then
-                MSG.log('error', ("Cannot load image '%s': %s"):format(path, img))
-                return PAPER
-            end
-            cache[lockType] = img
-        end
-        local C = GC.newCanvas(cache[lockType]:getDimensions())
+        local char = path:sub(-1)
+        local C = GC.newCanvas(TEXTURE[lockType]:getDimensions())
         GC.setCanvas(C)
         GC.origin()
         GC.setColor(1, 1, 1)
-        GC.draw(cache[lockType], 0, 0)
+        GC.draw(TEXTURE[lockType], 0, 0)
         local t = GC.newText(FONT.get(70, 'sans'), char)
-        if lockType == 'full' then
+        if lockType == 'lockfull' then
             GC.setColor(COLOR.HEX "646483FF")
             for i = 0, 25 do
                 local angle = i / 26 * MATH.tau
@@ -399,7 +391,7 @@ TEXTURE = TABLE.linkSource({}, TEXTURE, function(path)
             for i = 0, 25 do
                 local angle = i / 26 * MATH.tau
                 local dx, dy = math.cos(angle) * 1.6, math.sin(angle) * 1.6
-                GC.mDraw(t, C:getWidth() * .49 + dx, C:getHeight() * .52 + dy, 0, 1.5)
+                GC.mDraw(t, C:getWidth() * .495 + dx, C:getHeight() * .52 + dy, 0, 1.5)
             end
         end
         t:release()
