@@ -408,6 +408,7 @@ TEXTURE = TABLE.linkSource({}, TEXTURE, function(path)
 end)
 
 TEXTURE.pixel = GC.load { w = 1, h = 1, { 'clear', 1, 1, 1 } }
+
 TEXTURE.ruler = GC.newCanvas(32, 600)
 GC.setCanvas(TEXTURE.ruler)
 for y = 0, 199 do
@@ -423,26 +424,33 @@ end
 GC.setColor(1, 1, 1)
 GC.rectangle('fill', 0, 1, 32, 1)
 GC.rectangle('fill', 0, 600, 32, -1)
+
 TEXTURE.transition = GC.newCanvas(128, 1)
 GC.setCanvas(TEXTURE.transition)
 for x = 0, 127 do
     GC.setColor(1, 1, 1, 1 - x / 128)
     GC.rectangle('fill', x, 0, 1, 1)
 end
+TEXTURE.ruler:setFilter('nearest', 'nearest')
+TEXTURE.ruler:setWrap('repeat', 'repeat')
+
 TEXTURE.darkCorner = GC.newCanvas(128, 128)
 GC.setCanvas(TEXTURE.darkCorner)
 GC.setColor(0, 0, 0)
 GC.blurCircle(.626, 64, 64, 64)
+
 TEXTURE.lightDot = GC.newCanvas(32, 32)
 GC.setCanvas(TEXTURE.lightDot)
 GC.clear(1, 1, 1, 0)
 GC.setColor(1, 1, 1)
 GC.blurCircle(.26, 16, 16, 16)
+
 TEXTURE.recRevBG = GC.newCanvas(1586, 606)
 GC.setCanvas(TEXTURE.recRevBG)
 GC.setColor(1, 1, 1)
 GC.draw(TEXTURE.panel.glass_a)
 GC.draw(TEXTURE.panel.glass_b)
+
 TEXTURE.recRevLight = GC.newCanvas(165, 120)
 GC.setCanvas(TEXTURE.recRevLight)
 GC.clear(1, .1, .1, 0)
@@ -450,6 +458,8 @@ GC.setColor(1, .1, .1)
 GC.blurCircle(-.2, 60, 60, 60)
 GC.blurCircle(-.6, 105, 60, 60)
 GC.setCanvas()
+
+
 
 FONT.load {
     serif = "assets/AbhayaLibre-Regular.ttf",
