@@ -370,8 +370,8 @@ TEXTURE = {
 }
 TEXTURE = TABLE.linkSource({}, TEXTURE, function(path)
     if type(path) ~= 'string' then return path end
-    local lockType = path:match('_(lock....)')
-    if lockType then
+    if path:match('^_lock') then
+        local lockType = path:match('_(lock....)')
         local char = path:sub(-1)
         local C = GC.newCanvas(TEXTURE[lockType]:getDimensions())
         GC.setCanvas(C)
