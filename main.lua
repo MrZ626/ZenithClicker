@@ -1679,7 +1679,7 @@ function Daemon_Fast()
         end
 
         -- Button text animation
-        if TASK.lock("buttonTextCD", .035) then
+        if TASK.lock("buttonTextCD", GAME.nightcore and .014 or GAME.slowmo and .22 or .035) then
             local changed
             if M.DH == 0 then
                 if startBtnPtr > 1 then
