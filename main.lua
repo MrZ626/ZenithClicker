@@ -115,15 +115,15 @@ TEXTURE = {
         rEX = q2(0945, 1331, 315, 332),
         rDP = q2(1260, 1016, 419, 378),
     },
-    EX = { lock = assets 'card/lockover-9.png', front = assets 'card/expert.png', back = assets 'card/expert-back.png' },
-    NH = { lock = assets 'card/lockfull-2.png', front = assets 'card/nohold.png', back = assets 'card/nohold-back.png' },
-    MS = { lock = assets 'card/lockfull-3.png', front = assets 'card/messy.png', back = assets 'card/messy-back.png' },
-    GV = { lock = assets 'card/lockfull-4.png', front = assets 'card/gravity.png', back = assets 'card/gravity-back.png' },
-    VL = { lock = assets 'card/lockfull-5.png', front = assets 'card/volatile.png', back = assets 'card/volatile-back.png' },
-    DH = { lock = assets 'card/lockfull-6.png', front = assets 'card/doublehole.png', back = assets 'card/doublehole-back.png' },
-    IN = { lock = assets 'card/lockfull-7.png', front = assets 'card/invisible.png', back = assets 'card/invisible-back.png' },
-    AS = { lock = assets 'card/lockfull-8.png', front = assets 'card/allspin.png', back = assets 'card/allspin-back.png' },
-    DP = { lock = assets 'card/lockover-supporter.png', front = assets 'card/duo.png', back = assets 'card/duo-back.png' },
+    EX = { lock = assets 'card/lockover.png', front = assets 'card/expert.png', back = assets 'card/expert-back.png' },
+    NH = { lock = assets 'card/lockfull.png', front = assets 'card/nohold.png', back = assets 'card/nohold-back.png' },
+    MS = { lock = assets 'card/lockfull.png', front = assets 'card/messy.png', back = assets 'card/messy-back.png' },
+    GV = { lock = assets 'card/lockfull.png', front = assets 'card/gravity.png', back = assets 'card/gravity-back.png' },
+    VL = { lock = assets 'card/lockfull.png', front = assets 'card/volatile.png', back = assets 'card/volatile-back.png' },
+    DH = { lock = assets 'card/lockfull.png', front = assets 'card/doublehole.png', back = assets 'card/doublehole-back.png' },
+    IN = { lock = assets 'card/lockfull.png', front = assets 'card/invisible.png', back = assets 'card/invisible-back.png' },
+    AS = { lock = assets 'card/lockfull.png', front = assets 'card/allspin.png', back = assets 'card/allspin-back.png' },
+    DP = { lock = assets 'card/lockover.png', front = assets 'card/duo.png', back = assets 'card/duo-back.png' },
     towerBG = { assets 'tower/f1.jpg', assets 'tower/f2.jpg', assets 'tower/f3.jpg', assets 'tower/f4.jpg', assets 'tower/f5.jpg', assets 'tower/f6.jpg', assets 'tower/f7.jpg', assets 'tower/f8.jpg', assets 'tower/f9.jpg', assets 'tower/f10.png' },
     moon = assets 'tower/moon.png',
     stars = assets 'tower/stars.png',
@@ -380,7 +380,7 @@ for y = 0, 199 do
     GC.setColor(l, l, l)
     GC.rectangle('fill', 16 - w / 2, y * 3, w, 1)
 end
-GC.setColor(1,1,1)
+GC.setColor(1, 1, 1)
 GC.rectangle('fill', 0, 1, 32, 1)
 GC.rectangle('fill', 0, 600, 32, -1)
 TEXTURE.transition = GC.newCanvas(128, 1)
