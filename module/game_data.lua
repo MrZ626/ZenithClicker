@@ -1050,6 +1050,8 @@ end
 local function f5() return math.max(GAME.floor, GAME.negFloor) <= 5 end
 local function F6() return math.max(GAME.floor, GAME.negFloor) >= 6 end
 local function F9() return math.max(GAME.floor, GAME.negFloor) >= 9 end
+local function F9wind() return math.max(GAME.floor, GAME.negFloor) >= 9 and GAME.maxQuestSize >= 4 end
+local function F9wind3() return math.max(GAME.floor, GAME.negFloor) >= 9 and GAME.maxQuestSize >= 5 end
 
 ---@class Prompt
 ---@field rank number[]
@@ -1126,15 +1128,15 @@ RevivePrompts = {
     { rank = { 1, 2 }, prompt = 'send',                 target = 6,   short = "Send 6",                  text = "Send 6 Attack" },
     { rank = { 3, 4 }, prompt = 'send',                 target = 20,  short = "Send 20",                 text = "Send 20 Attack" },
     { rank = { 5, 6 }, prompt = 'send',                 target = 40,  short = "Send 40",                 text = "Send 40 Attack" },
-    { rank = { 3, 4 }, prompt = 'pass_windup',          target = 1,   short = "Windup",                  text = "Pass a windup",                               cond = F9 },
-    { rank = { 3, 5 }, prompt = 'pass_windup3',         target = 1,   short = "Windup3+",                text = "Pass a Lv.3+ windup",                         cond = F9 },
-    { rank = { 5, 5 }, prompt = 'pass_windup_inb2b',    target = 1,   short = "Windup with B2B",         text = "Pass a windup\nduring B2B charge",            cond = F9 },
-    { rank = { 4, 5 }, prompt = 'pass_windup',          target = 4,   short = "Windup x 4",              text = "Pass 4 windups",                              cond = F9 },
-    { rank = { 4, 4 }, prompt = 'pass_windup_perfect',  target = 1,   short = "Windup perf",             text = "Pass a windup\nperfectly",                    cond = F9 },
-    { rank = { 6, 6 }, prompt = 'pass_windup_inb2b',    target = 3,   short = "Windup x 3 with B2B",     text = "Pass 4 windups\nduring a B2B charge",         cond = F9 },
-    { rank = { 5, 5 }, prompt = 'pass_windup_perfect',  target = 4,   short = "Windup perf x 4",         text = "Pass 4 windups\nperfectly",                   cond = F9 },
-    { rank = { 5, 5 }, prompt = 'pass_windup3_perfect', target = 1,   short = "Windup3+ perf",           text = "Pass a Lv.3+\nwindup perfectly",              cond = F9 },
-    { rank = { 6, 6 }, prompt = 'pass_windup3_perfect', target = 4,   short = "Windup3+ perf x 4",       text = "Pass 4 Lv.3+\nwindups perfectly",             cond = F9 },
+    { rank = { 3, 4 }, prompt = 'pass_windup',          target = 1,   short = "Windup",                  text = "Pass a windup",                               cond = F9wind },
+    { rank = { 3, 5 }, prompt = 'pass_windup3',         target = 1,   short = "Windup3+",                text = "Pass a Lv.3+ windup",                         cond = F9wind3 },
+    { rank = { 5, 5 }, prompt = 'pass_windup_inb2b',    target = 1,   short = "Windup with B2B",         text = "Pass a windup\nduring B2B charge",            cond = F9wind },
+    { rank = { 4, 5 }, prompt = 'pass_windup',          target = 4,   short = "Windup x 4",              text = "Pass 4 windups",                              cond = F9wind },
+    { rank = { 4, 4 }, prompt = 'pass_windup_perfect',  target = 1,   short = "Windup perf",             text = "Pass a windup\nperfectly",                    cond = F9wind },
+    { rank = { 6, 6 }, prompt = 'pass_windup_inb2b',    target = 3,   short = "Windup x 3 with B2B",     text = "Pass 4 windups\nduring a B2B charge",         cond = F9wind },
+    { rank = { 5, 5 }, prompt = 'pass_windup_perfect',  target = 4,   short = "Windup perf x 4",         text = "Pass 4 windups\nperfectly",                   cond = F9wind },
+    { rank = { 5, 5 }, prompt = 'pass_windup3_perfect', target = 1,   short = "Windup3+ perf",           text = "Pass a Lv.3+\nwindup perfectly",              cond = F9wind3 },
+    { rank = { 6, 6 }, prompt = 'pass_windup3_perfect', target = 4,   short = "Windup3+ perf x 4",       text = "Pass 4 Lv.3+\nwindups perfectly",             cond = F9wind3 },
     { rank = { 2, 2 }, prompt = 'dmg_time',             target = 4,   short = "Take Dmg 4x",             text = "Take damage 4 times" },
     { rank = { 3, 3 }, prompt = 'dmg_time',             target = 8,   short = "Take Dmg 8x",             text = "Take damage 8 times" },
     { rank = { 2, 4 }, prompt = 'dmg_amount',           target = 10,  short = "Lose 10 HP",              text = "Take 10 damage total" },
