@@ -31,7 +31,7 @@ local function switchVisitor(bool)
         SFX.play(bool and 'pause_exit' or 'pause_start', 1, 0, Tone(-2))
         GAME.zenithTraveler = bool
         love.mouse.setRelativeMode(bool)
-        ZENITHA.setCursorVis(not bool)
+        ZENITHA._cursor.active=not bool
         for _, W in next, scene.widgetList do W:setVisible(not bool) end
         if usingTouch then scene.widgetList.help:setVisible(true) end
         if bool then IssueAchv('zenith_traveler') end
@@ -398,7 +398,7 @@ function scene.keyDown(key)
         else
             SFX.play('rotate')
         end
-        ZENITHA.setCursorVis(true)
+        ZENITHA._cursor.active=true
     end
     return true
 end

@@ -405,7 +405,7 @@ function scene.keyDown(key, isRep)
         SFX.play('menuclick')
         SCN.back('none')
     end
-    ZENITHA.setCursorVis(true)
+    ZENITHA._cursor.active=true
     return true
 end
 

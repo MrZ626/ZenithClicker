@@ -443,7 +443,7 @@ function scene.keyDown(key, isRep)
             end)
         end)
     end
-    ZENITHA.setCursorVis(true)
+    ZENITHA._cursor.active=true
     return true
 end
 
