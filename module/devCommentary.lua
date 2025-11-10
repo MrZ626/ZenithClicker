@@ -193,6 +193,14 @@ return {
         I'll admit this one is a bit rng, but you can improve consistency with some tricks,
         like stalling at start to get some free height, and make good use of the XP protection on last few quests.
     ]],
+    ['EX NH MS GV VL DH IN AS'] = STRING.trimIndent [[
+        Swamp Water, a combo ported from QP2, it was hardest but not hard any more since ZC makes everything easier.
+        If you are already familiar enough with ZC, it's a good mid-term challenge for you before reversed swamp water series.
+    ]],
+    ['EX NH MS GV VL DH IN AS DP'] = STRING.trimIndent [[
+        Yeah along with DP, it's still Swamp Water, cuz I think it doesn't really increase much difficulty.
+    ]],
+
     ['EX rGV DH'] = STRING.trimIndent [[
         Demonic Speed, an original combo made very early from ZC community.
         Honestly it's not very fun in mechanics, basically just harder rGV requiring more accuracy.
