@@ -123,7 +123,7 @@ return {
         I doubt is it possible to drop from F10 to...
     ]],
     ['uNH'] = STRING.trimIndent [[
-        No more leniency. No XP protection,  no Surge attack.
+        No more leniency. No XP protection, no Surge attack.
     ]],
     ['uMS'] = STRING.trimIndent [[
         No more leniency. Let's shuffle the whole deck on each pass.
@@ -138,7 +138,7 @@ return {
         No more leniency. All phrases are scrambled letter by letter.
     ]],
     ['uIN'] = STRING.trimIndent [[
-        No more leniency. Quests will never show gain.
+        No more leniency. Quests will never show again.
     ]],
     ['uAS'] = STRING.trimIndent [[
         No more leniency. Flipping a card twice ends the run.
