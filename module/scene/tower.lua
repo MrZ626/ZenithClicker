@@ -31,7 +31,7 @@ local function switchVisitor(bool)
         SFX.play(bool and 'pause_exit' or 'pause_start', 1, 0, Tone(-2))
         GAME.zenithTraveler = bool
         love.mouse.setRelativeMode(bool)
-        ZENITHA._cursor.active=not bool
+        ZENITHA._cursor.active = not bool
         for _, W in next, scene.widgetList do W:setVisible(not bool) end
         if usingTouch then scene.widgetList.help:setVisible(true) end
         if bool then IssueAchv('zenith_traveler') end
@@ -398,7 +398,7 @@ function scene.keyDown(key)
         else
             SFX.play('rotate')
         end
-        ZENITHA._cursor.active=true
+        ZENITHA._cursor.active = true
     end
     return true
 end
@@ -415,6 +415,14 @@ end
 local KBIsDown, MSIsDown = love.keyboard.isDown, love.mouse.isDown
 local expApproach = MATH.expApproach
 function scene.update(dt)
+    if kbIsDown('left', 'right', 'up', 'down') then
+        local spd = ZENITHA._cursor.speed * dt * (kbIsDown('lctrl', 'rctrl') and .6 or 1)
+        if kbIsDown('left') then MX = MX - spd end
+        if kbIsDown('right') then MX = MX + spd end
+        if kbIsDown('up') then MY = MY - spd end
+        if kbIsDown('down') then MY = MY + spd end
+        ZENITHA.setCursorPos(MX, MY)
+    end
     if GAME.nightcore then dt = dt * 2.6 end
     if GAME.zenithTraveler and M.EX == 2 then
         local f = GAME.calculateFloor(GAME.bgH)

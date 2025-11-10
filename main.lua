@@ -6,6 +6,7 @@ ZENITHA.setMainLoopSpeed(240)
 ZENITHA.setRenderRate(50)
 ZENITHA.setAppInfo("Zenith Clicker", SYSTEM .. " " .. (require 'version'.appVer))
 ZENITHA.setClickDist(62)
+ZENITHA._cursor.speed=1600
 
 STRING.install()
 
