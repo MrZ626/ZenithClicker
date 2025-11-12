@@ -161,8 +161,15 @@ function Initialize(save)
         STAT.version = 188
     end
     if STAT.version == 188 then
-        STAT.hid = STAT.hid:sub(1,12) .. math.random(26000, 42000) .. math.random(42000, 62000)
+        STAT.hid = STAT.hid:sub(1, 12) .. math.random(26000, 42000) .. math.random(42000, 62000)
         STAT.version = 189
+    end
+    if STAT.version == 189 then
+        if STAT.badge.zenith_and_nadir then
+            STAT.badge.zenith_and_nadir = nil
+            STAT.badge.universal_gravitation = true
+        end
+        STAT.version = 190
     end
 
     -- Some Initialization

@@ -2696,7 +2696,7 @@ function GAME.finish(reason)
         GAME.invisUI = false
         GAME.invisCard = false
         GAME.closeCard = false
-        if GAME.gigaTime then IssueSecret('zenith_and_nadir') end
+        if GAME.gigaTime then IssueSecret('universal_gravitation') end
     end
 
     TWEEN.new(GAME.anim_setMenuHide_rev):setDuration(GAME.slowmo and 2.6 or .26):setUnique('uiHide'):run()
