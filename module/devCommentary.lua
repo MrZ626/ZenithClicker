@@ -201,27 +201,23 @@ return {
         Yeah along with DP, it's still Swamp Water, cuz I think it doesn't really increase much difficulty.
     ]],
 
-    ['EX rGV DH'] = STRING.trimIndent [[
-        Demonic Speed, an original combo made very early from ZC community.
-        Honestly it's not very fun in mechanics, basically just harder rGV requiring more accuracy.
-    ]],
-    ['rGV rAS'] = STRING.trimIndent [[
-        Whizzing Wizard, an original combo added after reversed mod background animation update iirc
-        This looks so dizzy and so cool lol, though it plays almost same with rAS run if you won't make mistakes.
-    ]],
     ['rGV rIN'] = STRING.trimIndent [[
         The Grandmaster+, reversed version of The Grandmaster, which is closer to its original meaning.
         Well, you can see that ZC's upright mods are kinda too easy, and the reversed mods have similar difficulty with QP2's normal mods.
         This is intended, to let everyone be able to enjoy playing with mods.
     ]],
-    ['NH rAS'] = STRING.trimIndent [[
-        Pristine, reversed version of The Starving Artist.
-        This combo forces you to learn how to deal with AS wounds after each mistake. It's interesting, isn't it?
+    ['EX NH rAS'] = STRING.trimIndent [[
+        Magic School, a harder version of The Starving Artist.
+        This combo forces you to learn how to deal with AS wounds after each mistake, kinda interesting, isn't it?
     ]],
-    ['GV rDH rAS'] = STRING.trimIndent [[
-        Storage Overload, an original combo from ZC community.
-        GV+rAS doesn't allow you guess too hurry, so this needs you know all 2-mod combos and many 3-mod combos to finish, which fitting its title.
-        Well but it's not really necessary, you could also wait for the hint, so it shouldn't be too hard.
+    ['rNH rDH IN rAS'] = STRING.trimIndent [[
+        The Spellcaster, an original combo from ZC community.
+        rNH increases rDH difficulty a bit so this combo needs you to learn more community combos, and rAS balances the difficulty.
+        It replaces Storage Overload and it's also a reference of some old combos like Brain Capacity and Fleeting Memory
+    ]],
+    ['EX rGV DH'] = STRING.trimIndent [[
+        Demonic Speed, an original combo made very early from ZC community.
+        Honestly it's not very fun in mechanics, basically just harder rGV requiring more accuracy.
     ]],
     ['EX NH rMS GV'] = STRING.trimIndent [[
         Bnuuy, an original combo from ZC community.
@@ -263,6 +259,18 @@ return {
         This achievement replaced "Brain Capacity" (rDH rIN) with a bit more difficulty for rDH pros.
         Another TGM4 meme achievement lol
     ]],
+    ['VL DH rIN'] = STRING.trimIndent [[
+        Empurple, an original combo from ZC community. Just Powerless with some mods.
+        Main difficulty should come from "hard mode" of reverse mod, reducing XP you could get.
+    ]],
+    ['MS IN DP'] = STRING.trimIndent [[
+        Mind Connection, an original combo from ZC community.
+        This was changed from "Honeymoon" with a better title, it had same target but without mods limit.
+    ]],
+    ['NH IN DP'] = STRING.trimIndent [[
+        No Contact Relationship, an original combo from ZC community.
+        This was changed from "Break up" with a better title, it had same target but without mods limit.
+    ]],
     ['NH rGV'] = STRING.trimIndent [[
         Clutch Main, an original combo from ZC community.
         Introduces "clutch" into actual gameplay, which is kinda interesting.
@@ -280,10 +288,19 @@ return {
         The Oblivious Artist, an original combo from ZC community.
         This one was "doing the inverse first", but I felt it sounds too forcing, so it got changed to this.
     ]],
-    ['VL DH rIN'] = STRING.trimIndent [[
-        Empurple, an original combo from ZC community. Just Powerless with some mods.
-        Main difficulty should come from "hard mode" of reverse mod, reducing XP you could get.
+    ['NH rVL AS'] = STRING.trimIndent [[
+        Zero-to-sixty, an original combo from ZC community.
+        Though this combo includes AS, it's actually easier to play with mouse lol
     ]],
+    ['rNH MS DP'] = STRING.trimIndent [[
+        Scarcity Mindset, an original combo from ZC community.
+        This is more complex and interesting than psychokinesis, the only regret is that we cannot play this with 3 nexts...
+    ]],
+    ['rGV VL'] = STRING.trimIndent [[
+        Fickle Fuel, an original combo from ZC community.
+        This achievement actually plays similar to "Highest Floor Discovered" achievement, but still worth to have a try.
+    ]],
+
     ['EX VL rIN rDP'] = STRING.trimIndent [[
         Love Hotel, F2 speedrunning combo.
         I think I shouldn't explain why these mods...

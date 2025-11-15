@@ -203,6 +203,7 @@ local GAME = {
     achv_doublePass = nil,
     achv_level19capH = nil,
     achv_totalResetCount = nil,
+    achv_altFromSurge = nil,
 }
 
 GAME.playing = false
@@ -789,7 +790,7 @@ function GAME.takeDamage(dmg, reason, toAlly)
                 GAME.swapControl()
             end
             GAME.startRevive()
-            GAME.dmgWrongExtra = 0     -- Being tolerant!
+            GAME.dmgWrongExtra = 0 -- Being tolerant!
         else
             GAME.finish(reason)
         end
@@ -862,6 +863,7 @@ function GAME.setGigaspeedAnim(on)
         TASK.new(GAME.task_gigaspeed)
         SFX.play('zenith_speedrun_start')
 
+        if GAME.comboStr == "ASNHrVL" then SubmitAchv('zero_to_sixty', roundUnit(GAME.time, .01)) end
         if GAME.floor == 1 then IssueAchv('speedrun_speedrunning') end
         if GAME.comboMP >= 15 then IssueAchv('abyss_weaver') end
     else
@@ -1525,7 +1527,7 @@ function GAME.task_cancelAll(instant)
     for i = 1, #CD do
         needFlip[i] = spinMode or CD[i].active
     end
-    local interval = not instant and .042 * (M.AS == 2 and .62 or 1) * (1 + 2 * M.NH) * (GAME.slowmo and 2.6 or 1) * (GAME.nightcore and 1/2.6 or 1)
+    local interval = not instant and .042 * (M.AS == 2 and .62 or 1) * (1 + 2 * M.NH) * (GAME.slowmo and 2.6 or 1) * (GAME.nightcore and 1 / 2.6 or 1)
     for i = 1, #list do
         if needFlip[i] then
             list[i]:setActive(true)
@@ -1868,6 +1870,7 @@ function GAME.commit(auto)
         end
 
         attack = attack + surge
+        GAME.achv_altFromSurge = GAME.achv_altFromSurge + surge * GAME.rank / 4 * GAME.attackMul
 
         local oldAllyLife = GAME[GAME.getLifeKey(true)]
         ---@cast oldAllyLife number
@@ -1946,6 +1949,7 @@ function GAME.commit(auto)
                 local noTSR
                 if GAME.comboStr == '' then noTSR = SubmitAchv('clicker_speedrun', GAME.time) end
                 SubmitAchv('typer_speedrun', GAME.time, noTSR)
+                if GAME.comboStr == 'DPMSrNH' then SubmitAchv('scarcity_mindset', GAME.totalFlip) end
             elseif GAME.totalQuest == 41 then
                 if GAME.comboStr == 'EXMS' then SubmitAchv('quest_rationing', GAME.roundHeight) end
             end
@@ -2208,6 +2212,7 @@ function GAME.start()
     GAME.achv_doublePass = 0
     GAME.achv_level19capH = false
     GAME.achv_totalResetCount = 0
+    GAME.achv_altFromSurge = 0
     if M.DP > 0 then IssueAchv('intended_glitch') end
 end
 
@@ -2558,6 +2563,7 @@ function GAME.finish(reason)
         SubmitAchv('multitasker', roundUnit(GAME.height * GAME.comboMP, .1))
         SubmitAchv('effective', zpGain)
         SubmitAchv('drag_racing', GAME.peakRank)
+        SubmitAchv('space_race', GAME.peakRank * GAME.comboMP)
         table.sort(maxCSP, function(a, b) return a[1] > b[1] end)
         for i = 1, #maxCSP do
             if maxCSP[i][2] >= 60 then
@@ -2606,6 +2612,12 @@ function GAME.finish(reason)
             SubmitAchv('the_masterful_juggler', GAME.achv_maxChain)
         elseif GAME.comboStr == 'DHVLrIN' then
             SubmitAchv('empurple', GAME.achv_noChargeH or GAME.roundHeight)
+        elseif GAME.comboStr == 'DPINMS' then
+            SubmitAchv('mind_connection', GAME.achv_shareModH or GAME.roundHeight)
+        elseif GAME.comboStr == 'DPINNH' then
+            SubmitAchv('no_contact_relationship', GAME.achv_noShareModH or GAME.roundHeight)
+        elseif GAME.comboStr == 'VLrGV' then
+            SubmitAchv('fickle_fuel', roundUnit(GAME.achv_altFromSurge, .1))
             -- elseif GAME.comboStr == 'ASDHNHVL' then
             --     if GAME.achv_totalResetCount == 0 then
             --         SubmitAchv('minimalism', GAME.achv_maxChain)
@@ -2619,8 +2631,6 @@ function GAME.finish(reason)
             SubmitAchv('the_responsible_one_plus', GAME.reviveCount * GAME.comboMP)
             SubmitAchv('guardian_angel', GAME.achv_maxReviveH or 0)
             SubmitAchv('carried', GAME.achv_carriedH or GAME.roundHeight)
-            SubmitAchv('honeymoon', GAME.achv_shareModH or GAME.roundHeight)
-            SubmitAchv('break_up', GAME.achv_noShareModH or GAME.roundHeight)
             if M.DP == 2 then
                 SubmitAchv('the_unreliable_one', GAME.killCount)
                 if GAME.floor < 10 and GAME.time >= 600 and GAME.fatigueSet == Fatigue.rDP then
@@ -2696,8 +2706,8 @@ function GAME.finish(reason)
         GAME.invisUI = false
         GAME.invisCard = false
         GAME.closeCard = false
-        if GAME.gigaTime then IssueSecret('universal_gravitation') end
     end
+    if #GAME.secTime >= 10 and GAME.height < 0 then IssueSecret('universal_gravitation') end
 
     TWEEN.new(GAME.anim_setMenuHide_rev):setDuration(GAME.slowmo and 2.6 or .26):setUnique('uiHide'):run()
     GAME.refreshRPC()

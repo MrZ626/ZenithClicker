@@ -6,7 +6,7 @@ ZENITHA.setMainLoopSpeed(240)
 ZENITHA.setRenderRate(50)
 ZENITHA.setAppInfo("Zenith Clicker", SYSTEM .. " " .. (require 'version'.appVer))
 ZENITHA.setClickDist(62)
-ZENITHA._cursor.speed=1600
+ZENITHA._cursor.speed = 1600
 
 STRING.install()
 
@@ -199,9 +199,9 @@ TEXTURE = {
             effective = aq(7, 2),
             zenith_speedrun = aq(2, 6),
             zenith_speedrun_plus = aq(2, 6),
-            zenith_challenger = aq(8, 2),
+            zenith_challenger = aq(11, 2),
             divine_challenger = aq(12, 2),
-            zenith_speedrunner = aq(2, 6),
+            zenith_speedrunner = aq(14, 2),
             divine_speedrunner = aq(13, 2),
             the_spike_of_all_time = aq(4, 2),
             the_spike_of_all_time_minus = aq(4, 2),
@@ -237,20 +237,19 @@ TEXTURE = {
             rIN = aq(13, 1),
             rAS = aq(14, 1),
             rDP = aq(7, 7),
-            DHEXrGV = aq(10, 3),      -- Demonic Speed
-            rASrGV = aq(11, 3),       -- Whizzing Wizard
-            rGVrIN = aq(9, 3),        -- The Grandmaster+
-            NHrAS = aq(5, 5),         -- Pristine
-            GVrASrDH = aq(11, 2),     -- Storage Overload
-            EXGVNHrMS = aq(12, 6),    -- Bnuuy
-            ASDPGVrMSrNH = aq(10, 3), -- Grand-Master! Rounds
-            DHrEXrVL = aq(9, 6),      -- Sweat and Ruin
-            ASGVrDPrMS = aq(13, 3),   -- Cupid's Gamble
-            NHVLrDPrGV = aq(11, 6),   -- Despairful Longing
-            VLrEXrIN = aq(16, 6),     -- Authoritarian Delusion
-            rDPrEX = aq(12, 3),       -- Tyrannical Dyarchy
-            INMSrDHrEX = aq(15, 6),   -- Sisyphean Monarchy
-            ASMSrDHrIN = aq(13, 6),   -- Kitsune Trickery
+            rGVrIN = aq(9, 3),       -- The Grandmaster+
+            EXNHrAS = aq(10, 7),     -- Magic School
+            INrASrDHrNH = aq(14, 6), -- The Spellcaster
+            DHEXrGV = aq(10, 3),     -- Demonic Speed
+            EXGVNHrMS = aq(12, 6),   -- Bnuuy
+            ASDPGVrMSrNH = aq(9, 2), -- Grand-Master! Rounds
+            DHrEXrVL = aq(9, 6),     -- Sweat and Ruin
+            ASGVrDPrMS = aq(13, 3),  -- Cupid's Gamble
+            NHVLrDPrGV = aq(11, 6),  -- Despairful Longing
+            VLrEXrIN = aq(16, 6),    -- Authoritarian Delusion
+            rDPrEX = aq(12, 3),      -- Tyrannical Dyarchy
+            INMSrDHrEX = aq(15, 6),  -- Sisyphean Monarchy
+            ASMSrDHrIN = aq(13, 6),  -- Kitsune Trickery
             swamp_water_lite_plus = aq(15, 3),
             swamp_water_plus = aq(16, 3),
 
@@ -281,22 +280,24 @@ TEXTURE = {
             empurple = aq(13, 7),
             patience_is_a_virtue = aq(10, 6),
             spotless = aq(16, 4),
-            honeymoon = aq(13, 4),
-            break_up = aq(12, 4),
+            mind_connection = aq(13, 4),
+            no_contact_relationship = aq(12, 4),
             overprotection = aq(12, 7),
             clutch_main = aq(14, 3),
             sunk_cost = aq(11, 5),
             wax_wings = aq(12, 5),
             the_masterful_juggler = aq(11, 7),
             the_oblivious_artist = aq(14, 7),
+            zero_to_sixty = aq(10, 5),
             speed_bonus = aq(9, 4),
             arrogance = aq(3, 5),
             the_pacifist = aq(4, 1),
+            scarcity_mindset = aq(4, 1),
             detail_oriented = aq(8, 6),
             psychokinesis = aq(8, 6),
-            lovers_promise = aq(8, 7),
             divine_rejection = aq(7, 6),
             moon_struck = aq(7, 6),
+            lovers_promise = aq(8, 7),
 
             love_hotel = aq(16, 5),
             financially_responsible = aq(16, 5),
@@ -309,8 +310,10 @@ TEXTURE = {
             perfect_speedrun = aq(15, 5),
             the_perfectionist = aq(15, 5),
             cruise_control = aq(15, 5),
-            drag_racing = aq(5, 6),
             dazed = aq(5, 6),
+            drag_racing = aq(5, 6),
+            space_race = aq(5, 6),
+            fickle_fuel = aq(9, 5),
             the_spike_of_all_time_plus = aq(5, 6),
 
             cut_off = aq(6, 2),

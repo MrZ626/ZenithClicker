@@ -1,7 +1,7 @@
 local next = next
 local max, min = math.max, math.min
 local sin, cos = math.sin, math.cos
-local abs = math.abs
+local floor, abs = math.floor, math.abs
 
 local distance, clamp = MATH.distance, MATH.clamp
 local interpolate, clampInterpolate = MATH.interpolate, MATH.clampInterpolate
@@ -305,7 +305,7 @@ function scene.mouseDown(x, y, k)
     HoldingButtons['mouse' .. k] = true
     GAME.nixPrompt('keep_no_mouse')
 
-    if getBtnPressed() > 1 + (URM and M.VL == 2 and 0 or math.floor(M.VL / 2)) then return true end
+    if getBtnPressed() > 1 + (URM and M.VL == 2 and 0 or floor(M.VL / 2)) then return true end
     if M.EX == 0 then
         SFX.play('move')
         mouseTrigger(x, y, k)
@@ -322,7 +322,7 @@ function scene.mouseUp(x, y, k)
     GAME.nixPrompt('keep_no_mouse')
     if k == 3 then return end
 
-    if getBtnPressed() > (URM and M.VL == 2 and 0 or math.floor(M.VL / 2)) then return end
+    if getBtnPressed() > (URM and M.VL == 2 and 0 or floor(M.VL / 2)) then return end
     if M.EX > 0 then
         mouseTrigger(x, y, k)
     end
@@ -665,7 +665,7 @@ function DrawBG(brightness, showRuler)
 
     -- Display altitude (Debug)
     -- gc_setColor(1, 1, 1)
-    -- gc.print(math.floor(GAME.bgH), 10, 10, 0, 2.6)
+    -- gc.print(floor(GAME.bgH), 10, 10, 0, 2.6)
 end
 
 local function drawPBline(h, pb, spd, textObj)
@@ -1036,6 +1036,8 @@ function scene.overDraw()
                     gc_setColor(COLOR.L)
                     gc_draw(chain, 326, 268, 0, k * bk)
                 end
+            elseif GAME.comboStr == 'VLrGV' then
+                GC.mStr(floor(GAME.achv_altFromSurge) .. "m", 326, 240)
             end
 
             -- Damage Timer
