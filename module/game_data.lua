@@ -221,15 +221,16 @@ ComboData = {
         { set = "rEX rDP",          name = "Tyrannical Dyarchy" },
         { set = "rEX MS rDH IN",    name = "Sisyphean Monarchy" },
         { set = "MS rDH rIN AS",    name = "Kitsune Trickery" },
+        { set = "VL DH rIN",        name = "Empurple" },
         { set = "MS IN DP",         name = "Mind Connection" },
         { set = "NH IN DP",         name = "No Contact Relationship" },
-
         { set = "NH rGV",           name = "Clutch Main" },
         { set = "EX VL",            name = "Wax Wings" },
         { set = "rMS rGV rIN",      name = "The Masterful Juggler" },
         { set = "DH rIN AS",        name = "The Oblivious Artist" },
         { set = "NH rVL AS",        name = "Zero-To-Sixty" },
-        { set = "VL DH rIN",        name = "Empurple" },
+        { set = "rNH MS DP",        name = "Scarcity Mindset" },
+        { set = "VL rGV",           name = "Fickle Fuel" },
 
         { set = "EX VL rIN rDP",    name = "Love Hotel" },
         { set = "EX MS AS",         name = "Financially Responsible" },
@@ -239,7 +240,6 @@ ComboData = {
         { set = "MS VL AS",         name = "Human Experiment" },
         { set = "EX GV DH",         name = "Thermal Anomaly" },
         { set = "MS GV AS",         name = "Dazed" },
-        { set = "VL rGV",           name = "Fickle Fuel" },
     },
 
     game = {
