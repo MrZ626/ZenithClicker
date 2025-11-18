@@ -155,7 +155,7 @@ function scene.load()
     else
         text = devCommentary.noComment
     end
-    DevNoteText:setf(text, 2000, 'center')
+    DevNoteText:setf(text:repD(STAT.uid), 2000, 'center')
 end
 
 function scene.mouseMove(_, _, _, dy)

@@ -336,4 +336,10 @@ return {
         Dazed, an original combo from ZC community.
         Another supercharged achievement...? Maybe it's more like a combination of supercharged and MS mastery.
     ]],
+    ['rEX rNH rMS rGV rVL rDH rIN rAS rDP'] = STRING.trimIndent [[
+        Welcome to the summit, $1!
+        You achieved the impossible with your unbreakable spirit, against all logic.
+        This kind of crazy challenge shouldn't exist from the start.
+        Congratulations.
+    ]],
 }
