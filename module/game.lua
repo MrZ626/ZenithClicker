@@ -1904,7 +1904,7 @@ function GAME.commit(auto)
             if URM then
                 GAME.readyShuffle(max(GAME.floor, GAME.negFloor) * 2.6, true)
             else
-                local lastPos
+                local lastPos=-26
                 for i = 1, #CD do
                     if CD[i].id == GAME.lastFlip then
                         lastPos = i
