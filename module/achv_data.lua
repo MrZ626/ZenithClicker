@@ -895,20 +895,20 @@ Achievements = {
         rank = floorRank(1, 3, 5, 7, 8, 9, 10),
         hide = function() return GAME.completion.GV == 0 end,
     },
-    { -- mind_connection
+    { -- a_mutual_agreement
         ex = true,
-        id = 'mind_connection',
-        name = "Mind Connection",
-        desc = [[HFD with MS IN DP with every commit sharing at least 1 mod with the previous one]],
+        id = 'a_mutual_agreement',
+        name = "A Mutual Agreement",
+        desc = [[HFD with DH AS DP with every commit sharing at least 1 mod with the previous one]],
         quote = [[There can never be anything to separate us as our minds connnect with each other.]],
         credit = "@The_111thBlitzer",
         rank = floorRank(1, 3, 5, 6, 7, 8, 10),
     },
-    { -- no_contact_relationship
+    { -- the_cheaters
         ex = true,
-        id = 'no_contact_relationship',
-        name = "No Contact Relationship",
-        desc = [[HFD with NH IN DP with commit not sharing any mod with the previous one]],
+        id = 'the_cheaters',
+        name = "The Cheaters",
+        desc = [[HFD with VL AS DP with commit not sharing any mod with the previous one]],
         quote = [[5han left you on read. Last message: 8 months ago]],
         credit = "@The_111thBlitzer",
         rank = floorRank(1, 3, 5, 6, 7, 8, 10),

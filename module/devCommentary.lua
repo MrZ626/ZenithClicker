@@ -263,13 +263,15 @@ return {
         Empurple, an original combo from ZC community. Just Powerless with some mods.
         Main difficulty should come from "hard mode" of reverse mod, reducing XP you could get.
     ]],
-    ['MS IN DP'] = STRING.trimIndent [[
-        Mind Connection, an original combo from ZC community.
+    ['DH AS DP'] = STRING.trimIndent [[
+        A Mutual Agreement, an original combo from ZC community.
         This was changed from "Honeymoon" with a better title, it had same target but without mods limit.
+        DH really makes this a lot more easier, a good example for next achievement as "invisible tutorial"!
     ]],
-    ['NH IN DP'] = STRING.trimIndent [[
-        No Contact Relationship, an original combo from ZC community.
+    ['VL AS DP'] = STRING.trimIndent [[
+        The Cheaters, an original combo from ZC community.
         This was changed from "Break up" with a better title, it had same target but without mods limit.
+        AS makes these pair of achievements easier, since commiting right cards is already hard enough, isn't it?
     ]],
     ['NH rGV'] = STRING.trimIndent [[
         Clutch Main, an original combo from ZC community.

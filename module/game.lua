@@ -2612,10 +2612,10 @@ function GAME.finish(reason)
             SubmitAchv('the_masterful_juggler', GAME.achv_maxChain)
         elseif GAME.comboStr == 'DHVLrIN' then
             SubmitAchv('empurple', GAME.achv_noChargeH or GAME.roundHeight)
-        elseif GAME.comboStr == 'DPINMS' then
-            SubmitAchv('mind_connection', GAME.achv_shareModH or GAME.roundHeight)
-        elseif GAME.comboStr == 'DPINNH' then
-            SubmitAchv('no_contact_relationship', GAME.achv_noShareModH or GAME.roundHeight)
+        elseif GAME.comboStr == 'ASDHDP' then
+            SubmitAchv('a_mutual_agreement', GAME.achv_shareModH or GAME.roundHeight)
+        elseif GAME.comboStr == 'ASDPVL' then
+            SubmitAchv('the_cheaters', GAME.achv_noShareModH or GAME.roundHeight)
         elseif GAME.comboStr == 'VLrGV' then
             SubmitAchv('fickle_fuel', roundUnit(GAME.achv_altFromSurge, .1))
             -- elseif GAME.comboStr == 'ASDHNHVL' then
