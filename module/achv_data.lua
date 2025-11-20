@@ -900,7 +900,7 @@ Achievements = {
         id = 'a_mutual_agreement',
         name = "A Mutual Agreement",
         desc = [[HFD with DH AS DP with every commit sharing at least 1 mod with the previous one]],
-        quote = [["May we never lose what we have here."]],
+        quote = [[Signed in writing, binding hearts and hands alike.]],
         credit = "@FCSplayz",
         rank = floorRank(1, 3, 5, 7, 9, 10, 2200),
     },
