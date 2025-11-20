@@ -173,7 +173,7 @@ return {
     ]],
     ['EX MS VL DH'] = STRING.trimIndent [[
         Divine Mastery, a combo ported from QP2, and it's not very worth talking about.
-        EX gameplay but need a bit more concentrating and endurancew.
+        EX gameplay but need a bit more concentrating and endurance.
     ]],
     ['NH AS'] = STRING.trimIndent [[
         The Starving Artist, a combo ported from QP2.
