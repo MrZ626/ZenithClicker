@@ -577,7 +577,7 @@ Floors = {
 }
 
 NegFloors = {
-    [0] = { bottom = -1e99, name = "Endless Void" },
+    [0] = { bottom = -1e99},
     { bottom = -50,   name = "The Basement" },
     { bottom = -150,  name = "Zenith Restaurant" },
     { bottom = -300,  name = "Underground Parking" },
@@ -905,7 +905,7 @@ NegEvents = {
     { h = -1650 },
     {
         event = function()
-            GAME.negFloor = 0
+            GAME.invincible = true
             GAME.timerMul = 0
             GAME.dmgWrong = 1
             GAME.invisCard = true

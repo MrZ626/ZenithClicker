@@ -2837,7 +2837,7 @@ function GAME.update(dt)
                     if GAME.negFloor >= 2 then
                         GAME.height = min(GAME.height, NegFloors[GAME.negFloor - 1].bottom)
                     end
-                    local f = max(GAME.floor, GAME.negFloor)
+                    local f = GAME.negFloor==10 and 0 or max(GAME.floor, GAME.negFloor)
                     local fallSpeed = (f * (f + 1) + 10) / 20
                     GAME.height = GAME.height - dt * fallSpeed
                 end
