@@ -739,7 +739,7 @@ function ReleaseAchvBuffer()
     TABLE.clear(bufferedMsg)
 end
 
-MX, MY = 0, 0
+MX, MY = -260,0
 
 ---@type Map<Card>
 Cards = {}
