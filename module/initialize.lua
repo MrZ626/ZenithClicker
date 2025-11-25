@@ -1,3 +1,18 @@
+if SYSTEM == "Windows" or SYSTEM == "Linux" then
+    SupportCurl = true
+elseif SYSTEM == "Android" then
+    SupportCurl = false
+    local f = io.popen("curl --version", "r")
+    if f then
+        local res = f:read("*a")
+        if res then
+            if res:find("^curl") then
+                SupportCurl = true
+            end
+        end
+        f:close()
+    end
+end
 if FILE.exist('data.luaon') then
     if not FILE.exist('best.luaon') then
         love.filesystem.write('best.luaon', love.filesystem.read('data.luaon'))
