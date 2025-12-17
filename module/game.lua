@@ -1547,6 +1547,8 @@ function GAME.commit(auto)
 
     if URM and M.VL == 2 and not UltraVlCheck('start', auto) then return end
 
+    if not auto and not GAME.achv_noManualCommitH then GAME.achv_noManualCommitH = GAME.roundHeight end
+
     local hand = TABLE.sort(GAME.getHand(false))
     local allyWasDead = GAME[GAME.getLifeKey(true)] == 0
 

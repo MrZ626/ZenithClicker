@@ -154,7 +154,6 @@ local function keyTrigger(key)
             W._hoverTime = W._hoverTimeMax
             if GAME.playing then
                 GAME.commit()
-                if not GAME.achv_noManualCommitH then GAME.achv_noManualCommitH = GAME.roundHeight end
                 if not GAME.achv_noKeyboardH then GAME.achv_noKeyboardH = GAME.roundHeight end
             else
                 GAME.start()
@@ -1458,7 +1457,6 @@ local function button_start()
             FloatOnCard = nil
             GAME.refreshLayout()
         end
-        if not GAME.achv_noManualCommitH then GAME.achv_noManualCommitH = GAME.roundHeight end
     else
         GAME.start()
     end
