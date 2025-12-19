@@ -2618,6 +2618,9 @@ function GAME.finish(reason)
             SubmitAchv('the_cheaters', GAME.achv_noShareModH or GAME.roundHeight)
         elseif GAME.comboStr == 'VLrGV' then
             SubmitAchv('fickle_fuel', roundUnit(GAME.achv_altFromSurge, .1))
+        elseif GAME.comboStr == 'ASDHEXGVINMSNHVLrDP' then
+            if GAME.floor >= 10 then IssueAchv('dusty_memories') end
+
             -- elseif GAME.comboStr == 'ASDHNHVL' then
             --     if GAME.achv_totalResetCount == 0 then
             --         SubmitAchv('minimalism', GAME.achv_maxChain)

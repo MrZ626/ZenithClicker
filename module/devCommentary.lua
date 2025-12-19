@@ -343,6 +343,11 @@ return {
         Dazed, an original combo from ZC community.
         Another supercharged achievement...? Maybe it's more like a combination of supercharged and MS mastery.
     ]],
+    ['EX NH MS GV VL DH IN AS rDP'] = STRING.trimIndent [[
+        Ambrosia Moonshine, the last achievement of swamp water+ series.
+        Since DP count as 0 MP in swamp water+ series at some point, this is the only possible combo fitting "1 reverse mod + 8 mods",
+        which doesn't fit the theme of this series (multiple choices to pick from).
+    ]],
     ['rEX rNH rMS rGV rVL rDH rIN rAS rDP'] = STRING.trimIndent [[
         Welcome to the summit, $1!
         You achieved the impossible with your unbreakable spirit, against all logic.
