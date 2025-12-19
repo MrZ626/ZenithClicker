@@ -1346,7 +1346,7 @@ Achievements = {
         id = 'dusty_memories',
         name = "Dusty Memories",
         desc = [[Master combo "Ambrosia Moonshine"]],
-        quote = [[A removed achievement left the only one mods combo with such a name.]],
+        quote = [[A secret menu brew, hidden from the public's view.]],
         credit = "@F1e308",
         type = 'issued',
     },
