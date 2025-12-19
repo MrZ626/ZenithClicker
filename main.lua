@@ -298,6 +298,7 @@ TEXTURE = {
             moon_struck = aq(7, 6),
             lovers_promise = aq(8, 7),
 
+            hardcore_beginning = aq(16, 5),
             love_hotel = aq(16, 5),
             financially_responsible = aq(16, 5),
             unfair_battle = aq(16, 5),

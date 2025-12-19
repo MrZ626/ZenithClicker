@@ -308,6 +308,10 @@ return {
         This achievement actually plays similar to "Highest Floor Discovered" achievement, but still worth to have a try.
     ]],
 
+    ['rEX rNH rVL'] = STRING.trimIndent [[
+        Hardcore Beginning, F1 speedrunning combo.
+        The last combo getting added in this category! Now all 9 floors have their own speedrunning combo.
+    ]],
     ['EX VL rIN rDP'] = STRING.trimIndent [[
         Love Hotel, F2 speedrunning combo.
         I think I shouldn't explain why these mods...

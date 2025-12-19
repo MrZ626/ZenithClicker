@@ -919,7 +919,9 @@ end
 
 function GAME.upFloor()
     local roundFloorTime = roundUnit(GAME.floorTime, .001)
-    if GAME.floor == 2 then
+    if GAME.floor == 1 then
+        if GAME.comboStr == 'rEXrNHrVL' then SubmitAchv('hardcore_beginning', roundFloorTime) end
+    elseif GAME.floor == 2 then
         if GAME.comboStr == 'EXVLrDPrIN' then SubmitAchv('love_hotel', roundFloorTime) end
     elseif GAME.floor == 3 then
         if GAME.comboStr == 'ASEXMS' then SubmitAchv('financially_responsible', roundFloorTime) end

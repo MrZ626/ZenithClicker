@@ -1072,6 +1072,18 @@ Achievements = {
     },
 
     { title = "Supercharged Clone", credit = "@Garbo" },
+    { -- hardcore_beginning
+        ex = true,
+        id = 'hardcore_beginning',
+        name = "Hardcore Beginning",
+        desc = [[Shortest time spent in F1 with rEX rNH rVL]],
+        quote = [[A race to the sky, but everyone in the world will make sure that will be a fantasy.]],
+        credit = "@F1e308",
+        comp = '<',
+        scoreSimp = function(time) return string.format("%.2fs", time) end,
+        scoreFull = function(time) return string.format("%.1f m/s", (Floors[1].top - Floors[0].top) / time) end,
+        rank = numberRankRev(62, 50, 42, 36, 30, 26, 22),
+    },
     { -- love_hotel
         ex = true,
         id = 'love_hotel',
