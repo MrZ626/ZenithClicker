@@ -1433,6 +1433,14 @@ function scene.overDraw()
         end
     end
 
+    -- Fastleak cover
+    if GAME.fastLeak then
+        gc_replaceTransform(SCR.origin)
+        gc_setColor(0, 1, .42, (GAME.playing and .626 or 1) * (M.EX > 0 and .62 or .42))
+        gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * SCR.w, SCR.h)
+        gc_draw(TEXTURE.transition, SCR.w, 0, 0, -.42 / 128 * SCR.w, SCR.h)
+    end
+
     -- Ultra cover
     if URM and (not GAME.playing or GAME.anyRev) then
         gc_replaceTransform(SCR.origin)
