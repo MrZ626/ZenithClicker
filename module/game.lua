@@ -1023,7 +1023,6 @@ function GAME.upFloor()
             if GAME.invisUI and GAME.comboStr == 'rDP' then IssueSecret('true_couple') end
         end
 
-        SubmitAchv('the_pacifist', GAME.totalAttack)
         if GAME.comboStr == '' then SubmitAchv('zenith_speedrun', roundTime) end
         SubmitAchv('zenith_speedrun_plus', roundTime)
         SubmitAchv('detail_oriented', GAME.totalFlip)
@@ -1948,9 +1947,8 @@ function GAME.commit(auto)
             GAME.questReady()
             GAME.totalQuest = GAME.totalQuest + 1
             if GAME.totalQuest == 40 then
-                local noTSR
-                if GAME.comboStr == '' then noTSR = SubmitAchv('clicker_speedrun', GAME.time) end
-                SubmitAchv('typer_speedrun', GAME.time, noTSR)
+                if GAME.comboStr == '' then SubmitAchv('clicker_speedrun', GAME.time) end
+                if GAME.comboStr == 'ASrMS' then SubmitAchv('naga_eyes', GAME.time) end
                 if GAME.comboStr == 'DPMSrNH' then SubmitAchv('scarcity_mindset', GAME.totalFlip) end
             elseif GAME.totalQuest == 41 then
                 if GAME.comboStr == 'EXMS' then SubmitAchv('quest_rationing', GAME.roundHeight) end

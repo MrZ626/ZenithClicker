@@ -192,7 +192,7 @@ TEXTURE = {
             zenith_explorer = aq(2, 3),
             zenith_explorer_plus = aq(2, 3),
             clicker_speedrun = aq(5, 1),
-            typer_speedrun = aq(5, 1),
+            naga_eyes = aq(8, 8),
             supercharged = aq(5, 6),
             supercharged_plus = aq(5, 6),
             multitasker = aq(7, 2),
@@ -291,7 +291,6 @@ TEXTURE = {
             zero_to_sixty = aq(10, 5),
             speed_bonus = aq(9, 4),
             arrogance = aq(3, 5),
-            the_pacifist = aq(4, 1),
             scarcity_mindset = aq(4, 1),
             detail_oriented = aq(8, 6),
             psychokinesis = aq(8, 6),
@@ -739,7 +738,7 @@ function ReleaseAchvBuffer()
     TABLE.clear(bufferedMsg)
 end
 
-MX, MY = -260,0
+MX, MY = -260, 0
 
 ---@type Map<Card>
 Cards = {}

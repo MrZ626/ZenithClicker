@@ -206,6 +206,11 @@ return {
         Well, you can see that ZC's upright mods are kinda too easy, and the reversed mods have similar difficulty with QP2's normal mods.
         This is intended, to let everyone be able to enjoy playing with mods.
     ]],
+    ['rMS AS'] = STRING.trimIndent [[
+        Naga Eyes, a combo ported from tetrio.
+        Kinda exactly same gameplay! Make sure you've read the commentary of rMS and know how it works.
+        And don't forget that going up floor scales up the difficulty a bit.
+    ]],
     ['EX NH rAS'] = STRING.trimIndent [[
         Magic School, a harder version of The Starving Artist.
         This combo forces you to learn how to deal with AS wounds after each mistake, kinda interesting, isn't it?
@@ -271,7 +276,7 @@ return {
     ['VL AS DP'] = STRING.trimIndent [[
         The Cheaters, an original combo from ZC community.
         This was changed from "Break up" with a better title, it had same target but without mods limit.
-        AS makes these pair of achievements easier, since commiting right cards is already hard enough, isn't it?
+        AS makes these pair of achievements easier, since commiting right cards is already hard enough.
     ]],
     ['NH rGV'] = STRING.trimIndent [[
         Clutch Main, an original combo from ZC community.
