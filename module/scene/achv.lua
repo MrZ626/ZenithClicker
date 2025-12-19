@@ -78,7 +78,7 @@ local function refreshAchvList(canShuffle)
             if A.type == 'issued' then
                 rank = not TestMode and ACHV[A.id] and 6 or 0
                 progress = 0
-                wreath=0
+                wreath = 0
             else
                 local selfScore = (not TestMode and ACHV[A.id]) or A.noScore or 0
                 local r = A.rank(selfScore)
@@ -221,6 +221,7 @@ end
 local function refreshAchivement()
     if not STAT.uid:match('^ANON[-_]') or STAT.aboutme ~= "Click the Zenith!" then issue('identity') end
     if BEST.highScore.DP > 0 then issue('intended_glitch') end
+    if BEST.highScore.ASDHEXGVINMSNHVLrDP > Floors[9].top then issue('dusty_memories') end
     local MD = ModData
     local sw = {
         'swamp_water_lite',
@@ -342,7 +343,7 @@ function scene.keyDown(key, isRep)
         SFX.play('menuclick')
         SCN.back('none')
     end
-    ZENITHA._cursor.active=true
+    ZENITHA._cursor.active = true
     return true
 end
 
