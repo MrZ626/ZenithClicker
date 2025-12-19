@@ -159,7 +159,6 @@ Achievements = {
         rank = numberRankRev(94.2, 72, 55, 42, 33, 26, 20),
     },
     { -- naga_eyes
-        ex = true,
         id = 'naga_eyes',
         name = "Naga Eyes",
         desc = [[Least time spent completing 40 quests with rMS AS]],
@@ -1322,6 +1321,16 @@ Achievements = {
         hide = function() return GAME.completion.DP == 0 end,
         type = 'issued',
     },
+    { -- benevolent_ambition
+        ex = true,
+        id = 'benevolent_ambition',
+        name = "Benevolent Ambition",
+        desc = [[Revive after "NO REVIVE" fatigue, with rDP]],
+        quote = [["I'll come... to save you..."]],
+        credit = "@obsidian",
+        hide = function() return GAME.completion.DP == 0 end,
+        type = 'issued',
+    },
     { -- blazing_speed
         ex = true,
         id = 'blazing_speed',
@@ -1332,6 +1341,15 @@ Achievements = {
         hide = TRUE,
         type = 'issued',
     },
+    { -- dusty_memories
+        ex = true,
+        id = 'dusty_memories',
+        name = "Dusty Memories",
+        desc = [[Master combo "Ambrosia Moonshine"]],
+        quote = [[A removed achievement left the only one mods combo with such a name.]],
+        credit = "@F1e308",
+        type = 'issued',
+    },
     { -- its_kinda_rare
         ex = true,
         id = 'its_kinda_rare',
@@ -1340,16 +1358,6 @@ Achievements = {
         quote = [[Those who are both capable and fortunate deserve a lifetime reward.]],
         credit = "@GameTilDead",
         hide = TRUE,
-        type = 'issued',
-    },
-    { -- benevolent_ambition
-        ex = true,
-        id = 'benevolent_ambition',
-        name = "Benevolent Ambition",
-        desc = [[Revive after "NO REVIVE" fatigue, with rDP]],
-        quote = [["I'll come... to save you..."]],
-        credit = "@obsidian",
-        hide = function() return GAME.completion.DP == 0 end,
         type = 'issued',
     },
     { -- fruitless_effort
