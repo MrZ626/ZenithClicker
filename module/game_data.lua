@@ -844,6 +844,7 @@ NegEvents = {
             GAME.dmgTimerMul = GAME.dmgTimerMul + .01
             GAME.mod.NH = 0
             GAME.maxQuestCount = 3
+            GAME.xpLockLevelMax = 5
             while #GAME.quests < 3 do GAME.genQuest() end
             GAME.refreshModIcon()
             GAME.refreshRPC()
