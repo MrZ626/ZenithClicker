@@ -1566,7 +1566,7 @@ scene.widgetList = {
         pos = { .5, .5 }, x = 500, y = -120, w = 160, h = 100,
         color = 'DR',
         sound_hover = 'menutap',
-        fontSize = 30, text = "RESET", textColor = 'dR',
+        fontSize = 30, text = "RESET", textColor = TextColor,
         onPress = function(k)
             if k == 3 then return end
             HoldingButtons.resetBtn = true
