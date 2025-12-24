@@ -480,6 +480,8 @@ function scene.update(dt)
     end
 end
 
+XMasTextColor = { .4, .4, 1 }
+XMasShadeColor = { .2, .2, .42 }
 ValentineTextColor = { 1, .6, .8 }
 ValentineShadeColor = { .45, .3, .45 }
 BaseTextColor = { .7, .5, .3 }

@@ -1251,6 +1251,12 @@ function RefreshDaily()
         ValentineTextColor, BaseTextColor = BaseTextColor, ValentineTextColor
         ValentineShadeColor, BaseShadeColor = BaseShadeColor, ValentineShadeColor
     end
+    local isX = os.date('!%m%d') == '1224' or os.date('!%m%d') == '1225'
+    if XMAS ~= isX then
+        XMAS = isX
+        XMasTextColor, BaseTextColor = BaseTextColor, XMasTextColor
+        XMasShadeColor, BaseShadeColor = BaseShadeColor, XMasShadeColor
+    end
     local isZ = os.date('!%d') == '26'
     if ZDAY ~= isZ then
         ZDAY = isZ
