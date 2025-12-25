@@ -20,9 +20,13 @@ if FILE.exist('data.luaon') then
     love.filesystem.remove('data.luaon')
 end
 if FILE.exist('conf.luaon') then love.filesystem.remove('conf.luaon') end
-TABLE.update(BEST, FILE.load('best.luaon', '-luaon') or NONE)
-TABLE.update(STAT, FILE.load('stat.luaon', '-luaon') or NONE)
-TABLE.update(ACHV, FILE.load('achv.luaon', '-luaon') or NONE)
+local function loadF(org, name)
+    local suc, res = pcall(FILE.load, name, '-luaon')
+    if suc then TABLE.update(org, res) end
+end
+loadF(BEST, 'best.luaon')
+loadF(STAT, 'stat.luaon')
+loadF(ACHV, 'achv.luaon')
 if FILE.exist('avatar') then
     local suc, res = pcall(GC.newImage, 'avatar')
     if suc then AVATAR = res end
