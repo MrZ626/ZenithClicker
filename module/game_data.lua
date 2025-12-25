@@ -381,7 +381,7 @@ ComboData = {
         { set = "GV AS DP",       name = "The Trapeze Artists" },
         { set = "VL DH IN",       name = "The Flickering Spirit" },
         { set = "VL DH AS",       name = "Forbidden Sorcery" },
-        { set = "VL DH DP",       name = "False Love" },
+        { set = "VL DH DP",       name = "Yuri" },
         { set = "VL IN AS",       name = "Eccentric Recluse" },
         { set = "VL IN DP",       name = "Online Dating" },
         { set = "VL AS DP",       name = "The Cheaters" },
