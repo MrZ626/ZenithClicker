@@ -337,8 +337,9 @@ TEXTURE = {
             zenith_relocation = aq(4, 7),
             intended_glitch = aq(11, 4),
             lucky_coincidence = aq(14, 5),
-            dark_force = aq(3, 1),
             zenith_traveler = aq(1, 8),
+            dark_force = aq(3, 1),
+            denying_the_dark = aq(5, 5),
             smooth_dismount = aq(4, 1),
         },
         frame = {
@@ -471,8 +472,8 @@ FONT.load {
     sans = "assets/DINPro-Medium.otf",
     led = "assets/UniDreamLED.ttf",
 }
-local fontNotLoaded = SYSTEM ~= 'Web' and MATH.roll(.42)
-FONT.setDefaultFont(fontNotLoaded and 'serif' or 'sans')
+FontLoaded = SYSTEM == 'Web' or MATH.roll(.62)
+FONT.setDefaultFont(FontLoaded and 'sans' or 'serif')
 FONT.setOnInit(function(font, size)
     font:setFallbacks(FONT.get(size, '_norm'))
 end)
@@ -523,7 +524,7 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     credit     = GC.newText(FONT.get(30), "Almost all assets from TETR.IO"),
     test       = GC.newText(FONT.get(50), "TEST"),
 }
-if fontNotLoaded then
+if not FontLoaded then
     TASK.new(function()
         local loadTime = love.timer.getTime() + (MATH.roll(.9626) and MATH.rand(2.6, 6.26) or 26)
         while love.timer.getTime() < loadTime do
@@ -542,7 +543,9 @@ if fontNotLoaded then
             end
         end
         FONT.setDefaultFont('sans')
+        FontLoaded = true
         ReloadTexts()
+        FILE.save('', 'serifQuit')
     end)
 end
 
@@ -1749,6 +1752,18 @@ else
         details = "QUICK PICK",
         state = "Enjoying Music",
     }
+end
+
+if FontLoaded then
+    if FILE.exist('serifQuit') then
+        local quitTime = tonumber(FILE.load('serifQuit'))
+        if quitTime and os.time() - quitTime <= 26 then
+            IssueAchv('denying_the_dark')
+            FILE.delete('serifQuit')
+        end
+    end
+elseif not ACHV.denying_the_dark then
+    FILE.save('' .. os.time(), 'serifQuit')
 end
 
 -- Debug

@@ -1435,6 +1435,14 @@ Achievements = {
         hide = function() return not ACHV.intended_glitch end,
         type = 'issued',
     },
+    { -- zenith_traveler
+        ex = true,
+        id = 'zenith_traveler',
+        name = "Zenith Traveler",
+        desc = [[Enter traveler mode]],
+        quote = [[Also known as background debugging mode]],
+        type = 'issued',
+    },
     { -- dark_force
         ex = true,
         id = 'dark_force',
@@ -1444,12 +1452,14 @@ Achievements = {
         hide = TRUE,
         type = 'issued',
     },
-    { -- zenith_traveler
+    { -- denying_the_dark
         ex = true,
-        id = 'zenith_traveler',
-        name = "Zenith Traveler",
-        desc = [[Enter traveler mode]],
-        quote = [[Also known as background debugging mode]],
+        id = 'denying_the_dark',
+        name = "Denying the Dark",
+        desc = [[Reboot on dark force triggered]],
+        quote = [[Not again...]],
+        credit = "@FMichael",
+        hide = TRUE,
         type = 'issued',
     },
     { -- smooth_dismount
