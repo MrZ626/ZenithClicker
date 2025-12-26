@@ -1755,12 +1755,9 @@ else
 end
 
 if FontLoaded then
-    if FILE.exist('serifQuit') then
-        local quitTime = tonumber(FILE.load('serifQuit'))
-        if quitTime and os.time() - quitTime <= 26 then
-            IssueAchv('denying_the_dark')
-            FILE.delete('serifQuit')
-        end
+    if os.time() - (tonumber(FILE.safeLoad('serifQuit')) or 0) <= 26 then
+        IssueAchv('denying_the_dark')
+        FILE.delete('serifQuit')
     end
 elseif not ACHV.denying_the_dark then
     FILE.save('' .. os.time(), 'serifQuit')

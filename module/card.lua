@@ -424,7 +424,7 @@ local gc_blurCircle, gc_setBlendMode = GC.blurCircle, GC.setBlendMode
 
 local iconFrame
 xpcall(function()
-    local suc, res = pcall(FILE.load, 'customAssets/mod_polygon.luaon', '-luaon')
+    local suc, res = FILE.safeLoad('customAssets/mod_polygon.luaon', '-luaon')
     if not suc then error("!" .. res) end
     iconFrame = res
     assert(iconFrame, "")
