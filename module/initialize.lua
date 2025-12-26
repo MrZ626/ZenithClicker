@@ -186,6 +186,12 @@ function Initialize(save)
         end
         STAT.version = 190
     end
+    if STAT.version == 190 then
+        if ACHV.denying_the_dark then
+            ACHV.return_to_the_light = true
+        end
+        STAT.version = 191
+    end
 
     -- Some Initialization
     for i = 1, #Cards do

@@ -1452,10 +1452,10 @@ Achievements = {
         hide = TRUE,
         type = 'issued',
     },
-    { -- denying_the_dark
+    { -- return_to_the_light
         ex = true,
-        id = 'denying_the_dark',
-        name = "Denying the Dark",
+        id = 'return_to_the_light',
+        name = "Return to the Light",
         desc = [[Reboot immediately when font not loaded]],
         quote = [[Not again...]],
         credit = "@FMichael",

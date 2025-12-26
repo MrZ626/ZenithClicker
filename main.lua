@@ -339,7 +339,7 @@ TEXTURE = {
             lucky_coincidence = aq(14, 5),
             zenith_traveler = aq(1, 8),
             dark_force = aq(3, 1),
-            denying_the_dark = aq(5, 5),
+            return_to_the_light = aq(5, 5),
             smooth_dismount = aq(4, 1),
         },
         frame = {
@@ -1754,13 +1754,13 @@ else
     }
 end
 
-if not ACHV.denying_the_dark then
+if not ACHV.return_to_the_light then
     if not FontLoaded then
         FILE.save('' .. os.time(), 'serifQuit')
     else
         local lastTime = tonumber(FILE.safeLoad('serifQuit') or false)
         if os.time() - (lastTime or 0) <= 26 then
-            IssueAchv('denying_the_dark')
+            IssueAchv('return_to_the_light')
             FILE.delete('serifQuit')
         end
     end
