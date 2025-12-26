@@ -1754,13 +1754,16 @@ else
     }
 end
 
-if FontLoaded then
-    if os.time() - (tonumber(FILE.safeLoad('serifQuit')) or 0) <= 26 then
-        IssueAchv('denying_the_dark')
-        FILE.delete('serifQuit')
+if not ACHV.denying_the_dark then
+    if not FontLoaded then
+        FILE.save('' .. os.time(), 'serifQuit')
+    else
+        local lastTime = tonumber(FILE.safeLoad('serifQuit') or false)
+        if os.time() - (lastTime or 0) <= 26 then
+            IssueAchv('denying_the_dark')
+            FILE.delete('serifQuit')
+        end
     end
-elseif not ACHV.denying_the_dark then
-    FILE.save('' .. os.time(), 'serifQuit')
 end
 
 -- Debug
