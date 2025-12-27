@@ -1193,6 +1193,7 @@ end
 
 VALENTINE = false
 VALENTINE_TEXT = "FLOOD THE TOWER SIDE BY SIDE WITH WHAT COULD BE"
+XMAS=false
 ZDAY = false
 function RefreshDaily()
     local dateToday = os.date("!*t", os.time())
