@@ -223,6 +223,7 @@ ComboData = {
         { set = "rEX MS rDH IN",    name = "Sisyphean Monarchy" },
         { set = "MS rDH rIN AS",    name = "Kitsune Trickery" },
         { set = "VL DH rIN",        name = "Empurple" },
+        { set = "EX NH MS VL rAS",  name = "Faltered" },
         { set = "DH AS DP",         name = "A Mutual Agreement" },
         { set = "VL AS DP",         name = "The Cheaters" },
         { set = "NH rGV",           name = "Clutch Main" },

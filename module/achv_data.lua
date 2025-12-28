@@ -857,14 +857,6 @@ Achievements = {
         rank = numberRank(0, 6, 15, 26, 42, 62, 80),
         hide = function() return GAME.completion.AS == 0 or STAT.totalGiga == 0 end,
     },
-    { -- powerless
-        ex = true,
-        id = 'powerless',
-        name = "Powerless",
-        desc = [[HFD without building up a surge]],
-        quote = [[No access to computer for a bit btw, so can't do revisions]],
-        rank = floorRank(1, 3, 5, 7, 9, 10, 2600),
-    },
     { -- empurple
         ex = true,
         id = 'empurple',
@@ -874,6 +866,15 @@ Achievements = {
         credit = "@obsidian",
         rank = floorRank(1, 3, 5, 7, 9, 10, 1800),
         hide = function() return GAME.completion.IN == 0 end,
+    },
+    { -- faltered
+        ex = true,
+        id = 'faltered',
+        name = "Faltered",
+        desc = [[HFD without building up a surge, with EX NH MS VL rAS]],
+        quote = [[Attaining power is only temporary, it fades faster than what you can attain.]],
+        credit = "@The_111thBlitzer",
+        rank = floorRank(1, 3, 4, 5, 7, 8, 10),
     },
     { -- patience_is_a_virtue
         ex = true,

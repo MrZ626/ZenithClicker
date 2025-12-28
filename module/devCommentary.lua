@@ -265,8 +265,13 @@ return {
         Another TGM4 meme achievement lol
     ]],
     ['VL DH rIN'] = STRING.trimIndent [[
-        Empurple, an original combo from ZC community. Just Powerless with some mods.
+        Empurple, an original combo from ZC community.
         Main difficulty should come from "hard mode" of reverse mod, reducing XP you could get.
+    ]],
+    ['EX NH MS VL rAS'] = STRING.trimIndent [[
+        Faltered, an original combo from ZC community.
+        This is actually a multitask challenge. No surge forces imperfect passes, which send 0 with rAS.
+        So you just count to 4 while finding cards in shuffled deck.
     ]],
     ['DH AS DP'] = STRING.trimIndent [[
         A Mutual Agreement, an original combo from ZC community.

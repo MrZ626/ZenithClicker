@@ -2578,7 +2578,6 @@ function GAME.finish(reason)
         SubmitAchv('sunk_cost', GAME.achv_demoteH or GAME.roundHeight)
         SubmitAchv('patience_is_a_virtue', GAME.achv_noManualCommitH or GAME.roundHeight)
         SubmitAchv(GAME.comboStr, GAME.roundHeight)
-        SubmitAchv('powerless', GAME.achv_noChargeH or GAME.roundHeight)
         local soat = SubmitAchv('the_spike_of_all_time', GAME.maxSpikeWeak)
         SubmitAchv('the_spike_of_all_time_plus', GAME.maxSpike, soat)
         SubmitAchv('moon_struck', MATH.roundUnit(abs(GAME.roundHeight - 2202.8), .1))
@@ -2614,6 +2613,8 @@ function GAME.finish(reason)
             SubmitAchv('the_masterful_juggler', GAME.achv_maxChain)
         elseif GAME.comboStr == 'DHVLrIN' then
             SubmitAchv('empurple', GAME.achv_noChargeH or GAME.roundHeight)
+        elseif GAME.comboStr == 'EXMSNHVLrAS' then
+            SubmitAchv('faltered', GAME.achv_noChargeH or GAME.roundHeight)
         elseif GAME.comboStr == 'ASDHDP' then
             SubmitAchv('a_mutual_agreement', GAME.achv_shareModH or GAME.roundHeight)
         elseif GAME.comboStr == 'ASDPVL' then
