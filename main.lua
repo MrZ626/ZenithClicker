@@ -253,19 +253,6 @@ TEXTURE = {
             swamp_water_lite_plus = aq(15, 3),
             swamp_water_plus = aq(16, 3),
 
-            -- Special, no texture needed
-            blight = aq(0, 0),
-            desolation = aq(0, 0),
-            havoc = aq(0, 0),
-            pandemonium = aq(0, 0),
-            inferno = aq(0, 0),
-            purgatory = aq(0, 0),
-            perdition = aq(0, 0),
-            cataclysm = aq(0, 0),
-            annihilation = aq(0, 0),
-            armageddon = aq(0, 0),
-            abyss = aq(0, 0),
-
             talentless = aq(3, 7),
             quest_rationing = aq(2, 7),
             the_responsible_one = aq(1, 6),
@@ -315,6 +302,19 @@ TEXTURE = {
             space_race = aq(5, 6),
             fickle_fuel = aq(9, 5),
             the_spike_of_all_time_plus = aq(5, 6),
+
+            -- Special, no texture needed
+            blight = aq(0, 0),
+            desolation = aq(0, 0),
+            havoc = aq(0, 0),
+            pandemonium = aq(0, 0),
+            inferno = aq(0, 0),
+            purgatory = aq(0, 0),
+            perdition = aq(0, 0),
+            cataclysm = aq(0, 0),
+            annihilation = aq(0, 0),
+            armageddon = aq(0, 0),
+            abyss = aq(0, 0),
 
             cut_off = aq(6, 2),
             worn_out = aq(6, 2),
