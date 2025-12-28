@@ -294,6 +294,8 @@ function GAME.getComboZP(list)
 end
 
 local function modNameSorter(a, b) return MD.prio_name[a] < MD.prio_name[b] end
+local function modCardSorter(a, b) return MD.prio_card[a] < MD.prio_card[b] end
+local function trimR(s) return s:sub(2) end
 
 ---@param list string[] WILL BE SORTED!!!
 ---@param mode? 'ingame' | 'button' | 'rpc' | 'record'
@@ -419,13 +421,26 @@ function GAME.getComboName(list, mode)
         if len == 0 then return "" end
 
         -- Named Combo
-        local combo = (
-            mode == 'record' and M.DH == 2 and ComboData.gameEX or
-            (mode == 'rpc' or not GAME.playing) and ComboData.menu or
-            M.DH == 2 and ComboData.gameEX or
-            ComboData.game
-        )[table.concat(TABLE.sort(list), ' ')]
-        if combo then return combo.name end
+        local combo
+        local cmbStr = table.concat(TABLE.sort(list), ' ')
+        if mode == 'record' then
+            combo =
+                ComboData.menu[cmbStr] or
+                M.DH == 2 and ComboData.gameEX[cmbStr]
+            if combo then return combo.name end
+            if M.DH == 2 and #list > 1 and cmbStr:count('r') == #list then
+                local cmbStrNoRev = table.concat(TABLE.sort(TABLE.applyeach(TABLE.copy(list), trimR)), ' ')
+                combo = ComboData.gameEX[cmbStrNoRev]
+            end
+            if combo then return combo.name:sub(1, -2) .. "+" .. '"' end
+        else
+            combo = (
+                (mode == 'rpc' or not GAME.playing) and ComboData.menu or
+                M.DH == 2 and ComboData.gameEX or
+                ComboData.game
+            )[cmbStr]
+            if combo then return combo.name end
+        end
 
         -- Super Set
         if mode == 'button' and GAME.playing then
@@ -1448,7 +1463,6 @@ function GAME.refreshLifeState()
     end
 end
 
-local function modCardSorter(a, b) return MD.prio_card[a] < MD.prio_card[b] end
 function GAME.refreshDailyChallengeText()
     TEXTS.dcBest:set(
         STAT.dailyBest > 0 and
