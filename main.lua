@@ -248,7 +248,7 @@ TEXTURE = {
             NHVLrDPrGV = aq(11, 6),  -- Despairful Longing
             VLrEXrIN = aq(16, 6),    -- Authoritarian Delusion
             rDPrEX = aq(12, 3),      -- Tyrannical Dyarchy
-            INMSrDHrEX = aq(15, 6),  -- Sisyphean Monarchy
+            INMSrDHrEX = aq(7, 8),   -- Sisyphean Monarchy
             ASMSrDHrIN = aq(13, 6),  -- Kitsune Trickery
             swamp_water_lite_plus = aq(15, 3),
             swamp_water_plus = aq(16, 3),
@@ -277,7 +277,7 @@ TEXTURE = {
             the_escape_artist = aq(1, 5),
             fel_magic = aq(9, 7),
             empurple = aq(13, 7),
-            faltered = aq(7, 5),
+            faltered = aq(15, 6),
             patience_is_a_virtue = aq(10, 6),
             spotless = aq(16, 4),
             a_mutual_agreement = aq(13, 4),
@@ -1193,7 +1193,7 @@ end
 
 VALENTINE = false
 VALENTINE_TEXT = "FLOOD THE TOWER SIDE BY SIDE WITH WHAT COULD BE"
-XMAS=false
+XMAS = false
 ZDAY = false
 function RefreshDaily()
     local dateToday = os.date("!*t", os.time())
