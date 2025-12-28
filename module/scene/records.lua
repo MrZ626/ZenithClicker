@@ -38,7 +38,7 @@ local set = {
     match = 'include', ---@type 'include' | 'exclude' | 'exact' | 'include+' | 'exclude+' | 'exact+'
     floor = 1,
     floorComp = '>', ---@type '>' | '<' | '='
-    mp = 1,
+    mp = 0,
     mpComp = '>', ---@type '>' | '<' | '='
     mode = 'altitude', ---@type 'altitude' | 'speedrun' | 'zp'
     order = 'first', ---@type 'first' | 'last'
@@ -405,7 +405,7 @@ function scene.keyDown(key, isRep)
         SFX.play('menuclick')
         SCN.back('none')
     end
-    ZENITHA._cursor.active=true
+    ZENITHA._cursor.active = true
     return true
 end
 
@@ -716,7 +716,7 @@ table.insert(scene.widgetList, WIDGET.new {
 table.insert(scene.widgetList, WIDGET.new {
     type = 'slider',
     x = baseX + 40, y = baseY + 206, w = 480,
-    axis = { 1, 18, 1 },
+    axis = { 0, 18, 1 },
     frameColor = 'dD', fillColor = clr.D,
     disp = function() return set.mp end,
     code = function(value)
