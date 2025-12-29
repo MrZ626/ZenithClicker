@@ -85,9 +85,15 @@ local function newRecord(list, isUltra)
         extraText = ("%.1f M"):format(height)
     end
     local comboText = setStr == "" and [["QUICK PICK"]] or GAME.getComboName(list, 'record')
+    ---@cast comboText string
     if isUltra then
-        ---@cast comboText string
-        comboText = comboText:gsub("([^\"])", "ULTRA %1", 1)
+        if comboText:sub(1, 1) ~= "\"" then
+            comboText = "ULTRA " .. comboText
+        elseif comboText:sub(2, 4) == "THE" then
+            comboText = comboText:gsub("THE", "ULTRA", 1)
+        else
+            comboText = "\"ULTRA " .. comboText:sub(2)
+        end
     end
     return {
         _list = list,
