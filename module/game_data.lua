@@ -261,6 +261,16 @@ ComboData = {
     -- rDH database, from tetr.io's community:
     -- https://docs.google.com/spreadsheets/d/1syh3q2oiduCZb1cJ5QI95Y2XhhedAfhv4YnEH9z2tbc
     gameEX = {
+        { set = "rEX",            name = "The Tyrant" },
+        { set = "rNH",            name = "Asceticism" },
+        { set = "rMS",            name = "Loaded Dice" },
+        { set = "rGV",            name = "Freefall" },
+        { set = "rVL",            name = "Last Stand" },
+        { set = "rDH",            name = "Damnation" },
+        { set = "rIN",            name = "The Exile" },
+        { set = "rAS",            name = "The Warlock" },
+        { set = "rDP",            name = "Bleeding Hearts" },
+
         { set = "EX",             name = "The Emperor" },
         { set = "NH",             name = "Temperance" },
         { set = "MS",             name = "Wheel of Fortune" },

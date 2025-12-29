@@ -428,9 +428,13 @@ function GAME.getComboName(list, mode)
                 ComboData.menu[cmbStr] or
                 M.DH == 2 and ComboData.gameEX[cmbStr]
             if combo then return combo.name end
-            if M.DH == 2 and #list > 1 and cmbStr:count('r') == #list then
-                local cmbStrNoRev = table.concat(TABLE.sort(TABLE.applyeach(TABLE.copy(list), trimR)), ' ')
-                combo = ComboData.gameEX[cmbStrNoRev]
+            if M.DH == 2 and cmbStr:count('r') == #list then
+                if #list == 1 then
+                    combo = ComboData.gameEX[cmbStr]
+                else
+                    local cmbStrNoRev = table.concat(TABLE.sort(TABLE.applyeach(TABLE.copy(list), trimR)), ' ')
+                    combo = ComboData.gameEX[cmbStrNoRev]
+                end
             end
             if combo then return combo.name:sub(1, -2) .. "+" .. '"' end
         else
