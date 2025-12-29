@@ -142,9 +142,9 @@ local function refresh()
     cd = 1
     timer = math.random()
     showFloor = not (set.match == 'exact' or set.mode == 'speedrun')
-    for i = 1, 4 do scene.widgetList[#scene.widgetList - 1 - i]:setVisible(showFloor) end
+    for i = 1, 4 do scene.widgetList[#scene.widgetList - 2 - i]:setVisible(showFloor) end
     showMP = not (set.match == 'exact')
-    for i = 1, 4 do scene.widgetList[#scene.widgetList - 5 - i]:setVisible(showMP) end
+    for i = 1, 4 do scene.widgetList[#scene.widgetList - 6 - i]:setVisible(showMP) end
     ph = not (showFloor or showMP) and 180 or 300
 end
 local function query()
@@ -403,10 +403,13 @@ function scene.keyDown(key, isRep)
             if set.floor == 0 then set.floor = 10 end
         end
         refresh()
-    elseif key == '-' then
+    elseif key == '.' then
         if ctrl then set.mpComp = '<' else set.floorComp = '<' end
         refresh()
-    elseif key == '=' then
+    elseif key == ',' then
+        if ctrl then set.mpComp = '>' else set.floorComp = '>' end
+        refresh()
+    elseif key == '/' then
         if ctrl then set.mpComp = '=' else set.floorComp = '=' end
         refresh()
     elseif key == 'escape' then
@@ -429,7 +432,7 @@ function scene.update(dt)
     local y0 = scroll1
     if math.abs(y0 - scroll) > .1 then
         scroll1 = MATH.expApproach(scroll1, scroll, dt * 26)
-        for i = 1, #scene.widgetList - 2 do
+        for i = 1, #scene.widgetList - 3 do
             local w = scene.widgetList[i]
             w._y = w._y + (y0 - scroll1)
         end
@@ -824,6 +827,26 @@ table.insert(scene.widgetList, WIDGET.new {
     sound_hover = 'menutap',
     fontSize = 30, text = "    RESET", textColor = clr.btn2,
     onClick = function() love.keypressed(STAT.keybind[20]) end,
+})
+
+-- Hint
+local hintText = [[
+Press Tab to switch between ALTITUDE / SPEEDRUN / ZP
+Press [ ] to sort by BEST FIRST / LAST
+Press 1-0 for F1-F10 (hold Ctrl for MP1-MP10)
+Press , . / for ABOVE / BELOW / JUST (hold Ctrl for MP)
+Press allspin keybinds to toggle mods (hold Ctrl for reverse)
+Press Shift to cycle through mod filter modes
+]]
+table.insert(scene.widgetList, WIDGET.new {
+    name = 'help', type = 'hint',
+    pos = { 1, 0 }, x = -50, y = 126, w = 80, cornerR = 40,
+    color = clr.L,
+    fontSize = 50, text = "?",
+    sound_hover = 'menutap',
+    labelPos = 'leftBottom',
+    floatFontSize = 30,
+    floatText = hintText,
 })
 
 return scene
