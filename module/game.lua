@@ -420,32 +420,6 @@ function GAME.getComboName(list, mode)
         -- Empty
         if len == 0 then return "" end
 
-        -- Named Combo
-        local combo
-        local cmbStr = table.concat(TABLE.sort(list), ' ')
-        if mode == 'record' then
-            combo =
-                ComboData.menu[cmbStr] or
-                M.DH == 2 and ComboData.gameEX[cmbStr]
-            if combo then return combo.name end
-            if M.DH == 2 and cmbStr:count('r') == #list then
-                if #list == 1 then
-                    combo = ComboData.gameEX[cmbStr]
-                else
-                    local cmbStrNoRev = table.concat(TABLE.sort(TABLE.applyeach(TABLE.copy(list), trimR)), ' ')
-                    combo = ComboData.gameEX[cmbStrNoRev]
-                end
-            end
-            if combo then return combo.name:sub(1, -2) .. "+" .. '"' end
-        else
-            combo = (
-                (mode == 'rpc' or not GAME.playing) and ComboData.menu or
-                M.DH == 2 and ComboData.gameEX or
-                ComboData.game
-            )[cmbStr]
-            if combo then return combo.name end
-        end
-
         -- Super Set
         if mode == 'button' and GAME.playing then
             local len_noDP = len - (TABLE.find(list, 'DP') and 1 or 0)
@@ -472,6 +446,32 @@ function GAME.getComboName(list, mode)
                         )
                 end
             end
+        end
+
+        -- Named Combo
+        local combo
+        local cmbStr = table.concat(TABLE.sort(list), ' ')
+        if mode == 'record' then
+            combo =
+                ComboData.menu[cmbStr] or
+                M.DH == 2 and ComboData.gameEX[cmbStr]
+            if combo then return combo.name end
+            if M.DH == 2 and cmbStr:count('r') == #list then
+                if #list == 1 then
+                    combo = ComboData.gameEX[cmbStr]
+                else
+                    local cmbStrNoRev = table.concat(TABLE.sort(TABLE.applyeach(TABLE.copy(list), trimR)), ' ')
+                    combo = ComboData.gameEX[cmbStrNoRev]
+                end
+            end
+            if combo then return combo.name:sub(1, -2) .. "+" .. '"' end
+        else
+            combo = (
+                (mode == 'rpc' or not GAME.playing) and ComboData.menu or
+                M.DH == 2 and ComboData.gameEX or
+                ComboData.game
+            )[cmbStr]
+            if combo then return combo.name end
         end
 
         -- General
