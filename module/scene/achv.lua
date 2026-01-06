@@ -11,6 +11,7 @@ local clr = {
 }
 local colorRev = false
 
+AchvText = GC.newText(FONT.get(30))
 local Achievements = Achievements
 local M = GAME.mod
 
@@ -36,7 +37,6 @@ OverDevProgressText = "Open ACHV page to refresh the over-dev progress."
 local achvList = {}
 local scroll, scroll1 = 0, 0
 local maxScroll = 0
-local tempText = GC.newText(FONT.get(30))
 local timer = 0
 local whenItsReady = false
 local hyper
@@ -53,7 +53,7 @@ local overallProgress = {
 local function nameSortLT(i1, i2) return i1.name < i2.name end
 local function nameSortGT(i1, i2) return i1.name > i2.name end
 
-local function refreshAchvList(canShuffle)
+function RefreshAchvList(canShuffle)
     overallProgress.rank = TABLE.new(0, 5)
     overallProgress.rank[0] = 0
     overallProgress.wreath = TABLE.new(0, 6)
@@ -97,9 +97,9 @@ local function refreshAchvList(canShuffle)
                 overDev = selfScore == devScore or A.comp(selfScore, devScore)
                 odCap = odCap + 1
             end
-            tempText:set(A.desc)
+            AchvText:set(A.desc)
             local hidden = A.hide() and not ACHV[A.id]
-            local descWidth = hidden and 26 or tempText:getWidth()
+            local descWidth = hidden and 26 or AchvText:getWidth()
             table.insert(achvList, {
                 id = A.id,
                 name = hidden and "???" or A.name:upper(),
@@ -295,7 +295,7 @@ local function refreshAchivement()
         end
     end
 
-    refreshAchvList()
+    RefreshAchvList()
 end
 
 function scene.load()
@@ -315,7 +315,7 @@ function scene.load()
 
     hyper = M.EX > 0 or BgmPlaying == 'tera' or BgmPlaying == 'terar'
 
-    refreshAchvList(true)
+    RefreshAchvList(true)
 
     maxScroll = max(ceil((#achvList - 12) / 2) * 140, 0)
     clearNotice = false
