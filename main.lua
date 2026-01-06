@@ -1509,7 +1509,7 @@ function WIDGET._prototype.slider:draw()
     local pos = MATH.clamp(self._pos, rangeL, rangeR)
     local cx = x + self.w * (pos - rangeL) / self._rangeWidth
     local bw, bh = 26, 30
-    GC.ucs_move('m', cx, y)
+    GC.ucs_move(cx, y)
     gc.setColor(fillC)
     GC.mRect('fill', 0, 0, bw, bh, self.cornerR)
     gc.setLineWidth(self.lineWidth)

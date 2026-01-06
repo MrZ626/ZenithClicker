@@ -429,7 +429,7 @@ function scene.draw()
             local a = achvList[i]
             if not a.id then
                 if a.title then
-                    gc_ucs_move('m', i % 2 == 1 and -605 or 5, floor((i - 1) / 2) * 140)
+                    gc_ucs_move(i % 2 == 1 and -605 or 5, floor((i - 1) / 2) * 140)
                     gc_setColor(0, 0, 0, .42)
                     gc_rectangle('fill', -25, 42, 1260, -10)
                     gc_setColor(clr.L)
@@ -444,11 +444,11 @@ function scene.draw()
             else
                 local A = Achievements[a.id]
                 if M.DP == 0 then
-                    gc_ucs_move('m', i % 2 == 1 and -605 or 5, floor((i - 1) / 2) * 140)
+                    gc_ucs_move(i % 2 == 1 and -605 or 5, floor((i - 1) / 2) * 140)
                 elseif M.DP == 1 then
-                    gc_ucs_move('m', i % 2 == 1 and -600 or 0, floor((i - 1) / 2) * 140)
+                    gc_ucs_move(i % 2 == 1 and -600 or 0, floor((i - 1) / 2) * 140)
                 else
-                    gc_ucs_move('m', i % 2 == 1 and -626 or 26, floor((i - 1) / 2) * 140)
+                    gc_ucs_move(i % 2 == 1 and -626 or 26, floor((i - 1) / 2) * 140)
                 end
 
                 -- Bottom rectangle

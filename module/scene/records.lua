@@ -458,7 +458,7 @@ local setFont = FONT.set
 local gc_ucs_move, gc_ucs_back = GC.ucs_move, GC.ucs_back
 
 local function drawSliderComponents(x, y, w, w2, value)
-    gc_ucs_move('m', x, y)
+    gc_ucs_move(x, y)
     gc_setColor(0, 0, 0, .26)
     gc_rectangle('fill', -25, -28, w + w2 + 55, 56, 5)
     gc_rectangle('fill', w + 25, -22, w2, 44, 3)

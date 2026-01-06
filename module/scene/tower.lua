@@ -530,7 +530,7 @@ local gc_setColor, gc_setLineWidth, gc_setBlendMode = gc.setColor, gc.setLineWid
 local gc_draw = gc.draw
 local gc_line, gc_rectangle, gc_circle, gc_arc = gc.line, gc.rectangle, gc.circle, gc.arc
 local gc_mRect, gc_mDraw, gc_mDrawQ, gc_strokeDraw = GC.mRect, GC.mDraw, GC.mDrawQ, GC.strokeDraw
-local gc_setAlpha, gc_move, gc_back = GC.setAlpha, GC.ucs_move, GC.ucs_back
+local gc_setAlpha, gc_ucs_move, gc_ucs_back = GC.setAlpha, GC.ucs_move, GC.ucs_back
 local gc_blurCircle, gc_strokePrint = GC.blurCircle, GC.strokePrint
 local gc_setColorMask = GC.setColorMask
 local setFont = FONT.set
@@ -1157,7 +1157,7 @@ function scene.overDraw()
     -- Bottom In-game UI
     if GAME.uiHide > 0 and not GAME.invisUI then
         local h = 100 - GAME.uiHide * 100
-        gc_move('m', 0, h)
+        gc_ucs_move(0, h)
 
         -- Thruster (XP bar)
         local rank = GAME.rank
@@ -1225,7 +1225,7 @@ function scene.overDraw()
             gc.print("x" .. GAME.attackMul, 1024, 926, 0, .7)
         end
 
-        gc_back()
+        gc_ucs_back()
     end
 
     -- Rev trigger for touchscreen
@@ -1320,7 +1320,7 @@ function scene.overDraw()
             local C = Cards[FloatOnCard]
             local infoID = C.lock and (C.id == 'DP' and 'lockDP' or 'lock') or C.id
             gc_replaceTransform(SCR.xOy_d)
-            gc_move('m', 0, 126 * (1 - C.float))
+            gc_ucs_move(0, 126 * (1 - C.float))
             gc_setColor(ShadeColor)
             gc_setAlpha(.7)
             gc_rectangle('fill', -888 / 2, -145, 888, 120, 10)
@@ -1349,7 +1349,7 @@ function scene.overDraw()
                 setFont(30)
                 gc_strokePrint('full', 2, ShadeColor, TextColor, MD.desc[infoID], 260, -73, 2600, 'center', 0, .8, 1)
             end
-            gc_back()
+            gc_ucs_back()
         end
 
         -- Forfeit Panel

@@ -221,7 +221,7 @@ local gc_ucs_move, gc_ucs_back = GC.ucs_move, GC.ucs_back
 local gc_setAlpha, gc_mRect, gc_mStr = GC.setAlpha, GC.mRect, GC.mStr
 
 local function drawSliderComponents(y, title, t1, t2, value)
-    gc_ucs_move('m', 0, y)
+    gc_ucs_move(0, y)
     gc_setColor(0, 0, 0, .26)
     gc_mRect('fill', w / 2, 0, w - 40, 65, 5)
     gc_mRect('fill', w - 90, 0, 123, 48, 3)
@@ -284,7 +284,7 @@ function scene.draw()
     -- Music player info
     if MusicPlayer then
         local len = 620
-        gc_ucs_move('m', 140, 202)
+        gc_ucs_move(140, 202)
 
         FONT.set(30)
         gc_setColor(clr.T)

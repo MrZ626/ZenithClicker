@@ -200,7 +200,7 @@ function RefreshProfile()
     GC.print(STAT.uid, 165, 18, 0, 1.2)
 
     -- Time
-    GC.ucs_move('m', 1065, 165)
+    GC.ucs_move(1065, 165)
     GC.setColor(boxColor)
     GC.rectangle('fill', 0, 0, 110, 40, 5)
     GC.setColor(1, 1, 1)
@@ -248,7 +248,7 @@ function RefreshProfile()
     end
 
     -- Introduction
-    GC.ucs_move('m', 25, 280)
+    GC.ucs_move(25, 280)
     GC.setColor(boxColor)
     GC.rectangle('fill', 0, 0, 1150, 80)
     FONT.set(30)
@@ -264,7 +264,7 @@ function RefreshProfile()
 
     -- Rating
     local rating, cap = calculateRating()
-    GC.ucs_move('m', 25, 370)
+    GC.ucs_move(25, 370)
     GC.setColor(boxColor)
     GC.rectangle('fill', 0, 0, bw, bh)
     FONT.set(30)
@@ -310,7 +310,7 @@ function RefreshProfile()
     GC.ucs_back()
 
     -- Height
-    GC.ucs_move('m', 412.5, 370)
+    GC.ucs_move(412.5, 370)
     GC.setColor(boxColor)
     GC.rectangle('fill', 0, 0, bw, bh)
     FONT.set(30)
@@ -329,7 +329,7 @@ function RefreshProfile()
     GC.ucs_back()
 
     -- Speedrun
-    GC.ucs_move('m', 800, 370)
+    GC.ucs_move(800, 370)
     GC.setColor(boxColor)
     GC.rectangle('fill', 0, 0, bw, bh)
     FONT.set(30)
@@ -348,7 +348,7 @@ function RefreshProfile()
     GC.ucs_back()
 
     -- Career
-    GC.ucs_move('m', 25, 500)
+    GC.ucs_move(25, 500)
     GC.setColor(boxColor)
     GC.rectangle('fill', 0, 0, 570, bh)
     FONT.set(30)
@@ -377,7 +377,7 @@ function RefreshProfile()
     scene.widgetList.peakZP:reset()
 
     -- Full stats
-    GC.ucs_move('m', 605, 500)
+    GC.ucs_move(605, 500)
     GC.setColor(boxColor)
     GC.rectangle('fill', 0, 0, 570, bh)
     FONT.set(30)
@@ -405,7 +405,7 @@ function RefreshProfile()
 
     -- Watermark
     if TestMode then
-        GC.ucs_move('m', 600, 360)
+        GC.ucs_move(600, 360)
         GC.setColor(1, 1, 1, .26)
         GC.mDraw(TEXTS.test, 0, 0, -.26, 10)
     end
@@ -443,7 +443,7 @@ function scene.keyDown(key, isRep)
             end)
         end)
     end
-    ZENITHA._cursor.active=true
+    ZENITHA._cursor.active = true
     return true
 end
 
