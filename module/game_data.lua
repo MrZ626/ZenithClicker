@@ -583,8 +583,8 @@ ComboData = {
         { set = "EX GV VL DH AS", name = "Trembling Power" },
         { set = "EX GV VL IN AS", name = "Speed the Collapse" },
         { set = "EX GV VL AS DP", name = "Rising Legends" },
-        { set = "EX GV DH IN AS", name = "Devil's Thought" },
-        { set = "EX GV DH IN DP", name = "Destruction Site" },
+        { set = "EX GV DH IN AS", name = "Satan's Thought" },
+        { set = "EX GV DH IN DP", name = "Skyscrapers" },
         { set = "EX GV DH AS DP", name = "Omni Spinners" },
         { set = "EX GV IN AS DP", name = "Masterclass" },
         { set = "EX VL DH IN AS", name = "Reverse Quintuple Threat" },
@@ -626,6 +626,7 @@ ComboData = {
         { set = "GV VL DH IN AS", name = "Lost Genius" },
         { set = "GV VL DH IN DP", name = "Haunting Hallucinations" },
         { set = "GV VL DH AS DP", name = "Tool Assisted Speedrun" },
+        { set = "GV VL IN AS DP", name = "Hardships" },
         { set = "VL DH IN AS DP", name = "The Duel of Geniuses" },
     },
 }
