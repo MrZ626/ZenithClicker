@@ -892,8 +892,8 @@ BgmData = {
     f1 = { meta = '4|4  184 BPM  C Minor', bar = 4, bpm = 184, toneFix = 0, loop = { 7.826, 91.304 }, introLen = 1.304, teleport = { -1, 7.826 } },
     f2 = { meta = '4|4  110 BPM  D Major & B Minor', bar = 4, bpm = 110, toneFix = -1, loop = { 26.181, 113.454 } },
     f2r = { meta = '4|4  110 BPM  D Major & B Minor', bar = 4, bpm = 110, toneFix = -1, loop = { 26.181, 113.454 } },
-    f3 = { meta = '12|8  120 BPM  C Major & A Minor', bar = 4, bpm = 120, toneFix = -1, loop = { 48, 128 } },
-    f3r = { meta = '12|8  120 BPM  C Major & A Minor', bar = 4, bpm = 120, toneFix = -1, loop = { 48, 128 } },
+    f3 = { meta = '12|8  120 BPM  C Major & A Minor', bar = 4, bpm = 120, toneFix = -1, loop = { 48, 128 }, end1 = 128, end2 = 132 },
+    f3r = { meta = '12|8  120 BPM  C Major & A Minor', bar = 4, bpm = 120, toneFix = -1, loop = { 48, 128 }, end1 = 128, end2 = 132 },
     f4 = { meta = '5|8  180 BPM  F# Minor', bar = 5, bpm = 180, toneFix = 1, loop = { 13.333, 93.333 } },
     f4r = { meta = '5|8  180 BPM  F# Minor', bar = 5, bpm = 180, toneFix = 1, loop = { 13.333, 93.333 } },
     f5 = { meta = '4|4 6|8  130 BPM  E Minor', bar = 4, bpm = 130, toneFix = -1, loop = { 96, 169.846 } },
@@ -1052,7 +1052,11 @@ function Task_MusicEnd(manual)
         outroStart = D.loop[2]
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
     elseif BgmPlaying == 'f3' then
-        outroStart = D.loop[2]
+        if BGM.tell() < D.loop[1] then
+            outroStart = D.end1
+        else
+            outroStart = D.end2
+        end
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
     elseif BgmPlaying == 'f4' then
         outroStart = D.loop[2]
