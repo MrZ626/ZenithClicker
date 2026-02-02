@@ -1012,7 +1012,10 @@ function GAME.upFloor()
             end
             GAME.gigaTime = GAME.time
             GAME.setGigaspeedAnim(false)
-            if GAME.teramusic then IssueAchv('blazing_speed') end
+            if GAME.teramusic then
+                IssueAchv('blazing_speed')
+                GAME.finishTera = true
+            end
             GAME.stopTeraspeed('f10')
 
             local setStr = (GAME.anyUltra and 'u' or '') .. GAME.comboStr
@@ -2144,6 +2147,7 @@ function GAME.start()
     GAME.gigaCount = 0
     GAME.teraCount = 0
     GAME.teramusic = false
+    GAME.finishTera = false
     GAME.atkBuffer = 0
     GAME.atkBufferCap = 8 + (M.DH == 1 and M.NH < 2 and 2 or 0)
     GAME.shuffleMessiness = false
@@ -2475,6 +2479,7 @@ function GAME.finish(reason)
                 else
                     endFloorStr = endFloorStr .. "    F10 in " .. t
                 end
+                if GAME.finishTera then endFloorStr = endFloorStr .. "!!!" end
             end
             local l = {}
             for _, codepoint in STRING.u8codes(endFloorStr) do
