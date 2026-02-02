@@ -914,7 +914,13 @@ NegEvents = {
     { event = { 'attackMul', -.1 } },
     { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 2) end },
     { h = -460 }, { text = 'b5.begin' },
-    { h = -470 }, { text = 'b5.effStart', event = { 'slowmo', true } },
+    { h = -470 }, { text = 'b5.effStart' },
+    {
+        event = function()
+            GAME.slowmo = true
+            RefreshBGM()
+        end
+    },
     { h = -550 },
     { text = 'b5.noDH', color = 'lB', cond = function() return GAME.mod.DH == 0 end },
     {
@@ -930,7 +936,13 @@ NegEvents = {
             GAME.refreshRPC()
         end,
     },
-    { h = -650 }, { event = { 'slowmo', false } },
+    { h = -650 },
+    {
+        event = function()
+            GAME.slowmo = false
+            RefreshBGM()
+        end
+    },
 
     -- B6: Decayed Catacombs
     { h = -650 }, { event = { 'dmgDelay', -1, 'dmgTime', 1, 'maxQuestSize', 1 } },
