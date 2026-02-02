@@ -63,7 +63,7 @@ local ins, rem = table.insert, table.remove
 ---@field maxQuestSize number
 ---@field extraQuestBase number
 ---@field extraQuestVar number
----@field questFavor number Higher questFavor will result in mods generated consecutively more often, in design
+---@field questFavor number Increase by floor. Higher questFavor will result in mods generated consecutively more often, in design
 ---@field dmgHeal number
 ---@field dmgWrong number
 ---@field dmgWrongExtra number
