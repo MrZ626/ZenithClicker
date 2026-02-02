@@ -1737,6 +1737,16 @@ function Daemon_Fast()
                 W:reset()
             end
         end
+
+        if GAME.finishTera and GAME.endFloorFstr[1] and TASK.lock('teraScroll', .05) then
+            local l = GAME.endFloorFstr
+            local lastColor = l[#l - 1]
+            for i = #l - 1, 1, -2 do
+                l[i] = l[i - 2]
+            end
+            l[1] = lastColor
+            TEXTS.endFloor:set(l)
+        end
     end
 end
 
