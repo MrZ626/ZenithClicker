@@ -1110,7 +1110,7 @@ Achievements = {
         desc = [[Highest rank maintained for at least 1 min in one run]],
         quote = [[Ascending the tower at a stable, yet swift rate.]],
         credit = "@FMichael",
-        scoreSimp = function(rank) return "Rank " .. (rank == 26 and "26 (Max)" or rank) end,
+        scoreSimp = function(rank) return "Rank " .. (rank == 62 and "62 (Max)" or rank) end,
         rank = numberRank(10, 12, 13, 14, 15, 16, 18),
     },
     { -- dazed

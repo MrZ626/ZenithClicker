@@ -2095,7 +2095,7 @@ function GAME.start()
     GAME.totalSurge = 0
     GAME.heightBonus = 0
     GAME.peakRank = 1
-    GAME.rankTimer = TABLE.new(0, 26)
+    GAME.rankTimer = TABLE.new(0, 62)
 
     -- Time
     GAME.time = 0
@@ -2517,7 +2517,7 @@ function GAME.finish(reason)
 
             table.sort(maxCSP, function(a, b) return a[1] < b[1] end)
             local bestPos, bestSum = 0, 0
-            for i = min(mainRank[1], 26 - (rankTimeCount - 1)), max(mainRank[1] - (rankTimeCount - 1), 1), -1 do
+            for i = min(mainRank[1], 62 - (rankTimeCount - 1)), max(mainRank[1] - (rankTimeCount - 1), 1), -1 do
                 local sum = 0
                 for j = i, i + (rankTimeCount - 1) do
                     sum = sum + maxCSP[j][2]
@@ -2808,7 +2808,7 @@ function GAME.update(dt)
 
     -- Timers
     GAME.time = GAME.time + dt * GAME.timerMul
-    local r = min(GAME.rank, 26)
+    local r = min(GAME.rank, 62)
     GAME.rankTimer[r] = GAME.rankTimer[r] + dt
     GAME.questTime = GAME.questTime + dt
     GAME.floorTime = GAME.floorTime + dt
