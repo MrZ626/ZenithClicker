@@ -647,6 +647,13 @@ function GAME.questReady()
     for _, C in ipairs(CD) do C.touchCount, C.required, C.required2 = 0, false, false end
     for _, v in next, GAME.quests[1].combo do CD[v].required = true end
     if M.DP > 0 and GAME.quests[2] then for _, v in next, GAME.quests[2].combo do CD[v].required2 = true end end
+
+    local lastQ = GAME.quests[#GAME.quests].combo
+    if lastQ and #lastQ >= 4 then
+        local pwr = #lastQ * 2 - 7
+        if TABLE.find(lastQ, 'DH') then pwr = pwr + 1 end
+        SFX.play('garbagewindup_' .. MATH.clamp(pwr, 1, 5), 1, 0)
+    end
 end
 
 function GAME.startRevive()
@@ -1958,16 +1965,10 @@ function GAME.commit(auto)
 
         for i = dblCorrect and 2 or 1, 1, -1 do
             local p = dblCorrect and i or correct
-            if #GAME.quests < GAME.maxQuestCount + 1 then
+            if #GAME.quests < 4 then
                 GAME.genQuest()
             end
             rem(GAME.quests, p).name:release()
-            local combo = GAME.quests[correct] and GAME.quests[correct].combo or NONE
-            if #combo >= 4 then
-                local pwr = #combo * 2 - 7
-                if TABLE.find(combo, 'DH') then pwr = pwr + 1 end
-                SFX.play('garbagewindup_' .. MATH.clamp(pwr, 1, 5), 1, 0)
-            end
             GAME.questReady()
             GAME.totalQuest = GAME.totalQuest + 1
             if GAME.totalQuest == 40 then

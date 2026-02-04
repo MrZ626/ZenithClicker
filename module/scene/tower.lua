@@ -1133,7 +1133,7 @@ function scene.overDraw()
 
 
         -- Quests
-        for i = 1, #GAME.quests do
+        for i = 1, GAME.maxQuestCount do
             local Q = GAME.quests[i]
             local text = Q.name
             local kx = min(Q.k, 1550 / text:getWidth())
