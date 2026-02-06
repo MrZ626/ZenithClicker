@@ -642,7 +642,7 @@ function GAME.genQuest()
             k = .5,
             a = 0,
         })
-    until #GAME.quests >= 4
+    until #GAME.quests >= 3
 
     GAME.questTime = 0
     GAME.fault = false
