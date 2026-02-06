@@ -548,10 +548,6 @@ scene.widgetList = {
                 elseif data == 'cmd' then
                     SFX.play('cutin_superlobby', 1, 0, Tone(-2))
                     SCN.go('_console')
-                elseif data == 'cooldown' then
-                    STAT.startCD = not STAT.startCD
-                    MSG('dark', "Restart cooldown: " .. (STAT.startCD and "ON" or "OFF"))
-                    SFX.play(STAT.startCD and 'social_online' or 'social_offline')
                 elseif data == 'old_hitbox' then
                     STAT.oldHitbox = not STAT.oldHitbox
                     MSG('dark', "Force old hitbox: " .. (STAT.oldHitbox and "ON" or "OFF"))

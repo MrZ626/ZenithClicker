@@ -612,7 +612,6 @@ STAT = {
     sfx = 60,
     bgm = 100,
 
-    startCD = true,
     autoMute = false,
     oldHitbox = false,
 }

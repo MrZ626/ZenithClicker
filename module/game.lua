@@ -2743,7 +2743,7 @@ function GAME.finish(reason)
     TWEEN.new(GAME.anim_setMenuHide_rev):setDuration(GAME.slowmo and 2.6 or .26):setUnique('uiHide'):run()
     GAME.refreshRPC()
     if reason ~= 'forfeit' then
-        if STAT.startCD then TASK.lock('cannotStart', 1) end
+        TASK.lock('cannotStart', 1)
         TASK.lock('cannotFlip', .626)
     end
     TASK.removeTask_code(Task_MusicEnd)
