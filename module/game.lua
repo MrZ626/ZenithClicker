@@ -576,68 +576,74 @@ function GAME.shuffleCards(messiness)
 end
 
 function GAME.genQuest()
-    local combo = {}
-    local base = .72 + GAME.floor ^ .5 / 6 + GAME.extraQuestBase + icLerp(6200, 10000, GAME.height)
-    local var = GAME.floor * .26 * GAME.extraQuestVar
-    local r = MATH.clamp(base + var * abs(MATH.randNorm()), 1, GAME.maxQuestSize)
+    repeat
+        local combo = {}
+        local base = .72 + GAME.floor ^ .5 / 6 + GAME.extraQuestBase + icLerp(6200, 10000, GAME.height)
+        local var = GAME.floor * .26 * GAME.extraQuestVar
+        local r = MATH.clamp(base + var * abs(MATH.randNorm()), 1, GAME.maxQuestSize)
 
-    GAME.atkBuffer = GAME.atkBuffer + r
-    if GAME.atkBuffer > GAME.atkBufferCap then
-        r = r - (GAME.atkBuffer - GAME.atkBufferCap)
-        GAME.atkBuffer = GAME.atkBufferCap
-    end
-    GAME.atkBuffer = clamp(GAME.atkBuffer - (max(GAME.floor / 3, GAME.atkBufferCap / 4) + MATH.rand(-.62, .62)), 0, GAME.atkBufferCap)
-    if M.DP > 0 then r = r * (GAME[GAME.getLifeKey(true)] == 0 and 1.26 or 1.1) end
+        GAME.atkBuffer = GAME.atkBuffer + r
+        if GAME.atkBuffer > GAME.atkBufferCap then
+            r = r - (GAME.atkBuffer - GAME.atkBufferCap)
+            GAME.atkBuffer = GAME.atkBufferCap
+        end
+        GAME.atkBuffer = clamp(GAME.atkBuffer - (max(GAME.floor / 3, GAME.atkBufferCap / 4) + MATH.rand(-.62, .62)), 0, GAME.atkBufferCap)
+        if M.DP > 0 then r = r * (GAME[GAME.getLifeKey(true)] == 0 and 1.26 or 1.1) end
 
-    local pool = TABLE.copyAll(MD.weight)
+        local pool = TABLE.copyAll(MD.weight)
 
-    local lastQ = GAME.quests[#GAME.quests]
-    if lastQ then
-        -- Prevent 100% repeating
-        pool[lastQ.combo[1]] = 0
-        if M.NH == 2 then
-            -- More probability to repeat last quest's mods on rNH
-            for i = 2, #lastQ.combo do
-                pool[lastQ.combo[i]] = pool[lastQ.combo[i]] * 3.5
+        local lastQ = GAME.quests[#GAME.quests]
+        if lastQ then
+            -- Prevent 100% repeating
+            pool[lastQ.combo[1]] = 0
+            if M.NH == 2 then
+                -- More probability to repeat last quest's mods on rNH
+                for i = 2, #lastQ.combo do
+                    pool[lastQ.combo[i]] = pool[lastQ.combo[i]] * 3.5
+                end
             end
         end
-    end
-    local questCount = MATH.clamp(MATH.roundRnd(r), 1, GAME.maxQuestSize)
-    if questCount == 1 then
-        -- Prevent 1-mod quest being DP
-        pool.DP = 0
-    elseif M.DH == 2 then
-        -- Reduce DP on rDH
-        pool.DP = pool.DP * .5
-    end
-    for _ = 1, questCount do
-        local mod = MATH.randFreqAll(pool)
-        pool[mod] = 0
-        local p = TABLE.find(CD, CD[mod])
-        if p then
-            if p > 1 then
-                local left = CD[p - 1].id
-                pool[left] = max(pool[left] * (1 - GAME.questFavor * .01), 0)
+        local questCount = MATH.clamp(MATH.roundRnd(r), 1, GAME.maxQuestSize)
+        if questCount == 1 then
+            -- Prevent 1-mod quest being DP
+            pool.DP = 0
+        elseif M.DH == 2 then
+            -- Reduce DP on rDH
+            pool.DP = pool.DP * .5
+        end
+        for _ = 1, questCount do
+            local mod = MATH.randFreqAll(pool)
+            pool[mod] = 0
+            local p = TABLE.find(CD, CD[mod])
+            if p then
+                if p > 1 then
+                    local left = CD[p - 1].id
+                    pool[left] = max(pool[left] * (1 - GAME.questFavor * .01), 0)
+                end
+                if p < 9 then
+                    local right = CD[p + 1].id
+                    pool[right] = max(pool[right] * (1 - GAME.questFavor * .01), 0)
+                end
             end
-            if p < 9 then
-                local right = CD[p + 1].id
-                pool[right] = max(pool[right] * (1 - GAME.questFavor * .01), 0)
-            end
+
+            ins(combo, mod)
         end
 
-        ins(combo, mod)
-    end
+        if #combo >= 4 then
+            local pwr = #combo * 2 - 7
+            if TABLE.find(combo, 'DH') then pwr = pwr + 1 end
+            SFX.play('garbagewindup_' .. MATH.clamp(pwr, 1, 5), 1, 0)
+        end
 
-    ins(GAME.quests, {
-        combo = combo,
-        name = GC.newText(FONT.get(70), GAME.getComboName(TABLE.copy(combo), 'ingame')),
-        y = -100,
-        k = .5,
-        a = 0,
-    })
-end
+        ins(GAME.quests, {
+            combo = combo,
+            name = GC.newText(FONT.get(70), GAME.getComboName(TABLE.copy(combo), 'ingame')),
+            y = -100,
+            k = .5,
+            a = 0,
+        })
+    until #GAME.quests >= 4
 
-function GAME.questReady()
     GAME.questTime = 0
     GAME.fault = false
     GAME.faultWrong = false
@@ -647,13 +653,6 @@ function GAME.questReady()
     for _, C in ipairs(CD) do C.touchCount, C.required, C.required2 = 0, false, false end
     for _, v in next, GAME.quests[1].combo do CD[v].required = true end
     if M.DP > 0 and GAME.quests[2] then for _, v in next, GAME.quests[2].combo do CD[v].required2 = true end end
-
-    local lastQ = GAME.quests[#GAME.quests].combo
-    if lastQ and #lastQ >= 4 then
-        local pwr = #lastQ * 2 - 7
-        if TABLE.find(lastQ, 'DH') then pwr = pwr + 1 end
-        SFX.play('garbagewindup_' .. MATH.clamp(pwr, 1, 5), 1, 0)
-    end
 end
 
 function GAME.startRevive()
@@ -1965,11 +1964,7 @@ function GAME.commit(auto)
 
         for i = dblCorrect and 2 or 1, 1, -1 do
             local p = dblCorrect and i or correct
-            if #GAME.quests < 4 then
-                GAME.genQuest()
-            end
             rem(GAME.quests, p).name:release()
-            GAME.questReady()
             GAME.totalQuest = GAME.totalQuest + 1
             if GAME.totalQuest == 40 then
                 if GAME.comboStr == '' then SubmitAchv('clicker_speedrun', GAME.time) end
@@ -1982,6 +1977,7 @@ function GAME.commit(auto)
                 GAME.achv_plonkH = GAME.roundHeight
             end
         end
+        GAME.genQuest()
 
         if M.DP > 0 and (correct == 2 or dblCorrect) then
             if GAME.swapControl() then
@@ -2204,8 +2200,7 @@ function GAME.start()
     GAME.upFloor()
 
     TABLE.clear(GAME.quests)
-    for _ = 1, GAME.maxQuestCount do GAME.genQuest() end
-    GAME.questReady()
+    GAME.genQuest()
 
     TASK.removeTask_code(task_startSpin)
     TASK.new(task_startSpin)
