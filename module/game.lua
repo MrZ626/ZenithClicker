@@ -2072,6 +2072,7 @@ function GAME.start()
     GAME.invincible = false
 
     TASK.unlock('sure_quit')
+    TASK.unlock('sure_forfeit')
     SCN.scenes.tower.widgetList.help:setVisible(false)
     SCN.scenes.tower.widgetList.help2:setVisible(false)
     SCN.scenes.tower.widgetList.daily:setVisible(false)
