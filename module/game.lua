@@ -308,7 +308,7 @@ function GAME.getComboName(list, mode)
 
         local fstr = {}
 
-        -- Super Set
+        -- Super set
         local comboText
         if not GAME.anyRev and not TABLE.find(list, 'DP') then
             comboText = len == 8 and [["SWAMP WATER"]] or len == 7 and [["SWAMP WATER LITE"]]
@@ -321,7 +321,7 @@ function GAME.getComboName(list, mode)
             end
         end
 
-        -- Named Combo
+        -- Named combo
         local combo = (M.DH == 2 and ComboData.gameEX or ComboData.game)[table.concat(TABLE.sort(list), ' ')]
         if combo then
             fstr = combo.name:atomize()

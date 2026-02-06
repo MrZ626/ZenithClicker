@@ -1622,7 +1622,7 @@ function Daemon_Fast()
         if BgmPlaying then
             local bar = 2 * 60 / BgmData[BgmPlaying].bpm * 4
             local T = BGM.tell()
-            -- Throb tranpaency
+            -- Throb transparency
             ThrobAlpha.card = max(.626 - 2 * T / bar % 1, .626 - 2 * (T / bar - .375) % 1)
             ThrobAlpha.bg1 = .626 - 2 * T / bar % 1
             ThrobAlpha.bg2 = .626 - 2 * (T / bar - 1 / 32) % 1
@@ -1647,7 +1647,7 @@ function Daemon_Fast()
                 GAME.refreshLayout()
             end
 
-            -- Time Control
+            -- BGM time control
             if BgmLooping then
                 if BGM.tell() > BgmLooping[2] then
                     BGM.set('all', 'seek', BgmLooping[1] + (BGM.tell() - BgmLooping[2]))

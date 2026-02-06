@@ -193,7 +193,7 @@ function Initialize(save)
         STAT.version = 191
     end
 
-    -- Some Initialization
+    -- Some initialization
     for i = 1, #Cards do
         local f10 = Floors[9].top
         local id = Cards[i].id

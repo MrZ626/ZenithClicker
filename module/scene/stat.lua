@@ -58,22 +58,22 @@ local function calculateRating()
     local cap = 25000
     local cr = 0
 
-    -- Best Height (5K)
+    -- Best height (5K)
     cr = cr + 5000 * norm(MATH.icLerp(50, 6200, STAT.maxHeight), 6.2)
 
-    -- Best Time (5K)
+    -- Best time (5K)
     cr = cr + 5000 * norm(MATH.icLerp(420, 76.2, STAT.minTime), -.5)
 
-    -- Mod Completion (3K)
+    -- Mod completion (3K)
     cr = cr + 3000 * norm(MATH.icLerp(0, #ModData.deck * 2, crProgress.f10), .62)
 
-    -- Mod Speedrun (2K)
+    -- Mod speedrun (2K)
     cr = cr + 2000 * norm(MATH.icLerp(0, #ModData.deck * 2, crProgress.sr), .62)
 
-    -- Zenith Point (3K)
+    -- Zenith point (3K)
     cr = cr + 3000 * norm(MATH.icLerp(0, 26e4, STAT.zp), 4.2)
 
-    -- Daily Challenge (2K)
+    -- Daily challenge (2K)
     cr = cr + 2000 * norm(MATH.icLerp(0, 6200, STAT.dzp), 2.6)
 
     -- Achievement (5K)

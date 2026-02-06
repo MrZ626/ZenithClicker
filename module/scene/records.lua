@@ -514,7 +514,7 @@ function scene.draw()
         GC.arc('line', 'open', pw / 2, ph + 260, 200, t + 3.1416 * 1.5, t + 3.1416 * MATH.interpolate(1, 1.5, 0, -.6, cd ^ 2))
     end
 
-    -- Rev Glow
+    -- Rev glow
     gc_setColor(1, 1, 1)
     for i = 1, #CD do
         if set.sel[i] == 2 then
