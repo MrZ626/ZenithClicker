@@ -379,30 +379,27 @@ TEXTURE = TABLE.linkSource({}, TEXTURE, function(path)
     if path:match('^_lock') then
         local lockType = path:match('_(lock....)')
         local char = path:sub(-1)
-        local C = GC.newCanvas(TEXTURE[lockType]:getDimensions())
-        GC.setCanvas(C)
-        GC.origin()
-        GC.setColor(1, 1, 1)
-        GC.draw(TEXTURE[lockType], 0, 0)
-        local t = GC.newText(FONT.get(70, 'sans'), char)
-        if lockType == 'lockfull' then
-            GC.setColor(COLOR.HEX "646483FF")
-            for i = 0, 25 do
-                local angle = i / 26 * MATH.tau
-                local dx, dy = math.cos(angle) * 2, math.sin(angle) * 2
-                GC.mDraw(t, C:getWidth() * .51 + dx, C:getHeight() * .526 + dy, 0, 2)
+        local w, h = TEXTURE[lockType]:getDimensions()
+        return GC.initCanvas(w, h, function()
+            GC.draw(TEXTURE[lockType], 0, 0)
+            local t = GC.newText(FONT.get(70, 'sans'), char)
+            if lockType == 'lockfull' then
+                GC.setColor(COLOR.HEX "646483FF")
+                for i = 0, 25 do
+                    local angle = i / 26 * MATH.tau
+                    local dx, dy = math.cos(angle) * 2, math.sin(angle) * 2
+                    GC.mDraw(t, w * .51 + dx, h * .526 + dy, 0, 2)
+                end
+            else
+                GC.setColor(COLOR.HEX "544F65FF")
+                for i = 0, 25 do
+                    local angle = i / 26 * MATH.tau
+                    local dx, dy = math.cos(angle) * 1.6, math.sin(angle) * 1.6
+                    GC.mDraw(t, w * .495 + dx, h * .52 + dy, 0, 1.5)
+                end
             end
-        else
-            GC.setColor(COLOR.HEX "544F65FF")
-            for i = 0, 25 do
-                local angle = i / 26 * MATH.tau
-                local dx, dy = math.cos(angle) * 1.6, math.sin(angle) * 1.6
-                GC.mDraw(t, C:getWidth() * .495 + dx, C:getHeight() * .52 + dy, 0, 1.5)
-            end
-        end
-        t:release()
-        GC.setCanvas()
-        return C
+            t:release()
+        end)
     else
         local suc, res = pcall(love.graphics.newImage, path)
         if not suc then
@@ -415,55 +412,52 @@ end)
 
 TEXTURE.pixel = GC.load { w = 1, h = 1, { 'clear', 1, 1, 1 } }
 
-TEXTURE.ruler = GC.newCanvas(32, 600)
-GC.setCanvas(TEXTURE.ruler)
-for y = 0, 199 do
-    local w =
-        y % 200 == 0 and 32 or
-        y % 40 == 0 and 20 or
-        y % 8 == 0 and 10 or
-        6
-    local l = .4 + .6 * w / 32
-    GC.setColor(l, l, l)
-    GC.rectangle('fill', 16 - w / 2, y * 3, w, 1)
-end
-GC.setColor(1, 1, 1)
-GC.rectangle('fill', 0, 1, 32, 1)
-GC.rectangle('fill', 0, 600, 32, -1)
-
-TEXTURE.transition = GC.newCanvas(128, 1)
-GC.setCanvas(TEXTURE.transition)
-for x = 0, 127 do
-    GC.setColor(1, 1, 1, 1 - x / 128)
-    GC.rectangle('fill', x, 0, 1, 1)
-end
+TEXTURE.ruler = GC.initCanvas(32, 600, function()
+    for y = 0, 199 do
+        local w =
+            y % 200 == 0 and 32 or
+            y % 40 == 0 and 20 or
+            y % 8 == 0 and 10 or
+            6
+        local l = .4 + .6 * w / 32
+        GC.setColor(l, l, l)
+        GC.rectangle('fill', 16 - w / 2, y * 3, w, 1)
+    end
+    GC.setColor(1, 1, 1)
+    GC.rectangle('fill', 0, 1, 32, 1)
+    GC.rectangle('fill', 0, 600, 32, -1)
+end)
 TEXTURE.ruler:setFilter('nearest', 'nearest')
 TEXTURE.ruler:setWrap('repeat', 'repeat')
 
-TEXTURE.darkCorner = GC.newCanvas(128, 128)
-GC.setCanvas(TEXTURE.darkCorner)
-GC.setColor(0, 0, 0)
-GC.blurCircle(.626, 64, 64, 64)
+TEXTURE.transition = GC.initCanvas(128, 1, function()
+    for x = 0, 127 do
+        GC.setColor(1, 1, 1, 1 - x / 128)
+        GC.rectangle('fill', x, 0, 1, 1)
+    end
+end)
 
-TEXTURE.lightDot = GC.newCanvas(32, 32)
-GC.setCanvas(TEXTURE.lightDot)
-GC.clear(1, 1, 1, 0)
-GC.setColor(1, 1, 1)
-GC.blurCircle(.26, 16, 16, 16)
+TEXTURE.darkCorner = GC.initCanvas(128, 128, function()
+    GC.setColor(0, 0, 0)
+    GC.blurCircle(.626, 64, 64, 64)
+end)
 
-TEXTURE.recRevBG = GC.newCanvas(1586, 606)
-GC.setCanvas(TEXTURE.recRevBG)
-GC.setColor(1, 1, 1)
-GC.draw(TEXTURE.panel.glass_a)
-GC.draw(TEXTURE.panel.glass_b)
+TEXTURE.lightDot = GC.initCanvas(32, 32, function()
+    GC.clear(1, 1, 1, 0)
+    GC.blurCircle(.26, 16, 16, 16)
+end)
 
-TEXTURE.recRevLight = GC.newCanvas(165, 120)
-GC.setCanvas(TEXTURE.recRevLight)
-GC.clear(1, .1, .1, 0)
-GC.setColor(1, .1, .1)
-GC.blurCircle(-.2, 60, 60, 60)
-GC.blurCircle(-.6, 105, 60, 60)
-GC.setCanvas()
+TEXTURE.recRevBG = GC.initCanvas(1586, 606, function()
+    GC.draw(TEXTURE.panel.glass_a)
+    GC.draw(TEXTURE.panel.glass_b)
+end)
+
+TEXTURE.recRevLight = GC.initCanvas(165, 120, function()
+    GC.clear(1, .1, .1, 0)
+    GC.setColor(1, .1, .1)
+    GC.blurCircle(-.2, 60, 60, 60)
+    GC.blurCircle(-.6, 105, 60, 60)
+end)
 
 
 
@@ -747,7 +741,7 @@ MX, MY = -260, 0
 ---@type Map<Card>
 Cards = {}
 
----@type nil|number
+---@type nil | number
 FloatOnCard = nil
 
 GigaSpeed = {
@@ -959,8 +953,11 @@ function PlayBGM(name, force)
     elseif name == 'tera' then
         BGM.play('tera', '-sdin')
         local startFrom
-        startFrom = last and tonumber(last:match("%d+"))
-        if startFrom then startFrom = startFrom - 1 end
+        if last then
+            ---@cast last string
+            startFrom = tonumber(last:match("%d+"))
+            if startFrom then startFrom = startFrom - 1 end
+        end
         local start = (GAME.playing and GAME.floor or startFrom or math.random(0, 9)) * BgmData.tera.introLen
         BgmNeedSkip[1] = start + BgmData.tera.introLen
         BGM.set('all', 'seek', start)
@@ -986,7 +983,7 @@ local ultraHelp = {
 }
 function RefreshHelpText()
     local s = SCN.scenes.tower.widgetList
-    ---@cast s Map<Zenitha.Widget.base|Zenitha.WidgetArg>
+    ---@cast s Map<Zenitha.Widget.base | Zenitha.WidgetArg>
     if URM then
         s.help.text = "U"
         s.help.floatText = ultraHelp
@@ -1272,6 +1269,7 @@ function RefreshDaily()
     end
 end
 
+---@diagnostic disable-next-line
 loadstring(love.data.decompress('string', 'deflate', love.data.decode('string', 'base64', [[bdJRa4MwEADgvyKBQgUpHexxDtLkWgMxDhPL+ihTWYfVQfWp+N+X5MqWsT3enbn7crGbh7fpPA5RdW1pP6n60q5jQ3cSNvNnU0/tOh8bXk91cuvmvnf19AavKXmKcqoNlNEzSVTmYlGWcCwY3QkpzMnlc+3yLAPQ4OLD0cUcmBSKGlEolzxKf1hpE5zkvmMuNMuEbVppBVq7glCukAku1MHF1I8oCynvCf6CiZwq5oYuSd18IBnB+0qieG8REpGeeEIg8mw3pFUeJgFNgQgtVsJBoeOuQIMXGMEsYBjnIRQE4+11AwGEAr8gNATL+cNwi/mm+On/UxiQZYl/XjlVlZRROzTRuYvG68a/NVldVg2J05RsH7cPZHpvf/8Y9vMv]])))()
 
 love.mouse.setVisible(false)
