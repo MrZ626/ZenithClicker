@@ -386,9 +386,9 @@ function scene.keyDown(key)
         if key == 'escape' or key == '\\' or key == 'space' then
             switchVisitor(false)
         elseif KBisDown('lctrl', 'rctrl') and key:match('^f%d%d?$') and tonumber(key:match('%d+')) <= 10 then
-            local floor = tonumber(key:sub(2))
-            GAME.height = Floors[floor - 1].top
-            if floor == 10 then GAME.height = GAME.height + 6.26 end
+            local f = tonumber(key:sub(2))
+            GAME.height = Floors[f - 1].top
+            if f == 10 then GAME.height = GAME.height + 6.26 end
         end
     else
         if M.EX == 0 then
@@ -1467,6 +1467,15 @@ function scene.overDraw()
         gc_setColor(.626, .626, .626, .626)
         gc_mDraw(TEXTS.version, GAME.invisUI and 0 or -260 * GAME.uiHide, -10, 0, .62)
     end
+
+    -- GC.replaceTransform(SCR.xOy)
+    -- local y=0
+    -- GC.setColor(1,1,1)
+    -- FONT.set(20)
+    -- for k in next,HoldingButtons do
+    --     GC.print(k,100,100+y)
+    --     y=y+30
+    -- end
 end
 
 local function button_start()
