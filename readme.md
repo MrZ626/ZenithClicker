@@ -51,7 +51,7 @@ Each mod creates a unique experience by twisting the rules, but also increases t
 
 ### Messiness (`MS`)
 
-- Cards are **lightly shuffled** at the start of **floors 1, 2, 5, and 8**. The cards will always be in or adjacent to their correct position.
+- Cards are **lightly shuffled** at the start of **F1 F2 F5 F7 F9**. The cards will always be in or adjacent to their correct position.
 
 ### Gravity (`GV`)
 
