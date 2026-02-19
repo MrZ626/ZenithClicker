@@ -636,7 +636,7 @@ scene.widgetList = {
                 MSG('error', "Cannot import data from future versions\nPlease update your game first!")
                 SFX.play('staffwarning')
                 return
-            elseif res1.mod ~= 'vanilla' then
+            elseif res1.mod and res1.mod ~= 'vanilla' then
                 MSG('dark', "Cannot import data from modded version")
                 SFX.play('staffwarning')
                 return
