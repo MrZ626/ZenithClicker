@@ -115,7 +115,7 @@ Achievements = {
     { -- speed_player
         id = 'speed_player',
         name = "Speed Player",
-        desc = [[speedruns entered]],
+        desc = [[speedrun animations triggered]],
         quote = [[A simple strategy that can overwhelm even the most poised of masters.]],
         scoreSimp = function(n) return n .. " GIGAs" end,
         rank = numberRank(0, 26, 62, 120, 260, 620, 1260),
