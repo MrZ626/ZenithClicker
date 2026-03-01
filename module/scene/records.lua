@@ -45,6 +45,8 @@ local set = {
 }
 local showMP, showFloor = true, true
 
+local widgetSet = {}
+
 ---@class Record
 ---@field _list string[]
 ---@field _height number
@@ -154,9 +156,9 @@ local function refresh()
     cd = 1
     timer = math.random()
     showFloor = not (set.match == 'exact' or set.mode == 'speedrun')
-    for i = 1, 4 do scene.widgetList[#scene.widgetList - 3 - i]:setVisible(showFloor) end
+    for _, w in next, widgetSet.floor do w:setVisible(showFloor) end
     showMP = not (set.match == 'exact')
-    for i = 1, 4 do scene.widgetList[#scene.widgetList - 7 - i]:setVisible(showMP) end
+    for _, w in next, widgetSet.mp do w:setVisible(showMP) end
     ph = not (showFloor or showMP) and 180 or 300
 end
 local function query()
@@ -307,7 +309,7 @@ function scene.load()
         TABLE.shuffle(cardPos)
     end
     for i = 1, #CD do
-        local w = scene.widgetList[5 + i]
+        local w = widgetSet.mod[i]
         w.x = baseX - 60 + 100 * cardPos[i]
         w:resetPos()
     end
@@ -487,8 +489,7 @@ function scene.update(dt)
     local y0 = scroll1
     if math.abs(y0 - scroll) > .1 then
         scroll1 = MATH.expApproach(scroll1, scroll, dt * 26)
-        for i = 1, #scene.widgetList - 3 do
-            local w = scene.widgetList[i]
+        for _, w in next, widgetSet.scrollGroup do
             w._y = w._y + (y0 - scroll1)
         end
         GAME.bgH = max(GAME.bgH + (y0 - scroll1) / 355, 0)
@@ -650,65 +651,65 @@ function scene.overDraw()
     gc_print("VIEW ALL OF YOUR PERSONAL BESTS!", 15, -45, 0, .85, 1)
 end
 
-scene.widgetList = {}
+widgetSet.mode = {
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "ALTITUDE",
+        x = baseX - 60 + 100 * 2.2, y = baseY + 40,
+        disp = function() return set.mode == 'altitude' end,
+        code = function()
+            set.mode = 'altitude'
+            refresh()
+        end,
+    },
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "SPEEDRUN",
+        x = baseX - 60 + 100 * 4.3, y = baseY + 40,
+        disp = function() return set.mode == 'speedrun' end,
+        code = function()
+            set.mode = 'speedrun'
+            refresh()
+        end,
+    },
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "ZP",
+        x = baseX - 60 + 100 * 6.6, y = baseY + 40,
+        disp = function() return set.mode == 'zp' end,
+        code = function()
+            set.mode = 'zp'
+            refresh()
+        end,
+    },
+}
 
--- Mode
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "ALTITUDE",
-    x = baseX - 60 + 100 * 2.2, y = baseY + 40,
-    disp = function() return set.mode == 'altitude' end,
-    code = function()
-        set.mode = 'altitude'
-        refresh()
-    end,
-})
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "SPEEDRUN",
-    x = baseX - 60 + 100 * 4.3, y = baseY + 40,
-    disp = function() return set.mode == 'speedrun' end,
-    code = function()
-        set.mode = 'speedrun'
-        refresh()
-    end,
-})
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "ZP",
-    x = baseX - 60 + 100 * 6.6, y = baseY + 40,
-    disp = function() return set.mode == 'zp' end,
-    code = function()
-        set.mode = 'zp'
-        refresh()
-    end,
-})
+widgetSet.sort = {
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "BEST FIRST",
+        x = baseX - 60 + 100 * 8.3, y = baseY + 40,
+        disp = function() return set.order == 'first' end,
+        code = function()
+            set.order = 'first'
+            refresh()
+        end,
+    },
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "BEST LAST",
+        x = baseX - 60 + 100 * 10.6, y = baseY + 40,
+        disp = function() return set.order == 'last' end,
+        code = function()
+            set.order = 'last'
+            refresh()
+        end,
+    },
+}
 
--- Sort
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "BEST FIRST",
-    x = baseX - 60 + 100 * 8.3, y = baseY + 40,
-    disp = function() return set.order == 'first' end,
-    code = function()
-        set.order = 'first'
-        refresh()
-    end,
-})
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "BEST LAST",
-    x = baseX - 60 + 100 * 10.6, y = baseY + 40,
-    disp = function() return set.order == 'last' end,
-    code = function()
-        set.order = 'last'
-        refresh()
-    end,
-})
-
--- Mods
+widgetSet.mod = {}
 for i = 1, #CD do
-    table.insert(scene.widgetList, WIDGET.new {
+    table.insert(widgetSet.mod, WIDGET.new {
         type = 'checkBox',
         fillColor = { COLOR.lerp(MD.color[cardIDs[i]], COLOR.DD, .8) },
         frameColor = { COLOR.lerp(MD.color[cardIDs[i]], COLOR.DD, .26) },
@@ -722,191 +723,201 @@ for i = 1, #CD do
         end,
     })
 end
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "INCLUDE",
-    x = baseX - 60 + 100 * 1, y = baseY + 100 + 45,
-    disp = function() return set.match == 'include' end,
-    code = function()
-        set.match = 'include'
-        refresh()
-    end
-})
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "EXCLUDE",
-    x = baseX - 60 + 100 * 3, y = baseY + 100 + 45,
-    disp = function() return set.match == 'exclude' end,
-    code = function()
-        set.match = 'exclude'
-        refresh()
-    end
-})
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "EXACT",
-    x = baseX - 60 + 100 * 5, y = baseY + 100 + 45,
-    disp = function() return set.match == 'exact' end,
-    code = function()
-        set.match = 'exact'
-        refresh()
-    end
-})
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "INCLUDE+",
-    x = baseX - 60 + 100 * 7, y = baseY + 100 + 45,
-    disp = function() return set.match == 'include+' end,
-    code = function()
-        set.match = 'include+'
-        refresh()
-    end
-})
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "EXCLUDE+",
-    x = baseX - 60 + 100 * 9, y = baseY + 100 + 45,
-    disp = function() return set.match == 'exclude+' end,
-    code = function()
-        set.match = 'exclude+'
-        refresh()
-    end
-})
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "EXACT+",
-    x = baseX - 60 + 100 * 11, y = baseY + 100 + 45,
-    disp = function() return set.match == 'exact+' end,
-    code = function()
-        set.match = 'exact+'
-        refresh()
-    end
-})
-
--- MP
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'slider',
-    x = baseX + 40, y = baseY + 206, w = 480,
-    axis = { -9, 18, 1 },
-    frameColor = 'dD', fillColor = clr.D,
-    disp = function() return set.mp end,
-    code = function(value)
-        set.mp = value
-        refresh()
-    end,
-    sound_drag = 'rotate',
-})
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "ABOVE",
-    x = baseX - 60 + 100 * 1, y = baseY + 210 + 50,
-    disp = function() return set.mpComp == '>' end,
-    code = function()
-        set.mpComp = '>'
-        refresh()
-    end,
-})
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "BELOW",
-    x = baseX - 60 + 100 * 2.6, y = baseY + 210 + 50,
-    disp = function() return set.mpComp == '<' end,
-    code = function()
-        set.mpComp = '<'
-        refresh()
-    end,
-})
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "JUST",
-    x = baseX - 60 + 100 * 4.2, y = baseY + 210 + 50,
-    disp = function() return set.mpComp == '=' end,
-    code = function()
-        set.mpComp = '='
-        refresh()
-    end,
+TABLE.append(widgetSet.mod, {
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "INCLUDE",
+        x = baseX - 60 + 100 * 1, y = baseY + 100 + 45,
+        disp = function() return set.match == 'include' end,
+        code = function()
+            set.match = 'include'
+            refresh()
+        end
+    },
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "EXCLUDE",
+        x = baseX - 60 + 100 * 3, y = baseY + 100 + 45,
+        disp = function() return set.match == 'exclude' end,
+        code = function()
+            set.match = 'exclude'
+            refresh()
+        end
+    },
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "EXACT",
+        x = baseX - 60 + 100 * 5, y = baseY + 100 + 45,
+        disp = function() return set.match == 'exact' end,
+        code = function()
+            set.match = 'exact'
+            refresh()
+        end
+    },
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "INCLUDE+",
+        x = baseX - 60 + 100 * 7, y = baseY + 100 + 45,
+        disp = function() return set.match == 'include+' end,
+        code = function()
+            set.match = 'include+'
+            refresh()
+        end
+    },
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "EXCLUDE+",
+        x = baseX - 60 + 100 * 9, y = baseY + 100 + 45,
+        disp = function() return set.match == 'exclude+' end,
+        code = function()
+            set.match = 'exclude+'
+            refresh()
+        end
+    },
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "EXACT+",
+        x = baseX - 60 + 100 * 11, y = baseY + 100 + 45,
+        disp = function() return set.match == 'exact+' end,
+        code = function()
+            set.match = 'exact+'
+            refresh()
+        end
+    },
 })
 
--- Floors
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'slider',
-    x = baseX + 690, y = baseY + 206, w = 395,
-    axis = { 1, 10, 1 },
-    frameColor = 'dD', fillColor = clr.D,
-    disp = function() return set.floor end,
-    code = function(value)
-        set.floor = value
-        refresh()
-    end,
-    sound_drag = 'rotate',
-})
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "ABOVE",
-    x = baseX - 60 + 100 * 7.5, y = baseY + 210 + 50,
-    disp = function() return set.floorComp == '>' end,
-    code = function()
-        set.floorComp = '>'
-        refresh()
-    end,
-})
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "BELOW",
-    x = baseX - 60 + 100 * 9, y = baseY + 210 + 50,
-    disp = function() return set.floorComp == '<' end,
-    code = function()
-        set.floorComp = '<'
-        refresh()
-    end,
-})
-table.insert(scene.widgetList, WIDGET.new {
-    type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
-    textColor = clr.T, text = "JUST",
-    x = baseX - 60 + 100 * 10.6, y = baseY + 210 + 50,
-    disp = function() return set.floorComp == '=' end,
-    code = function()
-        set.floorComp = '='
-        refresh()
-    end,
-})
+widgetSet.mp = {
+    WIDGET.new {
+        type = 'slider',
+        x = baseX + 40, y = baseY + 206, w = 480,
+        axis = { -9, 18, 1 },
+        frameColor = 'dD', fillColor = clr.D,
+        disp = function() return set.mp end,
+        code = function(value)
+            set.mp = value
+            refresh()
+        end,
+        sound_drag = 'rotate',
+    },
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "ABOVE",
+        x = baseX - 60 + 100 * 1, y = baseY + 210 + 50,
+        disp = function() return set.mpComp == '>' end,
+        code = function()
+            set.mpComp = '>'
+            refresh()
+        end,
+    },
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "BELOW",
+        x = baseX - 60 + 100 * 2.6, y = baseY + 210 + 50,
+        disp = function() return set.mpComp == '<' end,
+        code = function()
+            set.mpComp = '<'
+            refresh()
+        end,
+    },
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "JUST",
+        x = baseX - 60 + 100 * 4.2, y = baseY + 210 + 50,
+        disp = function() return set.mpComp == '=' end,
+        code = function()
+            set.mpComp = '='
+            refresh()
+        end,
+    },
+}
 
--- Back
-table.insert(scene.widgetList, WIDGET.new {
-    name = 'back', type = 'button',
-    pos = { 0, 0 }, x = 60, y = 140, w = 160, h = 60,
-    color = { .15, .15, .15 },
-    sound_hover = 'menutap',
-    fontSize = 30, text = "    BACK", textColor = 'DL',
-    onClick = function() love.keypressed('escape') end,
-})
-table.insert(scene.widgetList, WIDGET.new {
-    name = 'stat', type = 'button',
-    pos = { 0, 0 }, x = 60, y = 230, w = 160, h = 60,
-    color = clr.btn1,
-    sound_hover = 'menutap',
-    fontSize = 30, text = "    RESET", textColor = clr.btn2,
-    onClick = function() love.keypressed('f13') end,
-})
--- Hint
-local hintText = [[
-Press Tab to switch between ALTITUDE / SPEEDRUN / ZP
-Press [ ] to sort by BEST FIRST / LAST
-Press 1-0 for F1-F10 (hold Ctrl for MP1-MP10)
-Press , . / for ABOVE / BELOW / JUST (hold Ctrl for MP)
-Press allspin keybinds to toggle mods (hold Ctrl for reverse)
-Press Shift to cycle through mod filter modes
-]]
-table.insert(scene.widgetList, WIDGET.new {
-    name = 'help', type = 'hint',
-    pos = { 1, 0 }, x = -50, y = 126, w = 80, cornerR = 40,
-    color = clr.L,
-    fontSize = 50, text = "?",
-    sound_hover = 'menutap',
-    labelPos = 'leftBottom',
-    floatFontSize = 30,
-    floatText = hintText,
-})
+widgetSet.floor = {
+    WIDGET.new {
+        type = 'slider',
+        x = baseX + 690, y = baseY + 206, w = 395,
+        axis = { 1, 10, 1 },
+        frameColor = 'dD', fillColor = clr.D,
+        disp = function() return set.floor end,
+        code = function(value)
+            set.floor = value
+            refresh()
+        end,
+        sound_drag = 'rotate',
+    },
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "ABOVE",
+        x = baseX - 60 + 100 * 7.5, y = baseY + 210 + 50,
+        disp = function() return set.floorComp == '>' end,
+        code = function()
+            set.floorComp = '>'
+            refresh()
+        end,
+    },
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "BELOW",
+        x = baseX - 60 + 100 * 9, y = baseY + 210 + 50,
+        disp = function() return set.floorComp == '<' end,
+        code = function()
+            set.floorComp = '<'
+            refresh()
+        end,
+    },
+    WIDGET.new {
+        type = 'checkBox', fillColor = clr.cbFill, frameColor = clr.cbFrame,
+        textColor = clr.T, text = "JUST",
+        x = baseX - 60 + 100 * 10.6, y = baseY + 210 + 50,
+        disp = function() return set.floorComp == '=' end,
+        code = function()
+            set.floorComp = '='
+            refresh()
+        end,
+    },
+}
+
+widgetSet.other = {
+    -- Back
+    WIDGET.new {
+        name = 'back', type = 'button',
+        pos = { 0, 0 }, x = 60, y = 140, w = 160, h = 60,
+        color = { .15, .15, .15 },
+        sound_hover = 'menutap',
+        fontSize = 30, text = "    BACK", textColor = 'DL',
+        onClick = function() love.keypressed('escape') end,
+    },
+    -- Reset
+    WIDGET.new {
+        name = 'stat', type = 'button',
+        pos = { 0, 0 }, x = 60, y = 230, w = 160, h = 60,
+        color = clr.btn1,
+        sound_hover = 'menutap',
+        fontSize = 30, text = "    RESET", textColor = clr.btn2,
+        onClick = function() love.keypressed('f13') end,
+    },    -- Hint
+    WIDGET.new {
+        name = 'help', type = 'hint',
+        pos = { 1, 0 }, x = -50, y = 126, w = 80, cornerR = 40,
+        color = clr.L,
+        fontSize = 50, text = "?",
+        sound_hover = 'menutap',
+        labelPos = 'leftBottom',
+        floatFontSize = 30,
+        floatText = STRING.trimIndent [[
+            Press Tab to switch between ALTITUDE / SPEEDRUN / ZP
+            Press [ ] to sort by BEST FIRST / LAST
+            Press 1-0 for F1-F10 (hold Ctrl for MP1-MP10)
+            Press , . / for ABOVE / BELOW / JUST (hold Ctrl for MP)
+            Press allspin keybinds to toggle mods (hold Ctrl for reverse)
+            Press Shift to cycle through mod filter modes
+    ]],
+    },
+}
+
+scene.widgetList = {}
+for _, v in next, widgetSet do TABLE.append(scene.widgetList, v) end
+
+widgetSet.scrollGroup = TABLE.subtractAll(TABLE.copy(scene.widgetList, 0), widgetSet.other)
 table.insert(scene.widgetList, WIDGET.new {
     name = 'easy', type = 'button',
     pos = { 0, 0 }, x = 60, y = 320, w = 160, h = 60,
