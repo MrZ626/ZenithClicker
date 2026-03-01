@@ -1,5 +1,6 @@
 return {
     ['eEX eVL eAS'] = "https://www.youtube.com/@TrevorSmithy",
+    ['ueEX eVL eAS'] = "https://youtu.be/KTc5yoCkLUk",
     ['eEX eNH eMS eGV uVL uDH eAS uDP'] = "https://www.youtube.com/watch?v=skGFNPpAuWw",
     ['eEX eNH eMS eGV rVL rDH eAS rDP'] = "https://www.youtube.com/watch?v=NQGA6eZmZyg",
     ['ueEX eGV'] = "https://www.youtube.com/watch?v=AWzfD3j54hQ",
