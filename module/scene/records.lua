@@ -367,7 +367,7 @@ function scene.keyDown(key, isRep)
         set.match = 'include'
         set.floor = 1
         set.floorComp = '>'
-        set.mp = 1
+        set.mp = 0
         set.mpComp = '>'
         set.mode = 'altitude'
         set.order = 'first'
