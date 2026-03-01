@@ -154,9 +154,9 @@ local function refresh()
     cd = 1
     timer = math.random()
     showFloor = not (set.match == 'exact' or set.mode == 'speedrun')
-    for i = 1, 4 do scene.widgetList[#scene.widgetList - 2 - i]:setVisible(showFloor) end
+    for i = 1, 4 do scene.widgetList[#scene.widgetList - 3 - i]:setVisible(showFloor) end
     showMP = not (set.match == 'exact')
-    for i = 1, 4 do scene.widgetList[#scene.widgetList - 6 - i]:setVisible(showMP) end
+    for i = 1, 4 do scene.widgetList[#scene.widgetList - 7 - i]:setVisible(showMP) end
     ph = not (showFloor or showMP) and 180 or 300
 end
 local function query()
@@ -888,15 +888,6 @@ table.insert(scene.widgetList, WIDGET.new {
     fontSize = 30, text = "    RESET", textColor = clr.btn2,
     onClick = function() love.keypressed('f13') end,
 })
-table.insert(scene.widgetList, WIDGET.new {
-    name = 'easy', type = 'button',
-    pos = { 0, 0 }, x = 60, y = 320, w = 160, h = 60,
-    color = { .15, .75, .15 },
-    sound_hover = 'menutap',
-    fontSize = 30, text = "    EASY", textColor = 'DG',
-    onClick = function() love.keypressed('f14') end,
-})
-
 -- Hint
 local hintText = [[
 Press Tab to switch between ALTITUDE / SPEEDRUN / ZP
@@ -915,6 +906,14 @@ table.insert(scene.widgetList, WIDGET.new {
     labelPos = 'leftBottom',
     floatFontSize = 30,
     floatText = hintText,
+})
+table.insert(scene.widgetList, WIDGET.new {
+    name = 'easy', type = 'button',
+    pos = { 0, 0 }, x = 60, y = 320, w = 160, h = 60,
+    color = { .15, .75, .15 },
+    sound_hover = 'menutap',
+    fontSize = 30, text = "    EASY", textColor = 'DG',
+    onClick = function() love.keypressed('f14') end,
 })
 
 return scene

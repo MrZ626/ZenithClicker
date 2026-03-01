@@ -372,6 +372,12 @@ return {
         eVL is just a +1 buff to all XP and eAS adding +1 to attacks with no downsides allows for some crazy fast runs.
         Thanks for playing my mod! WAH-BAAM! - Trevor Smithy
     ]],
+    ['ueEX eVL eAS'] = STRING.trimIndent [[
+        The Uneasy Pro G(r)am(m)ing Smithy, because, well, I'm Trevor Smithy and I'm a -- wait, what have you done?
+        Why? Why is it so hard to climb? Why are my attacks so weak? Oh no. I can hear the voices now.
+        You're going too fast.... They're coming for me. Run, climb while you still can! 
+        Whatever you do, DON'T STOP CLIMBIN' AND CLIMBIN' AND CLIMBIN' AND CLI—   
+    ]],
     --one of mine
     ['eEX uGV eDH eAS'] = STRING.trimIndent [[
         But It Isn't One Of Mine, the Easy Mode counterpart to Patience Is A Virtue.
@@ -468,6 +474,17 @@ return {
         Mikamiyu: "rMS VL bath water. need. be subtle about it iykyk"
         Trevor Smithy: "i'll consider it"                            
         Mikamiyu: "wait fr ong crazy"                                
+    ]],
+    ['eEX eNH eMS eGV rVL rDH eAS rDP'] = STRING.trimIndent [[
+        "Ha ha, here's the problem: too many toasters! You know what they say: all toasters toast toast."
+        He unplugs the extension cord abomination powering the room full of toasters, launching toast into the ceiling.
+    ]],
+    ['eEX eNH eMS eGV uVL uDH eAS uDP'] = STRING.trimIndent [[
+        "Okay chat, run a prediction: Will this hurt me? I am wearing a helmet, so I don't get brain damage."
+        "Death wish!" *splash* *ZZZZAAAAAPPPP* 
+        "FUUUUUUUUUUUUU!— FUUUUUUUUUUU!— UUUUUUUUUGGGGGH!—"
+        *silence* 
+        - Looking for a game to capture -
     ]],
     ['eAS'] = STRING.trimIndent [[
         SPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN

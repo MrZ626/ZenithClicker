@@ -3,6 +3,7 @@ local scene = {}
 
 local scroll, scroll1 = 0, 0
 local maxScroll = 620
+local positionConstant = 384
 
 local clr = {
     D = { COLOR.HEX '1F1F1FFF' },
@@ -132,7 +133,7 @@ addText({
 }, 0, 60, .26)
 
 local timer
-local devCommentary
+local devCommentary, devCommentaryLink, link
 function scene.load()
     MSG.clear()
     timer = 0
@@ -140,6 +141,7 @@ function scene.load()
     scroll, scroll1 = 0, -620
 
     devCommentary = require('module.devCommentary')
+    devCommentaryLink = require('module.devCommentaryLink')
     local setStr = table.concat(TABLE.sort(GAME.getHand(true)))
     local cID = table.concat(GAME.getHand(true), " ")
     if GAME.anyUltra then
@@ -156,11 +158,16 @@ function scene.load()
             text = devCommentary.notFinished
         else
             text = devCommentary[cID]
+            link = devCommentaryLink[cID]
         end
     else
         text = devCommentary.noComment
     end
     DevNoteText:setf(text:repD(STAT.uid), 2000, 'center')
+end
+
+function scene.unload()
+    link = nil
 end
 
 function scene.mouseMove(_, _, _, dy)
@@ -198,6 +205,13 @@ function scene.update(dt)
     scroll1 = MATH.expApproach(scroll1, scroll, dt * 26)
     GAME.bgH = math.max(GAME.bgH + (y0 - scroll1) / 355, 0)
     GAME.height = GAME.bgH
+    moveLink()
+end
+
+function moveLink()
+    local w = scene.widgetList
+    w.link.y = positionConstant - scroll1
+    w.link:resetPos()
 end
 
 local gc = love.graphics
@@ -232,6 +246,9 @@ function scene.draw()
         gc_mDraw(icon, -270, 100, 0, kx, ky)
     end
     gc_draw(AboutText)
+    if link then
+        gc_setColor(0, 0.62, 1)
+    end
     gc_draw(DevNoteText, 0, 285 - DevNoteText:getHeight() * (.68 / 2), 0, .68, .68, 1000, 0)
 
     gc_setColor(1, 1, 1, .2)
@@ -298,6 +315,17 @@ scene.widgetList = {
         sound_hover = 'menutap',
         fontSize = 30, text = "    BACK", textColor = 'DL',
         onClick = function() love.keypressed('escape') end,
+    },
+    WIDGET.new {
+        name = 'link', type = 'button_invis',
+        pos = { 0, 0 }, x = 890, y = 0, w = 1200, h = 130,
+        color = { 0, 0, 1, 0 },
+        onPress = function() 
+            if link then 
+                SFX.play('menuconfirm')
+                love.system.openURL(link)
+            end
+        end,
     },
 }
 
