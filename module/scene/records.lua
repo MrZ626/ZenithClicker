@@ -912,19 +912,19 @@ widgetSet.other = {
             Press Shift to cycle through mod filter modes
     ]],
     },
-}
-
-scene.widgetList = {}
-for _, v in next, widgetSet do TABLE.append(scene.widgetList, v) end
-
-widgetSet.scrollGroup = TABLE.subtractAll(TABLE.copy(scene.widgetList, 0), widgetSet.other)
-table.insert(scene.widgetList, WIDGET.new {
+    WIDGET.new {
     name = 'easy', type = 'button',
     pos = { 0, 0 }, x = 60, y = 320, w = 160, h = 60,
     color = { .15, .75, .15 },
     sound_hover = 'menutap',
     fontSize = 30, text = "    EASY", textColor = 'DG',
     onClick = function() love.keypressed('f14') end,
-})
+    },
+}
+
+scene.widgetList = {}
+for _, v in next, widgetSet do TABLE.append(scene.widgetList, v) end
+
+widgetSet.scrollGroup = TABLE.subtractAll(TABLE.copy(scene.widgetList, 0), widgetSet.other)
 
 return scene
