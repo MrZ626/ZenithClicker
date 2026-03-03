@@ -201,7 +201,7 @@ ModData = {
     --prio_name = { IN = 0, MS = 1, VL = 2, NH = 3, DH = 4, AS = 5, GV = 6, EX = 7, DP = 8, rIN = 0, rMS = 1, rVL = 2, rNH = 3, rDH = 4, rAS = 5, rGV = 6, rEX = 7, rDP = 8 },
     --prio_icon = { EX = 0, DP = 1, DH = 2, VL = 3, GV = 4, NH = 5, MS = 6, IN = 7, AS = 8, rEX = 0, rDP = 1, rDH = 2, rVL = 3, rGV = 4, rNH = 5, rMS = 6, rIN = 7, rAS = 8 },
     --prio_card = { EX = 0, NH = 1, MS = 2, GV = 3, VL = 4, DH = 5, IN = 6, AS = 7, DP = 8, rEX = 0, rNH = 1, rMS = 2, rGV = 3, rVL = 4, rDH = 5, rIN = 6, rAS = 7, rDP = 8 },
-    prio_name = { IN = 0, MS = 1, VL = 2, NH = 3, DH = 4, AS = 5, GV = 6, EX = 7, DP = 8, rIN = 0, rMS = 1, rVL = 2, rNH = 3, rDH = 4, rAS = 5, rGV = 6, rEX = 7, rDP = 8, eEX = 0, eIN = 1, eMS = 2, eVL = 3, eNH = 4, eDH = 5, eGV = 6, eDP = 7, eAS = 8 },
+    prio_name = { IN = 1, MS = 3, VL = 5, NH = 7, DH = 9, AS = 11, GV = 13, EX = 15, DP = 18, rIN = 1, rMS = 3, rVL = 5, rNH = 7, rDH = 9, rAS = 11, rGV = 13, rEX = 15, rDP = 16, eEX = 0, eIN = 2, eMS = 4, eVL = 6, eNH = 8, eDH = 10, eGV = 12, eDP = 14, eAS = 17 },
     prio_icon = { EX = 0, DP = 1, DH = 2, VL = 3, GV = 4, NH = 5, MS = 6, IN = 7, AS = 8, rEX = 0, rDP = 1, rDH = 2, rVL = 3, rGV = 4, rNH = 5, rMS = 6, rIN = 7, rAS = 8, eEX = 0, eDP = 1, eDH = 2, eVL = 3, eGV = 4, eNH = 5, eMS = 6, eIN = 7, eAS = 8 },
     prio_card = { EX = 0, NH = 1, MS = 2, GV = 3, VL = 4, DH = 5, IN = 6, AS = 7, DP = 8, rEX = 0, rNH = 1, rMS = 2, rGV = 3, rVL = 4, rDH = 5, rIN = 6, rAS = 7, rDP = 8, eEX = 0, eNH = 1, eMS = 2, eGV = 3, eVL = 4, eDH = 5, eIN = 6, eAS = 7, eDP = 8 },
     --
