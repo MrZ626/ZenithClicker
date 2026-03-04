@@ -398,6 +398,7 @@ ComboData = {
         { set = "eEX eIN",         name = "Perfect Vision"},
         { set = "eEX eAS",         name = "Gaming Addict"},
         -- eDP is already done as best friends
+        { set = "eNH eMS eGV eDH eIN eDP", name = "Rold Smythy"},
 
     },
 

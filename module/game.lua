@@ -122,6 +122,8 @@ local ins, rem = table.insert, table.remove
 ---@field teraLostHeight number
 ---@field customUltraCombo boolean
 ---@field anyChange boolean
+---@field spinCheck boolean
+---@field rollCheck boolean
 local GAME = {
     forfeitTimer = 0,
     exTimer = 0,
@@ -340,6 +342,8 @@ local function trimR(s) return s:sub(2) end
 function GAME.getComboName(list, mode)
     local len = #list
     if mode == 'ingame' then
+        GAME.spinCheck = false
+        GAME.rollCheck = false
         -- Empty
         if len == 0 then return {} end
 
@@ -646,6 +650,7 @@ function GAME.getComboName(list, mode)
                 M.DH == 2 and ComboData.gameEX or
                 ComboData.game
             )[cmbStr]
+            if combo and GAME.rollCheck then IssueAchv('roll') end
             if combo then return combo.name end
         end
 
@@ -1310,6 +1315,9 @@ function GAME.upFloor()
         if GAME.comboStr == '' then SubmitAchv('zenith_speedrun', roundTime) end
         SubmitAchv('zenith_speedrun_plus', roundTime)
         SubmitAchv('detail_oriented', GAME.totalFlip)
+        if GAME.comboZP < 0.26 then
+            IssueAchv('inefficiency')
+        end
     end
     PlayBGM('f' .. GAME.floor)
     GAME.refreshRPC()
@@ -1587,6 +1595,7 @@ function GAME.refreshCurrentCombo()
         end
     else
         if uneasyMode then -- if Uneasy Mode
+            IssueAchv('uneasy')
             if comboName == 'EASY HOLDLESS ALL-SPIN' then
                 comboName = '"THE PIXEL ARTIST"' -- Credit: LovelyStar
             elseif comboName:count('EASY') == 1 then 
@@ -1896,6 +1905,11 @@ function GAME.task_cancelAll(instant)
     for i = 1, #CD do
         needFlip[i] = spinMode or CD[i].active
     end
+    if GAME.spinCheck and spinMode then
+        GAME.spinCheck = false
+    else
+        GAME.spinCheck = spinMode
+    end
     local mnh = 0 -- mod no hold
     if M.NH == -1 then mnh = 1.5 else mnh = M.NH end --if easy, don't be negative because then negative interval
     local interval = not instant and .042 * (M.AS == 2 and .62 or 1) * (1 + 2 * mnh) * ((GAME.slowmo or GAME.eslowmo) and 2.6 or 1) * ((GAME.nightcore or GAME.enightcore) and 1 / 2.6 or 1)
@@ -1922,11 +1936,10 @@ function GAME.toggleEasy()
 end
 
 function GAME.task_toggleEasy()
-    if GAME.playing then return end
+    --if GAME.playing then return end
     local list = TABLE.copy(CD, 0)
     local needFlip = {}
     --Trevor Smithy
-    local spinMode = not instant and (M.AS ~= 0)
     for i = 1, #CD do
         if (CD[i].upright or CD[i].easy) and CD[i].active then
             needFlip[i] = true
@@ -1934,6 +1947,7 @@ function GAME.task_toggleEasy()
             needFlip[i] = false
         end
     end
+    GAME.rollCheck = GAME.spinCheck --if last was spin, then set roll, otherwise no
     local mnh = 0 -- mod no hold
     if M.NH == -1 then mnh = 1.5 else mnh = M.NH end --if easy, don't be negative because then negative interval
     local interval = .042 * (M.AS == 2 and .62 or 1) * (1 + 2 * mnh) * ((GAME.slowmo or GAME.eslowmo) and 2.6 or 1) * ((GAME.nightcore or GAME.enightcore) and 1 / 2.6 or 1)

@@ -67,6 +67,10 @@ local function task_refreshBGM()
 end
 function Card:setActive(auto, key)
     local eNHBlocksFaults = M.NH == -1 and true or false
+    if not auto then
+        GAME.spinCheck = false
+        GAME.rollCheck = false
+    end
     if TASK.getLock('cannotFlip') or GAME.playing and M.NH == 1 and not auto and self.active then
         self:flick()
         SFX.play('no')

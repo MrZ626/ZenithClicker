@@ -26,6 +26,8 @@ local easyHold = {}
 local startHour = os.date('%H')
 local startMin = os.date('%M')
 local startSec = os.date('%S')
+local comboTimer = 0
+local combo = 0
 
 ---@type Zenitha.Scene
 local scene = {}
@@ -210,10 +212,51 @@ local function keyTrigger(key)
             GAME.anyChange = false
             GAME.toggleEasy()
             if GAME.anyChange then
-                SFX.play('allclear')
+                if not GAME.playing then
+                    SFX.play('allclear')
+                else
+                    SFX.play('staffwarning')
+                    if M.DP ~= 0 then
+                        GAME.takeDamage(15, 'wrong', true)
+                    end
+                    GAME.takeDamage(M.NH == -1 and M.DP ~= 0 and 14 or M.NH == -1 and 19 or 20, 'wrong', false)
+                    if ACHV.oh_no_you_dont then
+                        if not GAME.playing then MSG("dark", "OH NO YOU DON'T!!!",10) end
+                    else
+                        IssueAchv('oh_no_you_dont')
+                    end
+                    if M.NH == -1 and (GAME.life > 0 or GAME.life2 > 0) then
+                        IssueAchv('cheat_death')
+                        MSG("dark", "OH NO YOU DON'T!!!",10)
+                        TEXT:add {
+                            text = 'WHAT ARE YOU DOING???',
+                            x = 800, y = 265, fontSize = 30, k = 1.5,
+                            style = 'score', duration = 5,
+                            inPoint = .1, outPoint = .26,
+                            color = 'lM',
+                        }
+                    end
+                end
             else
-                SFX.play('no')
-                MSG("dark", "Select upright mods to make Easy first!")
+                local buttonRemoved = false
+                if combo == 0 then
+                    SFX.play('no')
+                elseif combo < 16 then
+                    SFX.play('combo_' .. combo)
+                else
+                    SFX.play('combo_16')
+                    scene.widgetList.easy.x = -100
+                    scene.widgetList.easy:resetPos()
+                    if ACHV.could_you_not then
+                        MSG("dark", "COULD YOU NOT?",10)
+                    else
+                        IssueAchv('could_you_not')
+                    end
+                    buttonRemoved = true
+                end
+                if not buttonRemoved then MSG("dark", "Select upright mods to make Easy first!", 3) end
+                combo = combo + 1
+                comboTimer = 3
             end
             GAME.anyChange = false
         end
@@ -443,6 +486,10 @@ end
 local KBIsDown, MSIsDown = love.keyboard.isDown, love.mouse.isDown
 local expApproach = MATH.expApproach
 function scene.update(dt)
+    comboTimer = comboTimer - dt
+    if comboTimer <= 0 then
+        combo = 0
+    end
     if kbIsDown('left', 'right', 'up', 'down') then
         local spd = ZENITHA._cursor.speed * dt * (kbIsDown('lctrl', 'rctrl') and .6 or 1)
         if kbIsDown('left') then MX = MX - spd end

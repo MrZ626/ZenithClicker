@@ -324,6 +324,7 @@ scene.widgetList = {
             if link then 
                 SFX.play('menuconfirm')
                 love.system.openURL(link)
+                IssueAchv('www')
             end
         end,
     },

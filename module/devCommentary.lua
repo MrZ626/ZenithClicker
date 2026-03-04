@@ -507,4 +507,12 @@ return {
     -- Presbyopia ueEX, eIN+O, fastest time to floor 10
     -- Carpal Tunnel ueEX, eAS+L, fastest time to floor 10
     -- Prosopagnosia ueEX, eDP+T, fastest time to floor 10
+    -- Rolled Smithy
+    ['eNH eMS eGV eDH eIN eDP'] = STRING.trimIndent [[
+        Thou hast deciphered thee code, thine roll was thee key, as thou shan't forgo moderation,
+        thine lift did not let thee down, thine friend didn't desert thee. 
+        Thine tidiness made thou not cry, thine visibility meant thee shan't have to say goodbye, 
+        and thine salvation was achieved because thou didn't lie or hurt thee.
+    ]],
+
 }

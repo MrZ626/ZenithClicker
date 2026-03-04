@@ -46,6 +46,8 @@ local set = {
 local showMP, showFloor = true, true
 
 local widgetSet = {}
+local comboTimer = 0
+local combo = 0
 
 ---@class Record
 ---@field _list string[]
@@ -421,8 +423,25 @@ function scene.keyDown(key, isRep)
             SFX.play('card_select', .8)
             refresh()
         else
-            SFX.play('no')
-            MSG("dark", "Select mods to make Easy first!")
+            local buttonRemoved = false
+            if combo == 0 then
+                SFX.play('no')
+            elseif combo < 16 then
+                SFX.play('combo_' .. combo)
+            else
+                SFX.play('combo_16')
+                scene.widgetList.easy.x = -100
+                scene.widgetList.easy:resetPos()
+                if ACHV.could_you_not then
+                    MSG("dark", "COULD YOU NOT?",10)
+                else
+                    IssueAchv('could_you_not')
+                end
+                buttonRemoved = true
+            end
+            if not buttonRemoved then MSG("dark", "Select upright mods to make Easy first!", 3) end
+            combo = combo + 1
+            comboTimer = 3
         end
     elseif key == 'tab' then
         set.mode =
@@ -486,6 +505,10 @@ function scene.resize()
 end
 
 function scene.update(dt)
+    comboTimer = comboTimer - dt
+    if comboTimer <= 0 then
+        combo = 0
+    end
     local y0 = scroll1
     if math.abs(y0 - scroll) > .1 then
         scroll1 = MATH.expApproach(scroll1, scroll, dt * 26)

@@ -9,4 +9,5 @@ return {
     ['eEX uNH eGV eDH'] = "https://www.youtube.com/watch?v=_bE3PCRHq-A&t=79",
     ['eEX uGV eAS eDP'] = "https://www.youtube.com/watch?v=QDVUixC9k3s&t=34252",
     ['eEX eGV uVL eDH'] = "https://www.nationalchurchillmuseum.org/never-give-in-never-never-never.html#:~:text=You%20cannot%20tell,of%20the%20enemy.",
+    ['eNH eMS eGV eDH eIN eDP'] = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
 }
