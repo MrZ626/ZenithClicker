@@ -384,7 +384,7 @@ ComboData = {
         { set = "eMS eDH eAS",      name = "Clean Gamer"},
         { set = "eGV eIN",          name = "Humble Pupil"},
         { set = "EX eNH eDH",       name = "Emperor's Development"},
-        { set = "eEX eMS eVL eDH",  name = "Pro Cleaner"},
+        { set = "eEX eMS eVL eDH",  name = "Professional Cleaner"},
         { set = "eNH eAS",          name = "Overweight Gamer"},
         { set = "eEX eVL eAS",      name = "The Pro G(r)am(m)ing Smithy"},
         { set = "eEX eDP",          name = "Best Friends"},
