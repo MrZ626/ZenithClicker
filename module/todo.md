@@ -2,6 +2,9 @@
 
 Zenith Clicker Unabstracted still has many features it has planned, but aren't present. They occupy various categories and levels of priority.
 
+# Toppermost
+- Determine Recent AR achv info
+
 # In-Game UI
 
 ## Standard priority

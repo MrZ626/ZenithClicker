@@ -57,6 +57,20 @@ end
 
 ---@type Map<Achievement>
 Achievements = {
+    { title = "Zenith Clicker UNABSTRACTED"},
+    {
+        id = "zcu_single_rating",
+        name = "placeholder_name",
+        desc = "Highest isolated AR value of one game",
+        quote = "AHAHAHAHAHA!",
+        scoreSimp = function(n) return n .. " Tiers" end,
+        rank = numberRank(1,2,3,4,5,6,7),
+        type = "unranked"
+    },
+
+
+
+
     { title = "General" },
     { -- contender
         id = 'contender',

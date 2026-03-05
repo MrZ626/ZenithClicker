@@ -236,6 +236,7 @@ local function applyCombo(set)
 end
 
 function scene.load()
+    
     if SYSTEM == 'Web' and TASK.lock('web_warn') then
         MSG('warn',
             "[WARNING]\nThe web version is for trial purposes only.\nPlease note that your progress may be lost without warning, and this cannot be fixed.\nDownload the desktop version to keep playing in the future, with far better performance.\nThank you for your support!",

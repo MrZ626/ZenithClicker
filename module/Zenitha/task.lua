@@ -20,13 +20,13 @@ function TASK.announceLock(name, time)
         -- The ones in between will be condensed into a single message, this is MOST noticable on the Achv page.
         if time and time >= minTime and name ~= "display_lock_total" then
             if time >= condenseThreshold then                               -- Always display locks >0.5s
-                MSG._new({'info', 'Locked ' .. name .. " for " .. time .. "s"})
+                MSG._new({'info', 'Locked ' .. name .. " for " .. time .. "s", time=0.6})
 
             --elseif TASK.lock('display_lock', 0.3) then      -- Locks <1s are subject to cooldown
             --    MSG._new({'info', 'Locked ' .. name .. " for " .. time .. "s"})
 
             elseif TASK.lock('display_lock_total', 1) then  -- Display condensed locks as a total
-                MSG._new({'info', 'Locked ' .. fastLockCount .. ' small locks in the past second', time=0.8})
+                MSG._new({'info', 'Locked ' .. fastLockCount .. ' small locks in the past second', time=0.6})
                 fastLockCount = 0
             else
                 fastLockCount = fastLockCount +1
@@ -34,7 +34,7 @@ function TASK.announceLock(name, time)
         end
 
         if not time then
-            MSG._new({'info', 'Locked ' .. name})
+            MSG._new({'info', 'Locked ' .. name, time=0.6})
         end
 
 end
@@ -86,7 +86,7 @@ end
 ---Invalidate a lock
 ---@param name any
 function TASK.unlock(name)
-    MSG._new({'info', 'Unlocked ' .. name})
+    MSG._new({'info', 'Unlocked ' .. name, time =0.6})
 
     locks[name]=-1e99
 end

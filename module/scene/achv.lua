@@ -51,20 +51,22 @@ local overallProgress = {
     ptAll = 0,
     ptText = "0/0 Pts",
 }
+avhvPtNow = 0
 
 local function nameSortLT(i1, i2) return i1.name < i2.name end
 local function nameSortGT(i1, i2) return i1.name > i2.name end
 
-function RefreshAchvList(canShuffle)
+function RefreshAchvList(canShuffle, useRecent)
     overallProgress.rank = TABLE.new(0, 5)
     overallProgress.rank[0] = 0
     overallProgress.wreath = TABLE.new(0, 6)
     overallProgress.wreath[0] = 0
     overallProgress.ptGet = 0
     overallProgress.ptAll = 0
+                achvPtNow = 0
     TABLE.clear(achvList)
 
-    local WORKINGACHVS = showRecent and AchvRecent or ACHV
+    local WORKINGACHVS = useRecent and AchvRecent or ACHV
 
     local odCount, odCap = 0, 0
     for i = 1, #Achievements do
@@ -123,6 +125,8 @@ function RefreshAchvList(canShuffle)
             end
         end
     end
+
+    achvPtNow = overallProgress.ptGet
     if odCount >= odCap * .62 then IssueSecret('exceed_dev', true) end
     if odCount >= odCap * .26 then IssueSecret('exceed_dev_half', true) end
     OverDevProgressText = "ACHV scores better than Dev: " .. odCount .. "/" .. odCap
@@ -217,8 +221,8 @@ function RefreshAchvList(canShuffle)
     end
 end
 
-local function submit(id, score, silent, realSilent)
-    if SubmitAchv(id, score, silent, realSilent) then TASK.yieldT(0.1) end
+local function submit(id, score, silent, realSilent, notRecent)
+    if SubmitAchv(id, score, silent, realSilent, notRecent) then TASK.yieldT(0.1) end
 end
 local function issue(id, silent)
     if IssueAchv(id, silent) then TASK.yieldT(0.1) end
@@ -238,20 +242,20 @@ local function refreshAchivement()
     local maxMMP, maxZP = 0, 0
     for setStr, h in next, BEST.highScore do
         setStr = setStr:gsub('^u', '')
-        submit(setStr, h)
+        submit(setStr, h, false, false, true)
         local revCount = STRING.count(setStr, 'r')
         local count = (#setStr - revCount) / 2
         local len_noDP = count - (setStr:find('DP') and not setStr:find('rDP') and 1 or 0)
         if len_noDP >= 7 then
             for i = len_noDP, 7, -1 do
                 if revCount > 0 then swFin = SubmitAchv(sw[i - 6] .. '_plus', h, swFin) or swFin end
-                swFin = SubmitAchv(sw[i - 6], h, swFin) or swFin
+                swFin = SubmitAchv(sw[i - 6], h, swFin, false, true) or swFin
             end
         end
         local mp = count + revCount
         if revCount >= 2 and mp >= 8 then
             for m = mp, 8, -1 do
-                submit(RevSwampName[min(m, #RevSwampName)]:sub(2, -2):lower(), h, m < mp)
+                submit(RevSwampName[min(m, #RevSwampName)]:sub(2, -2):lower(), h, m < mp, false, true)
             end
         end
         maxMMP = max(maxMMP, h * mp)
@@ -259,32 +263,32 @@ local function refreshAchivement()
         for m in setStr:gmatch('r?%w%w') do l[m] = true end
         maxZP = max(maxZP, h * GAME.getComboZP(l))
     end
-    submit('multitasker', maxMMP)
-    submit('effective', maxZP)
-    submit('zenith_explorer', BEST.highScore[''] or 0)
-    submit('zenith_explorer', BEST.highScore[''] or 0)
-    submit('zenith_speedrun', BEST.speedrun[''] or 2600)
-    submit('zenith_explorer_plus', TABLE.maxAll(BEST.highScore) or 0)
-    submit('zenith_speedrun_plus', TABLE.minAll(BEST.speedrun) or 2600)
-    submit('contender', STAT.totalGame, true, true)
-    submit('clicker', STAT.totalFlip, true, true)
-    submit('elegance', STAT.totalPerfect, true, true)
-    submit('garbage_offensive', STAT.totalAttack, true, true)
-    submit('tower_climber', STAT.totalHeight, true, true)
-    submit('speed_player', STAT.totalGiga, true, true)
+    submit('multitasker', maxMMP, false, false, true)
+    submit('effective', maxZP, false, false, true)
+    submit('zenith_explorer', BEST.highScore[''] or 0, false, false, true)
+    submit('zenith_explorer', BEST.highScore[''] or 0, false, false, true)
+    submit('zenith_speedrun', BEST.speedrun[''] or 2600, false, false, true)
+    submit('zenith_explorer_plus', TABLE.maxAll(BEST.highScore) or 0, false, false, true)
+    submit('zenith_speedrun_plus', TABLE.minAll(BEST.speedrun) or 2600, false, false, true)
+    submit('contender', STAT.totalGame, true, true, true)
+    submit('clicker', STAT.totalFlip, true, true, true)
+    submit('elegance', STAT.totalPerfect, true, true, true)
+    submit('garbage_offensive', STAT.totalAttack, true, true, true)
+    submit('tower_climber', STAT.totalHeight, true, true, true)
+    submit('speed_player', STAT.totalGiga, true, true, true)
     local _t
     _t = 0
     for id in next, MD.name do _t = _t + min(BEST.speedrun[id], 2600) end
-    submit('zenith_speedrunner', _t, true)
+    submit('zenith_speedrunner', _t, true, false, true)
     _t = 0
     for id in next, MD.name do _t = _t + min(BEST.speedrun['r' .. id], 2600) end
-    submit('divine_speedrunner', _t, true)
+    submit('divine_speedrunner', _t, true, false, true)
     _t = 0
     for id in next, MD.name do _t = _t + BEST.highScore[id] end
-    submit('zenith_challenger', _t, true)
+    submit('zenith_challenger', _t, true, false, true)
     _t = 0
     for id in next, MD.name do _t = _t + BEST.highScore['r' .. id] end
-    submit('divine_challenger', _t, true)
+    submit('divine_challenger', _t, true, false, true)
 
     if not ACHV.false_god and MATH.sumAll(GAME.completion) >= 2 * #MD.deck then issue('false_god', ACHV.subjugation) end
 
@@ -351,7 +355,7 @@ function scene.keyDown(key, isRep)
         SCN.back('none')
     elseif key == 'r' then
         showRecent = not showRecent
-        RefreshAchvList()
+        RefreshAchvList(true, showRecent)
     end
     ZENITHA._cursor.active = true
     return true

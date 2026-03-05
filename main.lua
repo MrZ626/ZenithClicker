@@ -731,8 +731,8 @@ function SubmitRecent(id, score)
 end
 
 ---@return true? success
-function SubmitAchv(id, score, silent, realSilent)
-    SubmitRecent(id, score)
+function SubmitAchv(id, score, silent, realSilent, notRecent)
+    if not notRecent then SubmitRecent(id, score) end
     if TestMode then return end
     local A = Achievements[id]
     if not A then return end

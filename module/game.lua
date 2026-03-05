@@ -2378,7 +2378,7 @@ function GAME.finish(reason)
             STAT.totalF10 = STAT.totalF10 + 1
             if GAME.floorTime <= 6.26 then
                 STAT.clockOutCount = STAT.clockOutCount + 1
-                SubmitAchv('clock_out', STAT.clockOutCount, true)
+                SubmitAchv('clock_out', STAT.clockOutCount, true, false, true)
                 SubmitRecent('clock_out', 1)
             end
         end
@@ -2396,7 +2396,7 @@ function GAME.finish(reason)
                 if not STAT.dailyMastered then
                     STAT.dailyMastered = true
                     STAT.vipListCount = STAT.vipListCount + 1
-                    SubmitAchv('vip_list', STAT.vipListCount)
+                    SubmitAchv('vip_list', STAT.vipListCount, false, false, true)
                     SubmitRecent('vip_list', 1)
                 end
                 if GAME.comboStr:count('r') >= 2 then
@@ -2587,13 +2587,13 @@ function GAME.finish(reason)
             end
         end
 
-        SubmitAchv('contender', STAT.totalGame, true, true)
-        SubmitAchv('clicker', STAT.totalFlip, true, true)
-        SubmitAchv('elegance', STAT.totalPerfect, true, true)
-        SubmitAchv('garbage_offensive', STAT.totalAttack, true, true)
-        SubmitAchv('tower_climber', STAT.totalHeight, true, true)
-        SubmitAchv('tower_regular', STAT.totalFloor, true, true)
-        SubmitAchv('speed_player', STAT.totalGiga, true, true)
+        SubmitAchv('contender', STAT.totalGame, true, true, true)
+        SubmitAchv('clicker', STAT.totalFlip, true, true, true)
+        SubmitAchv('elegance', STAT.totalPerfect, true, true, true)
+        SubmitAchv('garbage_offensive', STAT.totalAttack, true, true, true)
+        SubmitAchv('tower_climber', STAT.totalHeight, true, true, true)
+        SubmitAchv('tower_regular', STAT.totalFloor, true, true, true)
+        SubmitAchv('speed_player', STAT.totalGiga, true, true, true)
 
         SubmitRecent('contender', 1)
         SubmitRecent('clicker', GAME.totalFlip)
@@ -2605,16 +2605,16 @@ function GAME.finish(reason)
 
         _t = 0
         for id in next, MD.name do _t = _t + min(BEST.speedrun[id], 2600) end
-        SubmitAchv('zenith_speedrunner', _t, true)
+        SubmitAchv('zenith_speedrunner', _t, true, false, true)
         _t = 0
         for id in next, MD.name do _t = _t + min(BEST.speedrun['r' .. id], 2600) end
-        SubmitAchv('divine_speedrunner', _t, true)
+        SubmitAchv('divine_speedrunner', _t, true, false, true)
         _t = 0
         for id in next, MD.name do _t = _t + BEST.highScore[id] end
-        SubmitAchv('zenith_challenger', _t, true)
+        SubmitAchv('zenith_challenger', _t, true, false, true)
         _t = 0
         for id in next, MD.name do _t = _t + BEST.highScore['r' .. id] end
-        SubmitAchv('divine_challenger', _t, true)
+        SubmitAchv('divine_challenger', _t, true, false, true)
 
         if #GAME.getHand() == 1 then
             if GAME.anyRev then
@@ -2746,6 +2746,10 @@ function GAME.finish(reason)
         end
         SubmitAchv('zenith_explorer_plus', GAME.roundHeight)
         SubmitAchv('supercharged_plus', GAME.achv_maxChain)
+
+
+        RefreshAchvList(false, true)
+        SubmitAchv('zcu_single_rating', achvPtNow)
     else
         TEXTS.endHeight:set("")
         TEXTS.endFloor:set("")
