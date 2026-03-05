@@ -2068,7 +2068,7 @@ function GAME.start()
     GAME.isUltraRun = GAME.anyUltra
     GAME.attackMul = GAME.isUltraRun and .62 or 1
     GAME.xpLockLevelMax = URM and M.NH == 2 and 1 or 5
-    GAME.leakSpeed = (M.EX > 0 and 5 or 3) + (GAME.fastLeak and 8 or 0)
+    GAME.leakSpeed = ((M.EX > 0 or M.DP == 2) and 5 or 3) + (GAME.fastLeak and 8 or 0)
     GAME.invincible = false
 
     TASK.unlock('sure_quit')
