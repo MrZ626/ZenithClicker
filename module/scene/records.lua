@@ -860,4 +860,7 @@ for _, v in next, widgetSet do TABLE.append(scene.widgetList, v) end
 
 widgetSet.scrollGroup = TABLE.subtractAll(TABLE.copy(scene.widgetList, 0), widgetSet.other)
 
+TABLE.delete(scene.widgetList, widgetSet.other[3])
+table.insert(scene.widgetList, widgetSet.other[3])
+
 return scene
