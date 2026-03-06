@@ -1761,7 +1761,7 @@ Achievements = {
     },
     { -- eDHeEXeMSeVL
         id = 'eDHeEXeMSeVL',
-        name = "Pro Cleaner",
+        name = "Professional Cleaner",
         desc = [[HFD WUT "Easy Mode", "Tidiness", "Tranquility" and "Salvation" mods]],
         quote = [[TODO]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
