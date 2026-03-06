@@ -45,7 +45,7 @@ jobs:
         id: assemble-base-name
         shell: bash
         run: |
-          BASE_NAME=Zenith_Clicker_${{ steps.app-info.outputs.version-string }}_${{ steps.git-info.outputs.commit-hash }}_#${{ GITHUB.RUN_NUMBER }}
+          BASE_NAME=Zenith_Clicker_Easy_Mode_${{ steps.app-info.outputs.version-string }}_${{ steps.git-info.outputs.commit-hash }}_#${{ GITHUB.RUN_NUMBER }}
           echo "base-name=$BASE_NAME" >> $GITHUB_OUTPUT
       - name: Create release
         if: ${{ startsWith(github.ref, 'refs/tags')}}
@@ -133,7 +133,7 @@ jobs:
           import os
           import re
           with open(os.getenv('GITHUB_OUTPUT'), 'a') as f:
-            f.write('bundle-id=org.mrz626.' + re.sub(r'[^A-Za-z0-9]+', '_', '${{ needs.get-info.outputs.app-name }}') + '\n')
+            f.write('bundle-id=org.trevor-smithy.' + re.sub(r'[^A-Za-z0-9]+', '_', '${{ needs.get-info.outputs.app-name }}') + '\n')
             f.write('product-name=' + re.sub(r'[^A-Za-z0-9]+', '-', '${{ needs.get-info.outputs.app-name }}') + '\n')
       - name: Download core love package
         uses: actions/download-artifact@v4
@@ -193,7 +193,7 @@ jobs:
           import re
           product_name = re.sub(r'[^A-Za-z0-9]+', '-', '${{ needs.get-info.outputs.app-name }}').strip('-').lower()
           with open(os.getenv('GITHUB_OUTPUT'), 'a') as f:
-            f.write('bundle-id=org.mrz626.' + product_name + '\n')
+            f.write('bundle-id=org.trevor-smithy.' + product_name + '\n')
             f.write('product-name=' + product_name + '\n')
       - name: Download core love package
         uses: actions/download-artifact@v4
