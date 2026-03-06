@@ -2544,14 +2544,14 @@ function GAME.start()
         slowMo = 0.5
     end
     --GAME.xpLockLevelMax = URM and M.NH == 2 and 1 or 5
-    --GAME.leakSpeed = (M.EX > 0 and 5 or 3) + (GAME.fastLeak and 8 or 0)
+    --GAME.leakSpeed = ((M.EX > 0 or M.DP == 2) and 5 or 3) + (GAME.fastLeak and 8 or 0)
     GAME.xpLockLevelMax = (((URM and M.NH == 2 and 1) or (M.EX == -1 and 0) or (5)) + (GAME.efastLeak and 5 or 0) + (M.NH == -1 and 2 or 0)) * (1 + slowMo)
     if GAME.xpLockLevelMax == 0 and GAME.eslowmo then
         GAME.xpLockLevelMax = 1.5
     end
     -- fast leak increases leakSpeed to 2.666 times normal rate, slow leak decreases leakSpeed to 1/2.666 times normal rate, eslowmo halves leak speed
     --GAME.leakSpeed = ((M.EX > 0 and 5 or 3) + (GAME.fastLeak and 8 or 0) + (M.EX == -1 and -1.2 or 0) + (GAME.efastLeak and -1.875 or 0) + (GAME.efastLeak and M.EX == -1 and (0.075 + 0.15) or 0)) / (1 + slowMo)
-    GAME.leakSpeed = ((M.EX > 0 and 5 or 3) + (GAME.fastLeak and 8 or GAME.efastLeak and -1.875 or 0)) / (1 + slowMo)
+    GAME.leakSpeed = (((M.EX > 0 or (M.DP == 2 and M.EX ~= -1)) and 5 or 3) + (GAME.fastLeak and 8 or GAME.efastLeak and -1.875 or 0)) / (1 + slowMo)
     --
     GAME.invincible = false
 

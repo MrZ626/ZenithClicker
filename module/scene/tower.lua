@@ -1884,11 +1884,19 @@ scene.widgetList = {
         labelPos = 'leftBottom',
         floatFontSize = 30,
         floatText = "", -- Dynamic text
-        onPress = function()
+        onPress = function(k)
             if usingTouch then
-                switchVisitor(not GAME.zenithTraveler)
+                if GAME.zenithTraveler then
+                    switchVisitor(false)
+                else
+                    if next(revHold) then
+                        switchVisitor(true)
+                    end
+                end
             else
-                switchVisitor(true)
+                if k == 2 or kbIsDown('lctrl', 'rctrl') or next(revHold) then
+                    switchVisitor(true)
+                end
             end
         end,
         visibleFunc = function() return not GAME.playing end,
