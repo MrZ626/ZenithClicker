@@ -251,8 +251,10 @@ local function refreshAchivement()
         end
         maxMMP = max(maxMMP, h * mp)
         local l = {}
-        for m in setStr:gmatch('r?%w%w') do l[m] = true end
-        maxZP = max(maxZP, h * GAME.getComboZP(l))
+        for m in setStr:gmatch('[re]?%w%w') do l[m] = true end
+        if GAME.getComboZP(l) >= 1 and easyCount == 0 then 
+            maxZP = max(maxZP, h * GAME.getComboZP(l))
+        end
     end
     submit('multitasker', maxMMP)
     submit('effective', maxZP)
