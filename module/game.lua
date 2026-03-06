@@ -1318,6 +1318,28 @@ function GAME.upFloor()
         if GAME.comboZP < 0.26 then
             IssueAchv('inefficiency')
         end
+        local comboName = GAME.getComboName(GAME.getHand(true), 'button')
+        if (URM and M.EX == -1 and GAME.comboStr:count('r') == 0) then
+            MSG("bright", comboName)
+            if comboName == 'EASY' then SubmitAchv('ueEX', roundTime)
+            elseif comboName == 'EASY MODERATION' and GAME.glassCard then
+                SubmitAchv('ueEXeNH', roundTime)
+            elseif comboName == 'EASY TIDINESS' and GAME.slowmo then
+                SubmitAchv('ueEXeMS', roundTime)
+            elseif comboName == 'EASY LIFT' and GAME.slowmo then
+                SubmitAchv('ueEXeGV', roundTime)
+            elseif comboName == 'EASY TRANQUILITY' and GAME.closeCard then
+                SubmitAchv('ueEXeVL', roundTime)
+            elseif comboName == 'EASY SALVATION' and GAME.nightcore then
+                SubmitAchv('ueEXeDH', roundTime)
+            elseif comboName == 'EASY VISIBILITY' and GAME.invisCard then
+                SubmitAchv('ueEXeIN', roundTime)
+            elseif comboName == 'EASY SPIN' and GAME.fastLeak then
+                SubmitAchv('ueEXeAS', roundTime)
+            elseif comboName == 'EASY FRIEND' and GAME.invisUI then
+                SubmitAchv('ueEXeDP', roundTime)
+            end
+        end
     end
     PlayBGM('f' .. GAME.floor)
     GAME.refreshRPC()
@@ -1598,6 +1620,14 @@ function GAME.refreshCurrentCombo()
             IssueAchv('uneasy')
             if comboName == 'EASY HOLDLESS ALL-SPIN' then
                 comboName = '"THE PIXEL ARTIST"' -- Credit: LovelyStar
+            elseif comboName == '"BATH WATER"' or comboName == '"BATH WITH A FRIEND"' then
+                comboName = comboName:gsub("BATH", "HARD BATH", 1)
+            elseif comboName:count('BATH') == 1 then
+                if M.DP == 0 or comboName == '"GAMER GIRL BATH WATER"'then
+                    comboName = comboName:gsub("WATER", "WATER?", 1)
+                else
+                    comboName = comboName:gsub("FRIEND", "FRIEND?", 1)
+                end
             elseif comboName:count('EASY') == 1 then 
                 comboName = comboName:gsub("EASY", "UNEASY", 1)
             elseif not GAME.playing then

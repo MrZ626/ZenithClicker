@@ -242,7 +242,7 @@ ModData = {
         GV = "GRAVITY",
         VL = "VOLATILITY",
         DH = "DOUBLE HOLE",
-        IN = "INVISIBLITY",
+        IN = "INVISIBILITY",
         AS = "ALL-SPIN",
         DP = "DUO",
         rEX = "TYRANNY",
@@ -261,7 +261,7 @@ ModData = {
         eGV = "LIFT",
         eVL = "TRANQUILITY",
         eDH = "SALVATION",
-        eIN = "VISIBLITY",
+        eIN = "VISIBILITY",
         eAS = "SPIN", --8
         eDP = "FRIEND",
     },
@@ -319,16 +319,16 @@ ComboData = {
         -- Trevor Smithy
         -- Bath Waters
         { set = "eEX eNH eMS eGV eVL eDH eIN eAS",      name = "Bath Water"},
-        { set = "eNH eMS eGV eVL eDH eIN eAS",          name = "Soft Bath Water"},
-        { set = "eEX eMS eGV eVL eDH eIN eAS",          name = "Cool Bath Water"},
-        { set = "eEX eNH eGV eVL eDH eIN eAS",          name = "Clean Bath Water"},
-        { set = "eEX eNH eMS eVL eDH eIN eAS",          name = "Bubbly Bath Water"},
-        { set = "eEX eNH eMS eGV eDH eIN eAS",          name = "Calm Bath Water"},
-        { set = "eEX eNH eMS eGV eVL eIN eAS",          name = "Holy Bath Water"},
-        { set = "eEX eNH eMS eGV eVL eDH eAS",          name = "Clear Bath Water"},
-        { set = "eEX eNH eMS eGV eVL eDH eIN",          name = "Plain Bath Water"},
-        { set = "EX eNH eMS eGV eVL eDH eIN eAS",       name = "Hard Bath Water"},
-        { set = "eEX NH eMS eGV eVL eDH eIN eAS",       name = "Warm Bath Water"},
+        { set = "eNH eMS eGV eVL eDH eIN eAS",          name = "Normal Bath Water"}, -- soft e, normal, hard ue, very hard
+        { set = "eEX eMS eGV eVL eDH eIN eAS",          name = "Warm Bath Water"}, -- cool e, warm, hot
+        { set = "eEX eNH eGV eVL eDH eIN eAS",          name = "Clean Bath Water"}, -- pure e, clean, dirty
+        { set = "eEX eNH eMS eVL eDH eIN eAS",          name = "Jacuzzi Bath Water"}, -- jacuzzi, bubbly e, flat
+        { set = "eEX eNH eMS eGV eDH eIN eAS",          name = "Still Bath Water"}, -- still, calm e, turbulent
+        { set = "eEX eNH eMS eGV eVL eIN eAS",          name = "Holy Bath Water"}, -- sacred e, holy, unholy
+        { set = "eEX eNH eMS eGV eVL eDH eAS",          name = "Cloudy Bath Water"}, -- clear e, cloudy, murky 
+        { set = "eEX eNH eMS eGV eVL eDH eIN",          name = "Plain Bath Water"}, -- plain, mystical e, magical
+        { set = "EX eNH eMS eGV eVL eDH eIN eAS",       name = "Very Hard Bath Water"},
+        { set = "eEX NH eMS eGV eVL eDH eIN eAS",       name = "Hot Bath Water"},
         { set = "eEX eNH MS eGV eVL eDH eIN eAS",       name = "Dirty Bath Water"},
         { set = "eEX eNH eMS GV eVL eDH eIN eAS",       name = "Flat Bath Water"},
         { set = "eEX eNH eMS eGV VL eDH eIN eAS",       name = "Turbulent Bath Water"},
@@ -336,16 +336,16 @@ ComboData = {
         { set = "eEX eNH eMS eGV eVL eDH IN eAS",       name = "Murky Bath Water"},
         { set = "eEX eNH eMS eGV eVL eDH eIN AS",       name = "Magical Bath Water"},
         { set = "eEX eNH eMS eGV eVL eDH eIN eAS eDP",      name = "Bath With A Friend"},
-        { set = "eNH eMS eGV eVL eDH eIN eAS eDP",          name = "Soft Bath With A Friend"},
-        { set = "eEX eMS eGV eVL eDH eIN eAS eDP",          name = "Cool Bath With A Friend"},
+        { set = "eNH eMS eGV eVL eDH eIN eAS eDP",          name = "Normal Bath With A Friend"},
+        { set = "eEX eMS eGV eVL eDH eIN eAS eDP",          name = "Warm Bath With A Friend"},
         { set = "eEX eNH eGV eVL eDH eIN eAS eDP",          name = "Clean Bath With A Friend"},
-        { set = "eEX eNH eMS eVL eDH eIN eAS eDP",          name = "Bubbly Bath With A Friend"},
-        { set = "eEX eNH eMS eGV eDH eIN eAS eDP",          name = "Calm Bath With A Friend"},
+        { set = "eEX eNH eMS eVL eDH eIN eAS eDP",          name = "Jacuzzi Bath With A Friend"},
+        { set = "eEX eNH eMS eGV eDH eIN eAS eDP",          name = "Still Bath With A Friend"},
         { set = "eEX eNH eMS eGV eVL eIN eAS eDP",          name = "Holy Bath With A Friend"},
-        { set = "eEX eNH eMS eGV eVL eDH eAS eDP",          name = "Clear Bath With A Friend"},
+        { set = "eEX eNH eMS eGV eVL eDH eAS eDP",          name = "Cloudy Bath With A Friend"},
         { set = "eEX eNH eMS eGV eVL eDH eIN eDP",          name = "Plain Bath With A Friend"},
-        { set = "EX eNH eMS eGV eVL eDH eIN eAS eDP",       name = "Hard Bath With A Friend"},
-        { set = "eEX NH eMS eGV eVL eDH eIN eAS eDP",       name = "Warm Bath With A Friend"},
+        { set = "EX eNH eMS eGV eVL eDH eIN eAS eDP",       name = "Very Hard Bath With A Friend"},
+        { set = "eEX NH eMS eGV eVL eDH eIN eAS eDP",       name = "Hot Bath With A Friend"},
         { set = "eEX eNH MS eGV eVL eDH eIN eAS eDP",       name = "Dirty Bath With A Friend"},
         { set = "eEX eNH eMS GV eVL eDH eIN eAS eDP",       name = "Flat Bath With A Friend"},
         { set = "eEX eNH eMS eGV VL eDH eIN eAS eDP",       name = "Turbulent Bath With A Friend"},
