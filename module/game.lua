@@ -2965,7 +2965,7 @@ function GAME.finish(reason)
             if #hand > 0 and oldPB < Floors[9].top and GAME.floor >= 10 then
                 local t
                 local size, color, duration
-                if GAME.comboMP >= 8 and GAME.comboStr:count('r') >= 2 then
+                if GAME.comboMP >= 8 and GAME.comboStr:count('r') >= 2 and GAME.comboStr:count('e') == 0 then
                     if not YOU_LOST_THE_GAME then YOU_LOST_THE_GAME = love.data.decompress('string', 'deflate', love.data.decode('string', 'base64', "NY5bboMwEEW3MgvIJib2BE9lbOoHKv1DgRaUBCi0XX/HlfJ5jubeO+8w9ftwXYdxOEVYf8d96pfP+3gccJuvN7Ev8JiPYV+3TcAWmMb7cEpwbPOyiPPwvffL8bHuDyGGr5++tJ0tVyYBqBxInzRFbzGxdwCBlEWuxRpsvQIwaJNQg05T7R3nGuA1ky0n7C4UnAegt8SuyhxNOc2hwuRDB5ACuqhIoqIpaH6OaKJSoDChsl2UzphDy604dI4NP//BlkLZx1BjRVoXd/GBYkJriz93MUqa8J8ar9B2TSTgCI4kDMkQyAd/")):split(',') end
                     t = YOU_LOST_THE_GAME[GAME.comboMP]
                     local p = (GAME.comboMP - 8) / 10
