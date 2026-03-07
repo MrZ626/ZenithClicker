@@ -124,6 +124,7 @@ local ins, rem = table.insert, table.remove
 ---@field anyChange boolean
 ---@field spinCheck boolean
 ---@field rollCheck boolean
+---@field comboSFX number
 local GAME = {
     forfeitTimer = 0,
     exTimer = 0,
@@ -172,6 +173,9 @@ local GAME = {
     numberRev = false,
 
     quests = {},
+    -- Trevor Smithy
+    questStack = {},
+    --
     reviveTasks = {},
     currentTask = false,
     lastFlip = false,
@@ -241,6 +245,7 @@ GAME.rank = 1
 GAME.xp = 0
 GAME.height = 0
 GAME.chain = 0
+GAME.comboSFX = 0
 
 local M = GAME.mod
 local MD = ModData
@@ -784,10 +789,23 @@ function GAME.genQuest()
                 end
             end
         end
+
+        if #GAME.questStack then
+            for i = 1, #GAME.questStack do
+                local stackQ = GAME.questStack[i]
+                for j = 1, #stackQ do
+                    pool[stackQ[j]] = pool[stackQ[j]] - 0.9*pool[stackQ[j]]
+                    --MSG("dark", "Mod/Weight:" .. stackQ[j] .. "/" .. pool[stackQ[j]])
+                end
+            end
+        end
         local questCount = MATH.clamp(MATH.roundRnd(r), 1, GAME.maxQuestSize)
         if questCount == 1 and M.DP ~= -1 then
             -- Prevent 1-mod quest being DP
             pool.DP = 0
+            if #GAME.questStack then
+                pool.DP = 0.1
+            end
         elseif M.DH == 2 then
             -- Reduce DP on rDH
             pool.DP = pool.DP * .5
@@ -2033,6 +2051,10 @@ function GAME.commit(auto)
     GAME.lastCommit = TABLE.copy(hand)
     for _, id in next, GAME.lastCommit do CD[id].inLastCommit = true end
 
+    local stackQuest 
+    if GAME.questStack[1] then
+        stackQuest = GAME.questStack[1]
+    end
     local q1 = TABLE.sort(GAME.quests[1].combo)
     local q2 = M.DP ~= 0 and GAME.quests[2] and TABLE.sort(GAME.quests[2].combo)
 
@@ -2082,17 +2104,86 @@ function GAME.commit(auto)
         end
     end
 
-    local correct, dblCorrect
-    if TABLE.equal(hand, q1) then
-        correct = 1
-        dblCorrect = q2 and TABLE.equal(hand, q2)
-    elseif q2 and TABLE.equal(hand, q2) then
-        correct = 2
-        GAME.incrementPrompt('pass_second')
+    local correct, dblCorrect, stackCorrect
+    if not stackQuest then
+        if TABLE.equal(hand, q1) then
+            correct = 1
+            dblCorrect = q2 and TABLE.equal(hand, q2)
+        elseif q2 and TABLE.equal(hand, q2) then
+            correct = 2
+            GAME.incrementPrompt('pass_second')
+        end
+    else
+        if TABLE.equal(hand, q1) then
+            correct = 1
+            dblCorrect = q2 and TABLE.equal(hand, q2)
+        elseif q2 and TABLE.equal(hand, q2) then
+            correct = 2
+            GAME.incrementPrompt('pass_second')
+        elseif TABLE.equal(hand, stackQuest) then
+            stackCorrect = 1
+        end
     end
 
-    if correct then
+    if stackCorrect then -- if stackerMode then
+        GAME.comboSFX = GAME.comboSFX + 1
+        if GAME.comboSFX > 16 then GAME.comboSFX = 16 end
+        if GAME.spikeCounter < 10 then
+            SFX.play('combo_' .. GAME.comboSFX)
+        else
+            SFX.play('combo_' .. GAME.comboSFX .. '_power')
+        end
+        local attack, xp
+        if GAME.comboSFX == 16 then
+            attack = 3
+            xp = 3
+        elseif GAME.comboSFX > 5 then
+            attack = 2
+            xp = 2
+        elseif GAME.comboSFX > 1 then
+            attack = 1
+            xp = 1
+        else
+            attack = 0
+            xp = 0
+        end
+        -- Spike
+        if GAME.spikeTimer <= 0 then
+            GAME.spikeTimer = 0
+            GAME.spikeCounter = 0
+            GAME.spikeCounterWeak = 0
+        end
+        GAME.spikeTimer = MATH.clamp(
+            GAME.spikeTimer + (attack) / (12.6 + GAME.spikeCounter / 26),
+            GAME.spikeCounter < 8 and 1.26 or .8,
+            6.2
+        )
+        attack = MATH.roundRnd(attack)
+
+        GAME.spikeCounter = GAME.spikeCounter + attack
+        GAME.maxSpike = max(GAME.maxSpike, GAME.spikeCounter)
+        GAME.spikeCounterWeak = GAME.spikeCounterWeak + attack
+        GAME.maxSpikeWeak = max(GAME.maxSpikeWeak, GAME.spikeCounterWeak)
+        if GAME.spikeCounter >= 8 then TEXTS.spike:set(tostring(GAME.spikeCounter)) end
+
+        GAME.incrementPrompt('send', attack)
+        GAME.totalAttack = GAME.totalAttack + attack
+
+        if attack > 0 then GAME.addHeight(attack * GAME.attackMul) end
+        GAME.addXP(attack + xp)
+        rem(GAME.questStack, 1)
+        GAME.cancelAll(true)
+        GAME.cancelBurn()
+    elseif correct then
         --Trevor Smithy
+        if GAME.comboSFX > 3 then
+            SFX.play('combobreak')
+        end
+        local comboMul = 1
+        if GAME.comboSFX > 0 then
+            comboMul = 1 + (GAME.comboSFX/4)
+        end
+        GAME.comboSFX = 0
         if #hand == 7 and not TABLE.find(hand, 'DP') and M.EX == -1 and M.GV == -1 and M.IN == -1 then
             IssueAchv('trip_to_hell')
         end
@@ -2412,8 +2503,8 @@ function GAME.commit(auto)
         GAME.totalSurge = GAME.totalSurge + surge
 
         if GAME.DPlock then attack = min(attack, URM and oldAllyLife * 2.6 or oldAllyLife * 4) end
-        if attack > 0 then GAME.addHeight(attack * GAME.attackMul) end
-        GAME.addXP(attack + xp)
+        if attack > 0 then GAME.addHeight(attack * GAME.attackMul * comboMul / (1 + (#GAME.questStack)/4)) end
+        GAME.addXP((attack + xp)* comboMul)
 
         -- rMS little shuffle
         if M.MS == 2 then
@@ -2487,6 +2578,10 @@ function GAME.commit(auto)
 
         if M.MS == 1 and GAME.floor >= 10 and GAME.totalQuest % 40 == 0 then GAME.readyShuffle(4) end
     else
+        if GAME.comboSFX > 3 then
+            SFX.play('combobreak')
+        end
+        GAME.comboSFX = 0
         if GAME.currentTask then
             if #hand >= 7 and not TABLE.find(hand, 'DP') then
                 GAME.incrementPrompt(#hand == 8 and 'commit_swamp' or 'commit_swamp_l')
@@ -2499,6 +2594,16 @@ function GAME.commit(auto)
             then
                 GAME.incrementPrompt('commit_reversed')
             end
+        end
+        -- Stacker Mode - push to stack
+        if #hand == 0 then
+            ins(GAME.questStack, 1, q1)
+            rem(GAME.quests, 1).name:release()
+            GAME.genQuest()
+            MSG.clear()
+            MSG("bright", GAME.questStack[1])
+            SFX.play("hold")
+            return
         end
 
         GAME.fault = true
@@ -2519,6 +2624,10 @@ function GAME.commit(auto)
         elseif M.AS == 1 then
             GAME.cancelBurn()
         end
+    end
+    MSG.clear()
+    if GAME.questStack[1] then
+        MSG("bright", GAME.questStack[1])
     end
 end
 
@@ -2723,6 +2832,7 @@ function GAME.start()
     GAME.upFloor()
 
     TABLE.clear(GAME.quests)
+    TABLE.clear(GAME.questStack)
     GAME.genQuest()
 
     TASK.removeTask_code(task_startSpin)
