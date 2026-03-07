@@ -1320,7 +1320,7 @@ function GAME.upFloor()
         end
         local comboName = GAME.getComboName(GAME.getHand(true), 'button')
         if (URM and M.EX == -1 and GAME.comboStr:count('r') == 0) then
-            MSG("bright", comboName)
+            --MSG("bright", comboName)
             if comboName == 'EASY' then SubmitAchv('ueEX', roundTime)
             elseif comboName == 'EASY MODERATION' and GAME.glassCard then
                 SubmitAchv('ueEXeNH', roundTime)
