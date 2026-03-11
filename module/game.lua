@@ -341,6 +341,10 @@ local function trimR(s) return s:sub(2) end
 ---@param mode? 'ingame' | 'button' | 'rpc' | 'record'
 function GAME.getComboName(list, mode)
     local len = #list
+    local easyList = TABLE.copy(list)
+    for i = 1, #list do
+        easyList[i] = 'e' .. list[i]
+    end
     if mode == 'ingame' then
         GAME.spinCheck = false
         GAME.rollCheck = false
@@ -363,7 +367,7 @@ function GAME.getComboName(list, mode)
         end
 
         -- Named combo
-        local combo = (M.DH == 2 and ComboData.gameEX or ComboData.game)[table.concat(TABLE.sort(list), ' ')]
+        local combo = (M.DH == 2 and ComboData.gameEX or STAT.easyName and ComboData.menu or ComboData.game)[table.concat(STAT.easyName and TABLE.sort(easyList) or TABLE.sort(list), ' ')]
         if combo then
             fstr = combo.name:atomize()
             if URM and M.DH == 2 then
@@ -416,19 +420,15 @@ function GAME.getComboName(list, mode)
         if M.DH == 2 then
             TABLE.shuffle(list)
         else
-            table.sort(list, modNameSorter)
+            table.sort(STAT.easyName and easyList or list, modNameSorter)
             if M.DH == 1 and MATH.roll((#list - 1) / 6.26) then
                 local r1, r2 = rnd(#list), rnd(#list - 1)
                 if r2 >= r1 then r2 = r2 + 1 end
                 list[r1], list[r2] = list[r2], list[r1]
             end
         end
-        local CardOrder = {}
         local colorModNumber = 1
         local messyText = ""
-        --local originalCardOrder = {}
-        --MSG('bright',"hello world")
-        -- General
         for i = 1, len - 1 do
             if M.IN == -1 and M.MS == -1 and M.AS ~= 0 then
                 -- code go here TODO
@@ -491,13 +491,24 @@ function GAME.getComboName(list, mode)
                     messyText = "o"
                 end
                 --ins(fstr, {COLOR.HEX "C29F68FF"})
-                ins(fstr, MD.adj[list[i]] .. " ")
+                if STAT.easyName then
+                    ins(fstr, MD.adj[easyList[i]] .. " ")
+                else
+                    ins(fstr, MD.adj[list[i]] .. " ")
+                end
                 --ins(fstr, messyText .. MD.adj[list[i]] .. " ")
                 --MSG('dark', "Added mod to quest: " .. MD.name[list[i]])
             else
-                ins(fstr, MD.textColor[list[i]])
-                ins(fstr, MD.adj[list[i]] .. " ")
-                
+                if STAT.easyName then
+                    ins(fstr, MD.textColor[easyList[i]])
+                else
+                    ins(fstr, MD.textColor[list[i]])
+                end
+                if STAT.easyName then
+                    ins(fstr, MD.adj[easyList[i]] .. " ")
+                else
+                    ins(fstr, MD.adj[list[i]] .. " ")
+                end
             end
         end
         if M.IN == -1 and M.MS == -1 and M.AS ~= 0 then
@@ -559,12 +570,24 @@ function GAME.getComboName(list, mode)
                 ins(fstr, MD.textColor['DP'])
                 messyText = "o"
             end
-            ins(fstr, MD.noun[list[len]])
+            if STAT.easyName then
+                ins(fstr, MD.noun[easyList[len]])
+            else
+                ins(fstr, MD.noun[list[len]])
+            end
             --ins(fstr, messyText .. MD.noun[list[len]])
             --MSG('dark', "Added mod to quest: " .. MD.name[list[len]])
         else
-            ins(fstr, MD.textColor[list[len]])
-            ins(fstr, MD.noun[list[len]])
+            if STAT.easyName then
+                ins(fstr, MD.textColor[easyList[len]])
+            else
+                ins(fstr, MD.textColor[list[len]])
+            end
+            if STAT.easyName then
+                ins(fstr, MD.noun[easyList[len]])
+            else
+                ins(fstr, MD.noun[list[len]])
+            end
         end
         if M.IN > 0 then
             local r = rnd(0, 3)
@@ -629,7 +652,7 @@ function GAME.getComboName(list, mode)
 
         -- Named Combo
         local combo
-        local cmbStr = table.concat(TABLE.sort(list), ' ')
+        local cmbStr = table.concat(STAT.easyName and GAME.playing and TABLE.sort(easyList) or TABLE.sort(list), ' ')
         if mode == 'record' then
             combo =
                 ComboData.menu[cmbStr] or
@@ -647,7 +670,8 @@ function GAME.getComboName(list, mode)
         else
             combo = (
                 (mode == 'rpc' or not GAME.playing) and ComboData.menu or
-                M.DH == 2 and ComboData.gameEX or
+                M.DH == 2 and ComboData.gameEX or 
+                STAT.easyName and ComboData.menu or
                 ComboData.game
             )[cmbStr]
             if combo and GAME.rollCheck then IssueAchv('roll') end
@@ -655,10 +679,12 @@ function GAME.getComboName(list, mode)
         end
 
         -- General
-        table.sort(list, modNameSorter)
+        table.sort(STAT.easyName and GAME.playing and M.DH ~= 2 and mode ~= 'rpc' and easyList or list, modNameSorter)
         local str = ""
-        for i = 1, len - 1 do str = str .. MD.adj[list[i]] .. " " end
-        return str .. MD.noun[list[len]]
+        for i = 1, len - 1 do 
+            str = str .. (STAT.easyName and GAME.playing and MD.adj[easyList[i]] or MD.adj[list[i]]) .. " " 
+        end
+        return str .. (STAT.easyName and GAME.playing and MD.noun[easyList[len]] or MD.noun[list[len]])
     end
 end
 
@@ -1318,7 +1344,14 @@ function GAME.upFloor()
         if GAME.comboZP < 0.26 then
             IssueAchv('inefficiency')
         end
-        local comboName = GAME.getComboName(GAME.getHand(true), 'button')
+        local comboName
+        if not STAT.easyName then
+            comboName = GAME.getComboName(GAME.getHand(true), 'button')
+        else
+            STAT.easyName = false
+            comboName = GAME.getComboName(GAME.getHand(true), 'button')
+            STAT.easyName = true
+        end
         if (URM and M.EX == -1 and GAME.comboStr:count('r') == 0) then
             --MSG("bright", comboName)
             if comboName == 'EASY' then SubmitAchv('ueEX', roundTime)

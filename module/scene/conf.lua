@@ -580,6 +580,9 @@ scene.widgetList = {
                 elseif data == 'UseAltName' then
                     UseAltName()
                     SFX.play('social_dm')
+                elseif data == 'UseEasyName' then
+                    STAT.easyName = not STAT.easyName
+                    SFX.play('social_dm')
                 elseif data == 'resubmit' then
                     if DAILYCMD then
                         ASYNC.runCmd('submitDaily', DAILYCMD)

@@ -660,6 +660,7 @@ STAT = {
 
     autoMute = false,
     oldHitbox = false,
+    easyName = false,
 }
 
 ACHV = {}
