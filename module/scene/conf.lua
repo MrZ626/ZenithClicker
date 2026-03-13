@@ -43,6 +43,9 @@ local songList = {
     f10r = "petrtech - Pseudo-Apotheosis",
     terar = "Dr Ocelot - Kugelhagel OVERDRIVE",
 
+    terae = "Trevor Smithy - Schnellfeuer BULLET Vocal Cover",
+    teral = "Trevor Smithy - Schnellfeuer BULLET Lyric Cover",
+    terael = "Trevor Smithy - Schnellfeuer BULLET Vocal & Lyric Cover",
     fomg = "Ronezkj15 - Strained Endurance",
 }
 local bgmColors = {
@@ -151,11 +154,15 @@ local function isLegalKey(key)
 end
 function scene.keyDown(key, isRep)
     if isRep then return true end
-    if KBisDown('lctrl', 'rctrl') and (key:match('^f%d%d?$') and tonumber(key:match('%d+')) <= 10 or key == 'o' or key == 'pause' or key == 'break') then
+    if KBisDown('lctrl', 'rctrl') and (key:match('^f%d%d?$') and tonumber(key:match('%d+')) <= 10 or key == 'o' or key == 'pause' or key == 'break' or key == 't') then
         if key == 'o' then key = 'fomg' end
-        if key == 'pause' or key == 'break' then key = 'tera' end
+        if key == 'pause' or key == 'break' or key == 't' then key = 'tera' end
         TASK.removeTask_code(Task_MusicEnd)
-        if KBisDown('lshift', 'rshift') then key = key .. 'r' end
+        if KBisDown('lshift', 'rshift') then key = key .. 'r' 
+        elseif KBisDown('lalt', 'ralt') and key == 'tera' then key = key .. 'e' end
+        if (key == 'terae' or key == 'tera') and (GAME.mod.EX == -1 and URM and GAME.mod.NH < 2 and GAME.mod.MS < 2 and GAME.mod.GV < 2 and GAME.mod.VL < 2 and GAME.mod.DH < 2 and GAME.mod.IN < 2 and GAME.mod.AS < 2 and GAME.mod.DP < 2) then
+            key = key .. 'l'
+        end
         PlayBGM(key, true)
         if not MusicPlayer then
             MusicPlayer = true
@@ -303,8 +310,198 @@ function scene.draw()
 
         gc_setColor(clr.L)
         gc_rectangle('fill', 0, 46, len, 4)
-        if BgmPlaying == 'tera' or BgmPlaying == 'terar' or BgmPlaying == 'terae' or BgmPlaying == 'teral' or BgmPlaying == 'terael'then
+        if BgmPlaying == 'tera' or BgmPlaying == 'terar' or BgmPlaying == 'terae' or BgmPlaying == 'teral' or BgmPlaying == 'terael' then
             gc_setColor(COLOR.rainbow_light(2.6 * t))
+            local height = 245
+            local lenMod = 0
+            local lyric = ''
+            local hlyric = ''
+            if BgmPlaying == 'teral' or BgmPlaying == 'terael' then
+                local time = playTime
+                local climb = playTime - 36.1 -- climb
+                local climbEnd = playTime - 36.8 -- climb end
+                local climb2 = playTime - 100.1
+                local climbEnd2 = playTime - 100.8
+                if BgmPlaying == 'teral' then
+                    time = time + 0.1
+                    climb = climb + 0.1
+                    climbEnd = climbEnd + 0.1
+                    climb2 = climb2 + 0.1
+                    climbEnd2 = climbEnd2 + 0.1
+                end
+                if time >= 20 and time < 22.8 then
+                    lyric = 'Welcome into the Zenith Tower'
+                elseif time >= 22.8 and time < 25.5 then
+                    lyric = 'where anyone can try their luck'
+                elseif time >= 25.5 and time < 28.1 then
+                    lyric = 'at the climb to the top of the floors.'
+                elseif time >= 28.1 and time < 30.8 then
+                    lyric = "But, you'll come to a realization"
+                elseif time >= 30.8 and time < 34.1 then
+                    lyric = 'that only one can truly be with the'
+                elseif time >= 34.1 and time < 36.1 then
+                    lyric = "stars at the top. So now you're"
+                elseif (climb >= 0 and climbEnd < 0) or (climb2 >= 0 and climbEnd2 < 0) then -- 1
+                    lyric = "CLIMB'IN"
+                    height = height - 0 - (time < 100 and climb or climb2) * 10
+                elseif (climbEnd >= 0 and climb < 1) or (climbEnd2 >= 0 and climb2 < 1) then
+                    lyric = "and"
+                    height = height - 10
+                elseif (climb >= 1 and climbEnd < 1) or (climb2 >= 1 and climbEnd2 < 1) then
+                    lyric = "CLIMB'IN"
+                    height = height - 10 - ((time < 100 and climb or climb2)-1) * 10
+                elseif (climbEnd >= 1 and climb < 2) or (climbEnd2 >= 1 and climb2 < 2) then
+                    lyric = "and"
+                    height = height - 20
+                elseif (climb >= 2 and climbEnd < 2) or (climb2 >= 2 and climbEnd2 < 2) then
+                    lyric = "CLIMB'IN"
+                    height = height - 20 - ((time < 100 and climb or climb2)-2) * 10
+                elseif (climbEnd >= 2 and climb < 3) or (climbEnd2 >= 2 and climb2 < 3) then
+                    lyric = "and"
+                    height = height - 30
+                elseif (climb >= 3 and climbEnd < 3) or (climb2 >= 3 and climbEnd2 < 3) then
+                    lyric = "CLIMB'IN"
+                    height = height - 30 - ((time < 100 and climb or climb2)-3) * 10
+                elseif (climbEnd >= 3 and climb < 4) or (climbEnd2 >= 3 and climb2 < 4) then
+                    lyric = "keep on"
+                    height = height - 40 + ((time < 100 and climbEnd or climbEnd2)-3) * 133
+                elseif (climb >= 4 and climbEnd < 4) or (climb2 >= 4 and climbEnd2 < 4) then -- 2
+                    lyric = "CLIMB'IN"
+                    height = height - 0 - ((time < 100 and climb or climb2)-4) * 10
+                elseif (climbEnd >= 4 and climb < 5) or (climbEnd2 >= 4 and climb2 < 5) then
+                    lyric = "and"
+                    height = height - 10
+                elseif (climb >= 5 and climbEnd < 5) or (climb2 >= 5 and climbEnd2 < 5) then
+                    lyric = "CLIMB'IN"
+                    height = height - 10 - ((time < 100 and climb or climb2)-5) * 10
+                elseif (climbEnd >= 5 and climb < 6) or (climbEnd2 >= 5 and climb2 < 6) then
+                    lyric = "and"
+                    height = height - 20
+                elseif (climb >= 6 and climbEnd < 6) or (climb2 >= 6 and climbEnd2 < 6) then
+                    lyric = "CLIMB'IN"
+                    height = height - 20 - ((time < 100 and climb or climb2)-6) * 10
+                elseif (climbEnd >= 6 and climb < 7) or (climbEnd2 >= 6 and climb2 < 7) then
+                    lyric = "and"
+                    height = height - 30
+                elseif (climb >= 7 and climb < 8) or (climb2 >= 7 and climb2 < 8) then
+                    lyric = "just keep on"
+                    height = height - 30 + ((time < 100 and climb or climb2)-7) * 30   
+                elseif (climb >= 8 and climbEnd < 8) or (climb2 >= 8 and climbEnd2 < 8) then -- 1
+                    lyric = "CLIMB'IN"
+                    height = height - 0 - ((time < 100 and climb or climb2)-8) * 10
+                elseif (climbEnd >= 8 and climb < 9) or (climbEnd2 >= 8 and climb2 < 9) then
+                    lyric = "and"
+                    height = height - 10
+                elseif (climb >= 9 and climbEnd < 9) or (climb2 >= 9 and climbEnd2 < 9) then
+                    lyric = "CLIMB'IN"
+                    height = height - 10 - ((time < 100 and climb or climb2)-9) * 10
+                elseif (climbEnd >= 9 and climb < 10) or (climbEnd2 >= 9 and climb2 < 10) then
+                    lyric = "and"
+                    height = height - 20
+                elseif (climb >= 10 and climbEnd < 10) or (climb2 >= 10 and climbEnd2 < 10) then
+                    lyric = "CLIMB'IN"
+                    height = height - 20 - ((time < 100 and climb or climb2)-10) * 10
+                elseif (climbEnd >= 10 and climb < 11) or (climbEnd2 >= 10 and climb2 < 11) then
+                    lyric = "and"
+                    height = height - 30
+                elseif (climb >= 11 and climbEnd < 11) or (climb2 >= 11 and climbEnd2 < 11) then
+                    lyric = "CLIMB'IN"
+                    height = height - 30 - ((time < 100 and climb or climb2)-11) * 10
+                elseif (climbEnd >= 11 and climb < 12) or (climbEnd2 >= 11 and climb2 < 12) then
+                    lyric = "keep on"
+                    height = height - 40 + ((time < 100 and climbEnd or climbEnd2)-11) * 133
+                elseif (climb >= 12 and climbEnd < 12) or (climb2 >= 12 and climbEnd2 < 12) then -- 2
+                    lyric = "CLIMB'IN"
+                    height = height - 0 - ((time < 100 and climb or climb2)-12) * 10
+                elseif (climbEnd >= 12 and climb < 13) or (climbEnd2 >= 12 and climb2 < 13) then
+                    lyric = "and"
+                    height = height - 10
+                elseif (climb >= 13 and climbEnd < 13) or (climb2 >= 13 and climbEnd2 < 13) then
+                    lyric = "CLIMB'IN"
+                    height = height - 10 - ((time < 100 and climb or climb2)-13) * 10
+                elseif (climbEnd >= 13 and climb < 14) or (climbEnd2 >= 13 and climb2 < 14) then
+                    lyric = "and"
+                    height = height - 20
+                elseif (climb >= 14 and climbEnd < 14) or (climb2 >= 14 and climbEnd2 < 14) then
+                    lyric = "CLIMB'IN"
+                    height = height - 20 - ((time < 100 and climb or climb2)-14) * 10
+                elseif (climbEnd >= 14 and climb < 15) or (climbEnd2 >= 14 and climb2 < 15) then
+                    lyric = "and"
+                    height = height - 30
+                elseif (climb >= 15 and climb < 16) or (climb2 >= 15 and climb2 < 16) then
+                    lyric = "don't slow down"
+                    height = height - 30 + ((time < 100 and climb or climb2)-15) * 30
+                elseif (time >= 52 and time < 84) or (time >= 116 and time < 148) then -- climb harmony
+                    local climbTime = time < 100 and (playTime-52)%4 or (playTime-116)%4
+                    if (climbTime < 1.7 and time < 142) or (time >= 146 and time < 147.5) then -- climb harmony stuff
+                        hlyric = "(cliiiiiiiiimb)"
+                    elseif ((climbTime > 2 and climbTime < 2.7) or (climbTime > 3 and climbTime < 3.7)) and time < 140 then
+                        hlyric = "(climb)"
+                    end
+                    if (time >= 52 and time < 54.8) or (time >= 52+64 and time < 54.8+64) then
+                        lyric = "Now, a piece of advice:"
+                    elseif (time >= 54.9 and time < 55.8) or (time >= 54.9+64 and time < 55.8+64) then
+                        lyric = "whateva you do,"
+                    elseif (time >= 55.8 and time < 58.5) or (time >= 55.8+64 and time < 58.5+64) then
+                        lyric = "don't stop to take a look at the sights"
+                        if time > 100 then lyric = "don't lose your view of the goal" end
+                    elseif (time > 59.0 and time < 59.7) or (time > 59.0+64 and time < 59.7+64) then
+                        lyric = "(yea)"
+                    elseif (time >= 60 and time < 62.8) or (time >= 60+64 and time < 62.8+64) then
+                        lyric = "Time to time, people will fail"
+                    elseif (time >= 63 and time < 63.7) or (time >= 63+64 and time < 63.7+64) then
+                        lyric = "cause,"
+                    elseif (time >= 64 and time < 66.7) or (time >= 64+64 and time < 66.7+64) then
+                        lyric = "they did not keep their speed"
+                    elseif (time > 67.0 and time < 67.7) or (time > 67.0+64 and time < 67.7+64) then
+                        lyric = "(high)"
+                    end
+                    local believe = time < 100 and (time-68.1) or (time-68.1-64)
+                    if believe >= 0 and believe < 2 then
+                        lyric = "But I believe"
+                    elseif believe >= 2 and believe < 2.9 then
+                        lyric = "But I believe in"
+                    elseif believe >= 2.9 and believe < 3.7 then
+                        lyric = "But I believe in you"
+                    elseif believe >= 0+4 and believe < 2+4 then
+                        lyric = "You've got what it"
+                    elseif believe >= 2+4 and believe < 2.9+4 then
+                        lyric = "You've got what it takes"
+                    elseif believe >= 2.9+4 and believe < 3.7+4 then
+                        lyric = "You've got what it takes to"
+                    elseif believe >= 0+8 and believe < 2+8 and time < 100 then
+                        lyric = "Go all the way"
+                    elseif believe >= 2+8 and believe < 2.9+8 and time < 100 then
+                        lyric = "Go all the way and"
+                    elseif believe >= 2.9+8 and believe < 3.7+8 and time < 100 then
+                        lyric = "Go all the way and to"
+                    elseif believe >= 0+12 and believe < 2+12 and time < 100 then
+                        lyric = "Get to the top"
+                    elseif believe >= 2+12 and believe < 2.9+12 and time < 100 then
+                        lyric = "Get to the top your"
+                    elseif believe >= 2.9+12 and believe < 3.7+12 and time < 100 then
+                        lyric = "Get to the top your way."
+                    elseif (believe >= 8 and believe < 9.7) or (believe >= 10 and believe < 11.7) or (believe >= 12 and believe < 13.7) or (believe >= 14 and believe < 15.7) then
+                        lyric = "Go-"
+                    end
+                elseif time >= 20+64 and time < 22.8+64 then
+                    lyric = 'As you pass through the different scenes here'
+                    --lenMod = 100
+                elseif time >= 22.8+64 and time < 25.5+64 then
+                    lyric = "you'll see many foes who now try their luck"
+                    --lenMod = 100
+                elseif time >= 25.5+64 and time < 28.1+64 then
+                    lyric = 'at the climb to the top of the floors.'
+                elseif time >= 28.1+64 and time < 30.8+64 then
+                    lyric = "But, you've come to the realization"
+                elseif time >= 30.8+64 and time < 34.1+64 then
+                    lyric = 'that only one can truly be with the'
+                elseif time >= 34.1+64 and time < 36.1+64 then
+                    lyric = "stars at the top. So you keep"
+                end
+            end
+            gc_mStr(lyric, (len - 200 + 4 * MATH.max(STAT.sfx,50)) / 2, height)
+            gc_mStr(hlyric, (len - 200 + 4 * MATH.max(STAT.sfx,50)) / 2, height - 40)
         else
             gc_setColor(bgmColors[BgmPlaying] or clr.LT)
         end
@@ -565,7 +762,13 @@ scene.widgetList = {
                     SFX.play('menuconfirm')
                     love.system.openURL("https://github.com/MrZ626/ZenithClicker")
                 elseif data == 'mp' or data == 'music' then
-                    if not BGM.isPlaying() or MusicPlayer then return end
+                    if (GAME.mod.EX == -1 and GAME.mod.VL == -1 and GAME.mod.AS == -1 and (GAME.mod.NH == 0 and GAME.mod.MS == 0 and GAME.mod.GV == 0 and GAME.mod.DH == 0 and GAME.mod.IN == 0 and GAME.mod.DP == 0)) and ACHV.programmer_gamer then
+                        PlayBGM(URM and 'terael' or 'terae', false)
+                    elseif (GAME.mod.EX == -1 and URM and GAME.mod.NH < 2 and GAME.mod.MS < 2 and GAME.mod.GV < 2 and GAME.mod.VL < 2 and GAME.mod.DH < 2 and GAME.mod.IN < 2 and GAME.mod.AS < 2 and GAME.mod.DP < 2) then
+                        PlayBGM('teral', false)
+                    else
+                        if not BGM.isPlaying() or MusicPlayer then return end
+                    end
                     MusicPlayer = true
                     refreshWidgets()
                     refreshSongInfo()
@@ -709,6 +912,7 @@ scene.widgetList = {
 
     -- VIDEO
     WIDGET.new {
+        name = 'video',
         type = 'text', alignX = 'left',
         text = "VIDEO",
         color = clr.T,
