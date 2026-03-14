@@ -1936,6 +1936,24 @@ Achievements = {
         type = 'issued',
         hide = TRUE,
     },
+    { -- alleyoop
+        id = 'alleyoop',
+        name = "ALLEY-OOP",
+        desc = [[Clear 3 quests by committing the 1st and 3rd quests together and having the 2nd selected by eDP.]],
+        quote = [["Alley-oop! — Nice dunk!"]],
+        credit = "@Trevor Smithy",
+        type = 'issued',
+        hide = TRUE,
+    },
+    { -- slamdunk
+        id = 'slamdunk',
+        name = "SLAM DUNK",
+        desc = [[Clear 5 quests by alley-ooping into ANOTHER 1st and 3rd quest clear and having the 2nd selected by eDP.]],
+        quote = [["Alley-oop!— Alley-oop!!!— NICE SLAM DUNK!!! "]],
+        credit = "@Trevor Smithy",
+        type = 'issued',
+        hide = TRUE,
+    },
 }
 
 local compFunc = {

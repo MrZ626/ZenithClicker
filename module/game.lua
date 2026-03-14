@@ -124,6 +124,10 @@ local ins, rem = table.insert, table.remove
 ---@field anyChange boolean
 ---@field spinCheck boolean
 ---@field rollCheck boolean
+---@field alleyoopCheck boolean
+---@field slamDunkCheck boolean
+---@field dunk boolean
+---@field bigDunk boolean
 local GAME = {
     forfeitTimer = 0,
     exTimer = 0,
@@ -2068,6 +2072,7 @@ function GAME.commit(auto)
 
     local q1 = TABLE.sort(GAME.quests[1].combo)
     local q2 = M.DP ~= 0 and GAME.quests[2] and TABLE.sort(GAME.quests[2].combo)
+    local q3 = M.DP == -1 and GAME.quests[3] and TABLE.sort(GAME.quests[3].combo)
 
     if GAME.currentTask then
         GAME.incrementPrompt('commit')
@@ -2115,13 +2120,39 @@ function GAME.commit(auto)
         end
     end
 
-    local correct, dblCorrect
+    local correct, dblCorrect, eDPCorrect
     if TABLE.equal(hand, q1) then
         correct = 1
         dblCorrect = q2 and TABLE.equal(hand, q2)
+        eDPCorrect = q3 and TABLE.equal(hand, q3)
     elseif q2 and TABLE.equal(hand, q2) then
         correct = 2
         GAME.incrementPrompt('pass_second')
+    elseif q3 and TABLE.equal(hand, q3) then
+        correct = 3
+        eDPCorrect = 1
+    end
+
+    -- if 3/1 then 3/1 then correct = slam dunk, if 3/1 then correct = alleyoop
+    if eDPCorrect and correct == 1 then -- this is a 3rd + 1st quest
+        if GAME.alleyoopCheck and correct then --last was a 3rd quest
+            GAME.slamDunkCheck = true
+        end
+        GAME.alleyoopCheck = true
+    else -- not a 3rd quest
+        if GAME.alleyoopCheck and correct and not allyWasDead then --last was a 3rd quest
+            IssueAchv('alleyoop')
+            SFX.play('shatter', 0.626)
+            GAME.dunk = true
+        end
+        if GAME.slamDunkCheck and correct and not allyWasDead then
+            --MSG('bright', 'SLAMDUNK')
+            IssueAchv('slamdunk')
+            SFX.play('shatter', 1)
+            GAME.bigDunk = true
+        end
+        GAME.alleyoopCheck = false
+        GAME.slamDunkCheck = false
     end
 
     if correct then
@@ -2158,7 +2189,7 @@ function GAME.commit(auto)
             GAME.bonusRecoveryHealth = GAME.bonusRecoveryHealth - 1
             GAME.dmgTimerMul = GAME.dmgTimerMul - 1/3
         end
-        GAME.heal((dblCorrect and 3 or 1) * GAME.dmgHeal + GAME.bonusRecoveryHealth)
+        GAME.heal(((dblCorrect or (eDPCorrect and correct == 1)) and 3 or 1) * GAME.dmgHeal + GAME.bonusRecoveryHealth)
         if MATH.between(Floors[GAME.floor].top - (GAME.height + GAME.heightBuffer), 0, 2) then GAME.addHeight(3, true) end
 
         local dp = TABLE.find(hand, 'DP')
@@ -2252,7 +2283,8 @@ function GAME.commit(auto)
             end
             xp = xp + 3
 
-            if correct == 1 then
+            -- B2B
+            if correct == 1 or (correct == 2 and M.DP == -1 and not allyWasDead) then
                 GAME.chain = GAME.chain + 1
                 if GAME.chain < 4 then
                 elseif GAME.chain < 8 then
@@ -2267,7 +2299,7 @@ function GAME.commit(auto)
                 end
             end
 
-            GAME.totalPerfect = GAME.totalPerfect + (dblCorrect and 2 or 1)
+            GAME.totalPerfect = GAME.totalPerfect + ((dblCorrect or GAME.alleyoopCheck) and 2 or 1)
             if not GAME.achv_noPerfectH then
                 GAME.achv_noPerfectH = GAME.roundHeight
                 if GAME.totalQuest >= 26 then SFX.play('btb_break') end
@@ -2277,12 +2309,20 @@ function GAME.commit(auto)
                 if GAME.totalQuest >= 26 then SFX.play('btb_break') end
             end
         end
-        if dblCorrect then
+        if dblCorrect or GAME.alleyoopCheck or GAME.dunk or GAME.bigDunk then
             attack = attack * 3
             xp = xp * 3
-            GAME.chain = GAME.chain + 1
-            GAME.achv_doublePass = GAME.achv_doublePass + 1
-            if not ACHV.lucky_coincidence then IssueAchv('lucky_coincidence') end
+            if dblCorrect or GAME.alleyoopCheck then
+                GAME.chain = GAME.chain + 1
+                GAME.achv_doublePass = GAME.achv_doublePass + 1 
+                if not ACHV.lucky_coincidence then IssueAchv('lucky_coincidence') end
+            end
+            if GAME.bigDunk then
+                attack = attack * 3
+                xp = xp * 3
+            end
+            GAME.dunk = false
+            GAME.bigDunk = false
         end
         if GAME.switch_sickness >= 20 then
             if GAME.switch_sickness >= 20 then xp = xp * .5 end
@@ -2346,10 +2386,10 @@ function GAME.commit(auto)
             end
 
             GAME.achv_maxChain = max(GAME.achv_maxChain, GAME.chain)
-            if GAME.chain >= 75 and GAME.chain - (dblCorrect and 2 or 1) < 75 then
+            if GAME.chain >= 75 and GAME.chain - ((dblCorrect or (eDPCorrect and correct == 1)) and 2 or 1) < 75 then
                 SubmitAchv('perfect_speedrun', GAME.time)
             end
-            if GAME.chain >= 864 and GAME.chain - (dblCorrect and 2 or 1) < 864 then
+            if GAME.chain >= 864 and GAME.chain - ((dblCorrect or (eDPCorrect and correct == 1)) and 2 or 1) < 864 then
                 SubmitAchv('perfect_speedrun_plus', GAME.time)
             end
         end
@@ -2482,6 +2522,26 @@ function GAME.commit(auto)
 
         for i = dblCorrect and 2 or 1, 1, -1 do
             local p = dblCorrect and i or correct
+            if eDPCorrect and correct == 1 then
+                rem(GAME.quests, 3)
+                GAME.totalQuest = GAME.totalQuest + 1
+                if not allyWasDead then
+                    for i = 1, #CD do
+                        if CD[i].active ~= CD[i].required2 then
+                            CD[i]:setActive(false)
+                        end
+                    end
+                    SFX.play('card_slide_' .. rnd(4), .62)
+                    SFX.play(GAME.alleyoopCheck and 'social_notify_major' or 'social_notify_minor')
+                end
+            elseif eDPCorrect and not allyWasDead then
+                for i = 1, #CD do
+                    if CD[i].active ~= CD[i].required then
+                        CD[i]:setActive(false)
+                    end
+                end
+                SFX.play('card_slide_' .. rnd(4), .62)
+            end
             rem(GAME.quests, p).name:release()
             GAME.totalQuest = GAME.totalQuest + 1
             if GAME.totalQuest == 40 then
@@ -2500,7 +2560,7 @@ function GAME.commit(auto)
         if M.DP ~= 0 and (correct == 2 or dblCorrect) then
             if GAME.swapControl() then
                 SFX.play('party_ready', MATH.clampInterpolate(15, 1, 40, .6, GAME.switch_sickness))
-                GAME.switch_sickness = GAME.switch_sickness + 1
+                if M.DP ~= -1 then GAME.switch_sickness = GAME.switch_sickness + 1 end
             end
         else
             GAME.switch_sickness = max(GAME.switch_sickness - .5, 0)
@@ -2592,6 +2652,8 @@ function GAME.start()
     GAME.finalFatigueOSPActivated = false
     GAME.teraComplete = false
     GAME.teraLostHeight = 0
+    GAME.dunk = false
+    GAME.bigDunk = false
     GAME.omega = false
     GAME.negFloor = 1
     GAME.negEvent = 1
