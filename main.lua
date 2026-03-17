@@ -883,7 +883,7 @@ BgmSet = {
 ---@enum (key) ZC.bgmName
 BgmData = {
     f0 = { meta = '4|4  184 BPM  C Minor', bar = 4, bpm = 184, toneFix = 0, loop = { 0, 114.7826 } },
-    f1 = { meta = '4|4  184 BPM  C Minor', bar = 4, bpm = 184, toneFix = 0, loop = { 7.826, 91.304 }, introLen = 1.304, teleport = { -1, 7.826 } },
+    f1 = { meta = '4|4  184 BPM  C Minor', bar = 4, bpm = 184, toneFix = 0, loop = { 18.261, 91.304 }, introLen = 1.304, teleport = { -1, 7.826 } },
     f2 = { meta = '4|4  110 BPM  D Major & B Minor', bar = 4, bpm = 110, toneFix = -1, loop = { 26.181, 113.454 } },
     f2r = { meta = '4|4  110 BPM  D Major & B Minor', bar = 4, bpm = 110, toneFix = -1, loop = { 26.181, 113.454 } },
     f3 = { meta = '12|8  120 BPM  C Major & A Minor', bar = 4, bpm = 120, toneFix = -1, loop = { 56, 128 }, end1 = 128, end2 = 132 },
