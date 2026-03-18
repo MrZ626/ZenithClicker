@@ -124,10 +124,12 @@ local ins, rem = table.insert, table.remove
 ---@field anyChange boolean
 ---@field spinCheck boolean
 ---@field rollCheck boolean
+---@field setupCheck boolean
 ---@field alleyoopCheck boolean
 ---@field slamDunkCheck boolean
 ---@field dunk boolean
 ---@field bigDunk boolean
+---@field achv_bestFriendQuest number
 local GAME = {
     forfeitTimer = 0,
     exTimer = 0,
@@ -1348,6 +1350,13 @@ function GAME.upFloor()
         if GAME.comboZP < 0.26 then
             IssueAchv('inefficiency')
         end
+        if GAME.comboStr == 'eGVeIN' then
+            if not GAME.achv_noDamageH then
+                SubmitAchv('humble_pupil', GAME.time/GAME.totalQuest)
+            elseif GAME.achv_noDamageH > 1650 then
+                SubmitAchv('humble_pupil', GAME.time/GAME.totalQuest)
+            end
+        end
         local comboName
         if not STAT.easyName then
             comboName = GAME.getComboName(GAME.getHand(true), 'button')
@@ -2324,6 +2333,17 @@ function GAME.commit(auto)
             GAME.dunk = false
             GAME.bigDunk = false
         end
+        if GAME.setupCheck and not allyWasDead and correct == 1 then
+            if not GAME.achv_bestFriendQuest then
+                GAME.achv_bestFriendQuest = 0
+            end
+            GAME.achv_bestFriendQuest = GAME.achv_bestFriendQuest + (eDPCorrect and 2 or 1)
+            --MSG("bright", "+" .. (eDPCorrect and 2 or 1))
+            GAME.setupCheck = false
+        end
+        if eDPCorrect then
+            GAME.setupCheck = true
+        end
         if GAME.switch_sickness >= 20 then
             if GAME.switch_sickness >= 20 then xp = xp * .5 end
             if GAME.switch_sickness >= 30 then attack = attack * .5 end
@@ -2529,6 +2549,13 @@ function GAME.commit(auto)
                     for i = 1, #CD do
                         if CD[i].active ~= CD[i].required2 then
                             CD[i]:setActive(false)
+                            if M.VL > 0 then
+                                CD[i]:setActive(false)
+                            end
+                            if M.VL == 2 then
+                                CD[i]:setActive(false)
+                                CD[i]:setActive(false)
+                            end
                         end
                     end
                     SFX.play('card_slide_' .. rnd(4), .62)
@@ -2538,6 +2565,13 @@ function GAME.commit(auto)
                 for i = 1, #CD do
                     if CD[i].active ~= CD[i].required then
                         CD[i]:setActive(false)
+                        if M.VL > 0 then
+                            CD[i]:setActive(false)
+                        end
+                        if M.VL == 2 then
+                            CD[i]:setActive(false)
+                            CD[i]:setActive(false)
+                        end
                     end
                 end
                 SFX.play('card_slide_' .. rnd(4), .62)
@@ -2550,6 +2584,12 @@ function GAME.commit(auto)
                 if GAME.comboStr == 'DPMSrNH' then SubmitAchv('scarcity_mindset', GAME.totalFlip) end
             elseif GAME.totalQuest == 41 then
                 if GAME.comboStr == 'EXMS' then SubmitAchv('quest_rationing', GAME.roundHeight) end
+                if GAME.comboStr == 'eEXeMS' then 
+                    SubmitAchv('quest_feast', GAME.roundHeight)
+                end
+                if GAME.comboStr == 'EXeDHeNH' then
+                    SubmitAchv('emperor_development', GAME.rank == GAME.peakRank and GAME.rank + (GAME.xp/(4*(GAME.rank+1))) or GAME.peakRank) 
+                end
             end
             if GAME.totalQuest > 7 and not GAME.achv_plonkH then
                 GAME.achv_plonkH = GAME.roundHeight
@@ -2652,6 +2692,8 @@ function GAME.start()
     GAME.finalFatigueOSPActivated = false
     GAME.teraComplete = false
     GAME.teraLostHeight = 0
+    GAME.achv_bestFriendQuest = 0
+    GAME.setupCheck = false
     GAME.dunk = false
     GAME.bigDunk = false
     GAME.omega = false
@@ -3371,6 +3413,9 @@ function GAME.finish(reason)
         end
         SubmitAchv('zenith_explorer_plus', GAME.roundHeight)
         SubmitAchv('supercharged_plus', GAME.achv_maxChain)
+        if GAME.time <= 600 then
+            GAME.submitTimedAchievements()
+        end
     else
         TEXTS.endHeight:set("")
         TEXTS.endFloor:set("")
@@ -3437,6 +3482,12 @@ local questStyleDP = {
     { k = 1.3,  y = 95,  a = 1 },
     { k = 0.85, y = 30,  a = .7 },
 }
+
+function GAME.submitTimedAchievements()
+    if GAME.comboStr == 'eDPeEX' then
+        SubmitAchv('best_friends', GAME.achv_bestFriendQuest or 0)
+    end
+end
 
 local KBisDown = love.keyboard.isDown
 function GAME.update(dt)
@@ -3579,6 +3630,11 @@ function GAME.update(dt)
         else
             GAME.incrementPrompt(t.prompt, dt)
         end
+    end
+
+    -- Time Based Achievements
+    if GAME.time > 600 then
+        GAME.submitTimedAchievements()
     end
 
     -- Height change
