@@ -1532,7 +1532,7 @@ Achievements = {
     { -- uEX
         id = 'peasant_revolution',
         name = "Peasant Revolution",
-        desc = [[HFD with "Soft Bath Water" and uEX]],
+        desc = [[HFD with "Normal Bath Water" and uEX]],
         quote = [["This psychotic sovereign shall rule no longer. All of us must fight!"]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 2600),

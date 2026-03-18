@@ -131,6 +131,7 @@ local ins, rem = table.insert, table.remove
 ---@field bigDunk boolean
 ---@field achv_bestFriendQuest number
 ---@field uneasyModIconSelected boolean
+---@field manualBGMPitch number
 local GAME = {
     forfeitTimer = 0,
     exTimer = 0,
@@ -731,6 +732,13 @@ function GAME.task_gigaspeed()
         :setOnFinish(function() GigaSpeed.textTimer = false end)
 end
 
+function GAME.task_uneasyTeraspeed()
+    TWEEN.new(function(t) 
+        GAME.manualBGMPitch = (GAME.nightcore or GAME.slowmo) and 1 + (t*1.33*(M.GV == -1 and 1.5 or 1)) or 1
+        RefreshBGM()
+    end):setDuration(GAME.nightcore and 240 or 300):run()
+end
+
 function GAME.task_fatigueWarn()
     for _ = 1, 3 do
         for _ = 1, M.DP == 2 and 2 or 3 do SFX.play('warning', 1) end
@@ -1160,6 +1168,10 @@ function GAME.startTeraAnim()
         PlayBGM('terae', true)
     elseif M.EX == -1 and URM and GAME.comboStr:count('r') == 0 then
         PlayBGM('teral', true)
+        if GAME.uneasyModIconSelected then
+            TASK.removeTask_code(GAME.task_uneasyTeraspeed)
+            TASK.new(GAME.task_uneasyTeraspeed)
+        end
     else
         PlayBGM('tera', true)
     end
@@ -2724,6 +2736,7 @@ function GAME.start()
     end
     if URM and M.VL == 2 and not UltraVlCheck('start') then return end
     TASK.removeTask_code(Task_MusicEnd)
+    TASK.removeTask_code(GAME.task_uneasyTeraspeed)
     MusicPlayer = false
     GAME.smithyMode = false
     GAME.OSPActivated = false
@@ -2740,6 +2753,7 @@ function GAME.start()
     GAME.timerMul = 1
     GAME.isUltraRun = GAME.anyUltra
     GAME.uneasyModIconSelected = false
+    GAME.manualBGMPitch = nil
     local attackMulMod = 1
     if GAME.eglassCard then attackMulMod = 0.5 end
     GAME.attackMul = (GAME.isUltraRun and .62 or (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) and 0.33 or 1) * attackMulMod
