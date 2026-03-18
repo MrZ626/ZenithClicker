@@ -1069,7 +1069,7 @@ function GAME.addXP(xp)
     if M.VL == -1 then
         xp = xp + 1
     end
-    if M.EX == -1 and GAME.rank > 1 and GAME.rank <= 126 and not (URM and GAME.comboStr:count('r') == 0) then
+    if M.EX == -1 and GAME.rank > 1 and (GAME.rank <= 126 or GAME.dunk or GAME.bigDunk) and not (URM and GAME.comboStr:count('r') == 0) then
         xp = xp * (1 + (GAME.rank - 1)/xpRankModifier)
     elseif M.EX == -1 and GAME.rank > 1 and GAME.rank <= 126 then
         xp = xp * (1 + (GAME.rank - 1)/(xpRankModifier*3))
@@ -2502,7 +2502,7 @@ function GAME.commit(auto)
             surge = 0
         end
 
-        attack = attack + (surge * GAME.bigDunk and 9 or GAME.dunk and 3 or 1)
+        attack = attack + surge * (GAME.bigDunk and 9 or GAME.dunk and 3 or 1)
         GAME.achv_altFromSurge = GAME.achv_altFromSurge + surge * GAME.rank / 4 * GAME.attackMul
 
         local oldAllyLife = GAME[GAME.getLifeKey(true)]
