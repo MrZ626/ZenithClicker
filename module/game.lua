@@ -2198,7 +2198,7 @@ function GAME.commit(auto)
         local xp = 0
         if dp and M.EX < 2 then attack = attack + 2 end
         local check_achv_romantic_homicide
-        if GAME.fault then
+        if GAME.fault and not (M.DP == -1 and (GAME.alleyoopCheck or GAME.slamDunkCheck) and (GAME.dunk or GAME.bigDunk)) then
             -- Non-perfect
             if GAME.currentTask then
                 GAME.incrementPrompt('pass_imperfect')
@@ -2444,7 +2444,7 @@ function GAME.commit(auto)
             surge = 0
         end
 
-        attack = attack + surge
+        attack = attack + (surge * GAME.bigDunk and 9 or GAME.dunk and 3 or 1)
         GAME.achv_altFromSurge = GAME.achv_altFromSurge + surge * GAME.rank / 4 * GAME.attackMul
 
         local oldAllyLife = GAME[GAME.getLifeKey(true)]
