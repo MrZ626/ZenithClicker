@@ -124,10 +124,13 @@ local ins, rem = table.insert, table.remove
 ---@field anyChange boolean
 ---@field spinCheck boolean
 ---@field rollCheck boolean
+---@field setupCheck boolean
 ---@field alleyoopCheck boolean
 ---@field slamDunkCheck boolean
 ---@field dunk boolean
 ---@field bigDunk boolean
+---@field achv_bestFriendQuest number
+---@field uneasyModIconSelected boolean
 local GAME = {
     forfeitTimer = 0,
     exTimer = 0,
@@ -1348,6 +1351,13 @@ function GAME.upFloor()
         if GAME.comboZP < 0.26 then
             IssueAchv('inefficiency')
         end
+        if GAME.comboStr == 'eGVeIN' then
+            if not GAME.achv_noDamageH then
+                SubmitAchv('humble_pupil', GAME.time/GAME.totalQuest)
+            elseif GAME.achv_noDamageH > 1650 then
+                SubmitAchv('humble_pupil', GAME.time/GAME.totalQuest)
+            end
+        end
         local comboName
         if not STAT.easyName then
             comboName = GAME.getComboName(GAME.getHand(true), 'button')
@@ -1552,6 +1562,12 @@ function GAME.refreshModIcon()
     local hand = GAME.getHand(true)
     table.sort(hand, modIconSorter)
     local quad, w, _
+    local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
+    if uneasyMode then
+        for i = 1, #hand do
+            if hand[i] == 'eEX' then hand[i] = 'ueEX' end
+        end
+    end
     if #hand == 1 then --if one mod
         quad = URM and TEXTURE.modQuad_ultra[hand[1]] or TEXTURE.modQuad_ig[hand[1]]
         _, _, w = quad:getViewport()
@@ -1574,7 +1590,7 @@ function GAME.refreshModIcon()
         )
     else --if 3+ mods
         local r = 35
-        for x = 3, 2, -1 do
+        for x = 4, 2, -1 do
             for i = #hand, 1, -1 do
                 if #hand[i] == x then
                     quad = x == 3 and URM and TEXTURE.modQuad_ultra[hand[i]] or TEXTURE.modQuad_ig[hand[i]]
@@ -1582,7 +1598,7 @@ function GAME.refreshModIcon()
                     GAME.modIB:add(
                         quad,
                         modIconPos[i][1] * r, modIconPos[i][2] * r,
-                        0, URM and x == 3 and .35 or .28, nil, w * .5, w * .5
+                        0, (URM and x == 3 and hand[i]:sub(1,1) ~= 'e') and .35 or .28, nil, w * .5, w * .5
                     )
                 end
             end
@@ -1595,41 +1611,72 @@ function GAME.refreshResultModIcon()
     local hand = GAME.getHand(true)
     table.sort(hand, modIconSorter)
     local quad, w, _
+    local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
+    if uneasyMode then
+        for i = 1, #hand do
+            if hand[i] == 'eEX' then hand[i] = 'ueEX' end
+        end
+    end
     if #hand == 1 then
         quad = URM and TEXTURE.modQuad_ultra_res[hand[1]] or TEXTURE.modQuad_res[hand[1]]
         _, _, w = quad:getViewport()
         GAME.resIB:add(
             quad, 0, 0,
-            0, #hand[1] == 3 and .626 or .5, nil, w * .5, w * .5
+            0, #hand[1] == 3 and hand[1]:sub(1,1) ~= 'e' and .626 or .5, nil, w * .5, w * .5
         )
     elseif #hand == 2 then
         quad = URM and TEXTURE.modQuad_ultra_res[hand[2]] or TEXTURE.modQuad_res[hand[2]]
         _, _, w = quad:getViewport()
         GAME.resIB:add(
             quad, 35, 0,
-            0, #hand[2] == 3 and .567 or .432, nil, w * .5, w * .5
+            0, #hand[2] == 3 and hand[2]:sub(1,1) ~= 'e' and .567 or .432, nil, w * .5, w * .5
         )
         quad = URM and TEXTURE.modQuad_ultra_res[hand[1]] or TEXTURE.modQuad_res[hand[1]]
         _, _, w = quad:getViewport()
         GAME.resIB:add(
             quad, -35, 0,
-            0, #hand[1] == 3 and .567 or .432, nil, w * .5, w * .5
+            0, #hand[1] == 3 and hand[1]:sub(1,1) ~= 'e' and .567 or .432, nil, w * .5, w * .5
         )
     else
         local r = 35
-        for x = 3, 2, -1 do
+        for x = 4, 2, -1 do
             for i = #hand, 1, -1 do
                 if #hand[i] == x then
-                    quad = URM and TEXTURE.modQuad_ultra_res[hand[i]] or TEXTURE.modQuad_res[hand[i]]
+                    quad = x == 3 and URM and TEXTURE.modQuad_ultra_res[hand[i]] or TEXTURE.modQuad_res[hand[i]]
                     _, _, w = quad:getViewport()
                     GAME.resIB:add(
                         quad, modIconPos[i][1] * r, modIconPos[i][2] * r,
-                        0, x == 3 and .36 or .3, nil, w * .5, w * .5
+                        0, (x == 3 and hand[i]:sub(1,1) ~= 'e') and .36 or .3, nil, w * .5, w * .5
                     )
                 end
             end
         end
     end
+end
+
+function GAME.anim_uneasyModIcon()
+    -- called on game start if requirements met
+    local p = PieceSFXID
+    GAME.modIB:clear()
+    local hand = GAME.getHand(true)
+    table.sort(hand, modIconSorter)
+    local quad, w, _
+    for i = 1, #hand do
+        if hand[i] == 'eEX' then 
+            rem(hand, i) 
+            break
+        end
+    end
+    quad = TEXTURE.modQuad_uneasy_ig[hand[1]]
+        _, _, w = quad:getViewport()
+        GAME.modIB:add(
+            quad, 0, 0,
+            0, 0.9, nil, w * .5, w * .5
+        )
+    for i = 1, p == 1 and 3 or p == 2 and 10 or 5 do
+        SFX.play(p == 1 and 'z' or p == 2 and 's' or p == 3 and 'j' or p == 4 and 'l' or p == 5 and 't' or p == 6 and 'o' or 'i', 1, 0, p==1 and 12 or p==2 and -24 or -12)
+    end
+    GAME.uneasyModIconSelected = true
 end
 
 --------------------------------------------------------------
@@ -2324,6 +2371,17 @@ function GAME.commit(auto)
             GAME.dunk = false
             GAME.bigDunk = false
         end
+        if GAME.setupCheck and not allyWasDead and correct == 1 then
+            if not GAME.achv_bestFriendQuest then
+                GAME.achv_bestFriendQuest = 0
+            end
+            GAME.achv_bestFriendQuest = GAME.achv_bestFriendQuest + (eDPCorrect and 2 or 1)
+            --MSG("bright", "+" .. (eDPCorrect and 2 or 1))
+            GAME.setupCheck = false
+        end
+        if eDPCorrect then
+            GAME.setupCheck = true
+        end
         if GAME.switch_sickness >= 20 then
             if GAME.switch_sickness >= 20 then xp = xp * .5 end
             if GAME.switch_sickness >= 30 then attack = attack * .5 end
@@ -2529,6 +2587,13 @@ function GAME.commit(auto)
                     for i = 1, #CD do
                         if CD[i].active ~= CD[i].required2 then
                             CD[i]:setActive(false)
+                            if M.VL > 0 then
+                                CD[i]:setActive(false)
+                            end
+                            if M.VL == 2 then
+                                CD[i]:setActive(false)
+                                CD[i]:setActive(false)
+                            end
                         end
                     end
                     SFX.play('card_slide_' .. rnd(4), .62)
@@ -2538,6 +2603,13 @@ function GAME.commit(auto)
                 for i = 1, #CD do
                     if CD[i].active ~= CD[i].required then
                         CD[i]:setActive(false)
+                        if M.VL > 0 then
+                            CD[i]:setActive(false)
+                        end
+                        if M.VL == 2 then
+                            CD[i]:setActive(false)
+                            CD[i]:setActive(false)
+                        end
                     end
                 end
                 SFX.play('card_slide_' .. rnd(4), .62)
@@ -2550,6 +2622,12 @@ function GAME.commit(auto)
                 if GAME.comboStr == 'DPMSrNH' then SubmitAchv('scarcity_mindset', GAME.totalFlip) end
             elseif GAME.totalQuest == 41 then
                 if GAME.comboStr == 'EXMS' then SubmitAchv('quest_rationing', GAME.roundHeight) end
+                if GAME.comboStr == 'eEXeMS' then 
+                    SubmitAchv('quest_feast', GAME.roundHeight)
+                end
+                if GAME.comboStr == 'EXeDHeNH' then
+                    SubmitAchv('emperor_development', GAME.rank == GAME.peakRank and GAME.rank + (GAME.xp/(4*(GAME.rank+1))) or GAME.peakRank) 
+                end
             end
             if GAME.totalQuest > 7 and not GAME.achv_plonkH then
                 GAME.achv_plonkH = GAME.roundHeight
@@ -2652,6 +2730,8 @@ function GAME.start()
     GAME.finalFatigueOSPActivated = false
     GAME.teraComplete = false
     GAME.teraLostHeight = 0
+    GAME.achv_bestFriendQuest = 0
+    GAME.setupCheck = false
     GAME.dunk = false
     GAME.bigDunk = false
     GAME.omega = false
@@ -2659,6 +2739,7 @@ function GAME.start()
     GAME.negEvent = 1
     GAME.timerMul = 1
     GAME.isUltraRun = GAME.anyUltra
+    GAME.uneasyModIconSelected = false
     local attackMulMod = 1
     if GAME.eglassCard then attackMulMod = 0.5 end
     GAME.attackMul = (GAME.isUltraRun and .62 or (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) and 0.33 or 1) * attackMulMod
@@ -3371,6 +3452,9 @@ function GAME.finish(reason)
         end
         SubmitAchv('zenith_explorer_plus', GAME.roundHeight)
         SubmitAchv('supercharged_plus', GAME.achv_maxChain)
+        if GAME.time <= 600 then
+            GAME.submitTimedAchievements()
+        end
     else
         TEXTS.endHeight:set("")
         TEXTS.endFloor:set("")
@@ -3437,6 +3521,12 @@ local questStyleDP = {
     { k = 1.3,  y = 95,  a = 1 },
     { k = 0.85, y = 30,  a = .7 },
 }
+
+function GAME.submitTimedAchievements()
+    if GAME.comboStr == 'eDPeEX' then
+        SubmitAchv('best_friends', GAME.achv_bestFriendQuest or 0)
+    end
+end
 
 local KBisDown = love.keyboard.isDown
 function GAME.update(dt)
@@ -3512,6 +3602,16 @@ function GAME.update(dt)
         end
     end
 
+    if GAME.time >= 1 and not GAME.uneasyModIconSelected then
+        local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
+        if uneasyMode and #GAME.getHand(true) == 2 then
+            if PieceSFXID == 1 and M.DH == -1 or PieceSFXID == 2 and (M.MS == -1 or M.GV == -1) or PieceSFXID == 3 and M.NH == -1
+            or PieceSFXID == 4 and M.AS == -1 or PieceSFXID == 5 and M.DP == -1 or PieceSFXID == 6 and M.IN == -1 or PieceSFXID == 7 and M.VL == -1 then
+                TASK.new(GAME.anim_uneasyModIcon)
+            end
+        end
+    end
+
     local finalFatigueTime = 900
     local finalFatigueTimePostOSP = finalFatigueTime + 5
     if GAME.time >= GAME.fatigueSet[GAME.fatigue].time or GAME.finalFatigueOSPActivated then
@@ -3579,6 +3679,11 @@ function GAME.update(dt)
         else
             GAME.incrementPrompt(t.prompt, dt)
         end
+    end
+
+    -- Time Based Achievements
+    if GAME.time > 600 then
+        GAME.submitTimedAchievements()
     end
 
     -- Height change
