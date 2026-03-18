@@ -130,6 +130,7 @@ local ins, rem = table.insert, table.remove
 ---@field dunk boolean
 ---@field bigDunk boolean
 ---@field achv_bestFriendQuest number
+---@field uneasyModIconSelected boolean
 local GAME = {
     forfeitTimer = 0,
     exTimer = 0,
@@ -1561,6 +1562,12 @@ function GAME.refreshModIcon()
     local hand = GAME.getHand(true)
     table.sort(hand, modIconSorter)
     local quad, w, _
+    local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
+    if uneasyMode then
+        for i = 1, #hand do
+            if hand[i] == 'eEX' then hand[i] = 'ueEX' end
+        end
+    end
     if #hand == 1 then --if one mod
         quad = URM and TEXTURE.modQuad_ultra[hand[1]] or TEXTURE.modQuad_ig[hand[1]]
         _, _, w = quad:getViewport()
@@ -1583,7 +1590,7 @@ function GAME.refreshModIcon()
         )
     else --if 3+ mods
         local r = 35
-        for x = 3, 2, -1 do
+        for x = 4, 2, -1 do
             for i = #hand, 1, -1 do
                 if #hand[i] == x then
                     quad = x == 3 and URM and TEXTURE.modQuad_ultra[hand[i]] or TEXTURE.modQuad_ig[hand[i]]
@@ -1591,7 +1598,7 @@ function GAME.refreshModIcon()
                     GAME.modIB:add(
                         quad,
                         modIconPos[i][1] * r, modIconPos[i][2] * r,
-                        0, URM and x == 3 and .35 or .28, nil, w * .5, w * .5
+                        0, (URM and x == 3 and hand[i]:sub(1,1) ~= 'e') and .35 or .28, nil, w * .5, w * .5
                     )
                 end
             end
@@ -1604,41 +1611,72 @@ function GAME.refreshResultModIcon()
     local hand = GAME.getHand(true)
     table.sort(hand, modIconSorter)
     local quad, w, _
+    local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
+    if uneasyMode then
+        for i = 1, #hand do
+            if hand[i] == 'eEX' then hand[i] = 'ueEX' end
+        end
+    end
     if #hand == 1 then
         quad = URM and TEXTURE.modQuad_ultra_res[hand[1]] or TEXTURE.modQuad_res[hand[1]]
         _, _, w = quad:getViewport()
         GAME.resIB:add(
             quad, 0, 0,
-            0, #hand[1] == 3 and .626 or .5, nil, w * .5, w * .5
+            0, #hand[1] == 3 and hand[1]:sub(1,1) ~= 'e' and .626 or .5, nil, w * .5, w * .5
         )
     elseif #hand == 2 then
         quad = URM and TEXTURE.modQuad_ultra_res[hand[2]] or TEXTURE.modQuad_res[hand[2]]
         _, _, w = quad:getViewport()
         GAME.resIB:add(
             quad, 35, 0,
-            0, #hand[2] == 3 and .567 or .432, nil, w * .5, w * .5
+            0, #hand[2] == 3 and hand[2]:sub(1,1) ~= 'e' and .567 or .432, nil, w * .5, w * .5
         )
         quad = URM and TEXTURE.modQuad_ultra_res[hand[1]] or TEXTURE.modQuad_res[hand[1]]
         _, _, w = quad:getViewport()
         GAME.resIB:add(
             quad, -35, 0,
-            0, #hand[1] == 3 and .567 or .432, nil, w * .5, w * .5
+            0, #hand[1] == 3 and hand[1]:sub(1,1) ~= 'e' and .567 or .432, nil, w * .5, w * .5
         )
     else
         local r = 35
-        for x = 3, 2, -1 do
+        for x = 4, 2, -1 do
             for i = #hand, 1, -1 do
                 if #hand[i] == x then
-                    quad = URM and TEXTURE.modQuad_ultra_res[hand[i]] or TEXTURE.modQuad_res[hand[i]]
+                    quad = x == 3 and URM and TEXTURE.modQuad_ultra_res[hand[i]] or TEXTURE.modQuad_res[hand[i]]
                     _, _, w = quad:getViewport()
                     GAME.resIB:add(
                         quad, modIconPos[i][1] * r, modIconPos[i][2] * r,
-                        0, x == 3 and .36 or .3, nil, w * .5, w * .5
+                        0, (x == 3 and hand[i]:sub(1,1) ~= 'e') and .36 or .3, nil, w * .5, w * .5
                     )
                 end
             end
         end
     end
+end
+
+function GAME.anim_uneasyModIcon()
+    -- called on game start if requirements met
+    local p = PieceSFXID
+    GAME.modIB:clear()
+    local hand = GAME.getHand(true)
+    table.sort(hand, modIconSorter)
+    local quad, w, _
+    for i = 1, #hand do
+        if hand[i] == 'eEX' then 
+            rem(hand, i) 
+            break
+        end
+    end
+    quad = TEXTURE.modQuad_uneasy_ig[hand[1]]
+        _, _, w = quad:getViewport()
+        GAME.modIB:add(
+            quad, 0, 0,
+            0, 0.9, nil, w * .5, w * .5
+        )
+    for i = 1, p == 1 and 3 or p == 2 and 10 or 5 do
+        SFX.play(p == 1 and 'z' or p == 2 and 's' or p == 3 and 'j' or p == 4 and 'l' or p == 5 and 't' or p == 6 and 'o' or 'i', 1, 0, p==1 and 12 or p==2 and -24 or -12)
+    end
+    GAME.uneasyModIconSelected = true
 end
 
 --------------------------------------------------------------
@@ -2701,6 +2739,7 @@ function GAME.start()
     GAME.negEvent = 1
     GAME.timerMul = 1
     GAME.isUltraRun = GAME.anyUltra
+    GAME.uneasyModIconSelected = false
     local attackMulMod = 1
     if GAME.eglassCard then attackMulMod = 0.5 end
     GAME.attackMul = (GAME.isUltraRun and .62 or (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) and 0.33 or 1) * attackMulMod
@@ -3560,6 +3599,16 @@ function GAME.update(dt)
         GAME.reviveTime = GAME.reviveTime + dt
         if M.DP == 2 and GAME.reviveTime > 60 then
             GAME.dmgHeal = GAME.dmgHeal - 0.05 * dt
+        end
+    end
+
+    if GAME.time >= 1 and not GAME.uneasyModIconSelected then
+        local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
+        if uneasyMode and #GAME.getHand(true) == 2 then
+            if PieceSFXID == 1 and M.DH == -1 or PieceSFXID == 2 and (M.MS == -1 or M.GV == -1) or PieceSFXID == 3 and M.NH == -1
+            or PieceSFXID == 4 and M.AS == -1 or PieceSFXID == 5 and M.DP == -1 or PieceSFXID == 6 and M.IN == -1 or PieceSFXID == 7 and M.VL == -1 then
+                TASK.new(GAME.anim_uneasyModIcon)
+            end
         end
     end
 

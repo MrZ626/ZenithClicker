@@ -824,7 +824,8 @@ function scene.draw()
                 gc_draw(TEXTURE.transition, 800 - 1586 / 2, panelH - 303, 1.5708, 26, 1586, 0, 1)
             end
         end
-
+    end
+    if not (GAME.invisUI or GAME.einvisUI) or GAME.uneasyModIconSelected and M.DP == -1 then
         gc_replaceTransform(SCR.xOy)
 
         -- Mod icons
@@ -844,7 +845,9 @@ function scene.draw()
                 gc_draw(GAME.modIB, 1490, y, M.AS * .026 * sin(t), 1)
             end
         end
-
+    end
+    if not (GAME.invisUI or GAME.einvisUI) then
+        local panelH = 697 + GAME.uiHide * (420 + GAME.height / 6.2)
         -- Card Panel
         gc_replaceTransform(SCR.xOy)
         gc_translate(0, DeckPress)
@@ -1928,6 +1931,9 @@ scene.widgetList = {
                 if PieceSFXID <= 14 then
                     local piece = ('zsjltoi'):sub(PieceSFXID, PieceSFXID)
                     SFX.play(piece, 1, 0, Tone(6))
+                    if PieceSFXID > 7 then
+                        SFX.play('combo_'..(PieceSFXID - 7)..'_power', 1, 0, Tone(0))
+                    end
                 else
                     SFX.play('allclear')
                 end
