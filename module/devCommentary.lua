@@ -117,7 +117,7 @@ return {
         Well, it's still a strong buff if you are skilled enough, enjoy it!
     ]],
     ['rDP'] = STRING.trimIndent [[
-        Why we can only play rDP in QP2 for only 1 weeks :sob: :sob: :sob: Let's play rDP forever in Zenith Clicker!
+        Why rDP in QP2 is only available for a few da... oh it's permanent now, nvm
         Same as DP, except your attacks will also be sent to the other player, you have to master switching players now.
         Though the "backfire" doesn't give you garbage to send more, your max rank is still limited just like in QP2.
         Can you FEEL the rhythm of switching between players even you...

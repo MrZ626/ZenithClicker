@@ -20,7 +20,9 @@ function MyRPC.setAppID(appID)
     MyRPC.appID=appID
 end
 
---- Need setup appID with MyRPC.setAppID() first
+---Must be after setting up appID with MyRPC.setAppID() first
+---
+---This has no dependency on `MyRPC.update`
 ---@param bool boolean
 function MyRPC.setEnable(bool)
     if MyRPC.enabled==bool or not MyRPC.RPC or not MyRPC.appID then return end
@@ -33,6 +35,9 @@ function MyRPC.setEnable(bool)
     end
 end
 
+---Update presence info shown on Discord
+---
+---This has no dependency on `MyRPC.setEnable`
 ---@param state? string
 ---@param details? string
 ---@overload fun(state:DiscordRPC.presence)

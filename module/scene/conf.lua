@@ -671,7 +671,7 @@ scene.widgetList = {
                 MSG('dark', "Only a fool would try to import from a different mod...")
                 SFX.play('staffwarning')
                 return
-            elseif res1.mod ~= 'vanilla' and res1.mod ~= 'unabstracted' then
+            elseif res1.mod and res1.mod ~= 'vanilla' and res1.mod ~= 'unabstracted' then
                 MSG('dark', "Cannot import data from different modded version, this file is from " .. res1.mod)
                 SFX.play('staffwarning')
                 return

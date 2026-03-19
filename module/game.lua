@@ -598,8 +598,6 @@ function GAME.genQuest()
         GAME.atkBuffer = clamp(GAME.atkBuffer - (max(GAME.floor / 3, GAME.atkBufferCap / 4) + MATH.rand(-.62, .62)), 0, GAME.atkBufferCap)
         if M.DP > 0 then r = r * (GAME[GAME.getLifeKey(true)] == 0 and 1.26 or 1.1) end
 
-        TEXTS.zcu_questBuffer:set(string.format("Buffer: %.1f / %.0f cards", GAME.atkBuffer, GAME.atkBufferCap))
-
         local pool = TABLE.copyAll(MD.weight)
 
         local lastQ = GAME.quests[#GAME.quests]
@@ -660,7 +658,6 @@ function GAME.genQuest()
     GAME.dmgWrongExtra = 0
     GAME.gravTimer = false
     GAME.achv_resetCount = 0
-    TEXTS.zcu_gravResets:set(15)
     for _, C in ipairs(CD) do C.touchCount, C.required, C.required2 = 0, false, false end
     for _, v in next, GAME.quests[1].combo do CD[v].required = true end
     if M.DP > 0 and GAME.quests[2] then for _, v in next, GAME.quests[2].combo do CD[v].required2 = true end end
@@ -2098,7 +2095,7 @@ function GAME.start()
     GAME.isUltraRun = GAME.anyUltra
     GAME.attackMul = GAME.isUltraRun and .62 or 1
     GAME.xpLockLevelMax = URM and M.NH == 2 and 1 or 5
-    GAME.leakSpeed = (M.EX > 0 and 5 or 3) + (GAME.fastLeak and 8 or 0)
+    GAME.leakSpeed = ((M.EX > 0 or M.DP == 2) and 5 or 3) + (GAME.fastLeak and 8 or 0)
     GAME.invincible = false
 
     TASK.unlock('sure_quit')

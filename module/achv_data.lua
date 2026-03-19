@@ -129,7 +129,7 @@ Achievements = {
     { -- speed_player
         id = 'speed_player',
         name = "Speed Player",
-        desc = [[speedruns entered]],
+        desc = [[speedrun animations triggered]],
         quote = [[A simple strategy that can overwhelm even the most poised of masters.]],
         scoreSimp = function(n) return n .. " GIGAs" end,
         rank = numberRank(0, 26, 62, 120, 260, 620, 1260),
@@ -739,7 +739,7 @@ Achievements = {
         ex = true,
         id = 'carried',
         name = "Carried",
-        desc = [[HFD without passing any quest with both players alive, with at least DP]],
+        desc = [[HFD without passing any quest when both players alive, with at least DP]],
         quote = [["I have no idea how to play the game, can you unlock the mods for me?"]],
         credit = "@obsidian",
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),

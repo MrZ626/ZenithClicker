@@ -142,7 +142,7 @@ function scene.load()
     local setStr = table.concat(TABLE.sort(GAME.getHand(true)))
     local cID = table.concat(GAME.getHand(true), " ")
     if GAME.anyUltra then
-        setStr = 'u' .. cID
+        setStr = 'u' .. setStr
         cID = cID:gsub("r", "u")
     end
     local text
