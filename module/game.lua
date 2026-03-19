@@ -3616,7 +3616,7 @@ function GAME.update(dt)
         end
     end
 
-    if GAME.time >= 1 and not GAME.uneasyModIconSelected then
+    if ((GAME.slowmo and GAME.time >= 2.6) or (not GAME.slowmo and GAME.time >= 1)) and not GAME.uneasyModIconSelected then
         local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
         if uneasyMode and #GAME.getHand(true) == 2 then
             if PieceSFXID == 1 and M.DH == -1 or PieceSFXID == 2 and (M.MS == -1 or M.GV == -1) or PieceSFXID == 3 and M.NH == -1

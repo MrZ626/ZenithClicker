@@ -1778,7 +1778,7 @@ Achievements = {
         comp = '<',
         scoreSimp = function(time) return string.format("%.2fs", time) end,
         scoreFull = function(time) return string.format("%.2f quests/s", 75 / time) end,
-        rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
+        rank = numberRankRev(720, 660, 600, 540, 480, 420, 360),
         hide = function() return not ACHV.uneasy or not ACHV.eDH end,
     },
     { -- ueEXeIN
@@ -1802,7 +1802,7 @@ Achievements = {
         comp = '<',
         scoreSimp = function(time) return string.format("%.2fs", time) end,
         scoreFull = function(time) return string.format("%.2f quests/s", 75 / time) end,
-        rank = numberRankRev(300, 270, 240, 210, 180, 150, 120),
+        rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eAS end,
     },
     { -- ueEXeDP
