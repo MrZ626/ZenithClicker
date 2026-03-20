@@ -3126,8 +3126,11 @@ function GAME.finish(reason)
         TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, 0, DailyActived and ", 260%" or ""))
 
         -- Easy Mode Version for records
-        TEXTS.easyModeVersion:set((STAT.oldHitbox and "eT" or "eV") .. (require 'version'.verStr))
-
+        if not STAT.imperial then
+            TEXTS.easyModeVersion:set((STAT.oldHitbox and "eT" or "eV") .. (require 'version'.verStr))
+        else
+            TEXTS.easyModeVersion:set({ COLOR.LL, ("%.1fm"):format(GAME.roundHeight) })
+        end
         -- Daily
         if DailyActived then
             STAT.dzp = max(STAT.dzp, zpGain)
@@ -3240,7 +3243,22 @@ function GAME.finish(reason)
             if GAME[PieceData[i].id] then TABLE.append(resStr, PieceData[i].text) end
         end
         if #resStr > 0 then ins(resStr, " ") end
-        TEXTS.endHeight:set(TABLE.append(resStr, { COLOR.LL, ("%.1fm"):format(GAME.roundHeight) }))
+        if STAT.imperial then
+            local height = GAME.height
+            height = height * 3.2
+            local miles = 0
+            local feet = height
+            if height >= 5280 then
+                miles = floor(height/5280)
+                feet = height%5280
+                TEXTS.endHeight:set(TABLE.append(resStr, { COLOR.LL, miles }))
+                TEXTS.endHeight:set(TABLE.append(resStr, { COLOR.LL, 'mi ' }))
+            end
+            TEXTS.endHeight:set(TABLE.append(resStr, { COLOR.LL, ("%.1f"):format(feet) }))
+            TEXTS.endHeight:set(TABLE.append(resStr, { COLOR.LL, 'ft' }))
+        else
+            TEXTS.endHeight:set(TABLE.append(resStr, { COLOR.LL, ("%.1fm"):format(GAME.roundHeight) }))
+        end
         local endFloorStr
         if GAME.roundHeight >= 0 then
             if GAME.floor >= 10 and GAME.omega then

@@ -674,6 +674,7 @@ STAT = {
     autoMute = false,
     oldHitbox = false,
     easyName = false,
+    imperial = false,
 }
 
 ACHV = {}

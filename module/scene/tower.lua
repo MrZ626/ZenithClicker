@@ -1359,7 +1359,22 @@ function scene.overDraw()
         gc_mRect('fill', 800, 965, 420 * GAME.xp / (4 * rank), 3 * clamp(GAME.xpLockLevel, 1, 5))
 
         -- Height & Time
-        altitudeText[1] = ("%.1f"):format(GAME.roundHeight)
+        --local imperial = true
+        local height = GAME.height
+        local miles = 0
+        local feet = 0
+        if STAT.imperial then
+            altitudeText[3] = 'ft'
+            height = height * 3.2
+            if height >= 5280 then
+                miles = floor(height/5280)
+                feet = height%5280
+            end
+        else altitudeText[3] = 'm' end
+        altitudeText[1] = ("%.1f"):format(STAT.imperial and height or GAME.roundHeight)
+        if STAT.imperial and miles > 0 then
+            altitudeText[1] = miles .. 'mi ' .. ("%.1f"):format(feet)
+        end
         TEXTS.height:set(altitudeText)
         TEXTS.time:set(STRING.time_simp(GAME.time))
         gc_setColor(COLOR.D)

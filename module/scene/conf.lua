@@ -783,8 +783,11 @@ scene.widgetList = {
                 elseif data == 'UseAltName' then
                     UseAltName()
                     SFX.play('social_dm')
-                elseif data == 'UseEasyName' then
+                elseif data == 'UseEasyName' or data == 'UseEasName' then
                     STAT.easyName = not STAT.easyName
+                    SFX.play('social_dm')
+                elseif data == 'imperial' then
+                    STAT.imperial = not STAT.imperial
                     SFX.play('social_dm')
                 elseif data == 'resubmit' then
                     if DAILYCMD then
