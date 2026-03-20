@@ -129,9 +129,18 @@ local ins, rem = table.insert, table.remove
 ---@field slamDunkCheck boolean
 ---@field dunk boolean
 ---@field bigDunk boolean
----@field achv_bestFriendQuest number
 ---@field uneasyModIconSelected boolean
 ---@field manualBGMPitch number
+---@field noManualActivate boolean
+---@field noMouseOrSpin boolean
+---@field noKeyboardOrReset boolean
+
+---@field achv_bestFriendQuest number
+---@field achv_shamelessCashgrabQuest number
+---@field achv_overweightGamerQuest number
+---@field achv_cleanGamerQuest number
+---@field achv_cleanBreakQuest number
+---@field achv_professionalCleanerQuest number
 local GAME = {
     forfeitTimer = 0,
     exTimer = 0,
@@ -2242,6 +2251,22 @@ function GAME.commit(auto)
             GAME.achv_clutchQuest = GAME.achv_clutchQuest + 1
             SFX.play('clutch')
         end
+        if GAME.comboStr == 'eASeNH' and GAME.noManualActivate then
+            GAME.achv_overweightGamerQuest = GAME.achv_overweightGamerQuest + 1
+            --MSG("bright", "No manual correct commit")
+        elseif GAME.comboStr == 'eASeDHeMS' and GAME.noMouseOrSpin and not GAME.fault then
+            GAME.achv_cleanGamerQuest = GAME.achv_cleanGamerQuest + 1
+            --MSG("bright", "No mouse/spin correct commit")
+        elseif GAME.comboStr == 'eDHeMSeNH' and GAME.noKeyboardOrReset and not GAME.fault then
+            GAME.achv_cleanBreakQuest = GAME.achv_cleanBreakQuest + 1
+            --MSG("bright", "No keyboard/reset correct commit")
+        elseif GAME.comboStr == 'eDHeEXeMSeVL' and not URM and not GAME.fault and GAME.height <= 1650 then
+            GAME.achv_professionalCleanerQuest = GAME.achv_professionalCleanerQuest + 1
+            --MSG("bright", "Correct commit")
+        end
+        GAME.noManualActivate = true
+        GAME.noMouseOrSpin = true
+        GAME.noKeyboardOrReset = true
         local hp = 0
         if GAME.bonusRecoveryHealth > 0 then
             hp = GAME.bonusRecoveryHealth
@@ -2266,10 +2291,17 @@ function GAME.commit(auto)
                 GAME.nixPrompt('keep_no_imperfect')
                 GAME.nixPrompt('pass_windup_inb2b')
             end
+            if GAME.comboStr == 'eGVeNH' then
+                GAME.achv_shamelessCashgrabQuest = GAME.achv_shamelessCashgrabQuest + 1
+            end
             if M.AS == 2 then attack = 0 end
             xp = xp + 2
             if GAME.chain < 4 then
-                SFX.play('clearline', .62)
+                if GAME.comboStr == 'eGVeNH' then
+                    SFX.play('boardlock_clink', 1)
+                else
+                    SFX.play('clearline', .62)
+                end
             else
                 check_achv_romantic_homicide = M.DP == 2 and GAME.chain >= 62 and GAME[GAME.getLifeKey(true)] == 0
                 if GAME.currentTask then
@@ -2634,7 +2666,7 @@ function GAME.commit(auto)
                 if GAME.comboStr == 'DPMSrNH' then SubmitAchv('scarcity_mindset', GAME.totalFlip) end
             elseif GAME.totalQuest == 41 then
                 if GAME.comboStr == 'EXMS' then SubmitAchv('quest_rationing', GAME.roundHeight) end
-                if GAME.comboStr == 'eEXeMS' then 
+                if GAME.comboStr == 'eEXeMS' and not URM then 
                     SubmitAchv('quest_feast', GAME.roundHeight)
                 end
                 if GAME.comboStr == 'EXeDHeNH' then
@@ -2743,7 +2775,17 @@ function GAME.start()
     GAME.finalFatigueOSPActivated = false
     GAME.teraComplete = false
     GAME.teraLostHeight = 0
+
     GAME.achv_bestFriendQuest = 0
+    GAME.achv_shamelessCashgrabQuest = 0
+    GAME.achv_overweightGamerQuest = 0
+    GAME.achv_cleanGamerQuest = 0
+    GAME.achv_cleanBreakQuest = 0
+    GAME.achv_professionalCleanerQuest = 0
+
+    GAME.noManualActivate = true
+    GAME.noMouseOrSpin = true
+    GAME.noKeyboardOrReset = true
     GAME.setupCheck = false
     GAME.dunk = false
     GAME.bigDunk = false
@@ -3537,8 +3579,18 @@ local questStyleDP = {
 }
 
 function GAME.submitTimedAchievements()
-    if GAME.comboStr == 'eDPeEX' then
+    if GAME.comboStr == 'eDPeEX' and not URM then
         SubmitAchv('best_friends', GAME.achv_bestFriendQuest or 0)
+    elseif GAME.comboStr == 'eGVeNH' then
+        SubmitAchv('shameless_cashgrab', GAME.achv_shamelessCashgrabQuest or 0)
+    elseif GAME.comboStr == 'eASeNH' then
+        SubmitAchv('overweight_gamer', GAME.achv_overweightGamerQuest or 0)
+    elseif GAME.comboStr == 'eASeDHeMS' then
+        SubmitAchv('clean_gamer', GAME.achv_cleanGamerQuest or 0)
+    elseif GAME.comboStr == 'eDHeMSeNH' then
+        SubmitAchv('clean_break', GAME.achv_cleanBreakQuest or 0)
+    elseif GAME.comboStr == 'eDHeEXeMSeVL' and not URM then
+        SubmitAchv('professional_cleaner', GAME.achv_professionalCleanerQuest or 0)
     end
 end
 

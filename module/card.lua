@@ -130,7 +130,10 @@ function Card:setActive(auto, key)
     if not auto then
         GAME.lastFlip = self.id
     end
-
+    if not auto and not self.active and GAME.comboStr == 'eASeNH' and GAME.playing then
+        GAME.noManualActivate = false
+        --MSG("dark", "Manual activation")
+    end
     -- Trevor Smithy
     self.active = not self.active -- the main flip
     --Closer Card

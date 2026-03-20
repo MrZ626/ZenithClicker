@@ -113,6 +113,7 @@ local function keyTrigger(key)
         if C then
             if GAME.playing or not C.lock then
                 GAME.nixPrompt('keep_no_keyboard')
+                GAME.noKeyboardOrReset = false
                 FloatOnCard = bindID
                 SetMouseVisible(false)
                 MX, MY = C.x + math.random(-126, 126), C.y + math.random(-260, 260)
@@ -146,15 +147,19 @@ local function keyTrigger(key)
             W._hoverTime = W._hoverTimeMax
             SFX.play('menuclick')
             if M.AS == 0 then GAME.nixPrompt('keep_no_reset') end
+            GAME.noMouseOrSpin = false
+            GAME.noKeyboardOrReset = false
             GAME.cancelAll()
             if not GAME.achv_noKeyboardH then GAME.achv_noKeyboardH = GAME.roundHeight end
         elseif bindID == 21 or bindID == 22 then
             GAME.nixPrompt('keep_no_keyboard')
+            GAME.noKeyboardOrReset = false
             scene.mouseDown(MX, MY, bindID == 21 and 1 or 2)
             scene.mouseUp(MX, MY, bindID == 21 and 1 or 2)
             if not GAME.achv_noKeyboardH then GAME.achv_noKeyboardH = GAME.roundHeight end
         elseif bindID == 19 then
             GAME.nixPrompt('keep_no_keyboard')
+            GAME.noKeyboardOrReset = false
             local W = scene.widgetList.start
             W._pressTime = W._pressTimeMax * 2
             W._hoverTime = W._hoverTimeMax
@@ -329,6 +334,7 @@ function scene.mouseMove(x, y, _, dy)
         )
     else
         GAME.nixPrompt('keep_no_mouse')
+        GAME.noMouseOrSpin = false
         mouseMove(x, y)
     end
 end
@@ -360,7 +366,7 @@ function scene.mouseDown(x, y, k)
     if k == 3 then return true end
     HoldingButtons['mouse' .. k] = true
     GAME.nixPrompt('keep_no_mouse')
-
+    GAME.noMouseOrSpin = false
     -- Trevor Smithy
     --if getBtnPressed() > 1 + (URM and M.VL == 2 and 0 or floor(M.VL / 2)) then return true end
     if getBtnPressed() > 1 + (URM and M.VL == 2 and 0 or M.VL == -1 and 0 or floor(M.VL / 2)) then return true end
@@ -378,6 +384,7 @@ function scene.mouseUp(x, y, k)
     HoldingButtons['mouse' .. k] = nil
     if GAME.zenithTraveler then return end
     GAME.nixPrompt('keep_no_mouse')
+    GAME.noMouseOrSpin = false
     if k == 3 then return end
 
     --if getBtnPressed() > 1 + (URM and M.VL == 2 and 0 or floor(M.VL / 2)) then return end
@@ -1742,6 +1749,8 @@ local function button_start()
 end
 local function button_reset()
     if M.AS == 0 then GAME.nixPrompt('keep_no_reset') end
+    GAME.noMouseOrSpin = false
+    GAME.noKeyboardOrReset = false
     GAME.cancelAll()
     if UsingTouch then
         FloatOnCard = nil
