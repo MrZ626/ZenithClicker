@@ -1224,8 +1224,8 @@ function scene.overDraw()
                 local rank = GAME.rank
                 local xp = GAME.commit(false, true)
                 local newXP, newRank = GAME.addXP(xp, true)
-                local revolutions = newRank - rank + (newXP/(4*(newRank-1)))
-                local tempRevolutions = floor(revolutions)
+                local revolutions = newRank - rank + (newXP/(4*(newRank))) - 1/360
+                local tempRevolutions = newRank - rank 
                 if revolutions > 1 then
                     while radius > 10 and tempRevolutions > 0 do
                         for i = 1, revolutions do
