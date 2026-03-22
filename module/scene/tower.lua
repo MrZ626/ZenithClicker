@@ -1224,11 +1224,13 @@ function scene.overDraw()
                 local rank = GAME.rank
                 local xp = GAME.commit(false, true)
                 local newXP, newRank = GAME.addXP(xp, true)
-                local revolutions = newRank - rank + (newXP/(4*(newRank))) - 1/360
+                local revolutions = newRank - rank + (newXP/(4*(newRank))) -- 1/360
                 local tempRevolutions = newRank - rank 
+                --MSG("bright", tempRevolutions)
+                --TASK.yieldT(0.2)
                 if revolutions > 1 then
-                    while radius > 10 and tempRevolutions > 0 do
-                        for i = 1, revolutions do
+                    while radius > 2 and tempRevolutions > 0 do
+                        for i = 1, floor(revolutions) do
                             gc_setColor(colorList[colorIndex])
                             gc_circle('fill', 0, 0, radius)
                             if colorIndex == 6 then

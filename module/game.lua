@@ -1119,7 +1119,7 @@ function GAME.addXP(xp, falseCommit)
         GAME.xpLockLevel = max(GAME.xpLockLevel - 1, xpLockLevelMin)
 
         -- Rank skip
-        if GAME.xp >= 2 * GAME.rank then
+        if GAME.xp >= 2 * GAME.rank and not falseCommit then
             GAME.xpLockLevel = GAME.xpLockLevelMax
             if GAME.xp >= 4 * GAME.rank then
                 GAME.rank = GAME.rank + floor(GAME.xp / (4 * GAME.rank))
