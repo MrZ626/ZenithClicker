@@ -625,7 +625,7 @@ Achievements = {
         name = "Tyrannical Dyarchy",
         desc = [[HFD with rEX rDP]],
         quote = [[Live in fear and despair.]],
-        rank = floorRank(1, 2, 3, 4, 5, 6, 7),
+        rank = floorRank(1, 3, 4, 5, 6, 7, 8),
         hide = function() return GAME.completion.EX == 0 or GAME.completion.DP == 0 end,
     },
     { -- INMSrDHrEX
