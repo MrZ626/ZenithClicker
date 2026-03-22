@@ -1212,6 +1212,46 @@ function scene.overDraw()
                 gc_pop()
             end
 
+            -- Surge Timer (?)
+            if STAT.promotion then
+                gc_push('transform')
+                gc_translate(460, 290)
+                gc_scale(GAME.uiHide)
+                local baseThickness = 6
+                local radius = 60
+                local colorList = {COLOR.R, COLOR.Y, COLOR.G, COLOR.B, COLOR.V, COLOR.lM }
+                local colorIndex = 1
+                local rank = GAME.rank
+                local xp = GAME.commit(false, true)
+                local newXP, newRank = GAME.addXP(xp, true)
+                local revolutions = newRank - rank + (newXP/(4*(newRank-1)))
+                local tempRevolutions = floor(revolutions)
+                if revolutions > 1 then
+                    while radius > 10 and tempRevolutions > 0 do
+                        for i = 1, revolutions do
+                            gc_setColor(colorList[colorIndex])
+                            gc_circle('fill', 0, 0, radius)
+                            if colorIndex == 6 then
+                                colorIndex = 1
+                            else
+                                colorIndex = colorIndex + 1
+                            end
+                            tempRevolutions = tempRevolutions - 1
+                            radius = radius - (revolutions <= 10 and 6 or revolutions <= 12 and 5 or revolutions <= 15 and 4 or revolutions <= 20 and 3 or revolutions <= 30 and 2 or 1)
+                        end
+                    end
+                    gc_setColor(colorList[colorIndex])
+                else
+                    radius = radius - baseThickness
+                    gc_setColor(COLOR.DL)
+                end
+                gc_setAlpha(1/eTAlpha)
+                gc_arc('fill', 'pie', 0, 0, radius, 0, 6.2832 * (revolutions - floor(revolutions)))
+                gc_setColor(GAME.rank > 126 and COLOR.LL or COLOR.LD)
+                gc_setAlpha(1/eTAlpha)
+                gc_circle('line', 0, 0, 60)
+                gc_pop()
+            end
             -- Revive Task
             local task = GAME.currentTask
             if task then

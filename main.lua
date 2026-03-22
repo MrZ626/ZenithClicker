@@ -675,6 +675,7 @@ STAT = {
     oldHitbox = false,
     easyName = false,
     imperial = false,
+    promotion = true,
 }
 
 ACHV = {}

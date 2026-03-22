@@ -786,9 +786,15 @@ scene.widgetList = {
                 elseif data == 'UseEasyName' or data == 'UseEasName' then
                     STAT.easyName = not STAT.easyName
                     SFX.play('social_dm')
-                elseif data == 'imperial' then
+                    MSG('dark', "Easy Names In-Game: " .. (STAT.easyName and "ON" or "OFF"))
+                elseif data == 'imperial' or data == 'feet' then
                     STAT.imperial = not STAT.imperial
                     SFX.play('social_dm')
+                    MSG('dark', "Imperial Units: " .. (STAT.imperial and "ON" or "OFF"))
+                elseif data == 'promotion' then
+                    STAT.promotion = not STAT.promotion
+                    SFX.play('social_dm')
+                    MSG('dark', "Rank Promotion Gauge: " .. (STAT.promotion and "ON" or "OFF"))
                 elseif data == 'resubmit' then
                     if DAILYCMD then
                         ASYNC.runCmd('submitDaily', DAILYCMD)
@@ -810,6 +816,9 @@ scene.widgetList = {
                             "Try 'repo'",
                             MATH.coin("Try 'mp'", "Try 'music'"),
                             "Try 'f" .. STAT.maxFloor .. "'",
+                            "Try 'UseEasyName'",
+                            "Try 'imperial'",
+                            "Try 'promotion'",
                             STAT.clicker and "Try 'true_ending'" or nil,
                         }
                     end

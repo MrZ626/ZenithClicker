@@ -1076,13 +1076,8 @@ function GAME.addHeight(h, realHeight)
     if h >= 6 and TASK.lock('speed_tick_whirl', 2.6) then SFX.play('speed_tick_whirl') end
 end
 
-local speedupSFX = { 0, 1, 1, 1, 2, 2, 2, 3, 3 }
-function GAME.addXP(xp)
+function GAME.easyXPModifiers(xp)
     local xpRankModifier = 20 -- 1/10th
-    local xpLockLevelMin = 1
-    if GAME.xpLockLevelMax == 0 then
-        xpLockLevelMin = 0
-    end
     if M.VL == -1 then
         xp = xp + 1
     end
@@ -1095,7 +1090,24 @@ function GAME.addXP(xp)
     if GAME.ecloseCard then
         xp = roundUnit(xp * max((1-(GAME.height/1000000)), 0), 0.01)
     end
-    --if oldXP > 0 then MSG("bright", "Old XP=" .. oldXP .. " XP=" .. xp) end
+    return xp
+end
+
+local speedupSFX = { 0, 1, 1, 1, 2, 2, 2, 3, 3 }
+function GAME.addXP(xp, falseCommit)
+    if M.EX == -1 or M.VL == -1 or GAME.ecloseCard then
+        xp = GAME.easyXPModifiers(xp)
+    end
+    local xpLockLevelMin = 1
+    local array = {0, 0, 0, 0, 0}
+    if falseCommit then
+        ins(array, 1, GAME.xp) 
+        ins(array, 2, GAME.rank)
+        ins(array, 3, GAME.xpLockLevel)
+    end
+    if GAME.xpLockLevelMax == 0 then
+        xpLockLevelMin = 0
+    end
     GAME.xp = GAME.xp + xp
     if GAME.rankupLast and GAME.xp >= 2 * GAME.rank then GAME.xpLockLevel = GAME.xpLockLevelMax end
 
@@ -1113,6 +1125,14 @@ function GAME.addXP(xp)
                 GAME.rank = GAME.rank + floor(GAME.xp / (4 * GAME.rank))
             end
         end
+    end
+    if falseCommit then
+        ins(array, 4, GAME.xp)
+        ins(array, 5, GAME.rank)
+        GAME.xp = array[1]
+        GAME.rank = array[2]
+        GAME.xpLockLevel = array[3]
+        return array[4], array[5]
     end
     if GAME.rank > GAME.rankLimit then
         GAME.rank = GAME.rankLimit
@@ -1747,7 +1767,7 @@ function GAME.refreshCurrentCombo()
                 elseif comboName == '"PROFESSIONAL WEIGHTLIFTER"' and GAME.closeCard then
                     comboName = '"SUBLUXATION"'
                 elseif comboName == '"HEAVEN"' and GAME.nightcore then
-                    comboName = '"PURGATORY"'
+                    comboName = '"LIMBO"'
                 elseif comboName == '"PERFECT VISION"' and GAME.invisCard then
                     comboName = '"PRESBYOPIA"'
                 elseif comboName == '"GAMING ADDICT"' and GAME.fastLeak then
@@ -2107,42 +2127,42 @@ function GAME.task_toggleEasy()
     end
 end
 
-function GAME.commit(auto)
+function GAME.commit(auto, falseCommit)
     if #GAME.quests == 0 then return end
 
     if URM and M.VL == 2 and not UltraVlCheck('start', auto) then return end
 
-    if not auto and not GAME.achv_noManualCommitH then GAME.achv_noManualCommitH = GAME.roundHeight end
+    if not auto and not falseCommit and not GAME.achv_noManualCommitH then GAME.achv_noManualCommitH = GAME.roundHeight end
 
     local hand = TABLE.sort(GAME.getHand(false))
     local allyWasDead = GAME[GAME.getLifeKey(true)] == 0
+    if not falseCommit then
+        if #hand == 0 and GAME.questTime < .1 then return SFX.play('no') end
 
-    if #hand == 0 and GAME.questTime < .1 then return SFX.play('no') end
-
-    if M.DP ~= 0 and not (GAME.achv_shareModH and GAME.achv_noShareModH) and GAME.totalQuest >= 1 then
-        local noRep = #TABLE.subtract(TABLE.copy(hand), GAME.lastCommit) == #hand
-        if noRep then
-            if not GAME.achv_shareModH then
-                GAME.achv_shareModH = GAME.roundHeight
-                if GAME.totalQuest >= 10 then SFX.play('btb_break') end
-            end
-        else
-            if not GAME.achv_noShareModH then
-                GAME.achv_noShareModH = GAME.roundHeight
-                if GAME.totalQuest >= 10 then SFX.play('btb_break') end
+        if M.DP ~= 0 and not (GAME.achv_shareModH and GAME.achv_noShareModH) and GAME.totalQuest >= 1 then
+            local noRep = #TABLE.subtract(TABLE.copy(hand), GAME.lastCommit) == #hand
+            if noRep then
+                if not GAME.achv_shareModH then
+                    GAME.achv_shareModH = GAME.roundHeight
+                    if GAME.totalQuest >= 10 then SFX.play('btb_break') end
+                end
+            else
+                if not GAME.achv_noShareModH then
+                    GAME.achv_noShareModH = GAME.roundHeight
+                    if GAME.totalQuest >= 10 then SFX.play('btb_break') end
+                end
             end
         end
+
+        for _, id in next, GAME.lastCommit do CD[id].inLastCommit = false end
+        GAME.lastCommit = TABLE.copy(hand)
+        for _, id in next, GAME.lastCommit do CD[id].inLastCommit = true end
     end
-
-    for _, id in next, GAME.lastCommit do CD[id].inLastCommit = false end
-    GAME.lastCommit = TABLE.copy(hand)
-    for _, id in next, GAME.lastCommit do CD[id].inLastCommit = true end
-
     local q1 = TABLE.sort(GAME.quests[1].combo)
     local q2 = M.DP ~= 0 and GAME.quests[2] and TABLE.sort(GAME.quests[2].combo)
     local q3 = M.DP == -1 and GAME.quests[3] and TABLE.sort(GAME.quests[3].combo)
 
-    if GAME.currentTask then
+    if GAME.currentTask and not falseCommit then
         GAME.incrementPrompt('commit')
         GAME.nixPrompt('keep_no_commit')
         for i = 1, #MD.deck do
@@ -2189,14 +2209,14 @@ function GAME.commit(auto)
     end
 
     local correct, dblCorrect, eDPCorrect
-    if TABLE.equal(hand, q1) then
+    if TABLE.equal(hand, q1) and not falseCommit then
         correct = 1
         dblCorrect = q2 and TABLE.equal(hand, q2)
         eDPCorrect = q3 and TABLE.equal(hand, q3)
-    elseif q2 and TABLE.equal(hand, q2) then
+    elseif q2 and TABLE.equal(hand, q2) and not falseCommit then
         correct = 2
         GAME.incrementPrompt('pass_second')
-    elseif q3 and TABLE.equal(hand, q3) then
+    elseif q3 and TABLE.equal(hand, q3) and not falseCommit then
         correct = 3
         eDPCorrect = 1
     end
@@ -2208,26 +2228,25 @@ function GAME.commit(auto)
         end
         GAME.alleyoopCheck = true
     else -- not a 3rd quest
-        if GAME.alleyoopCheck and correct and not allyWasDead then --last was a 3rd quest
+        if GAME.alleyoopCheck and correct and not allyWasDead and not falseCommit then --last was a 3rd quest
             IssueAchv('alleyoop')
             SFX.play('shatter', 0.626)
             GAME.dunk = true
         end
-        if GAME.slamDunkCheck and correct and not allyWasDead then
+        if GAME.slamDunkCheck and correct and not allyWasDead and not falseCommit then
             --MSG('bright', 'SLAMDUNK')
             IssueAchv('slamdunk')
             SFX.play('shatter', 1)
             GAME.bigDunk = true
         end
-        GAME.alleyoopCheck = false
-        GAME.slamDunkCheck = false
+        if not falseCommit then
+            GAME.alleyoopCheck = false
+            GAME.slamDunkCheck = false
+        end
     end
 
-    if correct then
+    if correct or falseCommit then
         --Trevor Smithy
-        if #hand == 7 and not TABLE.find(hand, 'DP') and M.EX == -1 and M.GV == -1 and M.IN == -1 then
-            IssueAchv('trip_to_hell')
-        end
         local totalAssistPenalty = 0
         for i = 1, #CD do
             if CD[i].active then
@@ -2235,110 +2254,114 @@ function GAME.commit(auto)
             end
         end
         --MSG("bright", "totalAssistPenalty=".. totalAssistPenalty)
-        if GAME.currentTask then
-            GAME.incrementPrompt('pass')
-            for i = 1, #hand do GAME.incrementPrompt('pass_' .. hand[i]) end
-
-            if #hand >= 4 then
-                GAME.incrementPrompt('pass_windup')
-                if #hand >= 5 then
-                    GAME.incrementPrompt('pass_windup3')
+        if not falseCommit then
+            if GAME.currentTask then
+                GAME.incrementPrompt('pass')
+                for i = 1, #hand do GAME.incrementPrompt('pass_' .. hand[i]) end
+                if #hand >= 4 then
+                    GAME.incrementPrompt('pass_windup')
+                    if #hand >= 5 then
+                        GAME.incrementPrompt('pass_windup3')
+                    end
                 end
             end
-        end
-
-        if GAME.lifeState == 'danger' then
-            GAME.achv_clutchQuest = GAME.achv_clutchQuest + 1
-            SFX.play('clutch')
-        end
-        if GAME.comboStr == 'eASeNH' and GAME.noManualActivate then
-            GAME.achv_overweightGamerQuest = GAME.achv_overweightGamerQuest + 1
-            --MSG("bright", "No manual correct commit")
-        elseif GAME.comboStr == 'eASeDHeMS' and GAME.noMouseOrSpin and not GAME.fault then
-            GAME.achv_cleanGamerQuest = GAME.achv_cleanGamerQuest + 1
-            --MSG("bright", "No mouse/spin correct commit")
-        elseif GAME.comboStr == 'eDHeMSeNH' and GAME.noKeyboardOrReset and not GAME.fault then
-            GAME.achv_cleanBreakQuest = GAME.achv_cleanBreakQuest + 1
-            --MSG("bright", "No keyboard/reset correct commit")
-        elseif GAME.comboStr == 'eDHeEXeMSeVL' and not URM and not GAME.fault and GAME.height <= 1650 then
-            GAME.achv_professionalCleanerQuest = GAME.achv_professionalCleanerQuest + 1
-            --MSG("bright", "Correct commit")
-        end
-        GAME.noManualActivate = true
-        GAME.noMouseOrSpin = true
-        GAME.noKeyboardOrReset = true
-        local hp = 0
-        if GAME.bonusRecoveryHealth > 0 then
-            hp = GAME.bonusRecoveryHealth
-            GAME.bonusRecoveryHealth = GAME.bonusRecoveryHealth - 1
-            GAME.dmgTimerMul = GAME.dmgTimerMul - 1/3
-        end
-        GAME.heal(((dblCorrect or (eDPCorrect and correct == 1)) and 3 or 1) * GAME.dmgHeal + GAME.bonusRecoveryHealth)
-        if MATH.between(Floors[GAME.floor].top - (GAME.height + GAME.heightBuffer), 0, 2) then GAME.addHeight(3, true) end
-
+            if #hand == 7 and not TABLE.find(hand, 'DP') and M.EX == -1 and M.GV == -1 and M.IN == -1 then
+                IssueAchv('trip_to_hell')
+            end
+            if GAME.lifeState == 'danger' then
+                GAME.achv_clutchQuest = GAME.achv_clutchQuest + 1
+                SFX.play('clutch')
+            end
+            if GAME.comboStr == 'eASeNH' and GAME.noManualActivate then
+                GAME.achv_overweightGamerQuest = GAME.achv_overweightGamerQuest + 1
+                --MSG("bright", "No manual correct commit")
+            elseif GAME.comboStr == 'eASeDHeMS' and GAME.noMouseOrSpin and not GAME.fault then
+                GAME.achv_cleanGamerQuest = GAME.achv_cleanGamerQuest + 1
+                --MSG("bright", "No mouse/spin correct commit")
+            elseif GAME.comboStr == 'eDHeMSeNH' and GAME.noKeyboardOrReset and not GAME.fault then
+                GAME.achv_cleanBreakQuest = GAME.achv_cleanBreakQuest + 1
+                --MSG("bright", "No keyboard/reset correct commit")
+            elseif GAME.comboStr == 'eDHeEXeMSeVL' and not URM and not GAME.fault and GAME.height <= 1650 then
+                GAME.achv_professionalCleanerQuest = GAME.achv_professionalCleanerQuest + 1
+                --MSG("bright", "Correct commit")
+            end
+            GAME.noManualActivate = true
+            GAME.noMouseOrSpin = true
+            GAME.noKeyboardOrReset = true
+            local hp = 0
+            if GAME.bonusRecoveryHealth > 0 then
+                hp = GAME.bonusRecoveryHealth
+                GAME.bonusRecoveryHealth = GAME.bonusRecoveryHealth - 1
+                GAME.dmgTimerMul = GAME.dmgTimerMul - 1/3
+            end
+            GAME.heal(((dblCorrect or (eDPCorrect and correct == 1)) and 3 or 1) * GAME.dmgHeal + GAME.bonusRecoveryHealth)
+            if MATH.between(Floors[GAME.floor].top - (GAME.height + GAME.heightBuffer), 0, 2) then GAME.addHeight(3, true) end
+        end    
         local dp = TABLE.find(hand, 'DP')
         local attack = 3
         local surge = 0
         local xp = 0
         if dp and M.EX < 2 then attack = attack + 2 end
         local check_achv_romantic_homicide
-        if GAME.fault and not (M.DP == -1 and (GAME.alleyoopCheck or GAME.slamDunkCheck) and (GAME.dunk or GAME.bigDunk)) then
+        if (GAME.fault and not (M.DP == -1 and (GAME.alleyoopCheck or GAME.slamDunkCheck) and (GAME.dunk or GAME.bigDunk))) or falseCommit then
             -- Non-perfect
-            if GAME.currentTask then
+            if GAME.currentTask and not falseCommit then
                 GAME.incrementPrompt('pass_imperfect')
                 GAME.incrementPrompt('pass_imperfect_row')
                 GAME.nixPrompt('pass_perfect_row')
                 GAME.nixPrompt('keep_no_imperfect')
                 GAME.nixPrompt('pass_windup_inb2b')
             end
-            if GAME.comboStr == 'eGVeNH' then
+            if GAME.comboStr == 'eGVeNH' and not falseCommit then
                 GAME.achv_shamelessCashgrabQuest = GAME.achv_shamelessCashgrabQuest + 1
             end
             if M.AS == 2 then attack = 0 end
             xp = xp + 2
-            if GAME.chain < 4 then
+            if GAME.chain < 4 and not falseCommit then
                 if GAME.comboStr == 'eGVeNH' then
                     SFX.play('boardlock_clink', 1)
                 else
                     SFX.play('clearline', .62)
                 end
             else
-                check_achv_romantic_homicide = M.DP == 2 and GAME.chain >= 62 and GAME[GAME.getLifeKey(true)] == 0
-                if GAME.currentTask then
-                    if GAME.chain >= 4 and GAME.chain <= 10 and GAME.chain % 2 == 0 then
-                        GAME.incrementPrompt('b2b_break_' .. GAME.chain)
-                    end
-                    if #hand >= 4 then
-                        GAME.incrementPrompt('b2b_break_windup')
-                        if #hand >= 5 then
-                            GAME.incrementPrompt('b2b_break_windup3')
+                if not falseCommit then
+                    check_achv_romantic_homicide = M.DP == 2 and GAME.chain >= 62 and GAME[GAME.getLifeKey(true)] == 0
+                    if GAME.currentTask then
+                        if GAME.chain >= 4 and GAME.chain <= 10 and GAME.chain % 2 == 0 then
+                            GAME.incrementPrompt('b2b_break_' .. GAME.chain)
+                        end
+                        if #hand >= 4 then
+                            GAME.incrementPrompt('b2b_break_windup')
+                            if #hand >= 5 then
+                                GAME.incrementPrompt('b2b_break_windup3')
+                            end
                         end
                     end
+                    SFX.play('clearline')
+                    SFX.play(
+                        GAME.chain < 8 and 'b2bcharge_blast_1' or
+                        GAME.chain < 12 and 'b2bcharge_blast_2' or
+                        GAME.chain < 24 and 'b2bcharge_blast_3' or
+                        'b2bcharge_blast_4'
+                    )
+                    if GAME.chain >= 8 then
+                        SFX.play('thunder' .. rnd(6), clampInterpolate(8, .7, 16, 1, GAME.chain))
+                    end
+                    local k = GAME.onAlly and 'life2' or 'life'
+                    local oldLife = GAME[k]
+                    while GAME.chain > 0 and GAME[k] < GAME.fullHealth do
+                        GAME.chain = max(GAME.chain - 2, 0)
+                        GAME[k] = min(GAME[k] + 1, GAME.fullHealth)
+                    end
+                    if GAME[k] > oldLife then GAME.incrementPrompt('heal', GAME[k] - oldLife) end
                 end
-                SFX.play('clearline')
-                SFX.play(
-                    GAME.chain < 8 and 'b2bcharge_blast_1' or
-                    GAME.chain < 12 and 'b2bcharge_blast_2' or
-                    GAME.chain < 24 and 'b2bcharge_blast_3' or
-                    'b2bcharge_blast_4'
-                )
-                if GAME.chain >= 8 then
-                    SFX.play('thunder' .. rnd(6), clampInterpolate(8, .7, 16, 1, GAME.chain))
-                end
-                local k = GAME.onAlly and 'life2' or 'life'
-                local oldLife = GAME[k]
-                while GAME.chain > 0 and GAME[k] < GAME.fullHealth do
-                    GAME.chain = max(GAME.chain - 2, 0)
-                    GAME[k] = min(GAME[k] + 1, GAME.fullHealth)
-                end
-                if GAME[k] > oldLife then GAME.incrementPrompt('heal', GAME[k] - oldLife) end
                 if GAME.chain > 0 then
                     surge = GAME.chain
                 end
             end
-            GAME.chain = 0
+            if not falseCommit then GAME.chain = 0 end
 
-            if not GAME.achv_perfectH then
+            if not GAME.achv_perfectH and not not falseCommit then
                 GAME.achv_perfectH = GAME.roundHeight
                 if GAME.totalQuest >= 26 then SFX.play('btb_break') end
             end
@@ -2403,7 +2426,7 @@ function GAME.commit(auto)
         if dblCorrect or GAME.alleyoopCheck or GAME.dunk or GAME.bigDunk then
             attack = attack * 3
             xp = xp * 3
-            if dblCorrect or GAME.alleyoopCheck then
+            if dblCorrect or GAME.alleyoopCheck and not falseCommit then
                 GAME.chain = GAME.chain + 1
                 GAME.achv_doublePass = GAME.achv_doublePass + 1 
                 if not ACHV.lucky_coincidence then IssueAchv('lucky_coincidence') end
@@ -2412,10 +2435,12 @@ function GAME.commit(auto)
                 attack = attack * 3
                 xp = xp * 3
             end
-            GAME.dunk = false
-            GAME.bigDunk = false
+            if not falseCommit then
+                GAME.dunk = false
+                GAME.bigDunk = false
+            end
         end
-        if GAME.setupCheck and not allyWasDead and correct == 1 then
+        if GAME.setupCheck and not allyWasDead and correct == 1 and not falseCommit then
             if not GAME.achv_bestFriendQuest then
                 GAME.achv_bestFriendQuest = 0
             end
@@ -2423,7 +2448,7 @@ function GAME.commit(auto)
             --MSG("bright", "+" .. (eDPCorrect and 2 or 1))
             GAME.setupCheck = false
         end
-        if eDPCorrect then
+        if eDPCorrect and not falseCommit then
             GAME.setupCheck = true
         end
         if GAME.switch_sickness >= 20 then
@@ -2432,12 +2457,12 @@ function GAME.commit(auto)
             if GAME.switch_sickness >= 40 then xp = xp * .4 end
             if GAME.switch_sickness >= 50 then attack = attack * .5 end
             if GAME.switch_sickness >= 60 then xp = xp * .3 end
-            if not GAME.hasseenDPnerf and GAME.switch_sickness >= 40 then
+            if not GAME.hasseenDPnerf and GAME.switch_sickness >= 40 and not falseCommit then
                 GAME.hasseenDPnerf = true
                 GAME.extraQuestBase = GAME.extraQuestBase + .626
             end
         end
-        if GAME.chain >= 4 then
+        if GAME.chain >= 4 and not falseCommit then
             local chainCap = 6 * (max(GAME.floor, GAME.negFloor) + 2) ^ 2
             if GAME.chain > chainCap then
                 GAME.chain = chainCap
@@ -2495,32 +2520,33 @@ function GAME.commit(auto)
                 SubmitAchv('perfect_speedrun_plus', GAME.time)
             end
         end
+        if not falseCommit then
+            SFX.play(dp and 'zenith_start_duo' or 'zenith_start', .626, 0, Tone(12))
 
-        SFX.play(dp and 'zenith_start_duo' or 'zenith_start', .626, 0, Tone(12))
+            if GAME.achv_escapeBurnt then
+                GAME.achv_escapeBurnt = false
+                GAME.achv_escapeQuest = GAME.achv_escapeQuest + 1
+            end
+            if GAME.achv_felMagicBurnt then
+                GAME.achv_felMagicBurnt = false
+                GAME.achv_felMagicQuest = GAME.achv_felMagicQuest + 1
+            end
+            if GAME.achv_resetCount % 2 == 1 then
+                GAME.achv_obliviousQuest = GAME.achv_obliviousQuest + 1
+            end
 
-        if GAME.achv_escapeBurnt then
-            GAME.achv_escapeBurnt = false
-            GAME.achv_escapeQuest = GAME.achv_escapeQuest + 1
+            -- Spike
+            if GAME.spikeTimer <= 0 then
+                GAME.spikeTimer = 0
+                GAME.spikeCounter = 0
+                GAME.spikeCounterWeak = 0
+            end
+            GAME.spikeTimer = MATH.clamp(
+                GAME.spikeTimer + (attack + surge) / (12.6 + GAME.spikeCounter / 26),
+                GAME.spikeCounter < 8 and 1.26 or .8,
+                6.2
+            )
         end
-        if GAME.achv_felMagicBurnt then
-            GAME.achv_felMagicBurnt = false
-            GAME.achv_felMagicQuest = GAME.achv_felMagicQuest + 1
-        end
-        if GAME.achv_resetCount % 2 == 1 then
-            GAME.achv_obliviousQuest = GAME.achv_obliviousQuest + 1
-        end
-
-        -- Spike
-        if GAME.spikeTimer <= 0 then
-            GAME.spikeTimer = 0
-            GAME.spikeCounter = 0
-            GAME.spikeCounterWeak = 0
-        end
-        GAME.spikeTimer = MATH.clamp(
-            GAME.spikeTimer + (attack + surge) / (12.6 + GAME.spikeCounter / 26),
-            GAME.spikeCounter < 8 and 1.26 or .8,
-            6.2
-        )
         local baseAttack = attack
         -- Closer Card assistPenalty
         if GAME.ecloseCard then 
@@ -2533,21 +2559,20 @@ function GAME.commit(auto)
             end 
         end
         local roundedAttack = MATH.roundRnd(attack)
-        --MSG("bright", "baseAttack:".. baseAttack .. " adjustedAttack:".. attack)
-        --
-        GAME.spikeCounter = GAME.spikeCounter + roundedAttack + surge
-        GAME.maxSpike = max(GAME.maxSpike, GAME.spikeCounter)
-        GAME.spikeCounterWeak = GAME.spikeCounterWeak + roundedAttack
-        GAME.maxSpikeWeak = max(GAME.maxSpikeWeak, GAME.spikeCounterWeak)
-        if GAME.spikeCounter >= 8 then TEXTS.spike:set(tostring(GAME.spikeCounter)) end
-
+        if not falseCommit then
+            GAME.spikeCounter = GAME.spikeCounter + roundedAttack + surge
+            GAME.maxSpike = max(GAME.maxSpike, GAME.spikeCounter)
+            GAME.spikeCounterWeak = GAME.spikeCounterWeak + roundedAttack
+            GAME.maxSpikeWeak = max(GAME.maxSpikeWeak, GAME.spikeCounterWeak)
+            if GAME.spikeCounter >= 8 then TEXTS.spike:set(tostring(GAME.spikeCounter)) end
+        end
         if URM and M.NH == 2 then
             xp = xp + surge
             surge = 0
         end
 
         attack = attack + surge * (GAME.bigDunk and 9 or GAME.dunk and 3 or 1)
-        GAME.achv_altFromSurge = GAME.achv_altFromSurge + surge * GAME.rank / 4 * GAME.attackMul
+        if not falseCommit then GAME.achv_altFromSurge = GAME.achv_altFromSurge + surge * GAME.rank / 4 * GAME.attackMul end
 
         local oldAllyLife = GAME[GAME.getLifeKey(true)]
         ---@cast oldAllyLife number
@@ -2555,11 +2580,11 @@ function GAME.commit(auto)
             if GAME[GAME.getLifeKey(true)] == 0 and M.DP ~= -1 then
                 xp = xp / 2
                 attack = attack / 2
-            elseif not allyWasDead and not GAME.achv_carriedH then
+            elseif not allyWasDead and not GAME.achv_carriedH and not falseCommit then
                 GAME.achv_carriedH = GAME.roundHeight
                 if GAME.totalQuest >= 26 then SFX.play('btb_break') end
             end
-            if M.DP == 2 then
+            if M.DP == 2 and not falseCommit then
                 if (oldAllyLife == GAME.fullHealth and M.NH == -1 and (oldAllyLife - (URM and attack / 2.6 or attack / 4) <= 0)) or (oldAllyLife <= 0 and GAME[GAME.getLifeKey(false)] > GAME.fullHealth -(GAME.dmgWrong+3) and M.NH == -1 and GAME[GAME.getLifeKey(false)] - (URM and attack / 2.6 or attack / 4) <= 0) then
                     GAME.takeDamage(GAME.fullHealth-(GAME.dmgWrong+3), 'wrong', oldAllyLife > 0)
                     GAME.bonusRecoveryHealth = GAME.bonusRecoveryHealth + 3
@@ -2581,14 +2606,19 @@ function GAME.commit(auto)
         end
 
         attack = MATH.roundRnd(attack)
-
-        GAME.incrementPrompt('send', attack)
-        GAME.totalAttack = GAME.totalAttack + attack
-        GAME.totalSurge = GAME.totalSurge + surge
+        if not falseCommit then
+            GAME.incrementPrompt('send', attack)
+            GAME.totalAttack = GAME.totalAttack + attack
+            GAME.totalSurge = GAME.totalSurge + surge
+        end
 
         if GAME.DPlock then attack = min(attack, URM and oldAllyLife * 2.6 or oldAllyLife * 4) end
-        if attack > 0 then GAME.addHeight(attack * GAME.attackMul) end
-        GAME.addXP(attack + xp)
+        if attack > 0 and not falseCommit then GAME.addHeight(attack * GAME.attackMul) end
+        if not falseCommit then
+            GAME.addXP(attack + xp)
+        else
+            return attack + xp
+        end
 
         -- rMS little shuffle
         if M.MS == 2 then

@@ -1771,9 +1771,9 @@ Achievements = {
     },
     { -- ueEXeDH
         id = 'ueEXeDH',
-        name = "Purgatory",
+        name = "Limbo",
         desc = [[Fastest time to Floor 10 with ueEX, eDH + Z]],
-        quote = [[TODO]],
+        quote = [[Stuck in an eternal purgatory, trying to speedrun redemption.]],
         credit = "@TrevorSmithy",
         comp = '<',
         scoreSimp = function(time) return string.format("%.2fs", time) end,

@@ -503,7 +503,7 @@ return {
         "Yeah. Okay." "I'M GONNA MAKE SOME TEA. YOU WANT ONE TOO?" "Uh, no sir- No... No thank you."
     ]],
     -- Subluxation ueEX, eVL+I, fastest time to floor 10
-    -- Purgatory ueEX, eDH+Z, fastest time to floor 10
+    -- Limbo ueEX, eDH+Z, fastest time to floor 10
     -- Presbyopia ueEX, eIN+O, fastest time to floor 10
     -- Carpal Tunnel ueEX, eAS+L, fastest time to floor 10
     -- Prosopagnosia ueEX, eDP+T, fastest time to floor 10
