@@ -153,6 +153,7 @@ Each mod creates a unique experience by twisting the rules, but also increases t
 ### Friend (`eDP`)
 
 - There are two "players" instead of one. You can swap players by activating the Duo card, or by completing the second quest in the queue (the cards will be highlighted pink while you do this).
+- Completing the third quest in the queue will have your friend select the first quest for you, if they are alive.
 - If one player is incapacitated, they can be revived by completing some revive prompts.
 - Revives are a **bit easier**. 
 
