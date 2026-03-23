@@ -1897,6 +1897,16 @@ Achievements = {
         scoreSimp = function(quest) return floor(quest) .. " Cleaned Rooms" end,
         rank = numberRank(0, 20, 40, 55, 70, 85, 100),
     },
+    { -- eDHeDPeGVeINeMSeNH
+        id = 'rold_smythy',
+        name = "Rold Smythy",
+        desc = [[Longest chain of perfect quests passed before 5 minutes WUT "Moderate Hold", "Tidiness", "Lift", "Salvation", "Visible" and "Friend" mods]],
+        quote = [[One must Roll the Smithy to the Top without a single Drop~]],
+        scoreSimp = function(quest) return floor(quest) .. " Kept Promises" end,
+        rank = numberRank(0, 100, 200, 300, 400, 500, 650),
+        hide = TRUE,
+        realHide = function() return (not ACHV.roll) or (not ACHV.programmer_gamer) end
+    },
     { title = "Easy Mode - Issued (v1.1) (No CR)" },
     { -- www
         id = 'www',

@@ -141,6 +141,7 @@ local ins, rem = table.insert, table.remove
 ---@field achv_cleanGamerQuest number
 ---@field achv_cleanBreakQuest number
 ---@field achv_professionalCleanerQuest number
+---@field achv_roldSmythyQuest number
 local GAME = {
     forfeitTimer = 0,
     exTimer = 0,
@@ -691,7 +692,16 @@ function GAME.getComboName(list, mode)
                 STAT.easyName and ComboData.menu or
                 ComboData.game
             )[cmbStr]
-            if combo and GAME.rollCheck then IssueAchv('roll') end
+            if combo and GAME.rollCheck then 
+                local displayMSG = not (ACHV.roll and ACHV.programmer_gamer)
+                IssueAchv('roll')
+                if ACHV.programmer_gamer and displayMSG then
+                    MSG("bright", "Secret Achievement Available")
+                    SCN.scenes.achv.unload()
+                    SCN.scenes.achv.load()
+                    AchvNotice['rold_smythy'] = true
+                end
+            end
             if combo then return combo.name end
         end
 
@@ -2513,6 +2523,7 @@ function GAME.commit(auto, falseCommit)
             end
 
             GAME.achv_maxChain = max(GAME.achv_maxChain, GAME.chain)
+            GAME.achv_roldSmythyQuest = max(GAME.achv_roldSmythyQuest, GAME.chain)
             if GAME.chain >= 75 and GAME.chain - ((dblCorrect or (eDPCorrect and correct == 1)) and 2 or 1) < 75 then
                 SubmitAchv('perfect_speedrun', GAME.time)
             end
@@ -2812,6 +2823,7 @@ function GAME.start()
     GAME.achv_cleanGamerQuest = 0
     GAME.achv_cleanBreakQuest = 0
     GAME.achv_professionalCleanerQuest = 0
+    GAME.achv_roldSmythyQuest = 0
 
     GAME.noManualActivate = true
     GAME.noMouseOrSpin = true
@@ -3073,6 +3085,38 @@ function GAME.finish(reason)
         if revCount == 4 and easyCount == 4 then
             SubmitAchv('perfectly_balanced', GAME.roundHeight)
         end
+    end
+
+    if GAME.comboStr == 'eDHeDPeGVeINeMSeNH' and GAME.height >= 1650 then
+        MSG("bright","Secret Dev Commentary Available", 3.5)
+        TASK.new(
+            function()
+                SFX.play('combo_1',1,0,-2)
+                TASK.yieldT(0.25)
+                SFX.play('combo_1',1,0,0)
+                TASK.yieldT(0.25)
+                SFX.play('combo_1',1,0,3)
+                TASK.yieldT(0.25)
+                SFX.play('combo_1',1,0,0)
+                TASK.yieldT(0.25)
+                SFX.play('combo_1',1,0,0)
+                SFX.play('combo_1',1,0,3)
+                SFX.play('combo_1',1,0,7)
+                TASK.yieldT(0.75)
+                SFX.play('combo_1',1,0,0)
+                SFX.play('combo_1',1,0,3)
+                SFX.play('combo_1',1,0,7)
+                TASK.yieldT(0.75)
+                SFX.play('combo_1',1,0,-2)
+                SFX.play('combo_1',1,0,2)
+                SFX.play('combo_1',1,0,5)
+                TASK.yieldT(1)
+                if SCN.cur ~= 'about' then 
+                    SFX.play('social_invite')
+                    MSG("bright","Check ABOUT", 10) 
+                end
+            end
+        )
     end
 
     GAME.playing = false
@@ -3639,6 +3683,8 @@ function GAME.submitTimedAchievements()
         SubmitAchv('clean_break', GAME.achv_cleanBreakQuest or 0)
     elseif GAME.comboStr == 'eDHeEXeMSeVL' and not URM then
         SubmitAchv('professional_cleaner', GAME.achv_professionalCleanerQuest or 0)
+    elseif GAME.comboStr == 'eDHeDPeGVeINeMSeNH' then
+        SubmitAchv('rold_smythy', max(GAME.achv_roldSmythyQuest, GAME.chain))
     end
 end
 

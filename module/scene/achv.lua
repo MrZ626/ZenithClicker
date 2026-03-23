@@ -53,7 +53,17 @@ local overallProgress = {
 local function nameSortLT(i1, i2) return i1.name < i2.name end
 local function nameSortGT(i1, i2) return i1.name > i2.name end
 
+local SPACER = { hide = FALSE }
 function RefreshAchvList(canShuffle)
+
+    for i = #Achievements, 1, -1 do
+        local achv = Achievements[i]
+        if achv.realHide and achv:realHide() then
+            table.remove(Achievements, i)
+            table.insert(Achievements, i, { id = ''})
+        end
+    end
+
     overallProgress.rank = TABLE.new(0, 5)
     overallProgress.rank[0] = 0
     overallProgress.wreath = TABLE.new(0, 6)
@@ -66,7 +76,7 @@ function RefreshAchvList(canShuffle)
         local A = Achievements[i]
         if not A.id then
             table.insert(achvList, { title = A.hide() and "???" or A.title and A.title:upper() })
-        else
+        elseif A.id ~= '' then
             local rank, score, progress, wreath, overDev
             if TestMode or not ACHV[A.id] then
                 score = "---"
@@ -116,6 +126,8 @@ function RefreshAchvList(canShuffle)
             if overDev then
                 odCount = odCount + 1
             end
+        else
+            table.insert(achvList, {id = ''})
         end
     end
     if odCount >= odCap * .62 then IssueSecret('exceed_dev', true) end
@@ -471,7 +483,7 @@ function scene.draw()
                 else
                     gc_ucs_move(i % 2 == 1 and -626 or 26, floor((i - 1) / 2) * 140)
                 end
-
+                if a.id ~= '' then
                 -- Bottom rectangle
                 if hyper then
                     if overallProgress.countStart == 6 then
@@ -599,7 +611,7 @@ function scene.draw()
                     gc_setAlpha(M.IN * (.3 + .1 * sin(ceil(i / 2) * 1.2 - t * 2.6)))
                     gc_rectangle('fill', 0, 0, 600, 130)
                 end
-
+                end
                 gc_ucs_back()
             end
         end
