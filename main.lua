@@ -395,6 +395,42 @@ TEXTURE = {
             your_long = aq(12, 8), --jackenstein
             cheat_death = aq(5, 5),
             trip_to_hell = aq(5, 7),
+            -- easy mods
+            eEX = aq(3, 3),
+            eNH = aq(7, 3),
+            eMS = aq(8, 3),
+            eGV = aq(6, 3),
+            eVL = aq(5, 3),
+            eDH = aq(4, 3),
+            eIN = aq(1, 4),
+            eAS = aq(2, 4),
+            eDP = aq(3, 4),
+            -- Uneasy Mods (v1.1) (No CR)
+            ueEX = aq(15, 1),
+            ueEXeNH = aq(11, 1),
+            ueEXeMS = aq(12, 1),
+            ueEXeGV = aq(10, 1),
+            ueEXeVL = aq(9, 1),
+            ueEXeDH = aq(16, 1),
+            ueEXeIN = aq(13, 1),
+            ueEXeAS = aq(14, 1),
+            ueEXeDP = aq(7, 7),
+            -- easy mode Easy Mode - Special (v1.1) (No CR)
+            humble_pupil = aq(6, 4),
+            overweight_gamer = aq(4, 6),
+            best_friends = aq(8, 5),
+            shameless_cashgrab = aq(4, 4),
+            clean_break = aq(5, 4),
+            emperor_development = aq(7, 4),
+            professional_cleaner = aq(8, 4),
+            rold_smythy = aq(1, 7),
+            quest_feast = aq(2, 7),
+            clean_gamer = aq(1, 5),
+            -- easy Easy Mode - Issued (v1.1) (No CR)
+            inefficiency = aq(7, 2),
+            could_you_not = aq(3, 2),
+            oh_no_you_dont = aq(10, 2),
+            --uneasy = aq(6, 2),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -676,6 +712,7 @@ STAT = {
     easyName = false,
     imperial = false,
     promotion = true,
+    rold = false,
 }
 
 ACHV = {}

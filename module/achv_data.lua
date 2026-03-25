@@ -1651,6 +1651,7 @@ Achievements = {
         desc = [[HFD with the "Easy Mode" mod]],
         quote = [[An easier challenge, for beginners to start with.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2600),
+        type = 'unranked',
     },
     { -- eNH
         id = 'eNH',
@@ -1658,6 +1659,7 @@ Achievements = {
         desc = [[HFD with the "Moderate Hold" mod]],
         quote = [[Life is easier when you've made up your mind.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        type = 'unranked',
     },
     { -- eMS
         id = 'eMS',
@@ -1665,6 +1667,7 @@ Achievements = {
         desc = [[HFD with the "Tidiness" mod]],
         quote = [[The odds are always in your favor.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        type = 'unranked',
     },
     { -- eGV
         id = 'eGV',
@@ -1672,6 +1675,7 @@ Achievements = {
         desc = [[HFD with the "Lift" mod]],
         quote = [[Do you imagine floating weightless?]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        type = 'unranked',
     },
     { -- eVL
         id = 'eVL',
@@ -1679,6 +1683,7 @@ Achievements = {
         desc = [[HFD with the "Tranquility" mod]],
         quote = [[you're safe, just right where you are.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        type = 'unranked',
     },
     { -- eDH
         id = 'eDH',
@@ -1686,6 +1691,7 @@ Achievements = {
         desc = [[HFD with the "Salvation" mod]],
         quote = [[A liberating life, and a peaceful death.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        type = 'unranked',
     },
     { -- eIN
         id = 'eIN',
@@ -1693,6 +1699,7 @@ Achievements = {
         desc = [[HFD with the "Visible" mod]],
         quote = [[You won't need to remember anything, if you're being honest.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        type = 'unranked',
     },
     { -- eAS
         id = 'eAS',
@@ -1700,6 +1707,7 @@ Achievements = {
         desc = [[HFD with the "Spin" mod]],
         quote = [[Anything is possible from within the tips of your fingers.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        type = 'unranked',
     },
     { -- eDP
         id = 'eDP',
@@ -1707,6 +1715,7 @@ Achievements = {
         desc = [[HFD with the "Friend" mod]],
         quote = [[Two best pals, created for each other.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        type = 'unranked',
     },
     { title = "Uneasy Mods (v1.1) (No CR)", hide = function() return not ACHV.uneasy end},
     { -- ueEX
@@ -1720,6 +1729,7 @@ Achievements = {
         scoreFull = function(time) return string.format("%.2f quests/s", 75 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eEX end,
+        type = 'unranked',
     },
     { -- ueEXeNH
         id = 'ueEXeNH',
@@ -1732,6 +1742,7 @@ Achievements = {
         scoreFull = function(time) return string.format("%.2f quests/s", 75 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eNH end,
+        type = 'unranked',
     },
     { -- ueEXeMS
         id = 'ueEXeMS',
@@ -1744,6 +1755,7 @@ Achievements = {
         scoreFull = function(time) return string.format("%.2f quests/s", 75 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eMS end,
+        type = 'unranked',
     },
     { -- ueEXeGV
         id = 'ueEXeGV',
@@ -1756,6 +1768,7 @@ Achievements = {
         scoreFull = function(time) return string.format("%.2f quests/s", 75 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eGV end,
+        type = 'unranked',
     },
     { -- ueEXeVL
         id = 'ueEXeVL',
@@ -1768,6 +1781,7 @@ Achievements = {
         scoreFull = function(time) return string.format("%.2f quests/s", 75 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eVL end,
+        type = 'unranked',
     },
     { -- ueEXeDH
         id = 'ueEXeDH',
@@ -1780,6 +1794,7 @@ Achievements = {
         scoreFull = function(time) return string.format("%.2f quests/s", 75 / time) end,
         rank = numberRankRev(720, 660, 600, 540, 480, 420, 360),
         hide = function() return not ACHV.uneasy or not ACHV.eDH end,
+        type = 'unranked',
     },
     { -- ueEXeIN
         id = 'ueEXeIN',
@@ -1792,6 +1807,7 @@ Achievements = {
         scoreFull = function(time) return string.format("%.2f quests/s", 75 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eIN end,
+        type = 'unranked',
     },
     { -- ueEXeAS
         id = 'ueEXeAS',
@@ -1804,6 +1820,7 @@ Achievements = {
         scoreFull = function(time) return string.format("%.2f quests/s", 75 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eAS end,
+        type = 'unranked',
     },
     { -- ueEXeDP
         id = 'ueEXeDP',
@@ -1816,6 +1833,7 @@ Achievements = {
         scoreFull = function(time) return string.format("%.2f quests/s", 75 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eDP end,
+        type = 'unranked',
     },
     { title = "Easy Mode - Special (v1.1) (No CR)" },
     { -- emperor_development
@@ -1826,6 +1844,7 @@ Achievements = {
         quote = [[Look at how much progress you've made in reforming your ways!]],
         scoreSimp = function(rank) return string.format("Rank %.2f", rank) end,
         rank = numberRank(9, 10, 11, 12, 13, 13.1, 13.2),
+        type = 'unranked',
     },
     { -- quest_feast
         --id = 'eEXeMS',
@@ -1837,6 +1856,7 @@ Achievements = {
         scoreSimp = function(roundHeight) return string.format("%.2fm", roundHeight) end,
         scoreFull = function(roundHeight) return string.format("%.2f meters/quest", roundHeight/40) end,
         rank = numberRankRev(600, 550, 500, 450, 400, 350, 300),
+        type = 'unranked',
     },
     { -- eDPeEX
         --id = 'eDPeEX',
@@ -1846,6 +1866,7 @@ Achievements = {
         quote = [["With the power of friendship, we will prevail!"]],
         scoreSimp = function(quest) return floor(quest) .. " Dunks" end,
         rank = numberRank(0, 15, 30, 50, 70, 85, 100),
+        type = 'unranked',
     }, 
     { -- eGVeIN
         id = 'humble_pupil',
@@ -1856,6 +1877,7 @@ Achievements = {
         scoreSimp = function(spq) return string.format("%.2f seconds/quest", spq) end,
         --scoreFull = function(qps) return string.format("%.2f quests/s", 40 / time) end,
         rank = numberRank(0, 1, 2, 3, 3.5, 4, 4.5),
+        type = 'unranked',
     },
     { -- eGVeNH
         id = 'shameless_cashgrab',
@@ -1864,6 +1886,7 @@ Achievements = {
         quote = [["Anything to please our shareholders!"]],
         scoreSimp = function(quest) return floor(quest) .. " Mistakes" end,
         rank = numberRank(0, 20, 40, 60, 80, 100, 125),
+        type = 'unranked',
     },
     { -- eASeNH
         id = 'overweight_gamer',
@@ -1872,6 +1895,7 @@ Achievements = {
         quote = [["Do you just sit there all day?"]],
         scoreSimp = function(quest) return floor(quest) .. " Broken Chairs" end,
         rank = numberRank(0, 10, 20, 30, 40, 50, 60),
+        type = 'unranked',
     },
     { -- eASeDHeMS
         id = 'clean_gamer',
@@ -1880,6 +1904,7 @@ Achievements = {
         quote = [["Are we sure that's not an oxymoron?" "Not EVERY gamer is a total slob, y'know!"]],
         scoreSimp = function(quest) return floor(quest) .. " Saved Mice" end,
         rank = numberRank(0, 50, 100, 150, 200, 250, 300),
+        type = 'unranked',
     },
     { -- eDHeMSeNH
         id = 'clean_break',
@@ -1888,6 +1913,7 @@ Achievements = {
         quote = [[A methodical, clean exit strategy does not rely on unecessary elements.]],
         scoreSimp = function(quest) return floor(quest) .. " Saved Keyboards" end,
         rank = numberRank(0, 50, 100, 150, 200, 250, 300),
+        type = 'unranked',
     },
     { -- eDHeEXeMSeVL
         id = 'professional_cleaner',
@@ -1896,6 +1922,7 @@ Achievements = {
         quote = [[A good cleaner is a thorough cleaner: not fast nor slow, but consistent.]],
         scoreSimp = function(quest) return floor(quest) .. " Cleaned Rooms" end,
         rank = numberRank(0, 20, 40, 55, 70, 85, 100),
+        type = 'unranked',
     },
     { -- eDHeDPeGVeINeMSeNH
         id = 'rold_smythy',
@@ -1905,7 +1932,8 @@ Achievements = {
         scoreSimp = function(quest) return floor(quest) .. " Kept Promises" end,
         rank = numberRank(0, 100, 200, 300, 400, 500, 650),
         hide = TRUE,
-        realHide = function() return (not ACHV.roll) or (not ACHV.programmer_gamer) end
+        realHide = function() return (not ACHV.roll) or (not ACHV.programmer_gamer) end,
+        type = 'unranked',
     },
     { title = "Easy Mode - Issued (v1.1) (No CR)" },
     { -- www

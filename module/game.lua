@@ -2560,7 +2560,7 @@ function GAME.commit(auto, falseCommit)
         end
         local baseAttack = attack
         -- Closer Card assistPenalty
-        if GAME.ecloseCard then 
+        if GAME.ecloseCard and not falseCommit then 
             if totalAssistPenalty == 0 then
                 attack = attack * 1.26
             elseif totalAssistPenalty <= 2 then
@@ -2587,15 +2587,15 @@ function GAME.commit(auto, falseCommit)
 
         local oldAllyLife = GAME[GAME.getLifeKey(true)]
         ---@cast oldAllyLife number
-        if M.DP ~= 0 then
+        if M.DP ~= 0 and not falseCommit then
             if GAME[GAME.getLifeKey(true)] == 0 and M.DP ~= -1 then
                 xp = xp / 2
                 attack = attack / 2
-            elseif not allyWasDead and not GAME.achv_carriedH and not falseCommit then
+            elseif not allyWasDead and not GAME.achv_carriedH then
                 GAME.achv_carriedH = GAME.roundHeight
                 if GAME.totalQuest >= 26 then SFX.play('btb_break') end
             end
-            if M.DP == 2 and not falseCommit then
+            if M.DP == 2 then
                 if (oldAllyLife == GAME.fullHealth and M.NH == -1 and (oldAllyLife - (URM and attack / 2.6 or attack / 4) <= 0)) or (oldAllyLife <= 0 and GAME[GAME.getLifeKey(false)] > GAME.fullHealth -(GAME.dmgWrong+3) and M.NH == -1 and GAME[GAME.getLifeKey(false)] - (URM and attack / 2.6 or attack / 4) <= 0) then
                     GAME.takeDamage(GAME.fullHealth-(GAME.dmgWrong+3), 'wrong', oldAllyLife > 0)
                     GAME.bonusRecoveryHealth = GAME.bonusRecoveryHealth + 3

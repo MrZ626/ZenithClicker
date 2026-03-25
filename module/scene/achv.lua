@@ -310,6 +310,61 @@ local function refreshAchivement()
         end
     end
 
+    if ACHV.roll and ACHV.programmer_gamer and (BEST.highScore.eDHeDPeGVeINeMSeNH > Floors[9].top) and not (STAT.rold or ACHV.rold_smythy) then
+        TASK.new(
+            function()
+                SubmitAchv('rold_smythy', 100)
+                TASK.yieldT(5)
+                MSG("bright","Secret Dev Commentary Available", 3.5)
+                SFX.play('combo_1',1,0,-2)
+                TASK.yieldT(0.25)
+                SFX.play('combo_1',1,0,0)
+                TASK.yieldT(0.25)
+                SFX.play('combo_1',1,0,3)
+                TASK.yieldT(0.25)
+                SFX.play('combo_1',1,0,0)
+                TASK.yieldT(0.25)
+                SFX.play('combo_1',1,0,0)
+                SFX.play('combo_1',1,0,3)
+                SFX.play('combo_1',1,0,7)
+                TASK.yieldT(0.75)
+                SFX.play('combo_1',1,0,0)
+                SFX.play('combo_1',1,0,3)
+                SFX.play('combo_1',1,0,7)
+                TASK.yieldT(0.75)
+                SFX.play('combo_1',1,0,-2)
+                SFX.play('combo_1',1,0,2)
+                SFX.play('combo_1',1,0,5)
+                TASK.yieldT(1)
+                if SCN.cur ~= 'about' then 
+                    SFX.play('social_invite')
+                    MSG("bright","Check ABOUT", 10) 
+                end
+                STAT.rold = true
+            end
+        )
+    elseif ACHV.roll and ACHV.programmer_gamer and BEST.highScore.eDHeDPeGVeINeMSeNH and not (STAT.rold or ACHV.rold_smythy) then
+        SubmitAchv('rold_smythy', 1)
+        TASK.new(
+            function()
+                TASK.yieldT(1)
+                MSG("bright", "Secret Achievement Available")
+                AchvNotice['rold_smythy'] = true
+                SFX.play('social_invite')
+                STAT.rold = true
+            end
+        )
+    elseif ACHV.roll and ACHV.programmer_gamer and not (STAT.rold or BEST.highScore.eDHeDPeGVeINeMSeNH > Floors[9].top or ACHV.rold_smythy) then
+        TASK.new(
+            function()
+                TASK.yieldT(1)
+                MSG("bright", "Secret Achievement Available")
+                AchvNotice['rold_smythy'] = true
+                SFX.play('social_invite')
+                STAT.rold = true
+            end
+        )
+    end
     RefreshAchvList()
 end
 
@@ -470,6 +525,11 @@ function scene.draw()
                     if colorRev then
                         gc_print(a.title, 10, 134, 0, 1.8, -1.8)
                     else
+                        if a.title:sub(1, 4) == "EASY" then
+                            gc_setColor(COLOR.G)
+                        elseif a.title:sub(1, 6) == "UNEASY" then
+                            gc_setColor(COLOR.dR)
+                        end
                         gc_print(a.title, 10, 62, 0, 1.8)
                     end
                     gc_ucs_back()
