@@ -1007,7 +1007,9 @@ function scene.overDraw()
             end
             if GigaSpeed.isTera then
                 for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.teraspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
+                    gc_mDraw(GAME.quettaspeed and TEXTS.quettaspeed or GAME.ronnaspeed and TEXTS.ronnaspeed or GAME.yottaspeed and TEXTS.yottaspeed or 
+                    GAME.zettaspeed and TEXTS.zettaspeed or GAME.exaspeed and TEXTS.exaspeed or GAME.petaspeed and TEXTS.petaspeed or 
+                    TEXTS.teraspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
                 end
             else
                 for p = -10, 10, 3 do
@@ -1222,7 +1224,7 @@ function scene.overDraw()
                 local colorList = {COLOR.R, COLOR.Y, COLOR.G, COLOR.B, COLOR.V, COLOR.lM }
                 local colorIndex = 1
                 local rank = GAME.rank
-                local xp = GAME.commit(false, true)
+                local xp = (M.VL == 2 and URM) and (5+GAME.chain) or GAME.commit(false, true)
                 local newXP, newRank = GAME.addXP(xp, true)
                 local revolutions = newRank - rank + (newXP/(4*(newRank))) -- 1/360
                 local tempRevolutions = newRank - rank 

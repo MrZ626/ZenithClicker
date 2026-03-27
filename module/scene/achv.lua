@@ -71,10 +71,11 @@ function RefreshAchvList(canShuffle)
     overallProgress.ptGet = 0
     overallProgress.ptAll = 0
     TABLE.clear(achvList)
-    local odCount, odCap = 0, 0
+    local odCount, odCap, titleCount = 0, 0, 0
     for i = 1, #Achievements do
         local A = Achievements[i]
         if not A.id then
+            titleCount = titleCount + 1
             table.insert(achvList, { title = A.hide() and "???" or A.title and A.title:upper() })
         elseif A.id ~= '' then
             local rank, score, progress, wreath, overDev
@@ -127,7 +128,9 @@ function RefreshAchvList(canShuffle)
                 odCount = odCount + 1
             end
         else
-            table.insert(achvList, {id = ''})
+            if (#achvList-titleCount) % 2 == 1 then
+                table.insert(achvList, {id = ''})
+            end
         end
     end
     if odCount >= odCap * .62 then IssueSecret('exceed_dev', true) end
@@ -644,8 +647,15 @@ function scene.draw()
 
                 -- Dev
                 if a.overDev then
-                    if a.id == 'programmer_gamer' or a.id == 'one_of_mine' or a.id == 'ggbw' or a.id == 'perfect_speedrun_plus' or a.id == 'perfectly_balanced' or a.id == 'peasant_revolution' or a.id == 'holy_ascention' or a.id == 'stabilized_entropy' or a.id == 'restrained_collapse' or a.id == 'restored_volition' or a.id == 'disproven_blasphemy' or a.id == 'solved_paradox' or a.id == 'demystified_grimoire' or a.id == 'restored_eden' or a.id == 'your_too_fast' then
+                    if a.id == 'programmer_gamer' or a.id == 'one_of_mine' or a.id == 'ggbw' or a.id == 'perfect_speedrun_plus' or a.id == 'perfectly_balanced' or a.id == 'peasant_revolution' 
+                    or a.id == 'holy_ascention' or a.id == 'stabilized_entropy' or a.id == 'restrained_collapse' or a.id == 'restored_volition' or a.id == 'disproven_blasphemy' 
+                    or a.id == 'solved_paradox' or a.id == 'demystified_grimoire' or a.id == 'restored_eden' or a.id == 'your_too_fast' 
+                    or a.id == 'eEX' or a.id == 'eNH' or a.id == 'eMS' or a.id == 'eGV' or a.id == 'eVL' or a.id == 'eDH' or a.id == 'eIN' or a.id == 'eAS' or a.id == 'eDP'
+                    or a.id == 'emperor_development' or a.id == 'quest_feast' or a.id == 'best_friends' or a.id == 'humble_pupil' or a.id == 'shameless_cashgrab' 
+                    or a.id == 'overweight_gamer' or a.id == 'clean_gamer' or a.id == 'clean_break' or a.id == 'professional_cleaner' or a.id == 'rold_smythy' then
                         gc_setColor(0, 1, 0, .1)
+                    elseif a.id == 'ueEX' or a.id == 'ueEXeNH' or a.id == 'ueEXeMS' or a.id == 'ueEXeGV' or a.id == 'ueEXeVL' or a.id == 'ueEXeDH' or a.id == 'ueEXeIN' or a.id == 'ueEXeAS' or a.id == 'ueEXeDP' then
+                        gc_setColor(1, 0, 0, .2)
                     else
                         gc_setColor(1, 1, 1, .1)
                     end

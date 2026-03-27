@@ -80,6 +80,12 @@ local ins, rem = table.insert, table.remove
 ---@field gigaCount number
 ---@field teraCount number
 ---@field teramusic boolean
+---@field petaspeed boolean
+---@field exaspeed boolean
+---@field zettaspeed boolean
+---@field yottaspeed boolean
+---@field ronnaspeed boolean
+---@field quettaspeed boolean
 ---@field atkBuffer number
 ---@field atkBufferCap number
 ---@field shuffleMessiness number | false
@@ -197,6 +203,12 @@ local GAME = {
     hasseenDPnerf = false,
     gigaspeedFloor = {},
     teraspeedFloor = {},
+    petaFloor = {},
+    exaFloor = {},
+    zettaFloor = {},
+    yottaFloor = {},
+    ronnaFloor = {},
+    quettaFloor = {},
 
     zenithTraveler = false,
     nightcore = false,
@@ -1167,6 +1179,30 @@ function GAME.addXP(xp, falseCommit)
             GAME.startTeraAnim()
             GAME.refreshRPC()
         end
+        if GAME.gigaspeed and GAME.teramusic and not GAME.petaspeed and GAME.rank >= PetaReq[GAME.floor] then
+            GAME.petaspeed = true
+            GAME.startTeraAnim(true)
+        end
+        if GAME.gigaspeed and GAME.petaspeed and not GAME.exaspeed and GAME.rank >= ExaReq[GAME.floor] then
+            GAME.exaspeed = true
+            GAME.startTeraAnim(true)
+        end
+        if GAME.gigaspeed and GAME.exaspeed and not GAME.zettaspeed and GAME.rank >= ZettaReq[GAME.floor] then
+            GAME.zettaspeed = true
+            GAME.startTeraAnim(true)
+        end
+        if GAME.gigaspeed and GAME.zettaspeed and not GAME.yottaspeed and GAME.rank >= YottaReq[GAME.floor] then
+            GAME.yottaspeed = true
+            GAME.startTeraAnim(true)
+        end
+        if GAME.gigaspeed and GAME.yottaspeed and not GAME.ronnaspeed and GAME.rank >= RonnaReq[GAME.floor] then
+            GAME.ronnaspeed = true
+            GAME.startTeraAnim(true)
+        end
+        if GAME.gigaspeed and GAME.ronnaspeed and not GAME.quettaspeed and GAME.rank >= QuettaReq[GAME.floor] then
+            GAME.quettaspeed = true
+            GAME.startTeraAnim(true)
+        end
     else
         GAME.xpLockTimer = oldLockTimer
     end
@@ -1195,24 +1231,40 @@ end
 
 function GAME.startTeraAnim()
     GAME.teramusic = true
-    GAME.teraspeedFloor[GAME.floor] = true
+    if GAME.quettaspeed then
+        GAME.quettaFloor[GAME.floor] = true
+    elseif GAME.ronnaspeed then
+        GAME.ronnaFloor[GAME.floor] = true
+    elseif GAME.yottaspeed then
+        GAME.yottaFloor[GAME.floor] = true
+    elseif GAME.zettaspeed then
+        GAME.zettaFloor[GAME.floor] = true
+    elseif GAME.exaspeed then
+        GAME.exaFloor[GAME.floor] = true
+    elseif GAME.petaspeed then
+        GAME.petaFloor[GAME.floor] = true
+    else
+        GAME.teraspeedFloor[GAME.floor] = true
+    end
     GAME.teraCount = GAME.teraCount + 1
     GigaSpeed.isTera = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
     SFX.play('zenith_speedrun_start')
-    if GAME.smithyMode and M.EX == -1 and URM and GAME.comboStr:count('r') == 0 then --if smithyMode and ultra but no reversed and easy enabled
-        PlayBGM('terael', true)
-    elseif GAME.smithyMode then
-        PlayBGM('terae', true)
-    elseif M.EX == -1 and URM and GAME.comboStr:count('r') == 0 then
-        PlayBGM('teral', true)
-        if GAME.uneasyModIconSelected then
-            TASK.removeTask_code(GAME.task_uneasyTeraspeed)
-            TASK.new(GAME.task_uneasyTeraspeed)
+    if not (GAME.petaspeed or GAME.exaspeed or GAME.zettaspeed or GAME.yottaspeed or GAME.ronnaspeed or GAME.quettaspeed) then
+        if GAME.smithyMode and M.EX == -1 and URM and GAME.comboStr:count('r') == 0 then --if smithyMode and ultra but no reversed and easy enabled
+            PlayBGM('terael', true)
+        elseif GAME.smithyMode then
+            PlayBGM('terae', true)
+        elseif M.EX == -1 and URM and GAME.comboStr:count('r') == 0 then
+            PlayBGM('teral', true)
+            if GAME.uneasyModIconSelected then
+                TASK.removeTask_code(GAME.task_uneasyTeraspeed)
+                TASK.new(GAME.task_uneasyTeraspeed)
+            end
+        else
+            PlayBGM('tera', true)
         end
-    else
-        PlayBGM('tera', true)
     end
 end
 
@@ -1360,6 +1412,37 @@ function GAME.upFloor()
                 IssueAchv('blazing_speed') 
                 GAME.finishTera = true
             end
+            if GAME.petaspeed then
+                IssueAchv('peta')
+                SCN.scenes.achv.unload()
+                SCN.scenes.achv.load()
+            end
+            if GAME.exaspeed then
+                IssueAchv('exa') 
+                SCN.scenes.achv.unload()
+                SCN.scenes.achv.load()
+            end
+            if GAME.zettaspeed then
+                IssueAchv('zetta') 
+                SCN.scenes.achv.unload()
+                SCN.scenes.achv.load()
+            end
+            if GAME.yottaspeed then
+                IssueAchv('yotta') 
+                SCN.scenes.achv.unload()
+                SCN.scenes.achv.load()
+            end
+            if GAME.ronnaspeed then
+                IssueAchv('ronna')
+                SCN.scenes.achv.unload()
+                SCN.scenes.achv.load() 
+            end
+            if GAME.quettaspeed then
+                IssueAchv('quetta')
+                SCN.scenes.achv.unload()
+                SCN.scenes.achv.load() 
+            end
+
             if not GAME.smithyMode then 
                 -- don't stop my cover until we get to fomg
                 GAME.stopTeraspeed('f10')
@@ -1901,11 +1984,17 @@ end
 function GAME.refreshSectionTime()
     local secTimeStr = ""
     for i = 1, #GAME.secTime do
-        secTimeStr = secTimeStr .. ("%sF%s%s%s %s %.3f″"):format(
+        secTimeStr = secTimeStr .. ("%sF%s%s%s%s%s%s%s%s%s %s %.3f″"):format(
             (i > 1 and "\n" or ""),
             i == 11 and "Ω" or tostring(i),
             GAME.gigaspeedFloor[i] and "g" or "",
             GAME.teraspeedFloor[i] and "t" or "",
+            GAME.petaFloor[i] and "p" or "",
+            GAME.exaFloor[i] and "e" or "",
+            GAME.zettaFloor[i] and "z" or "",
+            GAME.yottaFloor[i] and "y" or "",
+            GAME.ronnaFloor[i] and "r" or "",
+            GAME.quettaFloor[i] and "q" or "",
             not GAME.playing and i == #GAME.secTime and "x" or "-",
             GAME.secTime[i]
         )
@@ -2935,9 +3024,21 @@ function GAME.start()
     GAME.gigaspeedEntered = false
     TABLE.clear(GAME.gigaspeedFloor)
     TABLE.clear(GAME.teraspeedFloor)
+    TABLE.clear(GAME.petaFloor)
+    TABLE.clear(GAME.exaFloor)
+    TABLE.clear(GAME.zettaFloor)
+    TABLE.clear(GAME.yottaFloor)
+    TABLE.clear(GAME.ronnaFloor)
+    TABLE.clear(GAME.quettaFloor)
     GAME.gigaCount = 0
     GAME.teraCount = 0
     GAME.teramusic = false
+    GAME.petaspeed = false
+    GAME.exaspeed = false
+    GAME.zettaspeed = false
+    GAME.yottaspeed = false
+    GAME.ronnaspeed = false
+    GAME.quettaspeed = false
     GAME.finishTera = false
     GAME.atkBuffer = 0
     GAME.atkBufferCap = 8 + (M.DH == 1 and M.NH < 2 and 2 or 0)
@@ -3125,6 +3226,12 @@ function GAME.finish(reason)
     GAME.refreshSectionTime()
     GAME.life, GAME.life2 = 0, 0
     GAME.teramusic = false
+    GAME.petaspeed = false
+    GAME.exaspeed = false
+    GAME.zettaspeed = false
+    GAME.yottaspeed = false
+    GAME.ronnaspeed = false
+    GAME.quettaspeed = false
     GAME.currentTask = false
 
     local unlockDuo
@@ -3924,6 +4031,18 @@ function GAME.update(dt)
                         if MATH.between(GAME.height, Floors[9].top - 50, Floors[9].top) then IssueAchv('cut_off') end
                     elseif GAME.teramusic and GAME.rank < TeraMusicReq[0] then
                         GAME.stopTeraspeed('drop')
+                    elseif GAME.petaspeed and GAME.rank < PetaReq[0] then
+                        GAME.petaspeed = false
+                    elseif GAME.exaspeed and GAME.rank < ExaReq[0] then
+                        GAME.exaspeed = false
+                    elseif GAME.zettaspeed and GAME.rank < ZettaReq[0] then
+                        GAME.zettaspeed = false
+                    elseif GAME.yottaspeed and GAME.rank < YottaReq[0] then
+                        GAME.yottaspeed = false
+                    elseif GAME.ronnaspeed and GAME.rank < RonnaReq[0] then
+                        GAME.ronnaspeed = false
+                    elseif GAME.quettaspeed and GAME.rank < QuettaReq[0] then
+                        GAME.quettaspeed = false
                     end
                 end
                 TEXTS.rank:set("R-" .. GAME.rank)
