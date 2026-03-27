@@ -1484,7 +1484,7 @@ Achievements = {
         ex = true,
         id = 'programmer_gamer',
         name = "Programmer & Pro Gamer",
-        desc = [[Reach F10 while maintaining TERASPEED WU eEX, eVL, and eAS]],
+        desc = [[HAR with TERASPEED active or completed WU eEX, eVL, and eAS]],
         quote = [["WAH-BAAM!"]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
@@ -1493,7 +1493,7 @@ Achievements = {
     { -- one_of_mine
         id = 'one_of_mine',
         name = "But It Isn't One Of Mine",
-        desc = [[Reach F10 while maintaining TERASPEED and not manually committing WU eEX, uGV, eDH, and eAS +eZ]],
+        desc = [[HAR without manual commits with TERASPEED active or completed WU eEX, uGV, eDH, and eAS +eZ]],
         quote = [["Ain't nobody got time for that!"]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
@@ -1613,7 +1613,7 @@ Achievements = {
     { -- your_too_fast
         id = 'your_too_fast',
         name = "YOUR TOO FAST",
-        desc = [[Surpass (climb speed) rank 126]],
+        desc = [[Highest (climb speed) rank reached (Max Badge is Rank 127)]],
         quote = [["MAMA MIA!"]],
         credit = "@TrevorSmithy",
         scoreSimp = function(rank) return "Rank " .. rank end,
