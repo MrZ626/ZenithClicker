@@ -132,6 +132,36 @@ addText({
     }, ",  ")
 }, 0, 60, .26)
 
+local function specialDevCommentaryCheck(cID, uneasy)
+    if cID == 'uEX eNH eMS eGV eDH eIN eAS eDP' and not GAME.ecloseCard then --UHCBWaF
+        return false
+    elseif cID == 'eEX uGV eDH eAS' and not GAME.enightcore then
+        return false
+    elseif uneasy then
+        if cID == 'ueEX eNH' and not GAME.glassCard then
+            return false
+        elseif cID == 'ueEX eMS' and not GAME.slowmo then
+            return false
+        elseif cID == 'ueEX eGV' and not GAME.slowmo then
+            return false
+        elseif cID == 'ueEX eVL' and not GAME.closeCard then
+            return false
+        elseif cID == 'ueEX eDH' and not GAME.nightcore then
+            return false
+        elseif cID == 'ueEX eIN' and not GAME.invisCard then
+            return false
+        elseif cID == 'ueEX eAS' and not GAME.fastLeak then
+            return false
+        elseif cID == 'ueEX eDP' and not GAME.invisUI then
+            return false
+        else
+            return true
+        end
+    else
+        return true
+    end
+end
+
 local timer
 local devCommentary, devCommentaryLink, link
 function scene.load()
@@ -148,12 +178,14 @@ function scene.load()
         setStr = 'u' .. setStr
         cID = cID:gsub("r", "u")
     end
+    local uneasy = false
     if (GAME.mod.EX == -1 and URM and GAME.mod.NH < 2 and GAME.mod.MS < 2 and GAME.mod.GV < 2 and GAME.mod.VL < 2 and GAME.mod.DH < 2 and GAME.mod.IN < 2 and GAME.mod.AS < 2 and GAME.mod.DP < 2) then
         setStr = 'u' .. setStr
         cID = cID:gsub("eEX", "ueEX")
+        uneasy = true
     end
     local text
-    if devCommentary[cID] then
+    if devCommentary[cID] and specialDevCommentaryCheck(cID, uneasy) then
         if BEST.highScore[setStr] < Floors[9].top then
             text = devCommentary.notFinished
         else

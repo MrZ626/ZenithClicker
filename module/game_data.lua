@@ -342,7 +342,8 @@ ComboData = {
         { set = "eEX eNH eMS eGV eVL eIN eAS",          name = "Holy Bath Water"}, -- sacred e, holy, unholy
         { set = "eEX eNH eMS eGV eVL eDH eAS",          name = "Cloudy Bath Water"}, -- clear e, cloudy, murky 
         { set = "eEX eNH eMS eGV eVL eDH eIN",          name = "Plain Bath Water"}, -- plain, mystical e, magical
-        { set = "EX eNH eMS eGV eVL eDH eIN eAS",       name = "Very Hard Bath Water"},
+        { set = "EX eNH eMS eGV eVL eDH eIN eAS",       name = "Very Hard Bath Water"}, -- credit: TheBestNoob
+        { set = "rEX eNH eMS eGV eVL eDH eIN eAS",       name = "Super Hard Bath Water"},
         { set = "eEX NH eMS eGV eVL eDH eIN eAS",       name = "Hot Bath Water"},
         { set = "eEX eNH MS eGV eVL eDH eIN eAS",       name = "Dirty Bath Water"},
         { set = "eEX eNH eMS GV eVL eDH eIN eAS",       name = "Flat Bath Water"},
@@ -360,6 +361,7 @@ ComboData = {
         { set = "eEX eNH eMS eGV eVL eDH eAS eDP",          name = "Cloudy Bath With A Friend"},
         { set = "eEX eNH eMS eGV eVL eDH eIN eDP",          name = "Plain Bath With A Friend"},
         { set = "EX eNH eMS eGV eVL eDH eIN eAS eDP",       name = "Very Hard Bath With A Friend"},
+        { set = "rEX eNH eMS eGV eVL eDH eIN eAS eDP",      name = "Super Hard Bath With A Friend"},
         { set = "eEX NH eMS eGV eVL eDH eIN eAS eDP",       name = "Hot Bath With A Friend"},
         { set = "eEX eNH MS eGV eVL eDH eIN eAS eDP",       name = "Dirty Bath With A Friend"},
         { set = "eEX eNH eMS GV eVL eDH eIN eAS eDP",       name = "Flat Bath With A Friend"},
@@ -382,7 +384,7 @@ ComboData = {
         -- Credit: TheBestNoob
         { set = "eEX NH MS GV VL DH IN AS",                 name = "Easy Swamp Water"},
         -- ultras
-        { set = "eEX rGV eDH eAS",      name = "But It Isn't One Of Mine" },
+        { set = "eEX rGV eDH eAS",      name = "Patience is a Virtue" },
 
         { set = "rEX eNH eMS eGV eVL eDH eIN eAS",      name = "Peasant Revolution"},
         { set = "eEX rNH eGV eDH",      name = "Holy Ascension"},

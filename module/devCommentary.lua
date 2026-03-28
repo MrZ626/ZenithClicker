@@ -380,10 +380,10 @@ return {
     ]],
     --one of mine
     ['eEX uGV eDH eAS'] = STRING.trimIndent [[
-        But It Isn't One Of Mine, the Easy Mode counterpart to Patience Is A Virtue.
-        While this message will display even if Nightcore+ is not enabled,
-        in order to get the achievement with the same name it is required.
-    ]],
+        But It Isn't One Of Mine, the Easy Mode counterpart to the Patience Is A Virtue achievement.
+        Kinda like a rhythm game of sorts, which I quite enjoy.
+    ]], --[[While this message will display even if Nightcore+ is not enabled,
+        in order to get the achievement with the same name it is required.]]
     --ggbw
     ['eEX eNH eGV eVL eDH eIN AS eDP'] = STRING.trimIndent [[
         One of 3 variants of Gamer Girl Bath Water, this is the one that I believe is 
@@ -496,7 +496,7 @@ return {
     -- Diogenes Syndrome ueEX, eMS+eJ, fastest time to floor 10
     -- Dysania ueEX, eGV+S, fastest time to floor 10
     ['ueEX eGV'] = STRING.trimIndent [[
-        (Achievement requires Sloooooow-mo) "You're up early." "HEY, BUDDY. HOW'S IT GOING?" "Woah! Yo what?" 
+        "You're up early." "HEY, BUDDY. HOW'S IT GOING?" "Woah! Yo what?" 
         "WHAT?" "Why is your voice so deep?" "OH IT'S JUST A LITTLE DEEPER IN THE MORNING. YOURS DOESN'T DO THAT?"
         "You sound like you're narrating a Ford commercial." "YEAH, I GET THAT SOMETIMES." "Is that like a condition or-"
         "I DON'T KNOW WHY IT DOES THAT. IT'S EARLY. WILL YOU LET ME ENJOY MY MORNING IN PEACE?" 
@@ -514,5 +514,11 @@ return {
         Thine tidiness made thou not cry, thine visibility meant thee shan't have to say goodbye, 
         and thine salvation was achieved because thou didn't lie or hurt thee.
     ]],
-
+    ['uEX eNH eMS eGV eDH eIN eAS eDP'] = STRING.trimIndent [[
+        "We're not kids anymore, there's no way we can both fit in here."
+        "Sure we can! You can just sit on my lap!"
+        "Hey, what's this ultra hard thi-"
+        — TRANSMISSION TERMINATED —
+        REASON: INAPPROPRIATE CONTENT
+    ]],
 }

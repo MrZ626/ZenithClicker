@@ -2134,4 +2134,5 @@ for i = 1, #Achievements do
         assert(achv.scoreFull == nil or type(achv.scoreFull) == 'function', "Invalid field 'scoreFull' - " .. id)
     end
     achv.hide = achv.hide or FALSE
+    achv.realHide = achv.realHide or FALSE
 end

@@ -1265,6 +1265,10 @@ function GAME.startTeraAnim()
         else
             PlayBGM('tera', true)
         end
+        if GAME.comboStr == 'eASeDHeEXrGV' and URM and GAME.enightcore then
+            GAME.gravDelay = 1.6818
+            GAME.gravTimer = GAME.gravDelay - 0.01
+        end
     end
 end
 
@@ -1377,7 +1381,14 @@ function GAME.upFloor()
         )
         -- Trevor Smithy
     if M.GV == -1 then GAME.gravDelay = GravityTimer[3][GAME.floor] end
-    if M.GV > 0 then GAME.gravDelay = GravityTimer[M.GV][GAME.floor] end
+    if GAME.comboStr == 'eASeDHeEXrGV' and URM and GAME.enightcore and GAME.floor >= 10 or GAME.teramusic then
+        if GAME.floor >= 10 then
+            GAME.gravDelay = 2.0593
+            GAME.gravTimer = GAME.gravDelay - 0.01
+        end
+    else
+        if M.GV > 0 then GAME.gravDelay = GravityTimer[M.GV][GAME.floor] end
+    end
     local F = Floors[GAME.floor]
     local e = F.event
     for i = 1, #e, 2 do
@@ -1824,17 +1835,33 @@ function GAME.refreshCurrentCombo()
     local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
     if not GAME.playing and GAME.anyUltra and #hand > 0 then
         -- SPECIAL - Trevor Smithy
-        if (comboName == '"BUT IT ISN\'T ONE OF MINE"' and GAME.enightcore) or comboName == '"PEASANT REVOLUTION"' or comboName == '"HOLY ASCENSION"' or comboName == '"STABILIZED ENTROPY"'
+        if comboName == '"PEASANT REVOLUTION"' or comboName == '"HOLY ASCENSION"' or comboName == '"STABILIZED ENTROPY"'
         or comboName == '"RESTRAINED COLLAPSE"' or comboName == '"RESTORED VOLITION"' or comboName == '"DISPROVEN BLASPHEMY"'
         or comboName == '"SOLVED PARADOX"' or comboName == '"DEMYSTIFIED GRIMOIRE"' or comboName == '"LASTING EDEN"' then  
             GAME.customUltraCombo = true
+        elseif comboName == '"SUPER HARD BATH WATER"' or comboName == '"SUPER HARD BATH WITH A FRIEND"' then
+            comboName = comboName:gsub("SUPER", "ULTRA", 1)
+            GAME.customUltraCombo = false
+        elseif comboName == 'VISIBLE TIDY MODERATE SAVED LIFTED FRIENDLY TYRANNICAL SPIN' and GAME.ecloseCard then
+            comboName = '"ULTRA HARD CRAMPED BATH WITH A FRIEND"'
+            GAME.customUltraCombo = false
+        elseif comboName == '"PATIENCE IS A VIRTUE"' then
+            if GAME.enightcore then
+                comboName = [["BUT IT ISN'T ONE OF MINE"]]
+                GAME.customUltraCombo = true
+            else
+                comboName = [["PATIENCE IS A VIRTUE..."]]
+                GAME.customUltraCombo = false
+            end
         else
             GAME.customUltraCombo = false
             ---@cast comboName string
             comboName = comboName:gsub("([^\"])", "ULTRA %1", 1)
         end
     else
-        if uneasyMode then -- if Uneasy Mode
+        if comboName == '"PATIENCE IS A VIRTUE"' and GAME.enightcore then
+            comboName = [["BUT IT ISN'T ONE OF MINE"]]
+        elseif uneasyMode then -- if Uneasy Mode
             IssueAchv('uneasy')
             if comboName == 'EASY HOLDLESS ALL-SPIN' then
                 comboName = '"THE PIXEL ARTIST"' -- Credit: LovelyStar
@@ -4091,6 +4118,31 @@ function GAME.update(dt)
             ins(GAME.secTime, GAME.floorTime)
             GAME.refreshSectionTime()
             GAME.floorTime = 0
+            if GAME.comboStr == 'eASeDHeEXrGV' and URM and GAME.enightcore then
+                TASK.new(
+                    function()
+                        GAME.extraQuestBase = GAME.extraQuestBase - 0.5
+                        GAME.gravDelay = 2.05
+                        GAME.gravTimer = GAME.gravDelay
+                        TASK.yieldT(2.047)
+                        GAME.gravDelay = 1.9
+                        TASK.yieldT(1.9)
+                        GAME.gravDelay = 1.75
+                        TASK.yieldT(1.75)
+                        GAME.gravDelay = 1.6
+                        TASK.yieldT(1.6)
+                        GAME.gravDelay = 1.45
+                        TASK.yieldT(1.45)
+                        GAME.gravDelay = 1.3
+                        TASK.yieldT(1.3)
+                        GAME.gravDelay = 1.15
+                        TASK.yieldT(1.15)
+                        --TASK.yieldT(11.17)
+                        GAME.gravDelay = 1.0091
+                        GAME.gravTimer = GAME.gravDelay - 0.15
+                    end
+                )
+            end
         end
 
         -- KM line text

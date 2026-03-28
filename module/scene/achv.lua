@@ -56,13 +56,13 @@ local function nameSortGT(i1, i2) return i1.name > i2.name end
 local SPACER = { hide = FALSE }
 function RefreshAchvList(canShuffle)
 
-    for i = #Achievements, 1, -1 do
+    --[[for i = #Achievements, 1, -1 do
         local achv = Achievements[i]
         if achv.realHide and achv:realHide() then
             table.remove(Achievements, i)
             table.insert(Achievements, i, { id = ''})
         end
-    end
+    end]]
 
     overallProgress.rank = TABLE.new(0, 5)
     overallProgress.rank[0] = 0
@@ -71,13 +71,13 @@ function RefreshAchvList(canShuffle)
     overallProgress.ptGet = 0
     overallProgress.ptAll = 0
     TABLE.clear(achvList)
-    local odCount, odCap, titleCount = 0, 0, 0
+    local odCount, odCap, countSinceLastTitle = 0, 0, 0
     for i = 1, #Achievements do
         local A = Achievements[i]
         if not A.id then
-            titleCount = titleCount + 1
+            countSinceLastTitle = 0
             table.insert(achvList, { title = A.hide() and "???" or A.title and A.title:upper() })
-        elseif A.id ~= '' then
+        else
             local rank, score, progress, wreath, overDev
             if TestMode or not ACHV[A.id] then
                 score = "---"
@@ -111,25 +111,27 @@ function RefreshAchvList(canShuffle)
             AchvText:set(A.desc)
             local hidden = A.hide() and not ACHV[A.id]
             local descWidth = hidden and 26 or AchvText:getWidth()
-            table.insert(achvList, {
-                id = A.id,
-                name = hidden and "???" or A.name:upper(),
-                desc = hidden and "???" or A.desc,
-                descWidth = descWidth,
-                rank = floor(rank),
-                wreath = wreath,
-                progress = progress,
-                score = score,
-                type = A.type,
-                hidden = A.hide ~= FALSE,
-                overDev = overDev,
-            })
+            if not hidden or not A.realHide() then 
+                countSinceLastTitle = countSinceLastTitle + 1
+                table.insert(achvList, {
+                    id = A.id,
+                    name = hidden and "???" or A.name:upper(),
+                    desc = hidden and "???" or A.desc,
+                    descWidth = descWidth,
+                    rank = floor(rank),
+                    wreath = wreath,
+                    progress = progress,
+                    score = score,
+                    type = A.type,
+                    hidden = A.hide ~= FALSE,
+                    overDev = overDev,
+                })
+            elseif countSinceLastTitle % 2 == 1 then
+                table.insert(achvList, {id = ''})
+                countSinceLastTitle = countSinceLastTitle + 1
+            end
             if overDev then
                 odCount = odCount + 1
-            end
-        else
-            if (#achvList-titleCount) % 2 == 1 then
-                table.insert(achvList, {id = ''})
             end
         end
     end
@@ -313,7 +315,7 @@ local function refreshAchivement()
         end
     end
 
-    if ACHV.roll and ACHV.programmer_gamer and (BEST.highScore.eDHeDPeGVeINeMSeNH > Floors[9].top) and not (STAT.rold or ACHV.rold_smythy) then
+    if ACHV.roll and ACHV.programmer_gamer and (BEST.highScore.eDHeDPeGVeINeMSeNH > Floors[9].top) and not (STAT.rold or ACHV.rold_smythy) and not GAME.playing then
         TASK.new(
             function()
                 SubmitAchv('rold_smythy', 100)
@@ -346,7 +348,7 @@ local function refreshAchivement()
                 STAT.rold = true
             end
         )
-    elseif ACHV.roll and ACHV.programmer_gamer and BEST.highScore.eDHeDPeGVeINeMSeNH and not (STAT.rold or ACHV.rold_smythy) then
+    elseif ACHV.roll and ACHV.programmer_gamer and BEST.highScore.eDHeDPeGVeINeMSeNH and not (STAT.rold or ACHV.rold_smythy) and not GAME.playing then
         SubmitAchv('rold_smythy', 1)
         TASK.new(
             function()
@@ -357,7 +359,7 @@ local function refreshAchivement()
                 STAT.rold = true
             end
         )
-    elseif ACHV.roll and ACHV.programmer_gamer and not (STAT.rold or BEST.highScore.eDHeDPeGVeINeMSeNH > Floors[9].top or ACHV.rold_smythy) then
+    elseif ACHV.roll and ACHV.programmer_gamer and not (STAT.rold or BEST.highScore.eDHeDPeGVeINeMSeNH > Floors[9].top or ACHV.rold_smythy) and not GAME.playing then
         TASK.new(
             function()
                 TASK.yieldT(1)
