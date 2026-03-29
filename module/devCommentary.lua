@@ -366,10 +366,10 @@ return {
     -- Trevor Smithy
     --programming smithy
     ['eEX eVL eAS'] = STRING.trimIndent [[
-        The Pro G(r)am(m)ing Smithy, because, well, I'm Trevor Smithy and I'm both a
-        programmer and a (questionably) pro gamer. In any case, this has been fun to develop and playtest.
+        The Pro G(r)am(m)ing Smithy, because, well, I'm Trevor Smithy and I'm both a programmer and a (questionably) pro gamer. 
+        In any case, this has been fun to develop and playtest. It was the 1st named combo and achievement, added back in 0.3.0.
         eEX is very strong, making getting high climb speed ranks significantly easier, especially if combined with eL. 
-        eVL is just a +1 buff to all XP and eAS adding +1 to attacks with no downsides allows for some crazy fast runs.
+        eVL is just a +1 buff to all XP and eAS adding B2B Chaining to boost attacks with no downsides allows for some crazy fast runs.
         Thanks for playing my mod! WAH-BAAM! - Trevor Smithy
     ]],
     ['ueEX eVL eAS'] = STRING.trimIndent [[
@@ -486,12 +486,68 @@ return {
         *silence* 
         - Looking for a game to capture -
     ]],
+    -- Future achievement update
+    -- Easy Mods
+    ['eEX'] = STRING.trimIndent [[
+        Easy Mode, aka "Easy", originally softlocked the game in 0.2.0 if you tried to select it. 0.3.0's release made it the 4th eMod
+        implemented, alongside the first named combo and achievement: "The Prog(r)am(m)ing Smithy," combining it with eVL and eAS.
+        0.6.0 added a new fatigue after I learned that with enough eMods infinite play was possible.
+        0.6.5 (aka the MrZ update) reworked eEX to have no XP lock, but instead effectively slow the scaling xp requirement for higher ranks.
+    ]],
+    ['eNH'] = STRING.trimIndent [[
+        Moderate Hold, aka "Moderation", was originally called "Less Hold", however the name was changed in 0.5.0 alongside its original
+        implementation as the 6th eMod which only shares the "double click to deselect" with its current implementation.
+        Originally, it (unintentionally) made quests HARDER, as well as a +1 attack buff that got moved to eAS (and eventually B2B chaining)
+        0.6.2 added its more prominent "blocks faults from deselect" mechanic, and 0.6.5 added One Shot Protection
+    ]],
+    ['eMS'] = STRING.trimIndent [[
+        Tidiness, aka "Tidy", was originally called "Minor Mixup", however the name was changed in 0.6.0 and its completion in 0.6.0
+        as the final eMod marked the "functionally complete" point of ZCEM's development, although multiple reworks have happened since.
+        Due to being completed so late, eMS has had the beneif of being developed with everything else already done and as such has had
+        no significant changes since its original implementation. Also, as a typer, even eMS's simple shuffle trips me up, hence why it
+        led to one of the most cursed bits of code to recolor mod names with any AS and eIN active, and is the most excluded eMod. 
+    ]],
+    ['eGV'] = STRING.trimIndent [[
+        Lift, was originally called "Float". 0.4.0's release made it the 5th eMod implemented. The name was changed in 0.5.0.
+        It's implementation is mostly the same, other than the addition of "auto commit on correct" in 0.6.5 (aka the MrZ update).
+    ]],
+    ['eVL'] = STRING.trimIndent [[
+        Tranquility, aka "Tranquil", was originally called "Sensitivity", was the 2nd eMod implemented, having its original implementation
+        in 0.2.0 be effectively unchanged even until now, other than a few minor bug fixes. Its early completion is why it's a part of
+        "The Prog(r)am(m)ing Smithy". The name was changed in 0.3.1. (Credit to LovelyStar for that and other eMod's name changes.)
+    ]],
+    ['eDH'] = STRING.trimIndent [[
+        Salvation, aka "Saved", was originally called "Patched Hole", was the 3rd eMod implemented. Its original implementation did not
+        affect quest buffer, so it was generally weaker late game until that was added in 0.7.1, but has otherwise has remained mostly
+        unchanged since 0.2.0 when it was first implemented. The name was changed in 0.5.0 along with the addition of the 2nd achievement:
+        "But It Isn't One Of Mine" which is a notable part of.
+    ]],
+    ['eIN'] = STRING.trimIndent [[
+        Visibility, aka "Visible", was implemented in 0.5.0 as the 7th eMod and has only received one additional buff in 0.6.0,
+        which allows it to counter eMS by changing quests' colors to match the relevant mod position's color with any AS.
+        Fun fact: This was originally called "VISIBLITY" (missing the 3rd I), as it was copied from "INVISIBLITY" [sic].
+        This typo was present in EVERY VERSION OF ZENITH CLICKER until I pointed it out. It will be fixed in 1.13.27.
+    ]],
     ['eAS'] = STRING.trimIndent [[
         SPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN
         When you're in Spain without the A
         aka: Gamer, Degenerate
+        Spin, first eMod implemented, only after Slow Leak (eL). The only change since its original implementation in 0.2.0 was the
+        addition of B2B chaining in 0.8.6. It's also part of the first achivement/combo: "The Prog(r)am(m)ing Smithy"
     ]],
-    -- Future achievement update
+    ['eDP'] = STRING.trimIndent [[
+        Friend, implemented as the 8th eMod in 0.5.0. 0.6.5 enabled solo "DUO" quests. As of writing these dev commentaries,
+        it's the most recently changed mod, gaining the ability to commit the 3rd quest and have your friend select the first quest
+        for you, as well as disabling switch sickness, in 1.0.5. Fun fact, this functionality was actually in the original design document
+        for 1.0, but it wasn't done because I wasn't sure how to properly implement it at the time.
+    ]],
+    -- Uneasy Mods
+    ['ueEX'] = STRING.trimIndent [[
+        Uneasy Mode, aka "Uneasy", is meant to be the ZCEM counter to eMod spam. Essentially being an Ultra Reversed and Easy Mod in a
+        trenchcoat, it inherits a mix of easier elements (easier climb speed, more lenient fatigue) and harder elements (reduced attack and xp).
+        It's balanced around taking about as long to reach F10 for me as it does in Tetr.io. It also includes lyrics for TERASPEED,
+        which can be seen in CONF with the music player. (Hint: CTRL+T or import 'mp' with Uneasy active)
+    ]],
     -- Profligacy ueEX, eNH+J, fastest time to floor 10
     -- Diogenes Syndrome ueEX, eMS+eJ, fastest time to floor 10
     -- Dysania ueEX, eGV+S, fastest time to floor 10
@@ -514,11 +570,17 @@ return {
         Thine tidiness made thou not cry, thine visibility meant thee shan't have to say goodbye, 
         and thine salvation was achieved because thou didn't lie or hurt thee.
     ]],
+    -- Misc
+    --UHCBWaF
     ['uEX eNH eMS eGV eDH eIN eAS eDP'] = STRING.trimIndent [[
         "We're not kids anymore, there's no way we can both fit in here."
         "Sure we can! You can just sit on my lap!"
         "Hey, what's this ultra hard thi-"
         — TRANSMISSION TERMINATED —
         REASON: INAPPROPRIATE CONTENT
+    ]],
+    ['ueEX eNH eGV eVL eDH eIN eAS DP'] = STRING.trimIndent [[
+        "Gamer Girl Bath Water? Seriously? You didn't think this was actually her bath water, right?"
+        Also this combo is (in my opinion) the optimal one to get QUETTASPEED when combined with eL.
     ]],
 }

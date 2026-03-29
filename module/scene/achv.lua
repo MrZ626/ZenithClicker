@@ -462,6 +462,17 @@ function scene.update(dt)
             )
         end
     end
+    for i = 1, 6 do
+        if TASK.lock('metricspeed_icon_' .. i, 0.26 / i^1.262) then
+            local name = MetricSpeedName[i]:sub(2, -2):lower()
+            local r = math.random(-10-i*2, 10+i*2)
+            local r2 = math.random(-i*2, i*2)
+            --(10 - 1) % 16 * 256, (4 - 1) % 16 * 256, 256, 256, 4096, 2048
+            TEXTURE.achievement.iconQuad[name]:setViewport(
+                (10 - 1) % 16 * 256 - r, (4 - 1) % 16 * 256 - r2, 256, 256, 4096, 2048
+            )
+        end
+    end
     if M.EX == 2 then scroll = min(scroll + .26, maxScroll) end
     local y0 = scroll1
     scroll1 = MATH.expApproach(scroll1, scroll, dt * 26)
