@@ -53,6 +53,7 @@ local overallProgress = {
 local function nameSortLT(i1, i2) return i1.name < i2.name end
 local function nameSortGT(i1, i2) return i1.name > i2.name end
 
+local realHide = 0
 local SPACER = { hide = FALSE }
 function RefreshAchvList(canShuffle)
 
@@ -129,6 +130,9 @@ function RefreshAchvList(canShuffle)
             elseif countSinceLastTitle % 2 == 1 then
                 table.insert(achvList, {id = ''})
                 countSinceLastTitle = countSinceLastTitle + 1
+                if A.realHide() then realHide = realHide + 1 end
+            else
+                if A.realHide() then realHide = realHide + 1 end
             end
             if overDev then
                 odCount = odCount + 1
@@ -187,7 +191,7 @@ function RefreshAchvList(canShuffle)
         end
 
         local s, e
-        for i = 1, #achvList do
+        for i = 1, #achvList-realHide do
             if not s then
                 if achvList[i].id then
                     s = i

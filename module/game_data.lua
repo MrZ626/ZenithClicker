@@ -1706,7 +1706,7 @@ DevScore = {faltered=1854.3,patience_is_a_virtue=2627.37,spotless=2916.6,a_mutua
     --Uneasy Easy Mods (v1.1) (No CR)
     ueEX=255.55,ueEXeNH=273.50,ueEXeMS=269.57,ueEXeGV=241.6,ueEXeVL=206.59,ueEXeDH=357.59,ueEXeIN=240.77,ueEXeAS=130.82,ueEXeDP=262.65,
     --Easy Mode - Special (v1.1) (No CR)
-    emperor_development=13.23,quest_feast=281.00,best_friends=101,humble_pupil=5.67,shameless_cashgrab=130,overweight_gamer=69,clean_gamer=319,clean_break=312,professional_cleaner=100,roly_smythy=520,
+    emperor_development=13.23,quest_feast=281.00,best_friends=101,humble_pupil=5.67,shameless_cashgrab=130,overweight_gamer=69,clean_gamer=319,clean_break=312,professional_cleaner=100,rold_smythy=520,
 }
 
 DevScore.contender = 6200
