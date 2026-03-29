@@ -140,6 +140,7 @@ local ins, rem = table.insert, table.remove
 ---@field noManualActivate boolean
 ---@field noMouseOrSpin boolean
 ---@field noKeyboardOrReset boolean
+---@field peasantRevolution boolean
 
 ---@field achv_bestFriendQuest number
 ---@field achv_shamelessCashgrabQuest number
@@ -346,15 +347,19 @@ function GAME.getComboZP(list)
         end
     end
     if m.NH then zp = zp * 1.1 elseif m.rNH then zp = zp * 1.8 elseif m.eNH then zp = zp * 0.90 end
-    if m.MS then zp = zp * 1.2 elseif m.rMS then zp = zp * (m.rGV and 2.0 or 1.7) elseif m.eMS then zp = zp * 1.1 end
+    if m.MS then zp = zp * 1.2 elseif m.rMS then zp = zp * (m.rGV and 2.0 or 1.7) elseif m.eMS then zp = zp * (((m.eAS or m.AS or m.rAS) and not m.eIN) and 19/16 or 10/9) end
     if m.GV then zp = zp * 1.1 elseif m.rGV then zp = zp * (1.2 + .02 * (#list - 1)) elseif m.eGV then zp = zp * 0.85 end
     if m.VL then zp = zp * 1.1 elseif m.rVL then zp = zp * (1.2 + .02 * (#list - 1)) elseif m.eVL then zp = zp * 0.9 end
     if m.DH then zp = zp * 1.2 elseif m.rDH then zp = zp * (m.rIN and 2.2 or m.eIN and 1.5 or 1.62) elseif m.eDH then zp = zp * 0.8 end
-    if m.IN then zp = zp * 1.2 elseif m.rIN then zp = zp * 1.55 elseif m.eIN then zp = zp * 0.9 end
+    if m.IN then zp = zp * 1.2 elseif m.rIN then zp = zp * 1.55 elseif m.eIN then zp = zp * (0.98^(#list)) end
     if m.AS then zp = zp * .85 elseif m.rAS then zp = zp * 1.05 elseif m.eAS then zp = zp * 0.8 end
-    if m.DP then zp = zp * .95 elseif m.rDP then zp = zp * (m.rEX and 1.75 or 2.1) elseif m.eDP then zp = zp * 0.90 end
+    if m.DP then zp = zp * .95 elseif m.rDP then zp = zp * (m.rEX and 1.75 or m.eEX and 1.75 or 2.1) elseif m.eDP then zp = zp * (m.eDH and 0.85 or 0.90) end
 
-    if GAME.enightcore or GAME.eglassCard then zp = zp * .9 elseif GAME.eslowmo then zp = zp * .825 elseif GAME.efastLeak or GAME.ecloseCard then zp = zp * .75 end
+    if GAME.enightcore or GAME.eglassCard then zp = zp * .9 elseif GAME.eslowmo then zp = zp * .825 elseif GAME.efastLeak then zp = zp * .75 
+    elseif GAME.ecloseCard then
+        local maxCardDistance = max(((m.rEX and URM) and 2 or (m.rEX or m.EX) and 1 or 0) - (m.rVL and 2 or (m.eVL or m.VL) and 1 or 0),0)
+        zp = zp * (1 - 0.25-maxCardDistance*0.214) * (m.rEX and not m.rVL and 0.9 or 1)
+    end
 
     local hardCnt = table.concat(list):count('r')
     if m.EX then hardCnt = hardCnt + 1 end
@@ -1833,15 +1838,20 @@ function GAME.refreshCurrentCombo()
         if not GAME.playing then GAME.smithyMode = false end
     end
     local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
+    GAME.peasantRevolution = false
     if not GAME.playing and GAME.anyUltra and #hand > 0 then
         -- SPECIAL - Trevor Smithy
-        if comboName == '"PEASANT REVOLUTION"' or comboName == '"HOLY ASCENSION"' or comboName == '"STABILIZED ENTROPY"'
+        if --[[comboName == '"PEASANT REVOLUTION"' or]] comboName == '"HOLY ASCENSION"' or comboName == '"STABILIZED ENTROPY"'
         or comboName == '"RESTRAINED COLLAPSE"' or comboName == '"RESTORED VOLITION"' or comboName == '"DISPROVEN BLASPHEMY"'
         or comboName == '"SOLVED PARADOX"' or comboName == '"DEMYSTIFIED GRIMOIRE"' or comboName == '"LASTING EDEN"' then  
             GAME.customUltraCombo = true
         elseif comboName == '"SUPER HARD BATH WATER"' or comboName == '"SUPER HARD BATH WITH A FRIEND"' then
             comboName = comboName:gsub("SUPER", "ULTRA", 1)
             GAME.customUltraCombo = false
+            if comboName == '"ULTRA HARD BATH WATER"' then
+                GAME.peasantRevolution = true
+                GAME.customUltraCombo = true
+            end
         elseif comboName == 'VISIBLE TIDY MODERATE SAVED LIFTED FRIENDLY TYRANNICAL SPIN' and GAME.ecloseCard then
             comboName = '"ULTRA HARD CRAMPED BATH WITH A FRIEND"'
             GAME.customUltraCombo = false

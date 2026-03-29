@@ -343,7 +343,7 @@ ComboData = {
         { set = "eEX eNH eMS eGV eVL eDH eAS",          name = "Cloudy Bath Water"}, -- clear e, cloudy, murky 
         { set = "eEX eNH eMS eGV eVL eDH eIN",          name = "Plain Bath Water"}, -- plain, mystical e, magical
         { set = "EX eNH eMS eGV eVL eDH eIN eAS",       name = "Very Hard Bath Water"}, -- credit: TheBestNoob
-        { set = "rEX eNH eMS eGV eVL eDH eIN eAS",       name = "Super Hard Bath Water"},
+        { set = "rEX eNH eMS eGV eVL eDH eIN eAS",       name = "Super Hard Bath Water"}, --whoops this should be peasant revolution
         { set = "eEX NH eMS eGV eVL eDH eIN eAS",       name = "Hot Bath Water"},
         { set = "eEX eNH MS eGV eVL eDH eIN eAS",       name = "Dirty Bath Water"},
         { set = "eEX eNH eMS GV eVL eDH eIN eAS",       name = "Flat Bath Water"},

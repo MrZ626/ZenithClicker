@@ -957,8 +957,17 @@ function scene.overDraw()
         if not GAME.playing or M.IN < 2 then
             if GAME.customUltraCombo then
                 local speedMod = (GAME.enightcore or GAME.nightcore) and 2 or GAME.eslowmo and 0.75 or GAME.slowmo and 0.5 or 1
-                TEXTS.mod:setFont(FONT.get(60))
-                gc_setColor(COLOR.rainbow_light(2.6 * t * speedMod))
+                local prMod = 1.08422
+                if not (GAME.peasantRevolution and floor(t * speedMod * prMod) % 2 == 1) then
+                    TEXTS.mod:setFont(FONT.get(60))
+                    gc_setColor(COLOR.rainbow_light(2.6 * t * speedMod))
+                elseif GAME.peasantRevolution then
+                    TEXTS.mod:setFont(FONT.get(30))
+                    gc_setColor(TextColor)
+                    BGM.set('all', 'highgain', 1, 0.626/speedMod)
+                end
+                if GAME.peasantRevolution and floor(t * speedMod * prMod) % 2 == 1 then TEXTS.mod:set('"ULTRA HARD BATH WATER"') end
+                if GAME.peasantRevolution and floor(t * speedMod * prMod) % 2 == 0 then TEXTS.mod:set('"PEASANT REVOLUTION"') end
             elseif GAME.smithyMode then
                 TEXTS.mod:setFont(FONT.get(50))
                 gc_setColor(0,1,0)
