@@ -319,10 +319,10 @@ For the exact formula, see function `calculateRating()` in this [file](/module/s
 
 You gain ZP after a run, with `ZP = altitude * multiplier`, which `multiplier` is taken from:
 
-|   Mod    |  EX   |  NH   |  MS   |    GV     |    VL     |     DH     |  IN   |  AS   |     DP     |
-| :------: | :---: | :---: | :---: | :-------: | :-------: | :--------: | :---: | :---: | :--------: |
-| Upright  |  1.4  |  1.1  |  1.2  |    1.1    |    1.1    |    1.2     |  1.2  | 0.85  |    0.95    |
-| Reversed |  2.6  |  1.8  |  2.0  | 1.2+.02*M | 1.2+.02*M | 1.6+.4*rIN |  1.6  |  1.1  | 2.1-.3*rEX |
+|   Mod    |  EX   |  NH   |  MS   |    GV     |    VL     |      DH      |  IN   |  AS   |     DP      |
+| :------: | :---: | :---: | :---: | :-------: | :-------: | :----------: | :---: | :---: | :---------: |
+| Upright  |  1.4  |  1.1  |  1.2  |    1.1    |    1.1    |     1.2      |  1.2  | 0.85  |    0.95     |
+| Reversed |  2.6  |  1.8  |  2.0  | 1.2+.02*M | 1.2+.02*M | 1.62+.58*rIN | 1.55  | 1.06  | 2.1-.35*rEX |
 
 > M = [Total Mod Count] -1  
 > `Hard Mode Decay` = 0.99, applies `number_of_EX_or_Rev - 1` times  
