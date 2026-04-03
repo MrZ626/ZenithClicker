@@ -1159,7 +1159,7 @@ end
 function RefreshBGM(mode)
     if not BGM.isPlaying() then return end
     local pitch = M.GV < 0 and 2^(-1/2) or M.GV > 0 and 2 ^ ((URM and M.GV == 2 and 3 or M.GV) / 12) or 1
-    if not GAME.manualBGMPitch or GAME.height >= 1650 then
+    if not GAME.manualBGMPitch or GAME.height >= 1650 or not GAME.playing or not GAME.uneasyModIconSelected or not GAME.teramusic then
         if GAME.slowmo then pitch = pitch / 2 end
         if GAME.nightcore then pitch = pitch * 2 end
         -- Trevor Smithy
@@ -1289,7 +1289,7 @@ function Task_MusicEnd(manual)
             outroStart = D.loop[2]
             BgmNeedStop = outroStart + 8 * 60 / D.bpm
         end
-    elseif BgmPlaying == 'tera' or 'terae' or 'teral' or 'terael' then
+    elseif BgmPlaying == 'tera' or BgmPlaying == 'terae' or BgmPlaying == 'teral' or BgmPlaying == 'terael' then
         outroStart = D.loop[2] + math.random(0, 3) * 8 * 60 / D.bpm
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
     elseif BgmPlaying == 'terar' then

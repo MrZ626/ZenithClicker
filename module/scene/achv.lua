@@ -53,17 +53,8 @@ local overallProgress = {
 local function nameSortLT(i1, i2) return i1.name < i2.name end
 local function nameSortGT(i1, i2) return i1.name > i2.name end
 
-local realHide = 0
 local SPACER = { hide = FALSE }
 function RefreshAchvList(canShuffle)
-
-    --[[for i = #Achievements, 1, -1 do
-        local achv = Achievements[i]
-        if achv.realHide and achv:realHide() then
-            table.remove(Achievements, i)
-            table.insert(Achievements, i, { id = ''})
-        end
-    end]]
 
     overallProgress.rank = TABLE.new(0, 5)
     overallProgress.rank[0] = 0
@@ -128,11 +119,8 @@ function RefreshAchvList(canShuffle)
                     overDev = overDev,
                 })
             elseif countSinceLastTitle % 2 == 1 then
-                table.insert(achvList, {id = ''})
+                table.insert(achvList, {id = '', name = ''})
                 countSinceLastTitle = countSinceLastTitle + 1
-                if A.realHide() then realHide = realHide + 1 end
-            else
-                if A.realHide() then realHide = realHide + 1 end
             end
             if overDev then
                 odCount = odCount + 1
@@ -191,7 +179,7 @@ function RefreshAchvList(canShuffle)
         end
 
         local s, e
-        for i = 1, #achvList-realHide do
+        for i = 1, #achvList do
             if not s then
                 if achvList[i].id then
                     s = i

@@ -125,6 +125,7 @@ local ins, rem = table.insert, table.remove
 ---@field finalFatigueOSPActivated boolean
 ---@field bonusRecoveryHealth number
 ---@field teraComplete boolean
+---@field teraStartHeight number
 ---@field teraLostHeight number
 ---@field customUltraCombo boolean
 ---@field anyChange boolean
@@ -770,9 +771,11 @@ end
 
 function GAME.task_uneasyTeraspeed()
     TWEEN.new(function(t) 
-        GAME.manualBGMPitch = (GAME.nightcore or GAME.slowmo) and 1 + (t*1.33*(M.GV == -1 and 1.5 or 1)) or 1
-        RefreshBGM()
+        if not GAME.playing then t = 0 end
+        GAME.manualBGMPitch = (GAME.nightcore or GAME.slowmo) and 1 + (t*1.33*(M.GV == -1 and 1.5 or 1)) or nil
+        if GAME.teramusic and GAME.height < 1660 then RefreshBGM() end
     end):setDuration(GAME.nightcore and 240 or 300):run()
+    :setOnFinish(function() GAME.manualBGMPitch = nil end)
 end
 
 function GAME.task_fatigueWarn()
@@ -1234,7 +1237,7 @@ function GAME.setGigaspeedAnim(on)
     end
 end
 
-function GAME.startTeraAnim()
+function GAME.startTeraAnim(notTera)
     GAME.teramusic = true
     if GAME.quettaspeed then
         GAME.quettaFloor[GAME.floor] = true
@@ -1256,7 +1259,7 @@ function GAME.startTeraAnim()
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
     SFX.play('zenith_speedrun_start')
-    if not (GAME.petaspeed or GAME.exaspeed or GAME.zettaspeed or GAME.yottaspeed or GAME.ronnaspeed or GAME.quettaspeed) then
+    if not notTera then
         if GAME.smithyMode and M.EX == -1 and URM and GAME.comboStr:count('r') == 0 then --if smithyMode and ultra but no reversed and easy enabled
             PlayBGM('terael', true)
         elseif GAME.smithyMode then
@@ -3188,6 +3191,7 @@ function GAME.finish(reason)
     )
 
     TASK.removeTask_code(GAME.task_cancelAll)
+    TASK.removeTask_code(GAME.task_uneasyTeraspeed)
 
     GAME.sortCards()
     for _, C in ipairs(CD) do
@@ -3269,6 +3273,10 @@ function GAME.finish(reason)
     GAME.yottaspeed = false
     GAME.ronnaspeed = false
     GAME.quettaspeed = false
+    if GAME.manualBGMPitch then
+        GAME.manualBGMPitch = nil
+        RefreshBGM()
+    end
     GAME.currentTask = false
 
     local unlockDuo
