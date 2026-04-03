@@ -415,7 +415,7 @@ TEXTURE = {
             ueEXeIN = aq(13, 1),
             ueEXeAS = aq(14, 1),
             ueEXeDP = aq(7, 7),
-            -- easy mode Easy Mode - Special (v1.1) (No CR)
+            -- Easy Mode - Special (v1.1) (No CR)
             humble_pupil = aq(6, 4),
             overweight_gamer = aq(4, 6),
             best_friends = aq(8, 5),
@@ -426,7 +426,15 @@ TEXTURE = {
             rold_smythy = aq(1, 7),
             quest_feast = aq(2, 7),
             clean_gamer = aq(1, 5),
-            -- easy Easy Mode - Issued (v1.1) (No CR)
+            -- Easy Mode - Why (v1.1) (No CR)
+            ["-3"] = aq(0,0),
+            ["-4"] = aq(0,0),
+            ["-5"] = aq(0,0),
+            ["-6"] = aq(0,0),
+            ["-7"] = aq(0,0),
+            ["-8"] = aq(0,0),
+            ["-9"] = aq(0,0),
+            -- Easy Mode - Issued (v1.1) (No CR)
             inefficiency = aq(7, 2),
             could_you_not = aq(3, 2),
             oh_no_you_dont = aq(10, 2),

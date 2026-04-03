@@ -3749,6 +3749,9 @@ function GAME.finish(reason)
                     SubmitAchv(RevSwampName[min(m, #RevSwampName)]:sub(2, -2):lower(), GAME.roundHeight, m < GAME.comboMP)
                 end
             end
+            if GAME.comboMP <= -3 then
+                SubmitAchv(tostring(GAME.comboMP), GAME.roundHeight)
+            end
         end
         SubmitAchv('zenith_explorer_plus', GAME.roundHeight)
         SubmitAchv('supercharged_plus', GAME.achv_maxChain)
@@ -3914,8 +3917,8 @@ function GAME.update(dt)
         end
     end
 
+    local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
     if ((GAME.slowmo and GAME.time >= 2.6) or (not GAME.slowmo and GAME.time >= 1)) and not GAME.uneasyModIconSelected then
-        local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
         if uneasyMode and #GAME.getHand(true) == 2 then
             if PieceSFXID == 1 and M.DH == -1 or PieceSFXID == 2 and (M.MS == -1 or M.GV == -1) or PieceSFXID == 3 and M.NH == -1
             or PieceSFXID == 4 and M.AS == -1 or PieceSFXID == 5 and M.DP == -1 or PieceSFXID == 6 and M.IN == -1 or PieceSFXID == 7 and M.VL == -1 then
@@ -4005,6 +4008,8 @@ function GAME.update(dt)
         passiveClimbSpeedMod = 2 
     elseif GAME.eglassCard then
         passiveClimbSpeedMod = 8
+    elseif GAME.slowmo and uneasyMode then --if uneasy, slightly counter slowmo's reduced passive climb speed
+        passiveClimbSpeedMod = 1.26
     end
 
     local releaseHeight = GAME.heightBuffer

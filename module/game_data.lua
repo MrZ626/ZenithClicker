@@ -1715,6 +1715,14 @@ DevScore = {speed_bonus=10,arrogance=772.74,scarcity_mindset=57,detail_oriented=
     --Easy Mode - Special (v1.1) (No CR)
     emperor_development=13.23,quest_feast=281.00,best_friends=101,humble_pupil=5.67,shameless_cashgrab=130,overweight_gamer=69,clean_gamer=319,clean_break=312,professional_cleaner=100,rold_smythy=520,
 }
+-- Trevor Smithy Placeholder Dev Scores
+DevScore["-3"] = 26000
+DevScore["-4"] = 26000*2
+DevScore["-5"] = 26000*3
+DevScore["-6"] = 26000*4
+DevScore["-7"] = 26000*5
+DevScore["-8"] = 26000*6
+DevScore["-9"] = 26000*7
 
 DevScore.contender = 6200
 DevScore.clicker = 620e3

@@ -258,6 +258,9 @@ local function refreshAchivement()
                 submit(RevSwampName[min(m, #RevSwampName)]:sub(2, -2):lower(), h, m < mp)
             end
         end
+        if mp <= -3 then
+            submit(tostring(mp), h)
+        end
         maxMMP = max(maxMMP, h * mp)
         local l = {}
         for m in setStr:gmatch('[re]?%w%w') do l[m] = true end
@@ -465,6 +468,16 @@ function scene.update(dt)
             )
         end
     end
+    for i = -3, -9, -1 do
+        if TASK.lock('negmp_icon_' .. tostring(i), 1.26 / (-i)^1.262) then
+            local f = -i-2
+            local r = math.random(-f*2, f*2)
+            local r2 = math.random(-f*2, f*2) + 10
+            TEXTURE.achievement.iconQuad[tostring(i)]:setViewport(
+                (2 - 1) % 16 * 256 - r, (3 - 1) % 16 * 256 - r2, 256, 256, 4096, 2048
+            )
+        end
+    end
     if M.EX == 2 then scroll = min(scroll + .26, maxScroll) end
     local y0 = scroll1
     scroll1 = MATH.expApproach(scroll1, scroll, dt * 26)
@@ -615,7 +628,11 @@ function scene.draw()
                     else
                         gc_setColor(1, 1, 1, .26)
                     end
-                    gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, 0, .24)
+                    if a.id == "-3" or a.id == "-4"or a.id == "-5" or a.id == "-6" or a.id == "-7" or a.id == "-8" or a.id == "-9" then
+                        gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, math.pi, .24)
+                    else
+                        gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, 0, .24)
+                    end
                 end
 
                 -- Wreath
@@ -657,7 +674,8 @@ function scene.draw()
                     or a.id == 'solved_paradox' or a.id == 'demystified_grimoire' or a.id == 'restored_eden' or a.id == 'your_too_fast' 
                     or a.id == 'eEX' or a.id == 'eNH' or a.id == 'eMS' or a.id == 'eGV' or a.id == 'eVL' or a.id == 'eDH' or a.id == 'eIN' or a.id == 'eAS' or a.id == 'eDP'
                     or a.id == 'emperor_development' or a.id == 'quest_feast' or a.id == 'best_friends' or a.id == 'humble_pupil' or a.id == 'shameless_cashgrab' 
-                    or a.id == 'overweight_gamer' or a.id == 'clean_gamer' or a.id == 'clean_break' or a.id == 'professional_cleaner' or a.id == 'rold_smythy' then
+                    or a.id == 'overweight_gamer' or a.id == 'clean_gamer' or a.id == 'clean_break' or a.id == 'professional_cleaner' or a.id == 'rold_smythy' 
+                    or a.id == "-3" or a.id == "-4"or a.id == "-5" or a.id == "-6" or a.id == "-7" or a.id == "-8" or a.id == "-9" then
                         gc_setColor(0, 1, 0, .1)
                     elseif a.id == 'ueEX' or a.id == 'ueEXeNH' or a.id == 'ueEXeMS' or a.id == 'ueEXeGV' or a.id == 'ueEXeVL' or a.id == 'ueEXeDH' or a.id == 'ueEXeIN' or a.id == 'ueEXeAS' or a.id == 'ueEXeDP' then
                         gc_setColor(1, 0, 0, .2)
