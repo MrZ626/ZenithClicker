@@ -469,8 +469,8 @@ function scene.update(dt)
         end
     end
     for i = -3, -9, -1 do
-        if TASK.lock('negmp_icon_' .. tostring(i), 1.26 / (-i)^1.262) then
-            local f = -i-2
+        if TASK.lock('negmp_icon_' .. tostring(i), 1.26 / (10+i)^1.262) then
+            local f = 10+i
             local r = math.random(-f*2, f*2)
             local r2 = math.random(-f*2, f*2) + 10
             TEXTURE.achievement.iconQuad[tostring(i)]:setViewport(

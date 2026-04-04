@@ -1943,6 +1943,7 @@ Achievements = {
         quote = [[You catch your breath, if but for a moment]],
         rank = floorRank(10, 2600, 2600*2, 2600*3, 2600*4, 2600*5, 2600*10),
         hide = function() return TABLE.countAll(GAME.completion, 0) > 7 end,
+        type = 'unranked',
     },
     { -- -4
         id = '-4',
@@ -1951,6 +1952,7 @@ Achievements = {
         quote = [[You look like you need a break]],
         rank = floorRank(10, 2600*2, 2600*2*2, 2600*3*2, 2600*4*2, 2600*5*2, 2600*20),
         hide = function() return TABLE.countAll(GAME.completion, 0) > 7 end,
+        type = 'unranked',
     },
     { -- -5
         id = '-5',
@@ -1959,6 +1961,7 @@ Achievements = {
         quote = [[A well earned time off]],
         rank = floorRank(10, 2600*3, 2600*2*3, 2600*3*3, 2600*4*3, 2600*5*3, 2600*30),
         hide = function() return TABLE.countAll(GAME.completion, 0) > 7 end,
+        type = 'unranked',
     },
     { -- -6
         id = '-6',
@@ -1967,6 +1970,7 @@ Achievements = {
         quote = [[Take a nap]],
         rank = floorRank(10, 2600*4, 2600*2*4, 2600*3*4, 2600*4*4, 2600*5*4, 2600*40),
         hide = function() return TABLE.countAll(GAME.completion, 0) > 7 end,
+        type = 'unranked',
     },
     { -- -7
         id = '-7',
@@ -1975,6 +1979,7 @@ Achievements = {
         quote = [[It's okay to doze off here]],
         rank = floorRank(10, 2600*5, 2600*2*5, 2600*3*5, 2600*4*5, 2600*5*5, 2600*50),
         hide = function() return TABLE.countAll(GAME.completion, 0) > 7 end,
+        type = 'unranked',
     },
     { -- -8
         id = '-8',
@@ -1983,6 +1988,7 @@ Achievements = {
         quote = [[Have a nice warm bath]],
         rank = floorRank(10, 2600*6, 2600*2*6, 2600*3*6, 2600*4*6, 2600*5*6, 2600*60),
         hide = function() return TABLE.countAll(GAME.completion, 0) > 7 end,
+        type = 'unranked',
     },
     { -- -9
         id = '-9',
@@ -1991,6 +1997,7 @@ Achievements = {
         quote = [[Enjoy the spa with all its ammenities]],
         rank = floorRank(10, 2600*7, 2600*2*7, 2600*3*7, 2600*4*7, 2600*5*7, 2600*70),
         hide = function() return TABLE.countAll(GAME.completion, 0) > 7 end,
+        type = 'unranked',
     },
     { title = "Easy Mode - Issued (v1.1) (No CR)" },
     { -- www

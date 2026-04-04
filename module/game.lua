@@ -2605,6 +2605,7 @@ function GAME.commit(auto, falseCommit)
             local chainCap = 6 * (max(GAME.floor, GAME.negFloor) + 2) ^ 2
             if GAME.chain > chainCap then
                 GAME.chain = chainCap
+                if M.AS == -1 then attack = attack + 1 end
                 IssueSecret('sc_cap')
             end
             if GAME.chain == 4 then
