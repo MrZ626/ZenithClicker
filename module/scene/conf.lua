@@ -795,6 +795,10 @@ scene.widgetList = {
                     STAT.promotion = not STAT.promotion
                     SFX.play('social_dm')
                     MSG('dark', "Rank Promotion Gauge: " .. (STAT.promotion and "ON" or "OFF"))
+                elseif data == 'old_transparent_card' or data == 'oldTransparentCard' or data == 'oldtransparentcard' or data == 'oldeO' then
+                    STAT.oldTransparentCard = not STAT.oldTransparentCard
+                    SFX.play('social_dm')
+                    MSG('dark', "Transparent Card: " .. (STAT.oldTransparentCard and "V1.0/1.1" or "V1.2+"))
                 elseif data == 'resubmit' then
                     if DAILYCMD then
                         ASYNC.runCmd('submitDaily', DAILYCMD)

@@ -356,10 +356,13 @@ function GAME.getComboZP(list)
     if m.AS then zp = zp * .85 elseif m.rAS then zp = zp * 1.05 elseif m.eAS then zp = zp * 0.8 end
     if m.DP then zp = zp * .95 elseif m.rDP then zp = zp * (m.rEX and 1.75 or m.eEX and 1.75 or 2.1) elseif m.eDP then zp = zp * (m.eDH and 0.85 or 0.90) end
 
-    if GAME.enightcore or GAME.eglassCard then zp = zp * .9 elseif GAME.eslowmo then zp = zp * .825 elseif GAME.efastLeak then zp = zp * .75 
+    if GAME.enightcore or GAME.eglassCard then zp = zp * .9 
+    elseif GAME.eslowmo then zp = zp * .825 
+    elseif GAME.efastLeak then zp = zp * .75 
+    elseif GAME.einvisCard and not STAT.oldTransparentCard then zp = zp * ((m.rDH and 0.9 or 1) * ((URM and m.rIN) and 0.95 or (not URM and m.rIN) and 0.9 or m.IN and 0.875 or m.eIN and 0.825 or 0.85) * (m.eDP and 0.9 or (m.DP or m.rDP) and 0.95 or 1))
     elseif GAME.ecloseCard then
         local maxCardDistance = max(((m.rEX and URM) and 2 or (m.rEX or m.EX) and 1 or 0) - (m.rVL and 2 or (m.eVL or m.VL) and 1 or 0),0)
-        zp = zp * (1 - 0.25-maxCardDistance*0.214) * (m.rEX and not m.rVL and 0.9 or 1)
+        zp = zp * (1 - 0.25-maxCardDistance*0.214) * (m.rEX and not m.rVL and 0.9 or 1) 
     end
 
     local hardCnt = table.concat(list):count('r')

@@ -761,6 +761,7 @@ STAT = {
     imperial = false,
     promotion = true,
     rold = false,
+    oldTransparentCard = false,
 }
 
 ACHV = {}
