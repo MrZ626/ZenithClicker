@@ -770,11 +770,11 @@ AchvNotice = {}
 
 TestMode = false
 
-function SaveBest() if not TestMode then love.filesystem.write('best.luaon', 'return' .. TABLE.dumpDeflate(BEST)) end end
+function SaveBest() if not TestMode or GAME.multiplePiecesActive then love.filesystem.write('best.luaon', 'return' .. TABLE.dumpDeflate(BEST)) end end
 
-function SaveStat() if not TestMode then love.filesystem.write('stat.luaon', 'return' .. TABLE.dumpDeflate(STAT)) end end
+function SaveStat() if not TestMode or GAME.multiplePiecesActive then love.filesystem.write('stat.luaon', 'return' .. TABLE.dumpDeflate(STAT)) end end
 
-function SaveAchv() if not TestMode then love.filesystem.write('achv.luaon', 'return' .. TABLE.dumpDeflate(ACHV)) end end
+function SaveAchv() if not TestMode or GAME.multiplePiecesActive then love.filesystem.write('achv.luaon', 'return' .. TABLE.dumpDeflate(ACHV)) end end
 
 MSG.setSafeY(75)
 MSG.addCategory('dark', COLOR.D, COLOR.L)
@@ -797,7 +797,7 @@ local bufferedMsg = {}
 
 local saveAchvTimer = false ---@type number | false
 function IssueAchv(id, silent)
-    if TestMode then return end
+    if TestMode or GAME.multiplePiecesActive then return end
     local A = Achievements[id]
     if not A or ACHV[id] then return end
 
@@ -831,7 +831,7 @@ local wreathName = {
 }
 ---@return true? success
 function SubmitAchv(id, score, silent, realSilent)
-    if TestMode then return end
+    if TestMode or GAME.multiplePiecesActive then return end
     local A = Achievements[id]
     if not A then return end
     local oldScore = ACHV[id] or A.noScore or 0
@@ -876,7 +876,7 @@ function IssueSecret(id, silent)
 end
 
 function ReleaseAchvBuffer()
-    if TestMode then return end
+    if TestMode or GAME.multiplePiecesActive then return end
     for i = 1, #bufferedMsg do
         local msg = bufferedMsg[i]
         msgTime = TASK.lock('achv_bulk', 1) and 6.2 or msgTime + 2.6

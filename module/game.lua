@@ -150,6 +150,7 @@ local ins, rem = table.insert, table.remove
 ---@field achv_cleanBreakQuest number
 ---@field achv_professionalCleanerQuest number
 ---@field achv_roldSmythyQuest number
+---@field multiplePiecesActive boolean True if multiple pieces are active together. If so, disables achievements and record submission viability
 local GAME = {
     forfeitTimer = 0,
     exTimer = 0,
@@ -356,11 +357,15 @@ function GAME.getComboZP(list)
     if m.AS then zp = zp * .85 elseif m.rAS then zp = zp * 1.05 elseif m.eAS then zp = zp * 0.8 end
     if m.DP then zp = zp * .95 elseif m.rDP then zp = zp * (m.rEX and 1.75 or m.eEX and 1.75 or 2.1) elseif m.eDP then zp = zp * (m.eDH and 0.85 or 0.90) end
 
-    if GAME.enightcore or GAME.eglassCard then zp = zp * .9 
-    elseif GAME.eslowmo or GAME.einvisUI then zp = zp * .826 
-    elseif GAME.efastLeak then zp = zp * .75 
-    elseif GAME.einvisCard and not STAT.oldTransparentCard then zp = zp * ((m.rDH and 0.9 or 1) * ((URM and m.rIN) and 0.95 or (not URM and m.rIN) and 0.9 or m.IN and 0.875 or m.eIN and 0.825 or 0.85) * (m.eDP and 0.9 or (m.DP or m.rDP) and 0.95 or 1))
-    elseif GAME.ecloseCard then
+    if GAME.enightcore then zp = zp * .9 end
+    if GAME.eslowmo then zp = zp * .826 end
+    if GAME.eglassCard then zp = zp * .9 end
+    if GAME.efastLeak then zp = zp * .75 end
+    if GAME.einvisUI then zp = zp * .826 end
+    if GAME.einvisCard and not STAT.oldTransparentCard then
+        zp = zp * ((m.rDH and 0.9 or 1) * ((URM and m.rIN) and 0.95 or (not URM and m.rIN) and 0.9 or m.IN and 0.875 or m.eIN and 0.825 or 0.85) * (m.eDP and 0.9 or (m.DP or m.rDP) and 0.95 or 1))
+    end
+    if GAME.ecloseCard then
         local maxCardDistance = max(((m.rEX and URM) and 2 or (m.rEX or m.EX) and 1 or 0) - (m.rVL and 2 or (m.eVL or m.VL) and 1 or 0),0)
         zp = zp * (1 - 0.25-maxCardDistance*0.214) * (m.rEX and not m.rVL and 0.9 or 1) 
     end
@@ -1277,7 +1282,9 @@ function GAME.startTeraAnim(notTera)
             PlayBGM('tera', true)
         end
         if GAME.comboStr == 'eASeDHeEXrGV' and URM and GAME.enightcore then
-            GAME.gravDelay = 1.6818
+            local timeMod = GAME.nightcore and 0.5 or GAME.slowmo and 2 or 1
+            if GAME.eslowmo then timeMod = timeMod * 1.4142 end
+            GAME.gravDelay = 1.6818 * timeMod
             GAME.gravTimer = GAME.gravDelay - 0.01
         end
     end
@@ -1394,7 +1401,9 @@ function GAME.upFloor()
     if M.GV == -1 then GAME.gravDelay = GravityTimer[3][GAME.floor] end
     if GAME.comboStr == 'eASeDHeEXrGV' and URM and GAME.enightcore and GAME.floor >= 10 or GAME.teramusic then
         if GAME.floor >= 10 then
-            GAME.gravDelay = 2.0593
+            local timeMod = GAME.nightcore and 0.5 or GAME.slowmo and 2 or 1
+            if GAME.eslowmo then timeMod = timeMod * 1.4142 end
+            GAME.gravDelay = 2.0593 * timeMod
             GAME.gravTimer = GAME.gravDelay - 0.01
         end
     else
@@ -3356,10 +3365,14 @@ function GAME.finish(reason)
         TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, 0, DailyActived and ", 260%" or ""))
 
         -- Easy Mode Version for records
-        if not STAT.imperial then
-            TEXTS.easyModeVersion:set((STAT.oldHitbox and "eT" or "eV") .. (require 'version'.verStr))
+        if not GAME.multiplePiecesActive then
+            if not STAT.imperial then
+                TEXTS.easyModeVersion:set((STAT.oldHitbox and "eT" or "eV") .. (require 'version'.verStr))
+            else
+                TEXTS.easyModeVersion:set({ COLOR.LL, ("%.1fm"):format(GAME.roundHeight) })
+            end
         else
-            TEXTS.easyModeVersion:set({ COLOR.LL, ("%.1fm"):format(GAME.roundHeight) })
+            TEXTS.easyModeVersion:set({ COLOR.R, "MULTIPLE PIECES!!!" })
         end
         -- Daily
         if DailyActived then
@@ -3887,7 +3900,7 @@ function GAME.update(dt)
     local style = M.DP == 0 and questStyle or questStyleDP
     for i = 1, #GAME.quests do
         local Q = GAME.quests[i]
-        local k = dt / GAME.animDuration
+        local k = dt * (GAME.enightcore and 2 or 1) / GAME.animDuration
         Q.y = expApproach(Q.y, style[i].y, k * 35)
         Q.k = expApproach(Q.k, style[i].k, k * 26)
         Q.a = expApproach(Q.a, style[i].a, k * 26)
@@ -3897,9 +3910,10 @@ function GAME.update(dt)
     -- Trevor Smithy
     local timerMulMod = 1
     if GAME.eslowmo then
-         timerMulMod = 0.75 
-    elseif GAME.ecloseCard then
-        timerMulMod = 2
+         timerMulMod = timerMulMod * 0.75 
+    end
+    if GAME.ecloseCard then
+        timerMulMod = timerMulMod * 2
     end    
 
     GAME.time = GAME.time + dt * (GAME.timerMul * timerMulMod)
@@ -4009,11 +4023,13 @@ function GAME.update(dt)
     -- Trevor Smithy
     local passiveClimbSpeedMod = 1
     if GAME.enightcore then 
-        passiveClimbSpeedMod = 2 
-    elseif GAME.eglassCard then
-        passiveClimbSpeedMod = 8
-    elseif GAME.slowmo and uneasyMode then --if uneasy, slightly counter slowmo's reduced passive climb speed
-        passiveClimbSpeedMod = 1.26
+        passiveClimbSpeedMod = passiveClimbSpeedMod * 2 
+    end
+    if GAME.eglassCard then
+        passiveClimbSpeedMod = passiveClimbSpeedMod * 8
+    end
+    if GAME.slowmo and uneasyMode then --if uneasy, slightly counter slowmo's reduced passive climb speed
+        passiveClimbSpeedMod = passiveClimbSpeedMod * 1.26
     end
 
     local releaseHeight = GAME.heightBuffer
@@ -4029,12 +4045,12 @@ function GAME.update(dt)
             if not URM then
                 GAME.height = GAME.height - dt * (GAME.floor * (GAME.floor + 1) + 10) / 20
                 if GAME.eglassCard then
-                    GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod*0.6 * dt * icLerp(1, 6, Floors[GAME.floor].top - GAME.height)
+                    GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod*0.6 * dt * (GAME.einvisUI and 1 or icLerp(1, 6, Floors[GAME.floor].top - GAME.height))
                 end
                 GAME.height = max(GAME.height, Floors[GAME.floor - 1].top)
             else
                 if GAME.eglassCard then
-                    GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod*0.6 * dt * icLerp(1, 6, Floors[GAME.floor].top - GAME.height)
+                    GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod*0.6 * dt * (GAME.einvisUI and 1 or icLerp(1, 6, Floors[GAME.floor].top - GAME.height))
                 end
                 if GAME.negFloor > 0 then
                     if GAME.negFloor >= 2 then
@@ -4050,7 +4066,7 @@ function GAME.update(dt)
                 if GAME.height < NegEvents[GAME.negEvent].h then GAME.nextNegEvent() end
             end
         else
-            GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod * dt * icLerp(1, 6, Floors[GAME.floor].top - GAME.height)
+            GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod * dt * (GAME.einvisUI and 1 or icLerp(1, 6, Floors[GAME.floor].top - GAME.height))
         end
     end
 
@@ -4114,7 +4130,8 @@ function GAME.update(dt)
     local gravTimerMod = 1 -- larger = slower, smaller = faster
     if GAME.eslowmo then
         gravTimerMod = 1.5
-    elseif GAME.enightcore then
+    end
+    if GAME.enightcore then
         gravTimerMod = 0.5
     end
     if M.GV ~= 0 and GAME.gravTimer then
@@ -4148,24 +4165,26 @@ function GAME.update(dt)
             if GAME.comboStr == 'eASeDHeEXrGV' and URM and GAME.enightcore then
                 TASK.new(
                     function()
+                        local timeMod = GAME.nightcore and 0.5 or GAME.slowmo and 2 or 1
+                        if GAME.eslowmo then timeMod = timeMod * 1.4142 end
                         GAME.extraQuestBase = GAME.extraQuestBase - 0.5
-                        GAME.gravDelay = 2.05
+                        GAME.gravDelay = 2.05 * timeMod
                         GAME.gravTimer = GAME.gravDelay
-                        TASK.yieldT(2.047)
-                        GAME.gravDelay = 1.9
-                        TASK.yieldT(1.9)
-                        GAME.gravDelay = 1.75
-                        TASK.yieldT(1.75)
-                        GAME.gravDelay = 1.6
-                        TASK.yieldT(1.6)
-                        GAME.gravDelay = 1.45
-                        TASK.yieldT(1.45)
-                        GAME.gravDelay = 1.3
-                        TASK.yieldT(1.3)
-                        GAME.gravDelay = 1.15
-                        TASK.yieldT(1.15)
+                        TASK.yieldT(2.047 * timeMod)
+                        GAME.gravDelay = 1.9 * timeMod
+                        TASK.yieldT(1.9 * timeMod)
+                        GAME.gravDelay = 1.75 * timeMod
+                        TASK.yieldT(1.75 * timeMod)
+                        GAME.gravDelay = 1.6 * timeMod
+                        TASK.yieldT(1.6 * timeMod)
+                        GAME.gravDelay = 1.45 * timeMod
+                        TASK.yieldT(1.45 * timeMod)
+                        GAME.gravDelay = 1.3 * timeMod
+                        TASK.yieldT(1.3 * timeMod)
+                        GAME.gravDelay = 1.15 * timeMod
+                        TASK.yieldT(1.16 * timeMod)
                         --TASK.yieldT(11.17)
-                        GAME.gravDelay = 1.0091
+                        GAME.gravDelay = 1.0091 * timeMod
                         GAME.gravTimer = GAME.gravDelay - 0.15
                     end
                 )

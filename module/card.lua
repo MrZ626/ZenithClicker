@@ -768,7 +768,7 @@ function Card:draw()
         end
     end
 
-    if GAME.glassCard or GAME.eglassCard then
+    if (GAME.glassCard or GAME.eglassCard) and not (GAME.einvisCard) then
         local w, h = 240, 330
         gc_setColor((faceUp and ModData.textColor or ModData.color)[self.id])
         gc_setAlpha((STAT.cardBrightness / 100) ^ 2 * .872)
@@ -812,7 +812,7 @@ function Card:draw()
         end
     else
         -- Card
-        if not GAME.invisCard then
+        if not GAME.invisCard and not (GAME.glassCard or GAME.eglassCard) then
             if self.burn then
                 if URM and M.AS == 2 then
                     gc_setColor(1, .42, .26)
@@ -828,11 +828,38 @@ function Card:draw()
                 gc_setColor(b, b, b)
             end
             if GAME.einvisCard then
-                gc_setColor(1,1,1,0.26)
+                local b = STAT.cardBrightness / 100
+                gc_setColor(b,b,b,(STAT.cardBrightness / 100) ^ 2 * 0.26)
             end
             gc_draw(img, -img:getWidth() / 2, -img:getHeight() / 2)
             if img2 then
                 gc_draw(img2, -img2:getWidth() / 2, -img2:getHeight() / 2)
+            end
+        elseif GAME.glassCard or GAME.eglassCard then
+            local w, h = 240, 330
+            gc_setColor((faceUp and ModData.textColor or ModData.color)[self.id])
+            gc_setAlpha((STAT.cardBrightness / 100) ^ 2 * .26)
+            gc_mRect('fill', 0, 0, w * 2, h * 2, 26)
+
+            if self.burn then
+                if URM and M.AS == 2 then
+                    gc_setColor(1, .42, .26)
+                else
+                    gc_setColor(GAME.time % .16 < .08 and COLOR.lF or COLOR.Y)
+                end
+            else
+                gc_setColor(1, 1, 1)
+            end
+
+            FONT.set(50)
+            if faceUp then
+                GC.scale(2.6)
+                GC.mStr(self.id, 0, -42)
+                GC.scale(1 / 2.6)
+            else
+                GC.scale(2)
+                GC.mStr("TETR.IO", 0, -42)
+                GC.scale(1 / 2)
             end
         end
 
