@@ -357,7 +357,7 @@ function GAME.getComboZP(list)
     if m.DP then zp = zp * .95 elseif m.rDP then zp = zp * (m.rEX and 1.75 or m.eEX and 1.75 or 2.1) elseif m.eDP then zp = zp * (m.eDH and 0.85 or 0.90) end
 
     if GAME.enightcore or GAME.eglassCard then zp = zp * .9 
-    elseif GAME.eslowmo then zp = zp * .825 
+    elseif GAME.eslowmo or GAME.einvisUI then zp = zp * .826 
     elseif GAME.efastLeak then zp = zp * .75 
     elseif GAME.einvisCard and not STAT.oldTransparentCard then zp = zp * ((m.rDH and 0.9 or 1) * ((URM and m.rIN) and 0.95 or (not URM and m.rIN) and 0.9 or m.IN and 0.875 or m.eIN and 0.825 or 0.85) * (m.eDP and 0.9 or (m.DP or m.rDP) and 0.95 or 1))
     elseif GAME.ecloseCard then
@@ -2423,7 +2423,7 @@ function GAME.commit(auto, falseCommit)
             elseif GAME.comboStr == 'eDHeMSeNH' and GAME.noKeyboardOrReset and not GAME.fault then
                 GAME.achv_cleanBreakQuest = GAME.achv_cleanBreakQuest + 1
                 --MSG("bright", "No keyboard/reset correct commit")
-            elseif GAME.comboStr == 'eDHeEXeMSeVL' and not URM and not GAME.fault and GAME.height <= 1650 then
+            elseif GAME.comboStr == 'eDHeEXeMSeVL' and not URM and not GAME.fault and GAME.floor < 10 then
                 GAME.achv_professionalCleanerQuest = GAME.achv_professionalCleanerQuest + 1
                 --MSG("bright", "Correct commit")
             end
@@ -3450,7 +3450,7 @@ function GAME.finish(reason)
                     color = color, duration = duration,
                 }
                 SFX.play('worldrecord', 1, 0, Tone(#hand == 1 and -1 or 0))
-            elseif GAME.floor >= 2 then
+            elseif GAME.floor >= 2 or (GAME.einvisUI and GAME.roundHeight >= 150 )then
                 TEXT:add {
                     text = "PERSONAL BEST",
                     x = 800, y = 226, k = 2.6, fontSize = 70,
@@ -3644,7 +3644,7 @@ function GAME.finish(reason)
         if GAME.roundHeight >= 6200 then IssueSecret('fomg') end
         SubmitAchv('plonk', GAME.achv_plonkH or GAME.roundHeight)
         SubmitAchv('psychokinesis', GAME.achv_noManualFlipH or GAME.roundHeight)
-        if GAME.floor < 10 then SubmitAchv('divine_rejection', GAME.roundHeight) end
+        if GAME.floor < 10 and not GAME.einvisUI then SubmitAchv('divine_rejection', GAME.roundHeight) end
         if GAME.heightBonus / GAME.height * 100 >= 260 then IssueAchv('fruitless_effort') end
         if GAME.comboStr == 'DP' then
             if VALENTINE then SubmitAchv('lovers_promise', GAME.roundHeight) end
@@ -3723,7 +3723,7 @@ function GAME.finish(reason)
             if M.DP > 0 then SubmitAchv('carried', GAME.achv_carriedH or GAME.roundHeight) end
             if M.DP == 2 then
                 SubmitAchv('the_unreliable_one', GAME.killCount)
-                if GAME.floor < 10 and GAME.time >= 600 and GAME.fatigueSet == Fatigue.rDP then
+                if GAME.floor < 10 and GAME.time >= 600 and GAME.fatigueSet == Fatigue.rDP and not GAME.einvisUI then
                     IssueSecret('rDP_meta')
                 end
             end
@@ -4046,7 +4046,7 @@ function GAME.update(dt)
                         GAME.height = GAME.height - dt * fallSpeed
                     end
                 end
-                if GAME.height < NegFloors[GAME.negFloor].bottom then GAME.downFloor() end
+                if GAME.height < NegFloors[GAME.negFloor].bottom and not GAME.einvisUI then GAME.downFloor() end
                 if GAME.height < NegEvents[GAME.negEvent].h then GAME.nextNegEvent() end
             end
         else
@@ -4056,7 +4056,7 @@ function GAME.update(dt)
 
     GAME.roundHeight = floor(GAME.height * 10) / 10
 
-    if GAME.height >= Floors[GAME.floor].top then GAME.upFloor() end
+    if GAME.height >= Floors[GAME.floor].top and not GAME.einvisUI then GAME.upFloor() end
 
     if floor(GAME.height * 2) > floor(oldHeight * 2) and TASK.lock('speed_tick', .026) then
         SFX.play('speed_tick_' .. rnd(4), clampInterpolate(4, 1, 12, .8, GAME.rank))
