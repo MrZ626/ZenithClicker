@@ -2893,9 +2893,9 @@ function GAME.commit(auto, falseCommit)
         GAME.fault = true
         GAME.faultWrong = true
         local minimumDmgWrong = 1
-        if M.MS == -1 and M.DP == 0 then --just because there are quests that require taking damage
-            minimumDmgWrong = 0
-        end
+        if M.MS == -1 and (#hand ~= 0 or GAME[GAME.getLifeKey(true)] == 0) --[[and M.DP == 0]] then --just because there are quests that require taking damage
+            minimumDmgWrong = 0 -- NO, instead eMS should just disable those revive tasks! (done)
+        end -- but if the player really WANTS to kill themselves to start revive, then commit NOTHING still takes at least 1 damage if ally is alive
         GAME.takeDamage(max(GAME.dmgWrong + GAME.dmgWrongExtra, minimumDmgWrong), 'wrong')
         if not GAME.playing then return end
         if M.MS ~= -1 then
