@@ -1910,9 +1910,9 @@ scene.widgetList = {
     WIDGET.new {
         name = 'zcem', type = 'button',
         pos = { 1, 0 }, x = -60, y = 410, w = 160, h = 60,
-        color = { COLOR.HEX '253355' },
+        color = 'DG',
         sound_hover = 'menutap',
-        fontSize = 30, text = "ZCEM   ", textColor = { COLOR.HEX '869EFF' },
+        fontSize = 30, text = "ZCEM   ", textColor = { .15, .75, .15 },
         onPress = function() love.keypressed('f15') end,
         onClick = function() love.keyreleased('f15') end,
     },

@@ -755,6 +755,8 @@ function GAME.anim_setMenuHide(t)
     w.conf:resetPos()
     w.about.x = cLerp(-60, 90, t * 1.5)
     w.about:resetPos()
+    w.zcem.x = cLerp(-60, 90, t * 1.5)
+    w.zcem:resetPos()
     MSG.setSafeY(75 * (1 - GAME.uiHide))
 end
 

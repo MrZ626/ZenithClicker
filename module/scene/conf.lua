@@ -803,7 +803,7 @@ scene.widgetList = {
                 elseif data == 'eZ' or data == 'ez' then
                     if not GAME.enightcore and anyPieceActive then 
                         SFX.play('damage_alert')
-                        MSG('dark', "WARNING: MULTIPLE PIECES ENABLED MAY CAUSE ISSUES. DO NOT REPORT!")
+                        MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
                         GAME.multiplePiecesActive = true
                     else
                         SFX.play('social_dm')
@@ -816,7 +816,7 @@ scene.widgetList = {
                 elseif data == 'eS' or data == 'es' then
                     if not GAME.eslowmo and anyPieceActive then 
                         SFX.play('damage_alert')
-                        MSG('dark', "WARNING: MULTIPLE PIECES ENABLED MAY CAUSE ISSUES. DO NOT REPORT!")
+                        MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
                         GAME.multiplePiecesActive = true
                     else
                         SFX.play('social_dm')
@@ -829,7 +829,7 @@ scene.widgetList = {
                 elseif data == 'eJ' or data == 'ej' then
                     if not GAME.eglassCard and anyPieceActive then 
                         SFX.play('damage_alert')
-                        MSG('dark', "WARNING: MULTIPLE PIECES ENABLED MAY CAUSE ISSUES. DO NOT REPORT!")
+                        MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
                         GAME.multiplePiecesActive = true
                     else
                         SFX.play('social_dm')
@@ -841,7 +841,7 @@ scene.widgetList = {
                 elseif data == 'eL' or data == 'el' then
                     if not GAME.efastLeak and anyPieceActive then 
                         SFX.play('damage_alert')
-                        MSG('dark', "WARNING: MULTIPLE PIECES ENABLED MAY CAUSE ISSUES. DO NOT REPORT!")
+                        MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
                         GAME.multiplePiecesActive = true
                     else
                         SFX.play('social_dm')
@@ -853,7 +853,7 @@ scene.widgetList = {
                 elseif data == 'eT' or data == 'et' then
                     if not GAME.einvisUI and anyPieceActive then 
                         SFX.play('damage_alert')
-                        MSG('dark', "WARNING: MULTIPLE PIECES ENABLED MAY CAUSE ISSUES. DO NOT REPORT!")
+                        MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
                         GAME.multiplePiecesActive = true
                     else
                         SFX.play('social_dm')
@@ -865,7 +865,7 @@ scene.widgetList = {
                 elseif data == 'eO' or data == 'eo' then
                     if not GAME.einvisCard and anyPieceActive then 
                         SFX.play('damage_alert')
-                        MSG('dark', "WARNING: MULTIPLE PIECES ENABLED MAY CAUSE ISSUES. DO NOT REPORT!")
+                        MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
                         GAME.multiplePiecesActive = true
                     else
                         SFX.play('social_dm')
@@ -877,7 +877,7 @@ scene.widgetList = {
                 elseif data == 'eI' or data == 'ei' then
                     if not GAME.ecloseCard and anyPieceActive then 
                         SFX.play('damage_alert')
-                        MSG('dark', "WARNING: MULTIPLE PIECES ENABLED MAY CAUSE ISSUES. DO NOT REPORT!")
+                        MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
                         GAME.multiplePiecesActive = true
                     else
                         SFX.play('social_dm')
