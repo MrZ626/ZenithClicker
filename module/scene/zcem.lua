@@ -11,9 +11,6 @@ local clr = {
 }
 local colorRev = false
 local bpmMode = false
-local reverse = (GAME.mod.EX == 2 or GAME.mod.NH == 2 or GAME.mod.MS == 2 or GAME.mod.GV == 2 or GAME.mod.VL == 2 or GAME.mod.DH == 2 or GAME.mod.IN == 2 or GAME.mod.AS == 2 or GAME.mod.DP == 2)
-local uneasy = (GAME.mod.EX == -1 and URM and GAME.mod.NH < 2 and GAME.mod.MS < 2 and GAME.mod.GV < 2 and GAME.mod.VL < 2 and GAME.mod.DH < 2 and GAME.mod.IN < 2 and GAME.mod.AS < 2 and GAME.mod.DP < 2)
-local smithyMode = GAME.mod.EX == -1 and GAME.mod.VL == -1 and GAME.mod.AS == -1 and GAME.mod.NH == 0 and GAME.mod.MS == 0 and GAME.mod.GV == 0 and GAME.mod.DH == 0 and GAME.mod.IN == 0 and GAME.mod.DP == 0
 local lastNonTera = 'f0'
 local mode = ''
 local bgmColors = {
@@ -47,6 +44,8 @@ local function refreshWidgets()
     scene.widgetList.nexttrack:setVisible(MusicPlayer)
     scene.widgetList.tera:setVisible(MusicPlayer)
     scene.widgetList.reverse:setVisible(MusicPlayer)
+    scene.widgetList.uneasy:setVisible(MusicPlayer)
+    scene.widgetList.smithyMode:setVisible(MusicPlayer)
 end
 
 function scene.load()
@@ -198,19 +197,20 @@ function scene.overDraw()
     local speedMod = 1
     if GAME.nightcore then 
         bpm = bpm * 2
-        speedMod = speedMod * 2
+        speedMod = speedMod * 2.6
     end
     if GAME.enightcore then 
         bpm = bpm * 2
-        speedMod = speedMod * 2
     end
     if GAME.slowmo then 
         bpm = bpm / 2
-        speedMod = speedMod / 2
     end
     if GAME.eslowmo then
         bpm = bpm * 0.70711
-        speedMod = speedMod * 0.70711
+        speedMod = speedMod * 0.75
+    end
+    if GAME.ecloseCard then
+        speedMod = speedMod * 2
     end
     if GAME.mod.GV == -1 then
         bpm = bpm * 0.70711
@@ -300,12 +300,12 @@ scene.widgetList = {
                         PlayBGM('fomg',true)
                         mode = ''
                     else
-                        if floor == 0 and reverse then mode = 'f0r' end
-                        if floor == 1 and reverse then mode = 'f1r' end
-                        PlayBGM('f' .. floor .. (reverse and 'r' or ''),true)
+                        if floor == 0 and scene.widgetList.reverse.disp() then mode = 'f0r' end
+                        if floor == 1 and scene.widgetList.reverse.disp() then mode = 'f1r' end
+                        PlayBGM('f' .. floor .. (scene.widgetList.reverse.disp() and 'r' or ''),true)
                     end
                 else
-                    PlayBGM('f10' .. (reverse and 'r' or ''),true)
+                    PlayBGM('f10' .. (scene.widgetList.reverse.disp() and 'r' or ''),true)
                 end
                 MSG("bright", "Now Playing: " .. BgmPlaying .. ((mode == 'f1r' and floor == 1 or mode == 'f0r' and floor == 0) and 'r' or ''))
             else
@@ -332,11 +332,11 @@ scene.widgetList = {
                         PlayBGM('fomg',true)
                         mode = ''
                     else
-                        if floor == 1 and reverse then mode = 'f1r' end
-                        PlayBGM('f' .. floor .. (reverse and 'r' or ''),true)
+                        if floor == 1 and scene.widgetList.reverse.disp() then mode = 'f1r' end
+                        PlayBGM('f' .. floor .. (scene.widgetList.reverse.disp() and 'r' or ''),true)
                     end
                 else
-                    if reverse then mode = 'f0r' end
+                    if scene.widgetList.reverse.disp() then mode = 'f0r' end
                     PlayBGM('f0',true)
                 end
                 MSG("bright", "Now Playing: " .. BgmPlaying .. ((mode == 'f1r' and floor == 1 or mode == 'f0r' and floor == 0) and 'r' or ''))
@@ -352,32 +352,32 @@ scene.widgetList = {
         fillColor = clr.cbFill,
         frameColor = clr.cbFrame,
         textColor = clr.T, text = "TERASPEED",
-        x = baseX + 220, y = baseY + 60 + 160,
+        x = baseX + 40, y = baseY + 60 + 160,
         disp = function() return BgmPlaying:count('t') == 1 end,
         code = function()
             MSG.clear()
             TASK.removeTask_code(Task_MusicEnd)
             if BgmPlaying:count('t') == 1 then
-                if reverse and lastNonTera:count('r') == 0 then
+                if scene.widgetList.reverse.disp() then
                     if lastNonTera == 'f0' then mode = 'f0r'
                     elseif lastNonTera == 'f1' then mode = 'f1r'
-                    elseif lastNonTera ~= 'fomg' then lastNonTera = lastNonTera .. 'r'
+                    elseif lastNonTera ~= 'fomg' then lastNonTera = lastNonTera .. (lastNonTera:count('r') == 0 and 'r' or '')
                     end
                 end
                 PlayBGM(lastNonTera, true)
                 MSG("bright", "Now Playing: " .. BgmPlaying .. ((mode == 'f1r' and BgmPlaying == 'f1' or mode == 'f0r' and BgmPlaying == 'f0') and 'r' or ''))
             else
                 lastNonTera = BgmPlaying
-                if reverse or (GAME.mod.EX == 2 or GAME.mod.NH == 2 or GAME.mod.MS == 2 or GAME.mod.GV == 2 or GAME.mod.VL == 2 or GAME.mod.DH == 2 or GAME.mod.IN == 2 or GAME.mod.AS == 2 or GAME.mod.DP == 2) then
+                if BgmPlaying:count('r') == 1 --[[reverse or (GAME.mod.EX == 2 or GAME.mod.NH == 2 or GAME.mod.MS == 2 or GAME.mod.GV == 2 or GAME.mod.VL == 2 or GAME.mod.DH == 2 or GAME.mod.IN == 2 or GAME.mod.AS == 2 or GAME.mod.DP == 2)]] then
                     PlayBGM('terar', true)
-                elseif uneasy or (GAME.mod.EX == -1 and URM and GAME.mod.NH < 2 and GAME.mod.MS < 2 and GAME.mod.GV < 2 and GAME.mod.VL < 2 and GAME.mod.DH < 2 and GAME.mod.IN < 2 and GAME.mod.AS < 2 and GAME.mod.DP < 2) then
+                --[[elseif uneasy or (GAME.mod.EX == -1 and URM and GAME.mod.NH < 2 and GAME.mod.MS < 2 and GAME.mod.GV < 2 and GAME.mod.VL < 2 and GAME.mod.DH < 2 and GAME.mod.IN < 2 and GAME.mod.AS < 2 and GAME.mod.DP < 2) then
                     if smithyMode or (GAME.mod.EX == -1 and GAME.mod.VL == -1 and GAME.mod.AS == -1 and GAME.mod.NH == 0 and GAME.mod.MS == 0 and GAME.mod.GV == 0 and GAME.mod.DH == 0 and GAME.mod.IN == 0 and GAME.mod.DP == 0) then
                         PlayBGM('terael', true)
                     else
                         PlayBGM('teral', true)
                     end
                 elseif smithyMode or (GAME.mod.EX == -1 and GAME.mod.VL == -1 and GAME.mod.AS == -1 and GAME.mod.NH == 0 and GAME.mod.MS == 0 and GAME.mod.GV == 0 and GAME.mod.DH == 0 and GAME.mod.IN == 0 and GAME.mod.DP == 0) then
-                    PlayBGM('terae', true)
+                    PlayBGM('terae', true)]]
                 else
                     PlayBGM('tera', true)
                 end
@@ -392,25 +392,14 @@ scene.widgetList = {
         fillColor = clr.cbFill,
         frameColor = clr.cbFrame,
         textColor = clr.T, text = "REVERSE",
-        x = baseX + 685, y = baseY + 60 + 160,
-        disp = function() return (BgmPlaying:count('t') == 0 and BgmPlaying:count('r') == 1) or BgmPlaying:count('r') == 2 or (mode == 'f0r' or mode == 'f1r') end,
+        x = baseX + 500, y = baseY + 60 + 160,
+        disp = function() return (BgmPlaying:count('t') == 0 and BgmPlaying:count('r') == 1) or BgmPlaying:count('r') == 2 or (mode == 'f0r' and BgmPlaying == 'f0' or mode == 'f1r' and BgmPlaying == 'f1') end,
         code = function()
             MSG.clear()
             TASK.removeTask_code(Task_MusicEnd)
-            if (BgmPlaying:count('t') == 0 and BgmPlaying:count('r') == 1) or BgmPlaying:count('r') == 2 or (mode == 'f0r' or mode == 'f1r') then
-                reverse = false
-                if BgmPlaying:count('r') == 2 then
-                    if uneasy or (GAME.mod.EX == -1 and URM and GAME.mod.NH < 2 and GAME.mod.MS < 2 and GAME.mod.GV < 2 and GAME.mod.VL < 2 and GAME.mod.DH < 2 and GAME.mod.IN < 2 and GAME.mod.AS < 2 and GAME.mod.DP < 2) then
-                        if smithyMode or (GAME.mod.EX == -1 and GAME.mod.VL == -1 and GAME.mod.AS == -1 and GAME.mod.NH == 0 and GAME.mod.MS == 0 and GAME.mod.GV == 0 and GAME.mod.DH == 0 and GAME.mod.IN == 0 and GAME.mod.DP == 0) then
-                            PlayBGM('terael', true)
-                        else
-                            PlayBGM('teral', true)
-                        end
-                    elseif smithyMode or (GAME.mod.EX == -1 and GAME.mod.VL == -1 and GAME.mod.AS == -1 and GAME.mod.NH == 0 and GAME.mod.MS == 0 and GAME.mod.GV == 0 and GAME.mod.DH == 0 and GAME.mod.IN == 0 and GAME.mod.DP == 0) then
-                        PlayBGM('terae', true)
-                    else
-                        PlayBGM('tera', true)
-                    end
+            if (BgmPlaying:count('t') == 0 and BgmPlaying:count('r') == 1) or BgmPlaying:count('r') == 2 or (mode == 'f0r' and BgmPlaying == 'f0' or mode == 'f1r' and BgmPlaying == 'f1') then
+                if BgmPlaying == 'terar' then
+                    PlayBGM('tera', true)
                 else
                     mode = ''
                     PlayBGM(BgmPlaying:gsub('r',''), true)
@@ -419,15 +408,73 @@ scene.widgetList = {
             else
                 if BgmPlaying:count('t') == 1 then
                     PlayBGM('terar', true)
-                    reverse = true
                 elseif BgmPlaying ~= 'fomg' then
                     if BgmPlaying == 'f0' or BgmPlaying == 'f1' then mode = BgmPlaying .. 'r' end
                     PlayBGM(BgmPlaying .. (BgmPlaying:count('r') == 0 and 'r' or ''), true)
-                    reverse = true
                 else
                     MSG("dark", "CANNOT REVERSE fomg")
                 end
                 if BgmPlaying ~= 'fomg' then MSG("bright", "Now Playing: " .. BgmPlaying .. ((mode == 'f1r' and BgmPlaying == 'f1' or mode == 'f0r' and BgmPlaying == 'f0') and 'r' or '')) end
+            end
+            RefreshBGM(mode)
+            refreshWidgets()
+        end,
+    },
+    WIDGET.new {
+        name = 'uneasy', type = 'checkBox',
+        fillColor = clr.cbFill,
+        frameColor = clr.cbFrame,
+        textColor = clr.T, text = "UNEASY (TERA & not REV)",
+        x = baseX + 40, y = baseY + 60 + 240,
+        disp = function() return BgmPlaying == 'teral' or BgmPlaying == 'terael' end,
+        code = function()
+            MSG.clear()
+            TASK.removeTask_code(Task_MusicEnd)
+            if BgmPlaying:count('t') == 0 then
+                MSG("dark", "ENABLE TERASPEED FIRST!")
+            elseif scene.widgetList.reverse.disp() then
+                MSG("dark", "DISABLE REVERSE FIRST!")
+            else
+                if BgmPlaying == 'tera' then
+                    PlayBGM('teral', force)
+                elseif BgmPlaying == 'terae' then
+                    PlayBGM('terael', force)
+                elseif BgmPlaying == 'teral' then
+                    PlayBGM('tera', force)
+                elseif BgmPlaying == 'terael' then
+                    PlayBGM('terae', force)
+                end
+                MSG("bright", "Now Playing: " .. BgmPlaying)
+            end
+            RefreshBGM(mode)
+            refreshWidgets()
+        end,
+    },
+    WIDGET.new {
+        name = 'smithyMode', type = 'checkBox',
+        fillColor = clr.cbFill,
+        frameColor = clr.cbFrame,
+        textColor = clr.T, text = "SMITHY (TERA & not REV)",
+        x = baseX + 500, y = baseY + 60 + 240,
+        disp = function() return BgmPlaying == 'terae' or BgmPlaying == 'terael' end,
+        code = function()
+            MSG.clear()
+            TASK.removeTask_code(Task_MusicEnd)
+            if BgmPlaying:count('t') == 0 then
+                MSG("dark", "ENABLE TERASPEED FIRST!")
+            elseif scene.widgetList.reverse.disp() then
+                MSG("dark", "DISABLE REVERSE FIRST!")
+            else
+                if BgmPlaying == 'tera' then
+                    PlayBGM('terae', force)
+                elseif BgmPlaying == 'terae' then
+                    PlayBGM('tera', force)
+                elseif BgmPlaying == 'teral' then
+                    PlayBGM('terael', force)
+                elseif BgmPlaying == 'terael' then
+                    PlayBGM('teral', force)
+                end
+                MSG("bright", "Now Playing: " .. BgmPlaying)
             end
             RefreshBGM(mode)
             refreshWidgets()
