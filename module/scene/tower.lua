@@ -293,7 +293,7 @@ end
 local function applyCombo(set)
     local changed
     for _, C in ipairs(Cards) do
-        local cur = C.active and (C.upright and 1 or 2) or 0
+        local cur = C.active and (C.upright and 1 or (C.easy and -1 or 2)) or 0
         local tar = TABLE.find(set, C.id) and 1 or TABLE.find(set, 'r' .. C.id) and 2 or TABLE.find(set, 'e' .. C.id) and -1 or 0
         if cur ~= tar then
             if cur ~= 0 then C:setActive(true) end
@@ -306,6 +306,71 @@ local function applyCombo(set)
         ultraStateChange()
     end
     if changed then SFX.play('mmstart') end
+end
+
+local function randomizeRNG()
+    local x, y = love.mouse.getPosition()
+    local randX, randY = x%2, y%2
+    for i = 1, randX do
+        for i = 1, randY do
+            math.random(20)
+        end
+    end
+end
+
+local function generateRandomCombo()
+    local set = {}
+    local smithyMode = math.random(40) == 40
+    --local freq = { 3, 3, 2, 5, 3, 5, 4, 4, 2 }
+    if not smithyMode then
+        local specialCombo = math.random(20) > 17
+        if not specialCombo then
+            local EX = math.random(20) -- roll a d20
+            TABLE.insert(set, 1, EX > 10 and 'eEX' or EX > 7 and 'EX' or EX > 5 and 'rEX' or '')
+            local NH = math.random(20) -- roll a d20
+            TABLE.insert(set, 1, NH > 16 and 'eNH' or NH > 13 and 'NH' or NH > 11 and 'rNH' or '')
+            local MS = math.random(20) -- roll a d20
+            TABLE.insert(set, 1, MS > 17 and 'eMS' or MS > 15 and 'MS' or MS > 14 and 'rMS' or '')
+            local GV = math.random(20) -- roll a d20
+            TABLE.insert(set, 1, GV > 14 and 'eGV' or GV > 9 and 'GV' or GV > 5 and 'rGV' or '')
+            local VL = math.random(20) -- roll a d20
+            TABLE.insert(set, 1, VL > 16 and 'eVL' or VL > 13 and 'VL' or VL > 11 and 'rVL' or '')
+            local DH = math.random(20) -- roll a d20
+            TABLE.insert(set, 1, DH > 14 and 'eDH' or DH > 9 and 'DH' or DH > 6 and 'rDH' or '')
+            local IN = math.random(20) -- roll a d20
+            TABLE.insert(set, 1, IN > 15 and 'eIN' or IN > 11 and 'IN' or IN > 8 and 'rIN' or '')
+            local AS = math.random(20) -- roll a d20
+            TABLE.insert(set, 1, AS > 15 and 'eAS' or AS > 11 and 'AS' or AS > 8 and 'rAS' or '')
+            local DP = math.random(20) -- roll a d20
+            TABLE.insert(set, 1, DP > 17 and 'eDP' or DP > 15 and 'DP' or DP > 14 and 'rDP' or '')
+            local anyRev = TABLE.find(set, 'rEX') or TABLE.find(set, 'rNH') or TABLE.find(set, 'rMS') or TABLE.find(set, 'rGV') or TABLE.find(set, 'rVL') or TABLE.find(set, 'rDH') or TABLE.find(set, 'rIN') or TABLE.find(set, 'rAS') or TABLE.find(set, 'rDP')
+            local easy = TABLE.find(set, 'eEX')
+            set.ultra = (math.random(20) > (easy and not anyRev and -5 or 0) + 15) and (easy or anyRev) --d20
+        else
+            local index = math.random(45, #ComboData.menu)
+            local comboSet = ComboData.menu[index].set
+            local tempSet = STRING.split(comboSet, ' ')
+            for i = 1, #tempSet do
+                TABLE.insert(set, tempSet[i])
+            end
+            if index <= 54 then
+                set.ultra = true
+            else
+                local anyRev = TABLE.find(set, 'rEX') or TABLE.find(set, 'rNH') or TABLE.find(set, 'rMS') or TABLE.find(set, 'rGV') or TABLE.find(set, 'rVL') or TABLE.find(set, 'rDH') or TABLE.find(set, 'rIN') or TABLE.find(set, 'rAS') or TABLE.find(set, 'rDP')
+                local easy = TABLE.find(set, 'eEX')
+                set.ultra = (math.random(20) > (easy and not anyRev and -5 or 0) + 15) and (easy or anyRev) --d20 and a set where URM would do anything
+            end
+        end
+    elseif not TABLE.equal(GAME.getHand(true),{'eEX','eVL','eAS'}) then
+        TABLE.insert(set, 'eEX'); TABLE.insert(set, 'eVL'); TABLE.insert(set, 'eAS')
+        set.ultra = math.random(2) == 2
+        SFX.play(set.ultra and 'zenith_split_missed' or 'zenith_split_cleared')
+    else
+        TABLE.insert(set, 'eEX'); TABLE.insert(set, 'eVL'); TABLE.insert(set, 'eAS')
+        set.ultra = not URM
+        SFX.play(set.ultra and 'zenith_split_missed' or 'zenith_split_cleared')
+    end
+    return set
 end
 
 function scene.load()
@@ -504,6 +569,7 @@ end
 local KBIsDown, MSIsDown = love.keyboard.isDown, love.mouse.isDown
 local expApproach = MATH.expApproach
 function scene.update(dt)
+    if not GAME.playing then randomizeRNG() end
     comboTimer = comboTimer - dt
     if comboTimer <= 0 then
         combo = 0
@@ -570,7 +636,7 @@ function scene.update(dt)
             GAME.refreshDailyChallengeText()
             timeRemain = timeRemain + 86400
         end
-        TEXTS.dcTimer:set(os.date("!%H:%M:%S", timeRemain))
+        --TEXTS.dcTimer:set(os.date("!%H:%M:%S", timeRemain))
     end
 end
 
@@ -1966,15 +2032,21 @@ scene.widgetList = {
         name = 'daily', type = 'hint',
         pos = { 1, 0 }, x = -200, y = 126, w = 200, h = 80, cornerR = 40,
         color = TextColor,
-        fontSize = 30, text = "Daily Chall.",
+        fontSize = 30, text = "Random Set",
         sound_hover = 'menutap',
         labelPos = 'leftBottom',
         floatFontSize = 30,
         floatCornerR = 26,
         floatText = "NO DATA",
         onPress = function()
-            if not DailyAvailable then return end
-            applyCombo(DAILY)
+            --if not DailyAvailable then return end
+            --applyCombo(DAILY)
+            applyCombo(generateRandomCombo())
+            if TABLE.equal(GAME.getHand(true),{'eEX','rGV','eDH','eAS'}) then -- but it isn't one of mine check
+                GAME.enightcore = true
+                RefreshBGM()
+                GAME.refreshCurrentCombo()
+            end
         end,
     },
     WIDGET.new {

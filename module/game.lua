@@ -2141,7 +2141,7 @@ function GAME.refreshDailyChallengeText()
         ("%.0fm  %.0fZP"):format(STAT.dailyBest / GAME.getComboZP(DAILY), STAT.dailyBest)
         or ""
     )
-    DailyAvailable = true
+    DailyAvailable = false --true
     for _, v in next, DAILY do
         if v:find('r') then
             if GAME.completion[v:sub(2)] == 0 then
@@ -2172,7 +2172,7 @@ function GAME.refreshDailyChallengeText()
         end
         str = str .. "\nTry to get more ZP in one run using this mod combo.\n(Click to select them)"
     else
-        str = "Oops! Today's mod combo is not available for you...\nComplete more mods to unlock some content."
+        str = "Generates a weighted random combo.\nDo your best to master it!"
     end
     SCN.scenes.tower.widgetList.daily.floatText = str
     SCN.scenes.tower.widgetList.daily:reset()

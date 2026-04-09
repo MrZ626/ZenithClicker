@@ -332,6 +332,18 @@ ComboData = {
         { set = "MS GV AS",         name = "Dazed" },
 
         -- Trevor Smithy
+        -- ultras -- NOTICE: IF THESE ARE MOVED OUT OF THIS ORDER, MAKE SURE TO UPDATE generateRandomCombo() IN tower.lua to reflect this!
+        { set = "eEX rGV eDH eAS",      name = "Patience is a Virtue" },
+        { set = "rEX eNH eMS eGV eVL eDH eIN eAS",       name = "Super Hard Bath Water"}, --whoops this should be peasant revolution (handled in game.lua)
+        --{ set = "rEX eNH eMS eGV eVL eDH eIN eAS",      name = "Peasant Revolution"},
+        { set = "eEX rNH eGV eDH",      name = "Holy Ascension"},
+        { set = "eEX rMS eIN eDP",      name = "Stabilized Entropy"},
+        { set = "eEX rGV eAS eDP",      name = "Restrained Collapse"},
+        { set = "eEX eDH eGV rVL",      name = "Restored Volition"},
+        { set = "eEX eMS rDH eIN",      name = "Disproven Blasphemy"},
+        { set = "eEX eNH rIN eAS",      name = "Solved Paradox"},
+        { set = "eEX eNH eVL rAS",      name = "Demystified Grimoire"},
+        { set = "eEX eMS eVL rDP",      name = "Lasting Eden"},
         -- Bath Waters
         { set = "eEX eNH eMS eGV eVL eDH eIN eAS",      name = "Bath Water"},
         { set = "eNH eMS eGV eVL eDH eIN eAS",          name = "Normal Bath Water"}, -- soft e, normal, hard ue, very hard
@@ -343,7 +355,6 @@ ComboData = {
         { set = "eEX eNH eMS eGV eVL eDH eAS",          name = "Cloudy Bath Water"}, -- clear e, cloudy, murky 
         { set = "eEX eNH eMS eGV eVL eDH eIN",          name = "Plain Bath Water"}, -- plain, mystical e, magical
         { set = "EX eNH eMS eGV eVL eDH eIN eAS",       name = "Very Hard Bath Water"}, -- credit: TheBestNoob
-        { set = "rEX eNH eMS eGV eVL eDH eIN eAS",       name = "Super Hard Bath Water"}, --whoops this should be peasant revolution
         { set = "eEX NH eMS eGV eVL eDH eIN eAS",       name = "Hot Bath Water"},
         { set = "eEX eNH MS eGV eVL eDH eIN eAS",       name = "Dirty Bath Water"},
         { set = "eEX eNH eMS GV eVL eDH eIN eAS",       name = "Flat Bath Water"},
@@ -383,18 +394,7 @@ ComboData = {
         { set = "eEX MS VL eIN",                            name = "Stargazing"},
         -- Credit: TheBestNoob
         { set = "eEX NH MS GV VL DH IN AS",                 name = "Easy Swamp Water"},
-        -- ultras
-        { set = "eEX rGV eDH eAS",      name = "Patience is a Virtue" },
-
-        { set = "rEX eNH eMS eGV eVL eDH eIN eAS",      name = "Peasant Revolution"},
-        { set = "eEX rNH eGV eDH",      name = "Holy Ascension"},
-        { set = "eEX rMS eIN eDP",      name = "Stabilized Entropy"},
-        { set = "eEX rGV eAS eDP",      name = "Restrained Collapse"},
-        { set = "eEX eDH eGV rVL",      name = "Restored Volition"},
-        { set = "eEX eMS rDH eIN",      name = "Disproven Blasphemy"},
-        { set = "eEX eNH rIN eAS",      name = "Solved Paradox"},
-        { set = "eEX eNH eVL rAS",      name = "Demystified Grimoire"},
-        { set = "eEX eMS eVL rDP",      name = "Lasting Eden"},
+        
         --misc (no dev commentary except programming smithy)
         { set = "eNH eGV",          name = "Shameless Cashgrab"},
         { set = "eNH eMS eDH",      name = "Clean Break"},

@@ -46,7 +46,7 @@ return {
     zenith_levelup_g = { 48, 2.07 },
     zenith_speedrun_start = { 283, 2 },
     zenith_split_cleared = { 223, 2.7 },
-    -- zenith_split_missed = { 791, 2.7 },
+    zenith_split_missed = { 791, 2.7 },
     zenith_speedrun_end = { 406, 2 },
 
     speed_tick_1 = { 310, 0.04 },
