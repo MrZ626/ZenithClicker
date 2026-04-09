@@ -1921,6 +1921,8 @@ function GAME.refreshCurrentCombo()
                     comboName = '"CARPAL TUNNEL"'
                 elseif comboName == '"BEST FRIENDS"' and GAME.invisUI then
                     comboName = '"PROSOPAGNOSIA"'
+                elseif comboName == '"GOD GAMER"' then
+                    comboName = '"THE GAMER TRINITY"'
                 else 
                     comboName = comboName:gsub("([^\"])", "UNEASY %1", 1)
                 end 

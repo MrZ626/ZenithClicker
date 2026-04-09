@@ -416,7 +416,7 @@ ComboData = {
         { set = "eEX eAS",         name = "Gaming Addict"},
         -- eDP is already done as best friends
         { set = "eNH eMS eGV eDH eIN eDP", name = "Rold Smythy"},
-
+        { set = "eEX eNH eMS eVL eDH eAS", name = "God Gamer"}
     },
 
     game = {
