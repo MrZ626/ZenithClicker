@@ -411,7 +411,7 @@ function GAME.getComboName(list, mode)
         end
 
         -- Named combo
-        local combo = (M.DH == 2 and ComboData.gameEX or STAT.easyName and ComboData.menu or ComboData.game)[table.concat(STAT.easyName and TABLE.sort(easyList) or TABLE.sort(list), ' ')]
+        local combo = (M.DH == 2 and STAT.easyName and ComboData.gameeEX or M.DH == 2 and ComboData.gameEX or STAT.easyName and ComboData.menu or ComboData.game)[table.concat(STAT.easyName and TABLE.sort(easyList) or TABLE.sort(list), ' ')]
         if combo then
             fstr = combo.name:atomize()
             if URM and M.DH == 2 then
@@ -714,6 +714,7 @@ function GAME.getComboName(list, mode)
         else
             combo = (
                 (mode == 'rpc' or not GAME.playing) and ComboData.menu or
+                M.DH == 2 and STAT.easyName and ComboData.gameeEX or
                 M.DH == 2 and ComboData.gameEX or 
                 STAT.easyName and ComboData.menu or
                 ComboData.game
