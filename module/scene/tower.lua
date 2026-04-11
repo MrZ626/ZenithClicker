@@ -583,6 +583,7 @@ function scene.update(dt)
         ZENITHA.setCursorPos(MX, MY)
     end
     if GAME.nightcore then dt = dt * 2.6 end
+    if GAME.eslowmo then dt = 0.00001 end --test
     if GAME.zenithTraveler and M.EX == 2 then
         local f = GAME.calculateFloor(GAME.bgH)
         GAME.height = max(GAME.height - dt * (f * (f + 1) + 10) * (M.VL >= 0 and M.VL + 1 or 1), 0)
