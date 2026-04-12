@@ -399,7 +399,7 @@ function GAME.getComboName(list, mode)
 
         -- Super set
         local comboText
-        if not GAME.anyRev and not TABLE.find(list, 'DP') then
+        if not GAME.anyRev and not TABLE.find(list, 'DP') and not STAT.easyName then
             comboText = len == 8 and [["SWAMP WATER"]] or len == 7 and [["SWAMP WATER LITE"]]
             if comboText then
                 fstr = comboText:atomize()
@@ -667,9 +667,62 @@ function GAME.getComboName(list, mode)
         -- Super Set
         if mode == 'button' and GAME.playing then
             local len_noDP = len - (TABLE.find(list, 'DP') and 1 or 0)
-            if len_noDP >= 7 then
+            if len_noDP >= 7 and not STAT.easyName then
                 return len_noDP == 7 and [["SWAMP WATER LITE"]] or [["SWAMP WATER"]]
             end
+            --[[if #easyList == 4 and STAT.easyName and M.DH == 2 then --display for helping name 4 mod easyName combos
+                MSG.clear()
+                local alist1, alist2, blist1, blist2, clist1, clist2, dlist1, dlist2, elist1, elist2, flist1, flist2, glist1, glist2 = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+                local a1, a2, b1, b2, c1, c2, d1, d2, e1, e2, f1, f2, g1, g2 = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} 
+                ins(alist1, list[1]); ins(alist2, list[2]); ins(alist2, list[3]); ins(alist2, list[4])
+                a1 = GAME.getComboName(alist1, 'ingame'); a2 = GAME.getComboName(alist2, 'ingame')
+                for _, v in ipairs(a2) do
+                    table.insert(a1, v)
+                end
+                MSG("dark", a1, 300)
+
+                ins(blist1, list[2]); ins(blist2, list[1]); ins(blist2, list[3]); ins(blist2, list[4])
+                b1 = GAME.getComboName(blist1, 'ingame'); b2 = GAME.getComboName(blist2, 'ingame')
+                for _, v in ipairs(b2) do
+                    table.insert(b1, v)
+                end
+                MSG("dark", b1, 300)
+
+                ins(clist1, list[3]); ins(clist2, list[1]); ins(clist2, list[2]); ins(clist2, list[4])
+                c1 = GAME.getComboName(clist1, 'ingame'); c2 = GAME.getComboName(clist2, 'ingame')
+                for _, v in ipairs(c2) do
+                    table.insert(c1, v)
+                end
+                MSG("dark", c1, 300)
+
+                ins(dlist1, list[4]); ins(dlist2, list[1]); ins(dlist2, list[2]); ins(dlist2, list[3])
+                d1 = GAME.getComboName(dlist1, 'ingame'); d2 = GAME.getComboName(dlist2, 'ingame')
+                for _, v in ipairs(d2) do
+                    table.insert(d1, v)
+                end
+                MSG("dark", d1, 300)
+
+                ins(elist1, list[1]); ins(elist1, list[2]); ins(elist2, list[3]); ins(elist2, list[4])
+                e1 = GAME.getComboName(elist1, 'ingame'); e2 = GAME.getComboName(elist2, 'ingame')
+                for _, v in ipairs(e2) do
+                    table.insert(e1, v)
+                end
+                MSG("dark", e1, 300)
+
+                ins(flist1, list[1]); ins(flist1, list[3]); ins(flist2, list[2]); ins(flist2, list[4])
+                f1 = GAME.getComboName(flist1, 'ingame'); f2 = GAME.getComboName(flist2, 'ingame')
+                for _, v in ipairs(f2) do
+                    table.insert(f1, v)
+                end
+                MSG("dark", f1, 300)
+
+                ins(glist1, list[1]); ins(glist1, list[4]); ins(glist2, list[2]); ins(glist2, list[3])
+                g1 = GAME.getComboName(glist1, 'ingame'); g2 = GAME.getComboName(glist2, 'ingame')
+                for _, v in ipairs(g2) do
+                    table.insert(g1, v)
+                end
+                MSG("dark", g1, 300)
+            end]]
         else
             local cmbID = table.concat(list)
             if cmbID:count('r') >= 2 then
