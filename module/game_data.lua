@@ -966,7 +966,7 @@ ComboData = {
         { set = "eEX eNH eIN eAS",    name = "Perfect Overweight Gamer" },
         { set = "eEX eNH eIN eDP",    name = "Expensive Memories" },
         { set = "eEX eNH eAS eDP",    name = "Comfy Overweight Gaming Buddies" },
-        { set = "eEX eMS eGV eVL",    name = "Eat, Work, Sleep" },
+        { set = "eEX eMS eGV eVL",    name = "Eat, Sleep, Work" },
         { set = "eEX eMS eGV eDH",    name = "Bedroom Feast" },
         { set = "eEX eMS eGV eIN",    name = "Humble Feast" },
         { set = "eEX eMS eGV eAS",    name = "Eat, Sleep, Game" },
@@ -1023,7 +1023,7 @@ ComboData = {
         { set = "eNH eGV eDH eIN",    name = "Shameless Observatory" },
         { set = "eNH eGV eDH eAS",    name = "Overweight Gamer's Bedroom" },
         { set = "eNH eGV eDH eDP",    name = "'Yoga' in the Bedroom" },
-        { set = "eNH eGV eIN eAS",    name = "Overweight Pupil" },
+        { set = "eNH eGV eIN eAS",    name = "Overweight Gaming Pupil" },
         { set = "eNH eGV eIN eDP",    name = "Humble Yoga" },
         { set = "eNH eGV eAS eDP",    name = "Shameless Gaming Buddies" },
         { set = "eNH eVL eDH eIN",    name = "Chill Observatory" },
@@ -1068,22 +1068,212 @@ ComboData = {
         { set = "eGV eIN eAS eDP",    name = "Humble Gaming Buddies" },
         { set = "eVL eDH eIN eAS",    name = "Game Dev's Observatory" },
         { set = "eVL eDH eIN eDP",    name = "Gym Memories" },
-        { set = "eVL eDH eAS eDP",    name = "Gym Gamers" },
+        { set = "eVL eDH eAS eDP",    name = "Gym-Going Gaming Buddies" },
         { set = "eVL eIN eAS eDP",    name = "Game Dev's Memories" },
         { set = "eDH eIN eAS eDP",    name = "Observatory Gaming Buddies" },
+
+        { set = "eEX eNH eMS eGV eVL", name = "Eat, Sleep, Chill" },
+        { set = "eEX eNH eMS eGV eDH", name = "Comfy Bedroom Snack" },
+        { set = "eEX eNH eMS eGV eIN", name = "Perfect Snack in Bed" },
+        { set = "eEX eNH eMS eGV eAS", name = "Obese Gamer in Bed" },
+        { set = "eEX eNH eMS eGV eDP", name = "Eat, Sleep, Yoga" },
+        { set = "eEX eNH eMS eVL eDH", name = "Organizer's Development" },
+        { set = "eEX eNH eMS eVL eIN", name = "Perfect Workout Snack" },
+        { set = "eEX eNH eMS eVL eAS", name = "The Snacking Smithy" },
+        { set = "eEX eNH eMS eVL eDP", name = "Eat, Work, Yoga" },
+        { set = "eEX eNH eMS eDH eIN", name = "Comet Observatory Snack" },
+        { set = "eEX eNH eMS eDH eAS", name = "Obese Gamer's Den" },
+        { set = "eEX eNH eMS eDH DP", name = "Clean Break with a Friend" },
+        { set = "eEX eNH eMS eIN eAS", name = "Clearly Obese Gamer" },
+        { set = "eEX eNH eMS eIN eDP", name = "Perfect Snack with a Friend" },
+        { set = "eEX eNH eMS eAS eDP", name = "Obese Gaming Buddies" },
+        { set = "eEX eNH eGV eVL eDH", name = "Chill Comfy Bedroom" },
+        { set = "eEX eNH eGV eVL eIN", name = "Chill Comfy Pupil" },
+        { set = "eEX eNH eGV eVL eAS", name = "The Shameless Smithy" },
+        { set = "eEX eNH eGV eVL eDP", name = "Chill Comfy Cuddling" },
+        { set = "eEX eNH eGV eDH eIN", name = "Pupil's Development" },
+        { set = "eEX eNH eGV eDH eAS", name = "Shameless Gamer Heaven" },
+        { set = "eEX eNH eGV eDH eDP", name = "Cuddlers' Development" },
+        { set = "eEX eNH eGV eIN eAS", name = "Perfect Shameless Gamer" },
+        { set = "eEX eNH eGV eIN eDP", name = "Perfect 'Yoga' in Bed" },
+        { set = "eEX eNH eGV eAS eDP", name = "Comfy Shameless Gaming Buddies" },
+        { set = "eEX eNH eVL eDH eIN", name = "Chill Comet Observatory" },
+        { set = "EX NH VL DH AS", name = "Loss of Control" }, --smithy???
+        { set = "eEX eNH eVL eDH eDP", name = "Chill Best Friend's Place" },
+        { set = "EX NH VL IN AS", name = "Loading Screen" }, --smithy???
+        { set = "eEX eNH eVL eIN eDP", name = "Chill Comfy Memories" },
+        { set = "eEX eNH eVL eAS eDP", name = "The Meditating Spider" },
+        { set = "eEX eNH eDH eIN eAS", name = "Perfect Overweight Gamer's Den" },
+        { set = "eEX eNH eDH eIN eDP", name = "Memory Development" },
+        { set = "eEX eNH eDH eAS eDP", name = "Comfy Yoga in the Gaming Den" },
+        { set = "eEX eNH eIN eAS eDP", name = "Expensive Gaming Memories" },
+        { set = "eEX eMS eGV eVL eDH", name = "Eat, Sleep, Gym" },
+        { set = "eEX eMS eGV eVL eIN", name = "Eat, Work, Learn" },
+        { set = "eEX eMS eGV eVL eAS", name = "The Routine Smithy" }, -- aka eat, sleep, work, game
+        { set = "eEX eMS eGV eVL eDP", name = "Eat, Work, Cuddle" },
+        { set = "eEX eMS eGV eDH eIN", name = "Perfectly Clean Bed" },
+        { set = "eEX eMS eGV eDH eAS", name = "Bedroom Gaming Feast" },
+        { set = "eEX eMS eGV eDH eDP", name = "Clean Comfy Cuddling" },
+        { set = "eEX eMS eGV eIN eAS", name = "Humble Gamer's Feast" },
+        { set = "eEX eMS eGV eIN eDP", name = "Spotless Comfy Cuddling" },
+        { set = "eEX eMS eGV eAS eDP", name = "Eat, Cuddle, Game" },
+        { set = "EX MS VL DH IN", name = "The Knight" },
+        { set = "eEX eMS eVL eDH eAS", name = "The Clean Smithy" },
+        { set = "EX MS VL DH DP", name = "Dynamic Duo" },
+        { set = "eEX eMS eVL eIN eAS", name = "The Spotless Smithy" },
+        { set = "EX MS VL IN DP", name = "Space Station" },
+        { set = "eEX eMS eVL eAS eDP", name = "The Hungry Spider" },
+        { set = "EX MS DH IN AS", name = "Deadluck" },
+        { set = "eEX eMS eDH eIN eDP", name = "Hungry Rosalina" },
+        { set = "EX MS DH AS DP", name = "The Great Escape" },
+        { set = "EX MS IN AS DP", name = "Dual Number" },
+        { set = "EX GV VL DH IN", name = "Unexpectancy" },
+        { set = "eEX eGV eVL eDH eAS", name = "The Bedroom Smithy" },
+        { set = "EX GV VL DH DP", name = "Reign of Terror" },
+        { set = "eEX eGV eVL eIN eAS", name = "The Humble Smithy" },
+        { set = "EX GV VL IN DP", name = "Despondent Dread" },
+        { set = "eEX eGV eVL eAS eDP", name = "The Sleeping Spider" },
+        { set = "EX GV DH IN AS", name = "Fight or Flight" },
+        { set = "eEX eGV eDH eIN eDP", name = "Sleeping Rosalina" },
+        { set = "EX GV DH AS DP", name = "Omni Spinners" },
+        { set = "EX GV IN AS DP", name = "Masterclass" },
+        { set = "eEX eVL eDH eIN eAS", name = "Calm Rosalina" },
+        { set = "eEX eVL eDH eIN eAS", name = "The Observational Smithy" },
+        { set = "eEX eVL eDH eAS eDP", name = "The Homely Spider" },
+        { set = "eEX eDH eIN eAS eDP", name = "Gaming Rosalina" },
+        { set = "eEX eVL eIN eAS eDP", name = "The Oblivious Spider" },
+        { set = "NH MS GV VL DH", name = "Quintuple threat" },
+        { set = "NH MS GV VL IN", name = "The Guardian of Change" },
+        { set = "NH MS GV VL AS", name = "Dreadlock" },
+        { set = "NH MS GV VL DP", name = "Reminiscence Therapy" },
+        { set = "NH MS GV DH IN", name = "Misdrop Haven" },
+        { set = "NH MS GV DH AS", name = "A Classic Escape" },
+        { set = "NH MS GV IN AS", name = "Lost and Dizzy" },
+        { set = "NH MS GV AS DP", name = "Generation Beta" },
+        { set = "NH MS VL DH IN", name = "Blind Faith" },
+        { set = "NH MS VL DH AS", name = "Boltsmith" },
+        { set = "NH MS VL DH DP", name = "Double Sided" },
+        { set = "NH MS VL IN AS", name = "Ballet Dancing" },
+        { set = "NH MS VL IN DP", name = "Card Counting" },
+        { set = "NH MS VL AS DP", name = "Bewitched Canvas" },
+        { set = "NH MS DH IN AS", name = "Disappearance" },
+        { set = "NH MS DH AS DP", name = "Jailbreakers" },
+        { set = "NH GV VL DH IN", name = "Entropy" },
+        { set = "NH GV VL DH AS", name = "Demonic Possession" },
+        { set = "NH GV VL IN AS", name = "Ergosphere" },
+        { set = "NH GV VL IN DP", name = "Abysmal Connection" },
+        { set = "NH GV DH IN AS", name = "Cheat Code" },
+        { set = "NH GV DH IN DP", name = "Living in the Past" },
+        { set = "NH GV DH AS DP", name = "Just Dance" },
+        { set = "NH GV IN AS DP", name = "Latent Lifeline" },
+        { set = "NH VL DH IN AS", name = "Magic" },
+        { set = "NH VL IN AS DP", name = "Expelled" },
+        { set = "NH DH IN AS DP", name = "The Trinity of Blindness" },
+        { set = "MS GV VL DH IN", name = "Slaughterhouse" },
+        { set = "MS GV VL DH AS", name = "Killer Clown" },
+        { set = "MS GV VL DH DP", name = "Sextuple Down" },
+        { set = "MS GV VL IN AS", name = "Mortal Chaos" },
+        { set = "MS GV VL IN DP", name = "Twenty Third Hour" },
+        { set = "MS GV DH IN AS", name = "Doubled Symbolism" },
+        { set = "MS GV DH IN DP", name = "Tipsy Twosome" },
+        { set = "MS GV DH AS DP", name = "Four Dimensional Golf" },
+        { set = "MS VL DH IN AS", name = "Beethoven" },
+        { set = "MS VL DH AS DP", name = "Blue Heart" },
+        { set = "GV VL DH IN AS", name = "Lost Genius" },
+        { set = "GV VL DH IN DP", name = "Haunting Hallucinations" },
+        { set = "GV VL DH AS DP", name = "Disqualification" },
+        { set = "GV VL IN AS DP", name = "Hardships" },
+        { set = "GV DH IN AS DP", name = "Sleepy Pilots" },
+        { set = "VL DH IN AS DP", name = "The Duel of Geniuses" },
+
+
+        -- 6 mods
+        { set = "eEX eNH eMS eGV eVL eDH",          name = "Plain Cloudy Shower"},
+
+        { set = "eEX eNH eMS eGV eVL eIN",          name = "Plain Holy Shower"},
+        { set = "eEX eNH eMS eGV eVL eAS",          name = "Cloudy Holy Shower"},
+
+        { set = "eEX eNH eMS eGV eDH eIN",          name = "Plain Still Shower"},
+        { set = "eEX eNH eMS eGV eDH eAS",          name = "Still Cloudy Shower"},
+        { set = "eEX eNH eMS eGV eIN eAS",          name = "Still Holy Shower"},
+
+        { set = "eEX eNH eMS eVL eDH eIN",          name = "Plain Jacuzzi Shower"},
+        --{ set = "eEX eNH eMS eVL eDH eAS",          name = "Cloudy Jacuzzi Shower"}, --god gamer
+        { set = "eEX eNH eMS eVL eIN eAS",          name = "Holy Jacuzzi Shower"},
+        { set = "eEX eNH eMS eDH eIN eAS",          name = "Still Jacuzzi Shower"},
+
+        { set = "eEX eNH eGV eVL eDH eIN",          name = "Plain Clean Shower"},
+        { set = "eEX eNH eGV eVL eDH eAS",          name = "Clean Cloudy Shower"},
+        { set = "eEX eNH eGV eVL eIN eAS",          name = "Clean Holy Shower"},
+        { set = "eEX eNH eGV eDH eIN eAS",          name = "Clean Still Shower"},
+        { set = "eEX eNH eVL eDH eIN eAS",          name = "Clean Jacuzzi Shower"},
+
+        { set = "eEX eMS eGV eVL eDH eIN",          name = "Plain Warm Shower"},
+        { set = "eEX eMS eGV eVL eDH eAS",          name = "Warm Cloudy Shower"},
+        { set = "eEX eMS eGV eVL eIN eAS",          name = "Warm Holy Shower"},
+        { set = "eEX eMS eGV eDH eIN eAS",          name = "Warm Still Shower"},
+        { set = "eEX eMS eVL eDH eIN eAS",          name = "Warm Jacuzzi Shower"},
+        { set = "eEX eGV eVL eDH eIN eAS",          name = "Warm Clean Shower"},
+
+        { set = "eNH eMS eGV eVL eDH eIN",          name = "Plain Normal Shower"},
+        { set = "eNH eMS eGV eVL eDH eAS",          name = "Normal Cloudy Shower"},
+        { set = "eNH eMS eGV eVL eIN eAS",          name = "Normal Holy Shower"},
+        { set = "eNH eMS eGV eDH eIN eAS",          name = "Normal Still Shower"},
+        { set = "eNH eMS eVL eDH eIN eAS",          name = "Normal Jacuzzi Shower"},
+        { set = "eNH eGV eVL eDH eIN eAS",          name = "Normal Clean Shower"},
+        { set = "eMS eGV eVL eDH eIN eAS",          name = "Normal Warm Shower"},
+        
 
         --copy paste from above
         { set = "eNH eMS eGV eDH eIN eDP", name = "Rold Smythy"},
         { set = "eEX eNH eMS eVL eDH eAS", name = "God Gamer"},
 
-        { set = "eNH eMS eGV eVL eDH eIN eAS",          name = "Normal Bath Water"}, -- soft e, normal, hard ue, very hard
-        { set = "eEX eMS eGV eVL eDH eIN eAS",          name = "Warm Bath Water"}, -- cool e, warm, hot
-        { set = "eEX eNH eGV eVL eDH eIN eAS",          name = "Clean Bath Water"}, -- pure e, clean, dirty
-        { set = "eEX eNH eMS eVL eDH eIN eAS",          name = "Jacuzzi Bath Water"}, -- jacuzzi, bubbly e, flat
-        { set = "eEX eNH eMS eGV eDH eIN eAS",          name = "Still Bath Water"}, -- still, calm e, turbulent
-        { set = "eEX eNH eMS eGV eVL eIN eAS",          name = "Holy Bath Water"}, -- sacred e, holy, unholy
-        { set = "eEX eNH eMS eGV eVL eDH eAS",          name = "Cloudy Bath Water"}, -- clear e, cloudy, murky 
+        --AS = Plain, EX = Normal, NH = Warm, MS = Clean, VL = Still, IN = Cloudy, DH = Holy, GV = Jacuzzi
+        -- 7 mods
         { set = "eEX eNH eMS eGV eVL eDH eIN",          name = "Plain Bath Water"},
+
+        { set = "eEX eNH eMS eGV eVL eDH eAS",          name = "Cloudy Bath Water"}, -- clear e, cloudy, murky 
+        { set = "eEX eNH eMS eGV eVL eDH eDP",          name = "Plain Cloudy Shower With A Friend"},
+
+        { set = "eEX eNH eMS eGV eVL eIN eAS",          name = "Holy Bath Water"}, -- sacred e, holy, unholy
+        { set = "eEX eNH eMS eGV eVL eIN eDP",          name = "Plain Holy Shower With A Friend"},
+        { set = "eEX eNH eMS eGV eVL eAS eDP",          name = "Cloudy Holy Shower With A Friend"},
+
+        { set = "eEX eNH eMS eGV eDH eIN eAS",          name = "Still Bath Water"}, -- still, calm e, turbulent
+        { set = "eEX eNH eMS eGV eDH eIN eDP",          name = "Plain Still Shower With A Friend"},
+        { set = "eEX eNH eMS eGV eDH eAS eDP",          name = "Still Cloudy Shower With A Friend"},
+        { set = "eEX eNH eMS eGV eIN eAS eDP",          name = "Still Holy Shower With A Friend"},
+
+        { set = "eEX eNH eMS eVL eDH eIN eAS",          name = "Jacuzzi Bath Water"}, -- jacuzzi, bubbly e, flat
+        { set = "eEX eNH eMS eVL eDH eIN eDP",          name = "Plain Jacuzzi Shower With A Friend"},
+        { set = "eEX eNH eMS eVL eDH eAS eDP",          name = "God Gaming With A Friend"}, --would normally be Cloudy Jacuzzi Shower With A Friend
+        { set = "eEX eNH eMS eVL eIN eAS eDP",          name = "Holy Jacuzzi Shower With A Friend"},
+        { set = "eEX eNH eMS eDH eIN eAS eDP",          name = "Still Jacuzzi Shower With A Friend"},
+
+        { set = "eEX eNH eGV eVL eDH eIN eAS",          name = "Clean Bath Water"}, -- pure e, clean, dirty
+        { set = "eEX eNH eGV eVL eDH eIN eDP",          name = "Plain Clean Shower With A Friend"},
+        { set = "eEX eNH eGV eVL eDH eAS eDP",          name = "Clean Cloudy Shower With A Friend"},
+        { set = "eEX eNH eGV eVL eIN eAS eDP",          name = "Clean Holy Shower With A Friend"},
+        { set = "eEX eNH eGV eDH eIN eAS eDP",          name = "Clean Still Shower With A Friend"},
+        { set = "eEX eNH eVL eDH eIN eAS eDP",          name = "Clean Jacuzzi Shower With A Friend"},
+
+        { set = "eEX eMS eGV eVL eDH eIN eAS",          name = "Warm Bath Water"}, -- cool e, warm, hot
+        { set = "eEX eMS eGV eVL eDH eIN eDP",          name = "Plain Warm Shower With A Friend"},
+        { set = "eEX eMS eGV eVL eDH eAS eDP",          name = "Warm Cloudy Shower With A Friend"},
+        { set = "eEX eMS eGV eVL eIN eAS eDP",          name = "Warm Holy Shower With A Friend"},
+        { set = "eEX eMS eGV eDH eIN eAS eDP",          name = "Warm Still Shower With A Friend"},
+        { set = "eEX eMS eVL eDH eIN eAS eDP",          name = "Warm Jacuzzi Shower With A Friend"},
+        { set = "eEX eGV eVL eDH eIN eAS eDP",          name = "Warm Clean Shower With A Friend"},
+
+        { set = "eNH eMS eGV eVL eDH eIN eAS",          name = "Normal Bath Water"}, -- soft e, normal, hard ue, very hard
+        { set = "eNH eMS eGV eVL eDH eIN eDP",          name = "Plain Normal Shower With A Friend"},
+        { set = "eNH eMS eGV eVL eDH eAS eDP",          name = "Normal Cloudy Shower With A Friend"},
+        { set = "eNH eMS eGV eVL eIN eAS eDP",          name = "Normal Holy Shower With A Friend"},
+        { set = "eNH eMS eGV eDH eIN eAS eDP",          name = "Normal Still Shower With A Friend"},
+        { set = "eNH eMS eVL eDH eIN eAS eDP",          name = "Normal Jacuzzi Shower With A Friend"},
+        { set = "eNH eGV eVL eDH eIN eAS eDP",          name = "Normal Clean Shower With A Friend"},
+        { set = "eMS eGV eVL eDH eIN eAS eDP",          name = "Normal Warm Shower With A Friend"},
+        -- 8 mods
         { set = "eEX eNH eMS eGV eVL eDH eIN eAS",      name = "Bath Water"},
         { set = "eEX eNH eMS eGV eVL eDH eIN eDP",          name = "Plain Bath With A Friend"},
         { set = "eEX eNH eMS eGV eVL eDH eAS eDP",          name = "Cloudy Bath With A Friend"},
@@ -1093,6 +1283,7 @@ ComboData = {
         { set = "eEX eNH eGV eVL eDH eIN eAS eDP",          name = "Clean Bath With A Friend"},
         { set = "eEX eMS eGV eVL eDH eIN eAS eDP",          name = "Warm Bath With A Friend"},
         { set = "eNH eMS eGV eVL eDH eIN eAS eDP",          name = "Normal Bath With A Friend"},
+        -- 9 mods
         { set = "eEX eNH eMS eGV eVL eDH eIN eAS eDP",      name = "Bath With A Friend"},
     }
 }

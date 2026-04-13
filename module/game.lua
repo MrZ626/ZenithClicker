@@ -723,6 +723,24 @@ function GAME.getComboName(list, mode)
                 end
                 MSG("dark", g1, 300)
             end]]
+            --[[if #easyList == 5 and STAT.easyName and M.DH == 2 then
+                local sets = {{{1},{2, 3, 4, 5}},{{2},{1, 3, 4, 5}},{{3},{1, 2, 4, 5}},{{4},{1, 2, 3, 5}},{{5},{1, 2, 3, 4}},{{1, 2},{3, 4, 5}},{{1, 3},{2, 4, 5}},
+                {{1, 4},{2, 3, 5}},{{1, 5},{2, 3, 4}},{{2, 3},{1, 4, 5}},{{2, 4},{1, 3, 5}},{{2, 5},{1, 3, 4}},{{3, 4},{1, 2, 5}},{{3, 5},{1, 2, 4}},{{4, 5},{1, 2, 3}}}
+                MSG.clear()
+                for i = 1, #sets do
+                    local endList1, endList2, list1, list2 = {}, {},{},{}
+                    for j = 1, #sets[i] do
+                        for k = 1, #sets[i][j] do
+                            ins(j == 1 and list1 or list2, list[ sets[i][j][k] ])
+                        end
+                    end
+                    endList1 = GAME.getComboName(list1, 'ingame'); endList2 = GAME.getComboName(list2, 'ingame')
+                    for _, v in ipairs(endList2) do
+                        table.insert(endList1, v)
+                    end
+                    MSG("dark", endList1, 300)
+                end
+            end]]
         else
             local cmbID = table.concat(list)
             if cmbID:count('r') >= 2 then
@@ -901,10 +919,11 @@ function GAME.shuffleCards(messiness)
 end
 
 function GAME.genQuest()
+    local floor = (M.DH == 2 and GAME.einvisUI and GAME.time >= 690 and (GAME.time - 640)/20 or GAME.floor) -- 1 at 660, 10 at 840
     repeat
         local combo = {}
-        local base = .72 + GAME.floor ^ .5 / 6 + GAME.extraQuestBase + icLerp(6200, 10000, GAME.height)
-        local var = GAME.floor * .26 * GAME.extraQuestVar
+        local base = .72 + floor ^ .5 / 6 + GAME.extraQuestBase + icLerp(6200, 10000, GAME.height)
+        local var = floor * .26 * GAME.extraQuestVar
         local r = MATH.clamp(base + var * abs(MATH.randNorm()), 1, GAME.maxQuestSize)
 
     GAME.atkBuffer = GAME.atkBuffer + r
@@ -912,7 +931,7 @@ function GAME.genQuest()
         r = r - (GAME.atkBuffer - GAME.atkBufferCap)
         GAME.atkBuffer = GAME.atkBufferCap
     end
-    GAME.atkBuffer = clamp(GAME.atkBuffer - (max(GAME.floor / 3, GAME.atkBufferCap / 4) + MATH.rand(-.62, .62)), 0, GAME.atkBufferCap)
+    GAME.atkBuffer = clamp(GAME.atkBuffer - (max(floor / 3, GAME.atkBufferCap / 4) + MATH.rand(-.62, .62)), 0, GAME.atkBufferCap)
     if M.DP > 0 then r = r * (GAME[GAME.getLifeKey(true)] == 0 and 1.26 or 1.1) end
     if M.DH == -1 then r = r * 5/8 end
         local pool = TABLE.copyAll(MD.weight)
@@ -4051,6 +4070,27 @@ function GAME.update(dt)
         else
             if GAME.time >= GAME.fatigueSet[GAME.fatigue].time then GAME.nextFatigue() end
         end
+    end
+    --if GAME.time < 530 then GAME.time = 530 end
+
+    if GAME.einvisUI and M.DH == 2 and GAME.time >= 690 and GAME.maxQuestSize < (M.NH == 2 and 6 or M.NH == -1 and 4 or 5) then
+        --GAME.atkBufferCap = GAME.atkBufferCap + 4 + M.NH
+        --GAME.extraQuestVar = GAME.extraQuestVar + 1
+        GAME.maxQuestSize = GAME.maxQuestSize + 1
+        TEXT:add {
+            text = "YOU ARE DAMNED",
+            x = 800, y = 265, fontSize = 30, k = 1.5,
+            style = 'score', duration = 26,
+            inPoint = .1, outPoint = .26,
+            color = 'lB',
+        }
+        TEXT:add {
+            text = "QuestDifficulty++++++",
+            x = 800, y = 300, fontSize = 30,
+            style = 'score', duration = 26,
+            inPoint = .26, outPoint = .1,
+            color = 'lB',
+        }
     end
 
     -- Gigaspeed timer text
