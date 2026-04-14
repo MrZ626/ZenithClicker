@@ -373,7 +373,7 @@ function GAME.getComboZP(list)
     local hardCnt = table.concat(list):count('r')
     if m.EX then hardCnt = hardCnt + 1 end
     if hardCnt >= 2 then zp = zp * 0.99 ^ (hardCnt - 1) end
-    -- if zp > 100 then zp = 100 end -- 100.10x if not capped
+    if zp > 100 then zp = 100 end -- 100.10x if not capped
 
     return zp
 end
@@ -2523,7 +2523,7 @@ function GAME.commit(auto, falseCommit)
                 GAME.dmgTimerMul = GAME.dmgTimerMul - 1/3
             end
             GAME.heal(((dblCorrect or (eDPCorrect and correct == 1)) and 3 or 1) * GAME.dmgHeal + GAME.bonusRecoveryHealth)
-            if MATH.between(Floors[GAME.floor].top - (GAME.height + GAME.heightBuffer), 0, 2) then GAME.addHeight(3, true) end
+            if MATH.between(Floors[GAME.floor].top - (GAME.height + GAME.heightBuffer), 0, GAME.eglassCard and 4 or 2) then GAME.addHeight(GAME.eglassCard and 5 or 3, true) end
         end    
         local dp = TABLE.find(hand, 'DP')
         local attack = 3
@@ -4002,7 +4002,7 @@ function GAME.update(dt)
     if M.GV ~= 0 and not GAME.gravTimer and (URM and M.GV == 2 or M.GV > 0 and GAME.questTime >= 2.6) and GAME.questTime - dt < 2.6 then
         GAME.gravTimer = GAME.gravDelay
     end
-    if M.EX == 2 and GAME.floorTime > 30 then
+    if M.EX == 2 and GAME.floorTime > 30 and (not GAME.einvisUI or GAME.time >= 690) then
         GAME.dmgWrong = GAME.dmgWrong + 0.05 * dt
     end
     if GAME.reviveTime then
@@ -4071,7 +4071,7 @@ function GAME.update(dt)
             if GAME.time >= GAME.fatigueSet[GAME.fatigue].time then GAME.nextFatigue() end
         end
     end
-    --if GAME.time < 530 then GAME.time = 530 end
+    --if GAME.time < 530 then GAME.time = 530 end --TODO 1.1.3 REMOVE
 
     if GAME.einvisUI and M.DH == 2 and GAME.time >= 690 and GAME.maxQuestSize < (M.NH == 2 and 6 or M.NH == -1 and 4 or 5) then
         --GAME.atkBufferCap = GAME.atkBufferCap + 4 + M.NH
@@ -4143,12 +4143,12 @@ function GAME.update(dt)
             if not URM then
                 GAME.height = GAME.height - dt * (GAME.floor * (GAME.floor + 1) + 10) / 20
                 if GAME.eglassCard then
-                    GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod*0.6 * dt * (GAME.einvisUI and 1 or icLerp(1, 6, Floors[GAME.floor].top - GAME.height))
+                    GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod*0.6 * dt * (GAME.einvisUI and 1 or icLerp(GAME.eglassCard and 0.5 or 1, GAME.eglassCard and 3 or 6, Floors[GAME.floor].top - GAME.height))
                 end
                 GAME.height = max(GAME.height, Floors[GAME.floor - 1].top)
             else
                 if GAME.eglassCard then
-                    GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod*0.6 * dt * (GAME.einvisUI and 1 or icLerp(1, 6, Floors[GAME.floor].top - GAME.height))
+                    GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod*0.6 * dt * (GAME.einvisUI and 1 or icLerp(GAME.eglassCard and 0.5 or 1, GAME.eglassCard and 3 or 6, Floors[GAME.floor].top - GAME.height))
                 end
                 if GAME.negFloor > 0 then
                     if GAME.negFloor >= 2 then
@@ -4164,7 +4164,7 @@ function GAME.update(dt)
                 if GAME.height < NegEvents[GAME.negEvent].h then GAME.nextNegEvent() end
             end
         else
-            GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod * dt * (GAME.einvisUI and 1 or icLerp(1, 6, Floors[GAME.floor].top - GAME.height))
+            GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod * dt * (GAME.einvisUI and 1 or icLerp(GAME.eglassCard and 0.5 or 1, GAME.eglassCard and 3 or 6, Floors[GAME.floor].top - GAME.height))
         end
     end
 
