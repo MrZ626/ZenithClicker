@@ -132,6 +132,10 @@ addText({
     }, ",  ")
 }, 0, 60, .26)
 
+---@return boolean If false, do not show dev commentary even though it exists
+---@param cID string Formatted combo ID, with u replacing r for Ultra reversed, and u before eEX for Uneasy, and a ' ' between each mod
+---@param uneasy boolean 
+---@author: Trevor Smithy
 local function specialDevCommentaryCheck(cID, uneasy)
     if cID == 'uEX eNH eMS eGV eDH eIN eAS eDP' and not GAME.ecloseCard then --UHCBWaF
         return false

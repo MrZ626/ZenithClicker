@@ -55,14 +55,16 @@ local combo = 0
 ---@field _speedrun number
 ---@field _floor number
 ---@field _zp number
----@field _ultra? true
+---@field _ultra boolean?
 ---
----@field revQuad love.Quad | false
----@field comboText love.Text
----@field modsText love.Text
----@field floorText love.Text
----@field scoreText love.Text
----@field extraText love.Text
+---@alias love.Quad any
+---
+---@field revQuad love.Quad?
+---@field comboText string love.Text
+---@field modsText string love.Text
+---@field floorText string love.Text
+---@field scoreText string love.Text
+---@field extraText string love.Text
 
 ---@return Record?
 local function newRecord(list, isUltra)
@@ -363,6 +365,9 @@ end
 
 function scene.touchClick(x, y) scene.mouseClick(x, y, 1) end
 
+---@param i number index into cardIDs table 1 = EX, 2 = NH, etc
+---@param rev boolean Reversed
+---@param easy boolean Easy
 local function setMod(i, rev, easy)
     if GAME.completion[cardIDs[i]] > 0 then
         if rev then

@@ -26,7 +26,7 @@ OverDevProgressText = "Open ACHV page to refresh the over-dev progress."
 ---@field desc string
 ---@field descWidth number
 ---@field rank number
----@field wreath? number
+---@field wreath number?
 ---@field progress number
 ---@field score table
 ---@field type string

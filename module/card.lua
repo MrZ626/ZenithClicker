@@ -10,11 +10,10 @@ local M = GAME.mod
 local CD = Cards
 
 ---@class Card
----@field burn false | number
+---@field burn number?
 local Card = {}
 Card.__index = Card
 function Card.new(d)
-    ---@class Card
     local obj = setmetatable({
         initOrder = d.initOrder,
         tempOrder = d.initOrder,
@@ -65,6 +64,9 @@ local function task_refreshBGM()
     TASK.yieldT(.1)
     RefreshBGM()
 end
+---@param self Card 
+---@param auto boolean i.e. was not manually selected
+---@param key number? 1 or nil = active/inactive 2 = reverse 3 = easy
 function Card:setActive(auto, key)
     local eNHBlocksFaults = M.NH == -1 and true or false
     if not auto then

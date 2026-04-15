@@ -40,20 +40,20 @@ local function issuedScore()
 end
 
 ---@class Achievement
----@field title? string
----@field ex? true Extended by Zenith Clicker
----@field id? string
----@field name? string
----@field desc? string
----@field quote? string
----@field credit? string
----@field comp? '<' | '>' | fun(newScore, oldScore):boolean
----@field noScore? number
----@field scoreSimp? fun(score):string
----@field scoreFull? fun(score):string
----@field rank? 'floor' | fun(score):number
----@field type? 'competitive' | 'unranked' | 'issued' | 'event'
----@field hide? fun():boolean
+---@field title string?
+---@field ex boolean? Extended by Zenith Clicker
+---@field id string?
+---@field name string?
+---@field desc string?
+---@field quote string?
+---@field credit string?
+---@field comp ('<' | '>' | fun(newScore, oldScore):boolean)?
+---@field noScore number?
+---@field scoreSimp fun(score):string?
+---@field scoreFull fun(score):string?
+---@field rank ('floor' | fun(score):number)?
+---@field type ('competitive' | 'unranked' | 'issued' | 'event')?
+---@field hide fun():boolean?
 
 ---@type Map<Achievement>
 Achievements = {

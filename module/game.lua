@@ -12,16 +12,16 @@ local ins, rem = table.insert, table.remove
 
 ---@class Question
 ---@field combo string[]
----@field name love.Text
+---@field name string love.Text
 ---@field y number
 ---@field k number
 ---@field a number
 
 ---@class ReviveTask:Prompt
 ---@field progress number
----@field textObj love.Text
----@field shortObj love.Text
----@field progObj love.Text
+---@field textObj string love.Text
+---@field shortObj string love.Text
+---@field progObj string love.Text
 
 ---@class Game
 ---@field playing boolean
@@ -39,10 +39,10 @@ local ins, rem = table.insert, table.remove
 ---@field rankTimer number[]
 ---
 ---@field time number
----@field gigaTime false | number
+---@field gigaTime number?
 ---@field questTime number
 ---@field floorTime number
----@field reviveTime false | number
+---@field reviveTime number?
 ---@field secTime number[]
 ---
 ---@field rank number
@@ -55,7 +55,7 @@ local ins, rem = table.insert, table.remove
 ---@field height number
 ---@field roundHeight number for statistics and achievement
 ---@field heightBuffer number
----@field fatigueSet {time:number, event:table, text:string, desc:string, color?:string, duration?:number, final?:true}[]
+---@field fatigueSet table{time: number, event: table, text: string, desc: string, color: string?, duration: number?, final: boolean?}[]
 ---@field fatigue number
 ---@field animDuration number
 ---
@@ -76,7 +76,7 @@ local ins, rem = table.insert, table.remove
 ---@field dmgTimer number
 ---@field chain number
 ---@field gigaspeed boolean
----@field gigaspeedEntered false | number time when enter
+---@field gigaspeedEntered number? time when enter
 ---@field gigaCount number
 ---@field teraCount number
 ---@field teramusic boolean
@@ -88,7 +88,7 @@ local ins, rem = table.insert, table.remove
 ---@field quettaspeed boolean
 ---@field atkBuffer number
 ---@field atkBufferCap number
----@field shuffleMessiness number | false
+---@field shuffleMessiness number?
 ---@field lastCommit string[]
 ---
 ---@field spikeTimer number
@@ -97,8 +97,8 @@ local ins, rem = table.insert, table.remove
 ---@field maxSpike number
 ---@field maxSpikeWeak number
 ---
----@field gravDelay false | number
----@field gravTimer false | number
+---@field gravDelay number?
+---@field gravTimer number?
 ---
 ---@field omega boolean
 ---@field negFloor number
@@ -117,9 +117,9 @@ local ins, rem = table.insert, table.remove
 ---@field killCount number
 ---@field quests Question[]
 ---@field reviveTasks ReviveTask[]
----@field currentTask ReviveTask |false
+---@field currentTask ReviveTask?
 ---@field DPlock boolean
----@field lastFlip number | false
+---@field lastFlip number?
 ---@field smithyMode boolean
 ---@field OSPActivated boolean
 ---@field finalFatigueOSPActivated boolean
@@ -850,6 +850,8 @@ function GAME.task_gigaspeed()
         :setOnFinish(function() GigaSpeed.textTimer = false end)
 end
 
+---@author: Trevor Smithy
+---Dynamically changes BGM speed (and pitch) while Uneasy challenge active
 function GAME.task_uneasyTeraspeed()
     TWEEN.new(function(t) 
         if not GAME.playing then t = 0 end
@@ -1198,6 +1200,9 @@ function GAME.addHeight(h, realHeight)
     if h >= 6 and TASK.lock('speed_tick_whirl', 2.6) then SFX.play('speed_tick_whirl') end
 end
 
+---@param xp number The base XP
+---@return number The modified XP
+---@author: Trevor Smithy
 function GAME.easyXPModifiers(xp)
     local xpRankModifier = 20 -- 1/10th
     if M.VL == -1 then
@@ -1216,6 +1221,8 @@ function GAME.easyXPModifiers(xp)
 end
 
 local speedupSFX = { 0, 1, 1, 1, 2, 2, 2, 3, 3 }
+---@param falseCommit boolean If true, xp is not actually added
+---@return number, number xp, rank
 function GAME.addXP(xp, falseCommit)
     if M.EX == -1 or M.VL == -1 or GAME.ecloseCard then
         xp = GAME.easyXPModifiers(xp)
@@ -1903,6 +1910,8 @@ function GAME.refreshResultModIcon()
     end
 end
 
+---Replaces mod icons with Uneasy variant
+---@author: Trevor Smithy
 function GAME.anim_uneasyModIcon()
     -- called on game start if requirements met
     local p = PieceSFXID
@@ -2183,7 +2192,7 @@ function GAME.refreshRev()
     end
 end
 
--- Trevor Smithy
+---@author: Trevor Smithy
 function GAME.refreshEasy()
     local hasEasy = false
     for _, C in ipairs(CD) do
@@ -2322,11 +2331,14 @@ function GAME.task_cancelAll(instant)
     end
 end
 
+---@author: Trevor Smithy
 function GAME.toggleEasy()
     TASK.removeTask_code(GAME.task_toggleEasy)
     TASK.new(GAME.task_toggleEasy)
 end
 
+---EASY button functionality
+---@author: Trevor Smithy
 function GAME.task_toggleEasy()
     --if GAME.playing then return end
     local list = TABLE.copy(CD, 0)
@@ -2364,6 +2376,9 @@ function GAME.task_toggleEasy()
     end
 end
 
+---@param auto boolean Not manually commit
+---@param falseCommit boolean? For promotion gauge
+---@return number? If falseCommit, then XP
 function GAME.commit(auto, falseCommit)
     if #GAME.quests == 0 then return end
 
@@ -3930,6 +3945,8 @@ local questStyleDP = {
     { k = 0.85, y = 30,  a = .7 },
 }
 
+---Submits timed achievements if its cdombo is active
+---@author: Trevor Smithy
 function GAME.submitTimedAchievements()
     if GAME.comboStr == 'eDPeEX' and not URM then
         SubmitAchv('best_friends', GAME.achv_bestFriendQuest or 0)

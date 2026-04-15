@@ -27,7 +27,7 @@ for _, v in next, {
 } do love.filesystem.createDirectory(v) end
 
 
----@return love.Texture
+---@return any love.Texture
 local function assets(path) return FILE.exist('customAssets/' .. path) and 'customAssets/' .. path or 'assets/' .. path end
 local function q(oy, n, size)
     return GC.newQuad(
@@ -829,7 +829,7 @@ local wreathName = {
     [5] = "T5-",
     [6] = "T3-",
 }
----@return true? success
+---@return boolean? true = success
 function SubmitAchv(id, score, silent, realSilent)
     if TestMode or GAME.multiplePiecesActive then return end
     local A = Achievements[id]
@@ -1077,7 +1077,7 @@ function RevMusicMode()
         GAME.anyUltra and GAME.comboZP >= 1.2  -- ultra run with 1.2x ZP
 end
 
----@param name ZC.bgmName
+---@param name string ZC.bgmName
 ---@param force? boolean speedrun or music player
 function PlayBGM(name, force)
     if GAME.teramusic and not force then return end

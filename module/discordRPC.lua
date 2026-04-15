@@ -62,21 +62,21 @@ function MyRPC.update(state,details)
 end
 
 ---@class DiscordRPC.presence
----@field state? string
----@field details? string
----@field startTimestamp? number
----@field endTimestamp? number
----@field largeImageKey? string
----@field largeImageText? string
----@field smallImageKey? string
----@field smallImageText? string
----@field partyId? string
----@field partySize? number
----@field partyMax? number
----@field matchSecret? string
----@field joinSecret? string
----@field spectateSecret? string
----@field instance? number
+---@field state string?
+---@field details string?
+---@field startTimestamp number?
+---@field endTimestamp number?
+---@field largeImageKey string?
+---@field largeImageText string?
+---@field smallImageKey string?
+---@field smallImageText string?
+---@field partyId string?
+---@field partySize number?
+---@field partyMax number?
+---@field matchSecret string?
+---@field joinSecret string?
+---@field spectateSecret string?
+---@field instance number?
 
 local ffi=require"ffi"
 

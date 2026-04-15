@@ -318,6 +318,8 @@ local function randomizeRNG()
     end
 end
 
+---@return table { _: string, ultra: boolean}
+---@author: Trevor Smithy
 local function generateRandomCombo()
     local set = {}
     local smithyMode = math.random(40) == 40

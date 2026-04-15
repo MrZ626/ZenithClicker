@@ -23,7 +23,7 @@ function scene.update(dt)
             TASK.new(Daemon_Slow)
             TASK.new(Daemon_Fast)
             ---@diagnostic disable-next-line
-            local _ = TEXTURE.panel.glass_a, TEXTURE.panel.glass_b, TEXTURE.panel.throb_a, TEXTURE.panel.throb_b
+            local _, _, _, _ = TEXTURE.panel.glass_a, TEXTURE.panel.glass_b, TEXTURE.panel.throb_a, TEXTURE.panel.throb_b
             for i = 2, 9 do TEXTURE.towerBG[i]:setWrap('mirroredrepeat', 'mirroredrepeat') end
             TEXTURE.towerBG[1]:setWrap('mirroredrepeat', 'clampzero')
             TEXTURE.towerBG[10]:setWrap('mirroredrepeat', 'clampzero')

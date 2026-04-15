@@ -2042,9 +2042,9 @@ local function notEDHandEDP() return GAME.mod.DH ~= -1 and GAME.mod.DP ~= -1 end
 ---@field target number
 ---@field short string
 ---@field text string
----@field cond? fun():boolean
----@field init? fun(t:Prompt)
----@field _prompt? string for repeating check
+---@field cond fun():boolean?
+---@field init fun(t:Prompt)?
+---@field _prompt string? for repeating check
 
 ---@type Prompt[]
 RevivePrompts = {
