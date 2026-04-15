@@ -475,7 +475,6 @@ function GAME.getComboName(list, mode)
         local messyText = ""
         for i = 1, len - 1 do
             if M.IN == -1 and M.MS == -1 and M.AS ~= 0 then
-                -- code go here TODO
                 --psuedocode: goal - get card order from CD[j].initOrder, use that to generate a new index for the MD.textColor  
                 -- forgive me lord for i have sinned        
                 if MD.name[list[i]] == 'expert' then
@@ -919,7 +918,7 @@ function GAME.shuffleCards(messiness)
 end
 
 function GAME.genQuest()
-    local floor = (M.DH == 2 and GAME.einvisUI and GAME.time >= 690 and (GAME.time - 640)/20 or GAME.floor) -- 1 at 660, 10 at 840
+    local floor = (M.DH == 2 and GAME.einvisUI and GAME.time >= 690 and min((GAME.time - 640)/20, 10) or GAME.floor) -- 1 at 660, 10 at 840
     repeat
         local combo = {}
         local base = .72 + floor ^ .5 / 6 + GAME.extraQuestBase + icLerp(6200, 10000, GAME.height)
@@ -955,33 +954,43 @@ function GAME.genQuest()
             -- Reduce DP on rDH
             pool.DP = pool.DP * .5
         end
-        for _ = 1, questCount do
-            local mod = MATH.randFreqAll(pool)
-            pool[mod] = 0
-            local p = TABLE.find(CD, CD[mod])
-            if p then
-            if M.DH == -1 then --if easy DH, then "fix" the quest favor to increase the chance for adjacent cards instead of decrease
-                if p > 1 then
-                    local left = CD[p - 1].id
-                    pool[left] = max(pool[left] * (1 + GAME.questFavor * .01), 0)
-                end
-                if p < 9 then
-                    local right = CD[p + 1].id
-                    pool[right] = max(pool[right] * (1 + GAME.questFavor * .01), 0)
-                end
-            else
+        for i = 1, questCount do
+            local mod
+            if questCount < 9 then --game crashes if it tries to handle 9 mod automatically, so we do it manually below
+                mod = MATH.randFreqAll(pool)
+                pool[mod] = 0
+                local p = TABLE.find(CD, CD[mod])
+                if p then
+                if M.DH == -1 then --if easy DH, then "fix" the quest favor to increase the chance for adjacent cards instead of decrease
                     if p > 1 then
                         local left = CD[p - 1].id
-                        pool[left] = max(pool[left] * (1 - GAME.questFavor * .01), 0)
+                        pool[left] = max(pool[left] * (1 + GAME.questFavor * .01), 0)
                     end
                     if p < 9 then
                         local right = CD[p + 1].id
-                        pool[right] = max(pool[right] * (1 - GAME.questFavor * .01), 0)
+                        pool[right] = max(pool[right] * (1 + GAME.questFavor * .01), 0)
+                    end
+                else
+                        if p > 1 then
+                            local left = CD[p - 1].id
+                            pool[left] = max(pool[left] * (1 - GAME.questFavor * .01), 0)
+                        end
+                        if p < 9 then
+                            local right = CD[p + 1].id
+                            pool[right] = max(pool[right] * (1 - GAME.questFavor * .01), 0)
+                        end
+                    end
+                end
+                ins(combo, mod)
+            else
+                combo = {'EX','NH','MS','GV','VL','DH','IN','AS','DP'} -- ALL THE MODS
+                if lastQ then
+                    if TABLE.equalAll(lastQ.combo, combo) then --but like, still don't repeat "bath with a friend"
+                        rem(combo, MATH.rand(1,9))
+                        TABLE.removeDuplicateAll(combo)
                     end
                 end
             end
-
-            ins(combo, mod)
         end
 
         if #combo >= 4 then
@@ -3938,6 +3947,7 @@ function GAME.submitTimedAchievements()
 end
 
 local KBisDown = love.keyboard.isDown
+local damned = false
 function GAME.update(dt)
     GAME.spikeTimer = GAME.spikeTimer - dt
     if not GAME.playing then return end
@@ -4071,26 +4081,41 @@ function GAME.update(dt)
             if GAME.time >= GAME.fatigueSet[GAME.fatigue].time then GAME.nextFatigue() end
         end
     end
-    --if GAME.time < 530 then GAME.time = 530 end --TODO 1.1.3 REMOVE
 
-    if GAME.einvisUI and M.DH == 2 and GAME.time >= 690 and GAME.maxQuestSize < (M.NH == 2 and 6 or M.NH == -1 and 4 or 5) then
-        --GAME.atkBufferCap = GAME.atkBufferCap + 4 + M.NH
-        --GAME.extraQuestVar = GAME.extraQuestVar + 1
-        GAME.maxQuestSize = GAME.maxQuestSize + 1
-        TEXT:add {
-            text = "YOU ARE DAMNED",
-            x = 800, y = 265, fontSize = 30, k = 1.5,
-            style = 'score', duration = 26,
-            inPoint = .1, outPoint = .26,
-            color = 'lB',
-        }
-        TEXT:add {
-            text = "QuestDifficulty++++++",
-            x = 800, y = 300, fontSize = 30,
-            style = 'score', duration = 26,
-            inPoint = .26, outPoint = .1,
-            color = 'lB',
-        }
+    if M.DH == 2 then
+        if GAME.time < 690 then
+            damned = false
+        end
+        if GAME.einvisUI and GAME.time >= 690 and not damned then
+            TEXT:add {
+                text = "YOU ARE DAMNED",
+                x = 800, y = 265, fontSize = 30, k = 1.5,
+                style = 'score', duration = 26,
+                inPoint = .1, outPoint = .26,
+                color = 'lB',
+            }
+            TEXT:add {
+                text = "QuestDifficulty++++++",
+                x = 800, y = 300, fontSize = 30,
+                style = 'score', duration = 26,
+                inPoint = .26, outPoint = .1,
+                color = 'lB',
+            }
+            SFX.play('warning', 1)
+            damned = true
+        end
+        if GAME.einvisUI and GAME.time >= 720 and GAME.maxQuestSize < (M.NH == 2 and 6 or 5) and M.NH >= 0 then
+            GAME.maxQuestSize = GAME.maxQuestSize + 1
+            SFX.play('warning', 1)
+        end
+        if GAME.time >= 780 and GAME.maxQuestSize < (M.NH == 2 and 7 or 6) and M.NH >= 1 and STAT.easyName then
+            GAME.maxQuestSize = GAME.maxQuestSize + 1
+            SFX.play('warning', 1)
+        end
+        -- game.time >= 840 = 8 mod if stat.easyName, rDH, rNH and eT
+        if GAME.time >= 885 and GAME.maxQuestSize < 9 and M.NH == 2 and STAT.easyName then
+            GAME.maxQuestSize = GAME.maxQuestSize + 1
+        end
     end
 
     -- Gigaspeed timer text
