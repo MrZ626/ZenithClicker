@@ -474,7 +474,7 @@ function GAME.getComboName(list, mode)
         local colorModNumber = 1
         local messyText = ""
         for i = 1, len - 1 do
-            if M.IN == -1 and M.MS == -1 and M.AS ~= 0 then
+            if M.IN == -1 and M.MS == -1 and M.AS ~= 0 and not STAT.easyName then
                 --psuedocode: goal - get card order from CD[j].initOrder, use that to generate a new index for the MD.textColor  
                 -- forgive me lord for i have sinned        
                 if MD.name[list[i]] == 'expert' then
@@ -554,7 +554,7 @@ function GAME.getComboName(list, mode)
                 end
             end
         end
-        if M.IN == -1 and M.MS == -1 and M.AS ~= 0 then
+        if M.IN == -1 and M.MS == -1 and M.AS ~= 0 and not STAT.easyName then
             --ins(fstr, {COLOR.HEX "C29F68FF"})
             -- forgive me lord for i have sinned yet again
             if MD.name[list[len]] == 'expert' then
@@ -2457,7 +2457,9 @@ function GAME.commit(auto, falseCommit)
         correct = 3
         eDPCorrect = 1
     end
-
+    if eDPCorrect then
+        GAME.incrementPrompt('pass_third')
+    end
     -- if 3/1 then 3/1 then correct = slam dunk, if 3/1 then correct = alleyoop
     if eDPCorrect and correct == 1 then -- this is a 3rd + 1st quest
         if GAME.alleyoopCheck and correct then --last was a 3rd quest

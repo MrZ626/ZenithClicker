@@ -2008,13 +2008,15 @@ for _, f in next, Fatigue do for _, v in next, f do if v.text then v.text = v.te
 local function rndMod(t)
     local d = MATH.randFreqAll(ModData.weight)
     t.prompt = t.prompt:repD(d)
-    t.text = t.text:repD(ModData.adj[d])
+    if STAT.easyName then d = 'e' .. d end
+    t.text = STAT.easyName and t.text:repD(ModData.noun[d]) or t.text:repD(ModData.adj[d])
     t.short = t.short:repD(d)
 end
 local function rndMod2(t)
     local d = ModData.deck[math.random(9)].id
     t.prompt = t.prompt:repD(d)
-    t.text = t.text:repD(ModData.adj[d])
+    if STAT.easyName then d = 'e' .. d end
+    t.text = STAT.easyName and t.text:repD(ModData.noun[d]) or t.text:repD(ModData.adj[d])
     t.short = t.short:repD(d)
 end
 local function f5() return math.max(GAME.floor, GAME.negFloor) <= 5 end
@@ -2022,11 +2024,17 @@ local function F6() return math.max(GAME.floor, GAME.negFloor) >= 6 end
 local function F9() return math.max(GAME.floor, GAME.negFloor) >= 9 end
 local function F9wind() return math.max(GAME.floor, GAME.negFloor) >= 9 and GAME.maxQuestSize >= 4 and GAME.mod.DH ~= -1 end
 local function F9wind3() return math.max(GAME.floor, GAME.negFloor) >= 9 and GAME.maxQuestSize >= 5 and GAME.mod.DH ~= -1 end
+--ZCEM conditions
 local function notENH() return GAME.mod.NH ~= -1 end
 local function notENHorF9wind() return math.max(GAME.floor, GAME.negFloor) >= 9 and GAME.maxQuestSize >= 4 and GAME.mod.DH ~= -1 and GAME.mod.NH ~= -1 end
 local function notENHorF9wind3() return math.max(GAME.floor, GAME.negFloor) >= 9 and GAME.maxQuestSize >= 5 and GAME.mod.DH ~= -1 and GAME.mod.NH ~= -1 end
 local function notEMS() return GAME.mod.MS ~= -1 end
 local function notEMSorF6() return math.max(GAME.floor, GAME.negFloor) >= 6 and GAME.mod.MS ~= -1 end
+local function notEasyName() return not STAT.easyName end -- whether or not to use SWAMP WATER or BATH WATER
+local function easyName() return STAT.easyName end
+local function EDP() return GAME.mod.DP == -1 and GAME.mod.NH ~= 2 and GAME.animDuration < 26 end --3rd quest, don't do if rNH or excessive animDuration
+local function notUASandEDP() return not (GAME.mod.AS == 2 and URM and GAME.mod.DP == -1) end -- friend won't let you kill yourself
+local function notEDHandEDP() return GAME.mod.DH ~= -1 and GAME.mod.DP ~= -1 end -- friend removes annoying revive task
 
 ---@class Prompt
 ---@field rank number[]
@@ -2047,8 +2055,8 @@ RevivePrompts = {
     { rank = { 1, 2 }, prompt = 'flip',                 target = 50,  short = "Flip 50",                 text = "Flip 50 cards" },
     { rank = { 3, 4 }, prompt = 'flip',                 target = 120, short = "Flip 120",                text = "Flip 120 cards" },
     { rank = { 5, 6 }, prompt = 'flip',                 target = 300, short = "Flip 300",                text = "Flip 300 cards" },
-    { rank = { 1, 2 }, prompt = 'flip_single',          target = 10,  short = "Flip single 10",          text = "Flip a single card\n10 times in a row" },
-    { rank = { 2, 4 }, prompt = 'flip_single',          target = 20,  short = "Flip single 20",          text = "Flip a single card\n20 times in a row" },
+    { rank = { 1, 2 }, prompt = 'flip_single',          target = 10,  short = "Flip single 10",          text = "Flip a single card\n10 times in a row",       cond = notUASandEDP },
+    { rank = { 2, 4 }, prompt = 'flip_single',          target = 20,  short = "Flip single 20",          text = "Flip a single card\n20 times in a row",       cond = notUASandEDP },
     { rank = { 1, 2 }, prompt = 'commit',               target = 6,   short = "Commit 6x",               text = "Commit 6 times" },
     { rank = { 2, 3 }, prompt = 'commit',               target = 15,  short = "Commit 15x",              text = "Commit 15 times" },
     { rank = { 3, 5 }, prompt = 'commit',               target = 30,  short = "Commit 30x",              text = "Commit 30 times" },
@@ -2066,8 +2074,10 @@ RevivePrompts = {
     { rank = { 1, 4 }, prompt = 'commit_conn_2',        target = 1,   short = "Commit 2 consec",         text = "Commit with 2 consecutive cards",             cond = f5 },
     { rank = { 2, 4 }, prompt = 'commit_conn_3',        target = 1,   short = "Commit 3 consec",         text = "Commit with 3 consecutive cards",             cond = f5 },
     { rank = { 3, 5 }, prompt = 'commit_conn_4',        target = 1,   short = "Commit 4 consec",         text = "Commit with 4 consecutive cards" },
-    { rank = { 3, 5 }, prompt = 'commit_swamp_l',       target = 1,   short = "SWAMP WATER LITE",        text = "Commit SWAMP WATER LITE" },
-    { rank = { 4, 6 }, prompt = 'commit_swamp',         target = 1,   short = "SWAMP WATER",             text = "Commit SWAMP WATER" },
+    { rank = { 3, 5 }, prompt = 'commit_swamp_l',       target = 1,   short = "SWAMP WATER LITE",        text = "Commit SWAMP WATER LITE",                     cond = notEasyName},
+    { rank = { 4, 6 }, prompt = 'commit_swamp',         target = 1,   short = "SWAMP WATER",             text = "Commit SWAMP WATER",                          cond = notEasyName},
+    { rank = { 3, 5 }, prompt = 'commit_swamp_l',       target = 1,   short = "BATH WATER LITE",         text = "Commit BATH WATER variant",                   cond = easyName},
+    { rank = { 4, 6 }, prompt = 'commit_swamp',         target = 1,   short = "BATH WATER",              text = "Commit BATH WATER",                           cond = easyName},
     { rank = { 3, 6 }, prompt = 'commit_reversed',      target = 1,   short = "Commit inversed",         text = "Commit all cards\nthat aren't requested" },
     { rank = { 1, 4 }, prompt = 'commit_1card',         target = 3,   short = "Commit 1 cards 3x",       text = "Commit 3 times with\n1 card on first commit" },
     { rank = { 2, 5 }, prompt = 'commit_2card',         target = 4,   short = "Commit 2 cards 4x",       text = "Commit 4 times with\n2 cards on first commit" },
@@ -2076,9 +2086,9 @@ RevivePrompts = {
     { rank = { 5, 6 }, prompt = 'commit_5card',         target = 3,   short = "Commit 5 cards 3x",       text = "Commit 3 times with\n5 cards on first commit" },
     { rank = { 1, 4 }, prompt = 'pass',                 target = 10,  short = "Pass 10",                 text = "Pass 10 times" },
     { rank = { 5, 6 }, prompt = 'pass',                 target = 20,  short = "Pass 20",                 text = "Pass 20 times" },
-    { rank = { 2, 5 }, prompt = 'pass_$1',              target = 2,   short = "Pass 2 with $1",          text = "Pass 2 times\nwith $1",                       init = rndMod },
-    { rank = { 3, 5 }, prompt = 'pass_$1',              target = 3,   short = "Pass 3 with $1",          text = "Pass 3 times\nwith $1",                       init = rndMod },
-    { rank = { 4, 6 }, prompt = 'pass_$1',              target = 4,   short = "Pass 4 with $1",          text = "Pass 4 times\nwith $1",                       init = rndMod },
+    { rank = { 2, 5 }, prompt = 'pass_$1',              target = 2,   short = "Pass 2 with $1",          text = "Pass 2 times\nwith $1",                       init = rndMod, cond = notEDHandEDP },
+    { rank = { 3, 5 }, prompt = 'pass_$1',              target = 3,   short = "Pass 3 with $1",          text = "Pass 3 times\nwith $1",                       init = rndMod, cond = notEDHandEDP },
+    { rank = { 4, 6 }, prompt = 'pass_$1',              target = 4,   short = "Pass 4 with $1",          text = "Pass 4 times\nwith $1",                       init = rndMod, cond = notEDHandEDP },
     { rank = { 2, 4 }, prompt = 'pass_perfect',         target = 6,   short = "6x perf",                 text = "Get 6 perfect passes" },
     { rank = { 5, 6 }, prompt = 'pass_perfect',         target = 12,  short = "12x perf",                text = "Get 12 perfect passes" },
     { rank = { 2, 4 }, prompt = 'pass_imperfect',       target = 6,   short = "6x im-perf",              text = "Get 6 imperfect passes",                       cond = notENH },
@@ -2092,6 +2102,9 @@ RevivePrompts = {
     { rank = { 2, 3 }, prompt = 'pass_second',          target = 4,   short = "2nd quest 4x",            text = "Pass the second\nquest 4 times" },
     { rank = { 3, 4 }, prompt = 'pass_second',          target = 8,   short = "2nd quest 8x",            text = "Pass the second\nquest 8 times" },
     { rank = { 4, 5 }, prompt = 'pass_second',          target = 12,  short = "2nd quest 12x",           text = "Pass the second\nquest 12 times" },
+    { rank = { 2, 3 }, prompt = 'pass_third',           target = 1,   short = "3rd quest",               text = "Pass the third\nquest once",                   cond = EDP },
+    { rank = { 3, 4 }, prompt = 'pass_third',           target = 2,   short = "3rd quest 2x",            text = "Pass the third\nquest 2 times",                cond = EDP },
+    { rank = { 4, 5 }, prompt = 'pass_third',           target = 3,   short = "3rd quest 3x",            text = "Pass the third\nquest 3 times",                cond = EDP },
     { rank = { 2, 4 }, prompt = 'b2b_break_4',          target = 1,   short = "Break B2B 4x",            text = "Break B2B chain\nat B2B x4",                   cond = notENH },
     { rank = { 3, 4 }, prompt = 'b2b_break_6',          target = 1,   short = "Break B2B 6x",            text = "Break B2B chain\nat B2B x6",                   cond = notENH },
     { rank = { 4, 5 }, prompt = 'b2b_break_8',          target = 1,   short = "Break B2B 8x",            text = "Break B2B chain\nat B2B x8",                   cond = notENH },
