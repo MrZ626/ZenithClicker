@@ -21,6 +21,11 @@ return {
         TRY ANOTHER COMBO AND COME BACK :>
                             - THE CLICKER FUTURE IS YOURS!      —— MrZ
     ]], true),
+    noCommentTS = STRING.trimIndent([[
+        SELECTED MOD/COMBO DOESN'T HAVE DEVELOPER COMMENTARY.
+        TRY ANOTHER COMBO BY CLICKING THE RANDOM SET BUTTON!
+        WAH-BAAM!      —— Trevor Smithy
+    ]], true),
     ['EX'] = STRING.trimIndent [[
         A mod that appears simple but actually requires much skill and significantly reduces the final score.
         Like QP2, this mod is designed to punish mistakes more severely and make game less lenient.

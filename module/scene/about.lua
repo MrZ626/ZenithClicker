@@ -197,7 +197,11 @@ function scene.load()
             link = devCommentaryLink[cID]
         end
     else
-        text = devCommentary.noComment
+        if cID:count('e') > 0 then
+            text = devCommentary.noCommentTS
+        else
+            text = devCommentary.noComment
+        end
     end
     DevNoteText:setf(text:repD(STAT.uid), 2000, 'center')
 end

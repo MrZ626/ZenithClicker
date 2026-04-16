@@ -1947,6 +1947,11 @@ function GAME.refreshCurrentCombo()
     end
     local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
     GAME.peasantRevolution = false
+    if comboName == "EASY BELIEVED DECEPTIVE TRANQUIL ASCENDANT DAMNED COLLAPSED PIERCING SPIN" then
+        comboName = '"THE OVERWHELMED SMITHY"'
+    elseif comboName == "EASY INVISIBLE MESSY TRANQUIL HOLDLESS DOUBLE HOLE GRAVITY SPUN DUO" then
+        comboName = '"THE SWAMPED SMITHY"'
+    end
     if not GAME.playing and GAME.anyUltra and #hand > 0 then
         -- SPECIAL - Trevor Smithy
         if --[[comboName == '"PEASANT REVOLUTION"' or]] comboName == '"HOLY ASCENSION"' or comboName == '"STABILIZED ENTROPY"'
@@ -1971,6 +1976,8 @@ function GAME.refreshCurrentCombo()
                 comboName = [["PATIENCE IS A VIRTUE..."]]
                 GAME.customUltraCombo = false
             end
+        elseif comboName == '"THE OVERWHELMED SMITHY"' then
+            comboName = '"THE PARALYZED SMITHY"'
         else
             GAME.customUltraCombo = false
             ---@cast comboName string
@@ -1983,6 +1990,8 @@ function GAME.refreshCurrentCombo()
             IssueAchv('uneasy')
             if comboName == 'EASY HOLDLESS ALL-SPIN' then
                 comboName = '"THE PIXEL ARTIST"' -- Credit: LovelyStar
+            elseif comboName == '"THE SWAMPED SMITHY"' then
+                comboName = '"THE BOGGED-DOWN SMITHY"'
             elseif comboName == '"BATH WATER"' or comboName == '"BATH WITH A FRIEND"' then
                 comboName = comboName:gsub("BATH", "HARD BATH", 1)
             elseif comboName:count('BATH') == 1 then

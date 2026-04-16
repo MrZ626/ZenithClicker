@@ -348,6 +348,10 @@ function scene.overDraw()
             bpm = bpm * 1.18921
         end
     end
+    local M = GAME.mod
+    if (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) then
+        bpm = bpm * 1.01455
+    end
     local playTime = 0
     local beatLen = 0
     local dy = 0
@@ -797,6 +801,7 @@ scene.widgetList = {
             GAME.eglassCard = not GAME.eglassCard
             MSG('dark', "eJ: " .. (GAME.eglassCard and "ON" or "OFF"))
             refreshWidgets()
+            RefreshBGM(mode)
         end,
     },
     WIDGET.new { -- el
@@ -818,6 +823,7 @@ scene.widgetList = {
             end
             GAME.efastLeak = not GAME.efastLeak
             MSG('dark', "eL: " .. (GAME.efastLeak and "ON" or "OFF"))
+            RefreshBGM(mode)
         end,
     },
     WIDGET.new { -- eT
@@ -839,6 +845,7 @@ scene.widgetList = {
             end
             GAME.einvisUI = not GAME.einvisUI
             MSG('dark', "eT: " .. (GAME.einvisUI and "ON" or "OFF"))
+            RefreshBGM(mode)
         end,
     },
     WIDGET.new { -- eo
@@ -860,6 +867,7 @@ scene.widgetList = {
             end
             GAME.einvisCard = not GAME.einvisCard
             MSG('dark', "eO: " .. (GAME.einvisCard and "ON" or "OFF"))
+            RefreshBGM(mode)
         end,
     },
     WIDGET.new { -- ei
@@ -882,6 +890,7 @@ scene.widgetList = {
             GAME.ecloseCard = not GAME.ecloseCard
             MSG('dark', "eI: " .. (GAME.ecloseCard and "ON" or "OFF"))
             refreshWidgets()  
+            RefreshBGM(mode)
         end,
     },
     WIDGET.new { -- urm
@@ -899,7 +908,7 @@ scene.widgetList = {
             GAME.refreshUltra()
             GAME.refreshCurrentCombo()
             GAME.refreshPBText()
-            RefreshBGM()
+            RefreshBGM(mode)
             GAME.refreshRPC()
             RefreshHelpText()
         end,

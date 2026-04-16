@@ -423,7 +423,14 @@ function Card:setActive(auto, key)
                 end)
             end
         else
-            SFX.play(toneName, toneVol, 0, Tone(0))
+            if M.EX == -1 and URM and not GAME.anyRev and self.easy and not GAME.playing then
+                TASK.new(function()
+                    SFX.play(toneName, toneVol*.8, 0, Tone(-3))
+                    SFX.play(toneName, toneVol*.8, 0, Tone(-0))
+                end)
+            else
+                SFX.play(toneName, toneVol, 0, Tone(0))
+            end
         end
         if revOn then
             self:revJump()
