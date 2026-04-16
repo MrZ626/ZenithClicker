@@ -394,6 +394,8 @@ ComboData = {
         { set = "eEX MS VL eIN",                            name = "Stargazing"},
         -- Credit: TheBestNoob
         { set = "eEX NH MS GV VL DH IN AS",                 name = "Easy Swamp Water"},
+        { set = "eEX NH MS GV VL DH IN AS eDP",             name = "Easy Swamp Water With A Friend"},
+        { set = "eEX NH MS GV VL DH IN AS DP",              name = "Easy Swamp Water With A Lover"},
         
         --misc (no dev commentary except programming smithy)
         { set = "eNH eGV",          name = "Shameless Cashgrab"},

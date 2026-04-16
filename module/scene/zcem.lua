@@ -943,8 +943,14 @@ scene.widgetList = {
             GAME.ecloseCard = false
             GAME.multiplePiecesActive = false
             PieceSFXID = 15
-            RefreshBGM()
-            refreshWidgets()
+            GAME.hardMode = GAME.mod.EX > 0 or GAME.anyRev and not URM
+            GAME.refreshLayout()
+            GAME.refreshUltra()
+            GAME.refreshCurrentCombo()
+            GAME.refreshPBText()
+            RefreshBGM(mode)
+            GAME.refreshRPC()
+            RefreshHelpText()
         end,
     },
     WIDGET.new { -- normal piece button
