@@ -3594,7 +3594,7 @@ function GAME.finish(reason)
         if M.EX == -1 and GAME.comboStr:count('r') == 0 and URM then
             TABLE.append(resStr, {COLOR.DR, "U"})
         end
-        for i = 1, #PieceData - 1 do 
+        for i = 1, #PieceData - 1 do
             if GAME[PieceData[i].id] then TABLE.append(resStr, PieceData[i].text) end
         end
         if #resStr > 0 then ins(resStr, " ") end
