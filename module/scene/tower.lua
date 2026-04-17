@@ -1664,15 +1664,15 @@ scene.widgetList = {
                     SFX.play('no')
                 end
             else
-                PieceSFXID = (PieceSFXID or 0) % 8 + 1
-                if PieceSFXID <= 7 then
+                PieceSFXID = (PieceSFXID or 0) % #PieceData + 1
+                if PieceSFXID < #PieceData then
                     local piece = ('zsjltoi'):sub(PieceSFXID, PieceSFXID)
                     SFX.play(piece, 1, 0, Tone(6))
                 else
                     SFX.play('allclear')
                 end
 
-                for i = 1, 7 do
+                for i = 1, #PieceData - 1 do
                     GAME[PieceData[i].id] = PieceSFXID == i
                 end
 
