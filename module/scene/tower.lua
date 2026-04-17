@@ -2100,8 +2100,8 @@ scene.widgetList = {
                 -- Trevor Smithy
                 --PieceSFXID = (PieceSFXID or 0) % 8 + 1
                 --if PieceSFXID <= 7 then
-                PieceSFXID = (PieceSFXID or 0) % 15 + 1
-                if PieceSFXID <= 14 then
+                PieceSFXID = (PieceSFXID or 0) % #PieceData + 1
+                if PieceSFXID <= #PieceData - 1 then
                     local piece = ('zsjltoi'):sub(PieceSFXID, PieceSFXID)
                     SFX.play(piece, 1, 0, Tone(6))
                     if PieceSFXID > 7 then
@@ -2113,7 +2113,7 @@ scene.widgetList = {
 
                 --for i = 1, 7 do
                 -- Trevor Smithy
-                for i = 1, 14 do
+                for i = 1, #PieceData - 1 do
                     GAME[PieceData[i].id] = PieceSFXID == i
                 end
 
