@@ -1970,39 +1970,6 @@ Fatigue = {
         { time = 600, event = { 'dmgTimerMul', -0.299 }, text = "MWAHAHAHA!",                 desc = "CEASE!",     duration = 26, color = 'lR', },
         { time = 1e99 }, -- Total: dmgTimerMul-70%
     },
-    -- Trevor Smithy SCRAPPED?
-    eDP = {
-        { time = 20,  event = { 'dmgHeal', -0.5 }, --[[ 2 ]]                       text = "YOUR PASSION FADES_",                        desc = "Heal-",          duration = 10 },
-        { time = 40,  event = { 'dmgHeal', -.25 }, --[[ 1.5 ]]                    text = "THEIR REPLIES BECOME LESS ENGAGED_",         desc = "Heal--",         duration = 10 },
-        { time = 60,  event = { 'dmgHeal', -.25, 'animDuration', .5 }, --[[ 1 ]]  text = "YOU FEEL NEGLECTED_",                        desc = "Heal---",        duration = 10 },
-        { time = 80,  event = { 'dmgHeal', 1 }, --[[ 2 ]]                        text = "THINGS ARE BACK TO HOW THEY USED TO BE_!",   desc = "Heal+++",          duration = 10, color = 'lO' },
-        { time = 90,  event = { 'extraQuestBase', .2 } },
-        { time = 100, event = { 'dmgHeal', 1 }, --[[ 3 ]]                        text = "THINGS ARE BETTER THAN EVER_!",              desc = "Heal+++",        duration = 10, color = 'lO' },
-        { time = 120, event = { 'dmgHeal', -0.5, 'animDuration', .5 }, --[[ 2 ]]   text = "MINOR ISSUES BECOME LARGE CONFLICTS_",       desc = "Heal--",         duration = 10 },
-        { time = 140, event = { 'dmgHeal', -0.5 }, --[[ 1 ]]                       text = "YOU BLAME THEM FOR YOUR OWN PROBLEMS_",      desc = "Heal---",        duration = 10 },
-        { time = 160, event = { 'reviveDifficulty', 2 },                         text = "THEY WOULD RATHER SPEND TIME ALONE_",        desc = "Revive++",       duration = 10 },
-        { time = 180, event = { 'extraQuestBase', .2 } },
-        { time = 180, event = { 'dmgHeal', 1.5, 'animDuration', 1 }, --[[ 2.5 ]] text = "YOU PROMISE TO CHANGE_",                     desc = "Heal++",         duration = 10, color = 'lO' },
-        { time = 200, event = { 'dmgTimerMul', -.2 },                            text = "PROMISES ARE BROKEN_",                       desc = "TimerSpeed++",   duration = 10 },
-        { time = 220, event = { 'dmgHeal', -.25 }, --[[ 2 ]]                      text = "CONVERSATIONS DEVOLVE TO SHOUTING MATCHES_", desc = "Heal---",        duration = 10 },
-        { time = 240, event = { 'extraQuestBase', .2, 'animDuration', 1 } },
-        { time = 240, event = { 'dmgHeal', -.25 }, --[[ 1.5 ]]                    text = "ALL TRUST HAS WITHERED AWAY_",               desc = "Heal--",         duration = 10 },
-        { time = 260, event = { 'dmgHeal', -.25 }, --[[ 1 ]]                      text = "THEY SET AN ULTIMATUM_",                     desc = "Heal--",         duration = 10 },
-        { time = 280, event = { 'dmgHeal', -.25 }, --[[ .5 ]]                     text = "YOU CAN'T BE BOTHERED ANYMORE_",             desc = "Heal--",         duration = 10 },
-        { time = 300, event = { 'dmgWrong', 1, 'animDuration', 1 },              text = "ONE LAST PAINFUL ARGUMENT_",                 desc = "Dmg+",           duration = 10 },
-        { time = 320, event = { 'reviveDifficulty', 9999 },                      text = "GOODBYE.",                                   desc = "NO REVIVE",      duration = 10, color = 'R' },
-        { time = 360, event = { 'dmgHeal', 2, 'animDuration', 1 }, --[[ 1.5 ]]   text = "\"I MISS YOU\"",                             desc = "Heal+++",        duration = 10, color = 'lO' },
-        { time = 380, event = { 'dmgHeal', 2 }, --[[ 2.5 ]]                      text = "MAYBE IT CAN STILL WORK_?",                  desc = "Heal+",          duration = 10, color = 'lO' },
-        { time = 400, event = { 'dmgTimerMul', -.1, 'animDuration', 4 },         text = "GOODBYE.",                                   desc = "TimerSpeed++++", duration = 10, final = true },
-        { time = 402, event = { 'dmgTimerMul', -.1 } },
-        { time = 405, event = { 'dmgTimerMul', -.1 } },
-        { time = 408, event = { 'dmgTimerMul', -.05 } },
-        { time = 412, event = { 'dmgTimerMul', -.05 } },
-        { time = 416, event = { 'dmgTimerMul', -.05 } },
-        { time = 420, event = { 'dmgTimerMul', -.03 } },
-        { time = 425, event = { 'dmgTimerMul', -.02 } },
-        { time = 1e99 }, -- Total: dmgTimerMul-70%
-    },
 }
 -- My formatter doesn't work if there's "…" inside
 for _, f in next, Fatigue do for _, v in next, f do if v.text then v.text = v.text:gsub("_", "…") end end end
