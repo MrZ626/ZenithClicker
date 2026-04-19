@@ -257,7 +257,11 @@ function Initialize(save)
     if #achvLost > 0 then
         MSG('dark', "Achievements lost due to update:\n" .. achvLost:sub(1, #achvLost - 1), 6.26)
     end
-
+    if STAT.mod == 'vanilla' then
+        STAT.mod = 'easyMode'
+        MSG('dark', "Save fixed to correctly be for mod:'easyMode'")
+        SaveStat()
+    end
     GAME.refreshLockState()
     GAME.refreshPBText()
     love.window.setFullscreen(STAT.fullscreen)
