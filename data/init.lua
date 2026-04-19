@@ -182,7 +182,7 @@ NegEvents = {
 
     -- B2: Zenith Restaurant
     { h = -50 }, { event = { 'dmgDelay', -2 } },
-    { event = { 'attackMul', -.1, 'timerMul', -.25 } },
+    { event = { 'attackMul', -.1, 'timerMul', -.2 } },
     { h = -55 }, { text = 'b2.begin' },
     { h = -60 },
     {
@@ -234,7 +234,7 @@ NegEvents = {
 
     -- B3: Underground Parking
     { h = -150 }, { event = { 'dmgDelay', -2, 'dmgCycle', -.5 } },
-    { event = { 'attackMul', -.1, 'timerMul', -.15 } },
+    { event = { 'attackMul', -.1, 'timerMul', -.1 } },
     { h = -155 }, { text = 'b3.begin' },
     { h = -160 }, { text = 'b3.effStart' },
     { h = -165 }, { event = { 'invisUI', true } },
@@ -409,6 +409,7 @@ NegEvents = {
         event = function()
             GAME.invincible = true
             GAME.timerMul = 0
+            GAME.lifeLeak = 0
             GAME.dmgWrong = 1
             GAME.invisCard = true
             GAME.dmgTimerMul = 1e99

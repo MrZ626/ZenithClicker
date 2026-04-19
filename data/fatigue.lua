@@ -33,15 +33,15 @@ d.rEX = {
     { time = 330, event = { 'dmgTimerMul', -.2, 'dmgWrong', 2 },                    text = "YOUR CLOSEST ALLIES DEFECT_",     desc = "TimerSpeed++   Damage++" },
     { time = 360, event = { 'dmgTimerMul', -.1, 'dmgHeal', -1, 'animDuration', 1 }, text = "PARANOIA CLOUDS YOUR JUDGEMENT_", desc = "TimerSpeed++   Heal--" },
     { time = 362, event = { 'dmgTimerMul', -.05 } },
-    { time = 365, event = { 'dmgTimerMul', -.03 } },
+    { time = 365, event = { 'dmgTimerMul', -.05 } },
     { time = 390, event = { 'dmgCycle', -.5, 'dmgWrong', 1 },                       text = "THE REVOLUTION HAS BEGUN_",       desc = "DmgCycle--   Damage++" },
     { time = 420, event = { 'dmgTimerMul', -.1, 'animDuration', 1 },                text = "THE END OF AN ERA.",              desc = "TimerSpeed++++",         duration = 10, final = true },
-    { time = 423, event = { 'dmgTimerMul', -.03 } },
-    { time = 426, event = { 'dmgTimerMul', -.03 } },
-    { time = 430, event = { 'dmgTimerMul', -.02 } },
-    { time = 435, event = { 'dmgTimerMul', -.02 } },
-    { time = 440, event = { 'dmgTimerMul', -.02, 'lifeLeak', .5 },                  text = "BLACK OUT.",                         desc = "HP leak",                color = 'DR' },
-    { time = 1e99 }, -- Total: dmgTimerMul-70%, Cycle-1.5, Wrong+5, killscreen at 440+40(60)s
+    { time = 423, event = { 'dmgTimerMul', -.05 } },
+    { time = 426, event = { 'dmgTimerMul', -.05 } },
+    { time = 430, event = { 'dmgTimerMul', -.05 } },
+    { time = 435, event = { 'dmgTimerMul', -.03 } },
+    { time = 440, event = { 'dmgTimerMul', -.02, 'lifeLeak', .5 },                  text = "BLACK OUT.",                      desc = "HP leak",                color = 'DR' },
+    { time = 1e99 }, -- Total: dmgTimerMul-90%, Cycle-1.5, Wrong+5, killscreen at 440+40(60)s
 }
 
 d.rDP = {
