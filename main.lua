@@ -623,22 +623,6 @@ function SaveStat() if not TestMode then love.filesystem.write('stat.luaon', 're
 
 function SaveAchv() if not TestMode then love.filesystem.write('achv.luaon', 'return' .. TABLE.dumpDeflate(ACHV)) end end
 
-MSG.setSafeY(75)
-MSG.addCategory('dark', COLOR.D, COLOR.L)
-MSG.addCategory('bright', COLOR.L, COLOR.D)
-
-AchvData = {
-    [0] = { id = 'achv_none', bg = COLOR.D, fg = COLOR.LD, fg2 = COLOR.LD },
-    { id = 'achv_bronze',   bg = COLOR.DO,          fg = COLOR.lO, fg2 = COLOR.O },
-    { id = 'achv_silver',   bg = { .26, .26, .26 }, fg = COLOR.L,  fg2 = COLOR.dL },
-    { id = 'achv_gold',     bg = COLOR.DY,          fg = COLOR.lY, fg2 = COLOR.Y },
-    { id = 'achv_platinum', bg = COLOR.DJ,          fg = COLOR.lJ, fg2 = COLOR.J },
-    { id = 'achv_diamond',  bg = COLOR.DP,          fg = COLOR.lP, fg2 = COLOR.lB },
-    { id = 'achv_issued',   bg = COLOR.DM,          fg = COLOR.lM, fg2 = COLOR.lM },
-}
-for i = 0, 6 do MSG.addCategory(AchvData[i].id, AchvData[i].bg, COLOR.L, TEXTURE.achievement.frame[i]) end
-for i = 1, 6 do MSG.addCategory("wreath_" .. i, AchvData[5].bg, COLOR.L, GC.load { w = 256, { 'draw', TEXTURE.achievement.frame[5] }, { 'draw', TEXTURE.achievement.wreath[i] } }) end
-
 local msgTime = 0
 local bufferedMsg = {}
 
@@ -799,8 +783,7 @@ end
 
 BgScale = 1
 
-require 'module/game_data'
-require 'module/achv_data'
+require 'data'
 require 'module/shader'
 require 'module/game'
 
@@ -810,16 +793,22 @@ for i, C in ipairs(Cards) do
     Cards[C.id], C.x, C.y = C, C.tx, C.ty + 260 + 26 * 1.6 ^ i
 end
 
+MSG.setSafeY(75)
+MSG.addCategory('dark', COLOR.D, COLOR.L)
+MSG.addCategory('bright', COLOR.L, COLOR.D)
+for i = 0, 6 do MSG.addCategory(AchvData[i].id, AchvData[i].bg, COLOR.L, TEXTURE.achievement.frame[i]) end
+for i = 1, 6 do MSG.addCategory("wreath_" .. i, AchvData[5].bg, COLOR.L, GC.load { w = 256, { 'draw', TEXTURE.achievement.frame[5] }, { 'draw', TEXTURE.achievement.wreath[i] } }) end
+
 SCN.addSwapStyle('warp', require 'module/warp_swap')
 
-SCN.add('joining', require 'module/scene/joining')
-SCN.add('tower', require 'module/scene/tower')
-SCN.add('stat', require 'module/scene/stat')
-SCN.add('records', require 'module/scene/records')
-SCN.add('achv', require 'module/scene/achv')
-SCN.add('conf', require 'module/scene/conf')
-SCN.add('about', require 'module/scene/about')
-SCN.add('ending', require 'module/scene/ending')
+SCN.add('joining', require 'scene/joining')
+SCN.add('tower', require 'scene/tower')
+SCN.add('stat', require 'scene/stat')
+SCN.add('records', require 'scene/records')
+SCN.add('achv', require 'scene/achv')
+SCN.add('conf', require 'scene/conf')
+SCN.add('about', require 'scene/about')
+SCN.add('ending', require 'scene/ending')
 ZENITHA.setFirstScene('joining')
 
 local gc = love.graphics

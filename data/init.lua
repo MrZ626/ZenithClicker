@@ -4,14 +4,15 @@
 -- Be sure you've finished the game, including Ultra Reversed Mods --
 --                   Read at your own risk.                        --
 ---------------------------------------------------------------------
-
-local require = simpRequire('module.game_data.')
-ComboData = require 'combo'
-DevScore = require 'devscore'
-Fatigue = require 'fatigue'
-RevivePrompts = require 'revive'
-ModData = require 'mod'
-BadgeData = require 'badge'
+AchvData = {
+    [0] = { id = 'achv_none', bg = COLOR.D, fg = COLOR.LD, fg2 = COLOR.LD },
+    { id = 'achv_bronze',   bg = COLOR.DO,          fg = COLOR.lO, fg2 = COLOR.O },
+    { id = 'achv_silver',   bg = { .26, .26, .26 }, fg = COLOR.L,  fg2 = COLOR.dL },
+    { id = 'achv_gold',     bg = COLOR.DY,          fg = COLOR.lY, fg2 = COLOR.Y },
+    { id = 'achv_platinum', bg = COLOR.DJ,          fg = COLOR.lJ, fg2 = COLOR.J },
+    { id = 'achv_diamond',  bg = COLOR.DP,          fg = COLOR.lP, fg2 = COLOR.lB },
+    { id = 'achv_issued',   bg = COLOR.DM,          fg = COLOR.lM, fg2 = COLOR.lM },
+}
 
 GigaSpeedReq = { [0] = 7, 8, 8, 9, 9, 10, 1e99, 1e99, 1e99, 1e99, 1e99 }
 TeraMusicReq = { [0] = 9, 11, 11, 12, 12, 13, 13, 1e99, 1e99, 1e99 }
@@ -463,3 +464,13 @@ for _, e in next, NegEvents do
         e.h = lastH
     end
 end
+
+local require = simpRequire((...) .. "/")
+ModData = require 'mod'
+ComboData = require 'combo'
+Fatigue = require 'fatigue'
+RevivePrompts = require 'revive'
+Achievements = require 'achievement'
+BadgeData = require 'badge'
+DevScore = require 'devscore'
+DevCommentary = require 'devcommentary'

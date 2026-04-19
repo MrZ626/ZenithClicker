@@ -56,7 +56,7 @@ end
 ---@field hide? fun():boolean
 
 ---@type Map<Achievement>
-Achievements = {
+local d = {
     { title = "General" },
     { -- contender
         id = 'contender',
@@ -1489,22 +1489,22 @@ local compFunc = {
 do
     local i = 1
     repeat
-        local achv = Achievements[i]
+        local achv = d[i]
         if achv.title then
             if i % 2 == 0 then
-                table.insert(Achievements, i, {})
+                table.insert(d, i, {})
                 i = i + 1
             end
-            table.insert(Achievements, i + 1, {})
+            table.insert(d, i + 1, {})
         end
         i = i + 1
-    until i > #Achievements
+    until i > #d
 end
-for i = 1, #Achievements do
-    local achv = Achievements[i]
+for i = 1, #d do
+    local achv = d[i]
     local id = achv.id
     if id then
-        Achievements[id] = achv
+        d[id] = achv
 
         assert(type(id) == 'string', "Missing field 'name' - " .. id)
         assert(type(achv.name) == 'string', "Missing field 'name' - " .. id)
@@ -1546,3 +1546,5 @@ for i = 1, #Achievements do
     end
     achv.hide = achv.hide or FALSE
 end
+
+return d
