@@ -784,8 +784,8 @@ end
 BgScale = 1
 
 require 'data'
-require 'module/shader'
-require 'module/game'
+SHADER = require 'module/shader'
+GAME = require 'module/game'
 
 for i = 1, #ModData.deck do table.insert(Cards, require 'module/card'.new(ModData.deck[i])) end
 GAME.refreshLayout()

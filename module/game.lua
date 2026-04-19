@@ -1,5 +1,5 @@
 local max, min = math.max, math.min
-local floor, ceil = math.floor, math.ceil
+local floor = math.floor
 local abs, rnd = math.abs, math.random
 local roundUnit = MATH.roundUnit
 local expApproach = MATH.expApproach
@@ -2964,4 +2964,4 @@ function GAME.update(dt)
     end
 end
 
-_G.GAME = GAME
+return GAME
