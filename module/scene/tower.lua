@@ -928,23 +928,23 @@ function scene.overDraw()
         local safeHP = GAME.playing and max(GAME.dmgWrong + GAME.dmgWrongExtra, GAME.dmgTime) or 0
         if M.DP == 0 then
             gc_setColor(GAME.playing and GAME.life > safeHP and COLOR.L or COLOR.R)
-            gc_mRect('fill', 800, 440, 1540 * GAME.lifeShow / GAME.fullHealth, 10)
+            gc_mRect('fill', 800, 440, 1540 * GAME.lifeShow / GAME.startingHealth, 10)
             if GAME.playing then
                 gc_setColor(COLOR.LD)
-                gc_mRect('fill', 800, 440 - 2, 1540 * GAME.dmgTime / GAME.fullHealth, 3)
+                gc_mRect('fill', 800, 440 - 2, 1540 * GAME.dmgTime / GAME.startingHealth, 3)
                 gc_setColor(.872, 0, 0)
-                gc_mRect('fill', 800, 440 + 2, 1540 * GAME.dmgWrong / GAME.fullHealth, 3)
+                gc_mRect('fill', 800, 440 + 2, 1540 * GAME.dmgWrong / GAME.startingHealth, 3)
                 gc_setColor(1, 0, 0, .626)
-                gc_mRect('fill', 800, 440 + 2, 1540 * (GAME.dmgWrong + GAME.dmgWrongExtra) / GAME.fullHealth, 2)
+                gc_mRect('fill', 800, 440 + 2, 1540 * (GAME.dmgWrong + GAME.dmgWrongExtra) / GAME.startingHealth, 2)
             end
         else
             local onAlly = GAME.onAlly
             gc_setColor(GAME.playing and GAME.life > safeHP and COLOR.L or COLOR.R)
             if onAlly then gc_setAlpha(.42) end
-            gc_rectangle('fill', 800, 440 - 5, -1540 / 2 * GAME.lifeShow / GAME.fullHealth, onAlly and 8 * M.DP or 12)
+            gc_rectangle('fill', 800, 440 - 5, -1540 / 2 * GAME.lifeShow / GAME.startingHealth, onAlly and 8 * M.DP or 12)
             gc_setColor(GAME.playing and GAME.life2 > safeHP and COLOR.L or COLOR.R)
             if not onAlly then gc_setAlpha(.42) end
-            gc_rectangle('fill', 800, 440 - 5, 1540 / 2 * GAME.lifeShow2 / GAME.fullHealth, onAlly and 12 or 8 * M.DP)
+            gc_rectangle('fill', 800, 440 - 5, 1540 / 2 * GAME.lifeShow2 / GAME.startingHealth, onAlly and 12 or 8 * M.DP)
         end
     end
 
@@ -954,8 +954,8 @@ function scene.overDraw()
             if M.DP > 0 then
                 if GAME.comboStr == 'rDP' and not GAME.achv_protectH then
                     gc_setColor(COLOR.lG)
-                    gc_mRect('fill', 800 + 1540 / 2 * 10 / GAME.fullHealth, 442, 4, 20)
-                    gc_mRect('fill', 800 - 1540 / 2 * 10 / GAME.fullHealth, 442, 4, 20)
+                    gc_mRect('fill', 800 + 1540 / 2 * 10 / GAME.startingHealth, 442, 4, 20)
+                    gc_mRect('fill', 800 - 1540 / 2 * 10 / GAME.startingHealth, 442, 4, 20)
                 end
                 if not GAME.achv_shareModH then
                     gc_setColor(COLOR.M)

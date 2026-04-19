@@ -1106,14 +1106,15 @@ Fatigue = {
         { time = 422, event = { 'dmgTimerMul', -.05 } },
         { time = 425, event = { 'dmgTimerMul', -.05 } },
         { time = 430, event = { 'dmgTimerMul', -.05 } },
-        { time = 480, event = { 'atkBufferCap', 6, 'animDuration', 1, 'maxQuestSize', 1 }, text = "FAREWELL.",                 desc = "QuestDifficulty++++++",     duration = 26, color = 'lB', },
-        { time = 485, event = { 'atkBufferCap', 6, 'animDuration', 3, 'extraQuestVar', 1 } },
-        { time = 490, event = { 'atkBufferCap', 6, 'animDuration', 5 } },
-        { time = 510, event = { 'animDuration', 11 }, --[[26]]                             text = "" },
-        { time = 540, event = { 'animDuration', 16 }, --[[42]]                             text = "" },
-        { time = 570, event = { 'animDuration', 20 }, --[[62]]                             text = "" },
-        { time = 600, event = { 'animDuration', 64 }, --[[126]]                            text = "" },
-        { time = 1e99 }, -- Total: dmgTimerMul-50%, Cycle-1, Wrong+2
+        { time = 480, event = { 'atkBufferCap', 6, 'animDuration', 2, 'maxQuestSize', 1 }, text = "FAREWELL.",                 desc = "QuestDifficulty++++++",     duration = 26, color = 'lB', },
+        { time = 485, event = { 'atkBufferCap', 6, 'animDuration', 4, 'extraQuestVar', 1 } },
+        { time = 490, event = { 'atkBufferCap', 6, 'animDuration', 4 } },
+        { time = 500, event = { 'animDuration', 5 }, --[[21]] },
+        { time = 510, event = { 'animDuration', 5 }, --[[26]]                              text = "" },
+        { time = 520, event = { 'animDuration', 10 }, --[[36]] },
+        { time = 540, event = { 'animDuration', 12, 'lifeLeak', .2 }, --[[48]]             text = "HEART ACHE.",               desc = "HP leak",                   color = 'DR' },
+        { time = 560, event = { 'animDuration', 14 }, --[[62]]                             text = "" },
+        { time = 1e99 }, -- Total: dmgTimerMul-50%, Cycle-1, Wrong+2, killscreen at 540+100(150)s
     },
     rEX = {
         { time = 90,  event = { 'extraQuestBase', .2, 'animDuration', .5 } },
@@ -1125,15 +1126,16 @@ Fatigue = {
         { time = 330, event = { 'dmgTimerMul', -.2, 'dmgWrong', 2 },                    text = "YOUR CLOSEST ALLIES DEFECT_",     desc = "TimerSpeed++   Damage++" },
         { time = 360, event = { 'dmgTimerMul', -.1, 'dmgHeal', -1, 'animDuration', 1 }, text = "PARANOIA CLOUDS YOUR JUDGEMENT_", desc = "TimerSpeed++   Heal--" },
         { time = 362, event = { 'dmgTimerMul', -.05 } },
-        { time = 365, event = { 'dmgTimerMul', -.05 } },
+        { time = 365, event = { 'dmgTimerMul', -.03 } },
         { time = 390, event = { 'dmgCycle', -.5, 'dmgWrong', 1 },                       text = "THE REVOLUTION HAS BEGUN_",       desc = "DmgCycle--   Damage++" },
         { time = 420, event = { 'dmgTimerMul', -.1, 'animDuration', 1 },                text = "THE END OF AN ERA.",              desc = "TimerSpeed++++",         duration = 10, final = true },
-        { time = 423, event = { 'dmgTimerMul', -.05 } },
-        { time = 426, event = { 'dmgTimerMul', -.05 } },
-        { time = 430, event = { 'dmgTimerMul', -.05 } },
-        { time = 435, event = { 'dmgTimerMul', -.03 } },
+        { time = 423, event = { 'dmgTimerMul', -.03 } },
+        { time = 426, event = { 'dmgTimerMul', -.03 } },
+        { time = 430, event = { 'dmgTimerMul', -.02 } },
+        { time = 435, event = { 'dmgTimerMul', -.02 } },
         { time = 440, event = { 'dmgTimerMul', -.02 } },
-        { time = 1e99 }, -- Total: dmgTimerMul-90%, Cycle-1.5, Wrong+5
+        { time = 450, event = { 'lifeLeak', .5 },                                       text = "ANGINA.",                         desc = "HP leak",                color = 'DR' },
+        { time = 1e99 }, -- Total: dmgTimerMul-70%, Cycle-1.5, Wrong+5, killscreen at 450+40(60)s
     },
     rDP = {
         { time = 20,  event = { 'dmgHeal', -1 }, --[[ 2 ]]                       text = "YOUR PASSION FADES_",                        desc = "Heal-",          duration = 10 },
@@ -1158,14 +1160,13 @@ Fatigue = {
         { time = 360, event = { 'dmgHeal', 1, 'animDuration', 1 }, --[[ 1.5 ]]   text = "\"I MISS YOU\"",                             desc = "Heal+++",        duration = 10, color = 'lO' },
         { time = 380, event = { 'dmgHeal', 1 }, --[[ 2.5 ]]                      text = "MAYBE IT CAN STILL WORK_?",                  desc = "Heal+",          duration = 10, color = 'lO' },
         { time = 400, event = { 'dmgTimerMul', -.1, 'animDuration', 4 },         text = "GOODBYE.",                                   desc = "TimerSpeed++++", duration = 10, final = true },
-        { time = 402, event = { 'dmgTimerMul', -.1 } },
-        { time = 405, event = { 'dmgTimerMul', -.1 } },
-        { time = 408, event = { 'dmgTimerMul', -.05 } },
-        { time = 412, event = { 'dmgTimerMul', -.05 } },
-        { time = 416, event = { 'dmgTimerMul', -.05 } },
+        { time = 405, event = { 'dmgTimerMul', -.05 } },
+        { time = 410, event = { 'dmgTimerMul', -.05 } },
+        { time = 415, event = { 'dmgTimerMul', -.05 } },
         { time = 420, event = { 'dmgTimerMul', -.03 } },
         { time = 425, event = { 'dmgTimerMul', -.02 } },
-        { time = 1e99 }, -- Total: dmgTimerMul-70%
+        { time = 470, event = { 'lifeLeak', .2 },                                text = "CARDIAC RUPTURE.",                           desc = "HP leak",        color = 'DR' },
+        { time = 1e99 }, -- Total: dmgTimerMul-50%, killscreen at 470+150s
     },
 }
 -- My formatter doesn't work if there's "…" inside
@@ -1366,6 +1367,11 @@ BadgeData = {
         id = 'true_couple',
         name = "True Couple",
         desc = "Finished a speedrun with rDP & Invisible UI",
+    },
+    {
+        id = 'cardiac_arrest',
+        name = "Cardiac Arrest",
+        desc = "Die with max HP less than 5",
     },
     {
         id = 'universal_gravitation',
