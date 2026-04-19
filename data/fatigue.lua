@@ -17,7 +17,7 @@ d.normal = {
     { time = 490, event = { 'atkBufferCap', 6, 'animDuration', 4 } },
     { time = 500, event = { 'animDuration', 5 }, --[[21]] },
     { time = 510, event = { 'animDuration', 5 }, --[[26]]                              text = "" },
-    { time = 520, event = { 'animDuration', 10, 'lifeLeak', .2 }, --[[36]]             text = "HEART ACHE.",               desc = "HP leak",                   color = 'DR' },
+    { time = 520, event = { 'animDuration', 10, 'lifeLeak', .2 }, --[[36]]             text = "ANGINA.",                   desc = "HP leak",                   color = 'DR' },
     { time = 540, event = { 'animDuration', 12 }, --[[48]] },
     { time = 560, event = { 'animDuration', 14 }, --[[62]]                             text = "" },
     { time = 1e99 }, -- Total: dmgTimerMul-50%, Cycle-1, Wrong+2, killscreen at 520+100(150)s
@@ -40,7 +40,7 @@ d.rEX = {
     { time = 426, event = { 'dmgTimerMul', -.03 } },
     { time = 430, event = { 'dmgTimerMul', -.02 } },
     { time = 435, event = { 'dmgTimerMul', -.02 } },
-    { time = 440, event = { 'dmgTimerMul', -.02, 'lifeLeak', .5 },                  text = "ANGINA.",                         desc = "HP leak",                color = 'DR' },
+    { time = 440, event = { 'dmgTimerMul', -.02, 'lifeLeak', .5 },                  text = "BLACK OUT.",                         desc = "HP leak",                color = 'DR' },
     { time = 1e99 }, -- Total: dmgTimerMul-70%, Cycle-1.5, Wrong+5, killscreen at 440+40(60)s
 }
 
