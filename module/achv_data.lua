@@ -747,6 +747,16 @@ Achievements = {
         scoreSimp = function(quest) return floor(quest) .. " Quests" end,
         rank = numberRank(0, 10, 26, 40, 60, 80, 100),
     },
+    { -- the_artist_trinity
+        ex = true,
+        id = 'the_artist_trinity',
+        name = "The Artist Trinity",
+        desc = [[HFD while every quest triggers wound using EX NH MS VL DH rAS]],
+        quote = [[All forms of creativity through restraint, deceit, and evasion.]],
+        credit = "@The_111thBlitzer",
+        rank = floorRank(1, 2, 3, 4, 5, 6, 7),
+        hide = function() return GAME.completion.AS == 0 end,
+    },
     { -- fel_magic
         ex = true,
         id = 'fel_magic',
@@ -766,16 +776,6 @@ Achievements = {
         credit = "@obsidian",
         rank = floorRank(1, 3, 5, 7, 9, 10, 1800),
         hide = function() return GAME.completion.IN == 0 end,
-    },
-    { -- faltered
-        ex = true,
-        id = 'faltered',
-        name = "Faltered",
-        desc = [[HFD without building up a surge, with EX NH MS VL rAS]],
-        quote = [[Attaining power is only temporary, it fades faster than what you can attain.]],
-        credit = "@The_111thBlitzer",
-        rank = floorRank(1, 3, 4, 5, 7, 8, 10),
-        hide = function() return GAME.completion.AS == 0 end,
     },
     { -- patience_is_a_virtue
         ex = true,
