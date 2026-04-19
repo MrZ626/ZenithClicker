@@ -167,15 +167,12 @@ local function specialDevCommentaryCheck(cID, uneasy)
 end
 
 local timer
-local devCommentary, devCommentaryLink, link
 function scene.load()
     MSG.clear()
     timer = 0
     SetMouseVisible(true)
     scroll, scroll1 = 0, -620
 
-    devCommentary = require('module.devCommentary')
-    devCommentaryLink = require('module.devCommentaryLink')
     local setStr = table.concat(TABLE.sort(GAME.getHand(true)))
     local cID = table.concat(GAME.getHand(true), " ")
     if GAME.anyUltra then
@@ -189,18 +186,18 @@ function scene.load()
         uneasy = true
     end
     local text
-    if devCommentary[cID] and specialDevCommentaryCheck(cID, uneasy) then
+    if DevCommentary[cID] and specialDevCommentaryCheck(cID, uneasy) then
         if BEST.highScore[setStr] < Floors[9].top then
-            text = devCommentary.notFinished
+            text = DevCommentary.notFinished
         else
-            text = devCommentary[cID]
-            link = devCommentaryLink[cID]
+            text = DevCommentary[cID]
+            link = DevCommentaryLink[cID]
         end
     else
         if cID:count('e') > 0 then
-            text = devCommentary.noCommentTS
+            text = DevCommentary.noCommentTS
         else
-            text = devCommentary.noComment
+            text = DevCommentary.noComment
         end
     end
     DevNoteText:setf(text:repD(STAT.uid), 2000, 'center')
@@ -226,7 +223,7 @@ function scene.keyDown(key, isRep)
         SFX.play('menuclick')
         SCN.back('none')
     end
-    ZENITHA._cursor.active=true
+    ZENITHA._cursor.active = true
     return true
 end
 

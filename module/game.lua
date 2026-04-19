@@ -1,5 +1,5 @@
 local max, min = math.max, math.min
-local floor, ceil = math.floor, math.ceil
+local floor = math.floor
 local abs, rnd = math.abs, math.random
 local roundUnit = MATH.roundUnit
 local expApproach = MATH.expApproach
@@ -262,6 +262,7 @@ local GAME = {
 GAME.playing = false
 GAME.finishTime = -2600
 GAME.fullHealth = 20
+GAME.startingHealth = 20
 GAME.life = 0
 GAME.life2 = 0
 GAME.time = 0
@@ -3179,10 +3180,12 @@ function GAME.start()
     GAME.dmgTimerMul = 1
     GAME.dmgDelay = 15
     GAME.dmgCycle = 5
+    GAME.lifeLeak = 0
 
     -- Player
-    GAME.life = 20
-    GAME.fullHealth = 20
+    GAME.fullHealth = M.DP > 0 and 15 or 20
+    GAME.startingHealth = GAME.fullHealth
+    GAME.life = GAME.fullHealth
     GAME.dmgTimer = GAME.dmgDelay
     GAME.chain = 0
     GAME.gigaspeed = false
@@ -3218,7 +3221,7 @@ function GAME.start()
 
     -- rDP
     GAME.onAlly = false
-    GAME.life2 = 20
+    GAME.life2 = GAME.fullHealth
     GAME.rankLimit = 26000
     GAME.reviveCount = 0
     GAME.reviveDifficulty = 0
@@ -3235,12 +3238,6 @@ function GAME.start()
     elseif M.DP == 2 then
         GAME.rankLimit = 16
         GAME.dmgHeal = 4
-    end
-
-    if M.DP ~= 0 then
-        GAME.life = 15
-        GAME.life2 = 15
-        GAME.fullHealth = 15
     end
 
     GAME.refreshLifeState()
@@ -3884,6 +3881,7 @@ function GAME.finish(reason)
         end
         SubmitAchv('zenith_explorer_plus', GAME.roundHeight)
         SubmitAchv('supercharged_plus', GAME.achv_maxChain)
+        if GAME.fullHealth <= 5 then IssueSecret('cardiac_arrest') end
         if GAME.time <= 600 then
             GAME.submitTimedAchievements()
         end
@@ -4361,6 +4359,16 @@ function GAME.update(dt)
         GAME.dmgTimer = GAME.dmgCycle
         GAME.takeDamage(GAME.dmgTime, 'time')
     end
+
+    -- Life leak
+    if GAME.lifeLeak > 0 then
+        GAME.fullHealth = GAME.fullHealth - dt * GAME.lifeLeak * (M.DP == 0 and 1 or .5)
+        GAME.life = min(GAME.life, GAME.fullHealth)
+        GAME.life2 = min(GAME.life2, GAME.fullHealth)
+        if GAME.life <= 0 then
+            GAME.takeDamage(1e99, 'wrong')
+        end
+    end
 end
 
-_G.GAME = GAME
+return GAME

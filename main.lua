@@ -297,9 +297,9 @@ TEXTURE = {
             carried = aq(3, 8),
             level_19_cap = aq(16, 2),
             the_escape_artist = aq(1, 5),
+            the_artist_trinity = aq(1, 5),
             fel_magic = aq(9, 7),
             empurple = aq(13, 7),
-            faltered = aq(15, 6),
             patience_is_a_virtue = aq(10, 6),
             spotless = aq(16, 4),
             a_mutual_agreement = aq(13, 4),
@@ -952,10 +952,9 @@ end
 
 BgScale = 1
 
-require 'module/game_data'
-require 'module/achv_data'
-require 'module/shader'
-require 'module/game'
+require 'data'
+SHADER = require 'module/shader'
+GAME = require 'module/game'
 
 for i = 1, #ModData.deck do table.insert(Cards, require 'module/card'.new(ModData.deck[i])) end
 GAME.refreshLayout()
@@ -963,17 +962,23 @@ for i, C in ipairs(Cards) do
     Cards[C.id], C.x, C.y = C, C.tx, C.ty + 260 + 26 * 1.6 ^ i
 end
 
+MSG.setSafeY(75)
+MSG.addCategory('dark', COLOR.D, COLOR.L)
+MSG.addCategory('bright', COLOR.L, COLOR.D)
+for i = 0, 6 do MSG.addCategory(AchvData[i].id, AchvData[i].bg, COLOR.L, TEXTURE.achievement.frame[i]) end
+for i = 1, 6 do MSG.addCategory("wreath_" .. i, AchvData[5].bg, COLOR.L, GC.load { w = 256, { 'draw', TEXTURE.achievement.frame[5] }, { 'draw', TEXTURE.achievement.wreath[i] } }) end
+
 SCN.addSwapStyle('warp', require 'module/warp_swap')
 
-SCN.add('joining', require 'module/scene/joining')
-SCN.add('tower', require 'module/scene/tower')
-SCN.add('stat', require 'module/scene/stat')
-SCN.add('records', require 'module/scene/records')
-SCN.add('achv', require 'module/scene/achv')
-SCN.add('conf', require 'module/scene/conf')
-SCN.add('about', require 'module/scene/about')
-SCN.add('zcem', require 'module/scene/zcem')
-SCN.add('ending', require 'module/scene/ending')
+SCN.add('joining', require 'scene/joining')
+SCN.add('tower', require 'scene/tower')
+SCN.add('stat', require 'scene/stat')
+SCN.add('records', require 'scene/records')
+SCN.add('achv', require 'scene/achv')
+SCN.add('conf', require 'scene/conf')
+SCN.add('about', require 'scene/about')
+SCN.add('zcem', require 'scene/zcem')
+SCN.add('ending', require 'scene/ending')
 ZENITHA.setFirstScene('joining')
 
 local gc = love.graphics
@@ -1137,7 +1142,7 @@ local normalHelp = {
 local ultraHelp = {
     COLOR.LL, "Welcome to ", COLOR.LR, "Zenith Clicker: ", COLOR.R, "Ultra Reverse", COLOR.LL, ". Activate a reversed mod to start ", COLOR.lR, "suffering.\n",
     COLOR.LL, "The higher you go in the tower, the more likely you are to ", COLOR.R, "die.\n",
-    COLOR.LL, "There's no more achievements, and ", COLOR.lR, "you are not expected to go very high up.\n",
+    COLOR.LL, "There are' no more achievements, and ", COLOR.lR, "you are not expected to go very high up.\n",
     COLOR.R, "Give Up: ", COLOR.LL, "ESC    ", COLOR.R, "Forfeit: ", COLOR.LL, "ESC    ", COLOR.R, "Quit: ", COLOR.LL, "ESC"
 }
 function RefreshHelpText()
