@@ -17,10 +17,10 @@ d.normal = {
     { time = 490, event = { 'atkBufferCap', 6, 'animDuration', 4 } },
     { time = 500, event = { 'animDuration', 5 }, --[[21]] },
     { time = 510, event = { 'animDuration', 5 }, --[[26]]                              text = "" },
-    { time = 520, event = { 'animDuration', 10 }, --[[36]] },
-    { time = 540, event = { 'animDuration', 12, 'lifeLeak', .2 }, --[[48]]             text = "HEART ACHE.",               desc = "HP leak",                   color = 'DR' },
+    { time = 520, event = { 'animDuration', 10, 'lifeLeak', .2 }, --[[36]]             text = "HEART ACHE.",               desc = "HP leak",                   color = 'DR' },
+    { time = 540, event = { 'animDuration', 12 }, --[[48]] },
     { time = 560, event = { 'animDuration', 14 }, --[[62]]                             text = "" },
-    { time = 1e99 }, -- Total: dmgTimerMul-50%, Cycle-1, Wrong+2, killscreen at 540+100(150)s
+    { time = 1e99 }, -- Total: dmgTimerMul-50%, Cycle-1, Wrong+2, killscreen at 520+100(150)s
 }
 
 d.rEX = {
@@ -40,9 +40,8 @@ d.rEX = {
     { time = 426, event = { 'dmgTimerMul', -.03 } },
     { time = 430, event = { 'dmgTimerMul', -.02 } },
     { time = 435, event = { 'dmgTimerMul', -.02 } },
-    { time = 440, event = { 'dmgTimerMul', -.02 } },
-    { time = 450, event = { 'lifeLeak', .5 },                                       text = "ANGINA.",                         desc = "HP leak",                color = 'DR' },
-    { time = 1e99 }, -- Total: dmgTimerMul-70%, Cycle-1.5, Wrong+5, killscreen at 450+40(60)s
+    { time = 440, event = { 'dmgTimerMul', -.02, 'lifeLeak', .5 },                  text = "ANGINA.",                         desc = "HP leak",                color = 'DR' },
+    { time = 1e99 }, -- Total: dmgTimerMul-70%, Cycle-1.5, Wrong+5, killscreen at 440+40(60)s
 }
 
 d.rDP = {
@@ -73,8 +72,8 @@ d.rDP = {
     { time = 415, event = { 'dmgTimerMul', -.05 } },
     { time = 420, event = { 'dmgTimerMul', -.03 } },
     { time = 425, event = { 'dmgTimerMul', -.02 } },
-    { time = 470, event = { 'lifeLeak', .2 },                                text = "CARDIAC RUPTURE.",                           desc = "HP leak",        color = 'DR' },
-    { time = 1e99 }, -- Total: dmgTimerMul-50%, killscreen at 470+150s
+    { time = 476, event = { 'lifeLeak', .2 },                                text = "CARDIAC RUPTURE.",                           desc = "HP leak",        color = 'DR' },
+    { time = 1e99 }, -- Total: dmgTimerMul-50%, killscreen at 476+150s
 }
 
 -- My formatter doesn't work if there's "…" inside
