@@ -13,7 +13,7 @@ MetricSpeedName = {
     [["RONNA"]],
     [["QUETTA"]],
 }
-
+--[[
 ZCEMModData = {
     easyName = {
         EX = "< EASY MODE >",
@@ -707,7 +707,7 @@ ZCEMComboData = {
         { set = "eEX eNH eMS eGV eVL eDH eIN eAS eDP",      name = "Bath With A Friend"},
     }
 }
-
+]]
 ZCEMPieceData = {
     { id = 'enightcore', text = { COLOR.lR, "eZ", }, popup = { COLOR.lR, "eZ - Nightcore+" } },
     { id = 'eslowmo',    text = { COLOR.lG, "eS", }, popup = { COLOR.lG, "eS - Slow-mo+" } },
@@ -717,7 +717,7 @@ ZCEMPieceData = {
     { id = 'einvisCard', text = { COLOR.lY, "eO", }, popup = { COLOR.lY, "eO - Transparent Card" } },
     { id = 'ecloseCard', text = { COLOR.lC, "eI", }, popup = { COLOR.lC, "eI - Closer Card" } },
 }
-
+--[[
 ZCEMFatigue = {
     eEX = {
         { time = 90,  event = { 'extraQuestBase', .2, 'animDuration', .5 } },
@@ -734,11 +734,11 @@ ZCEMFatigue = {
         { time = 540, event = { 'atkBufferCap', 6, 'animDuration', 1, 'maxQuestSize', 1 }, text = "FAREWELL.",                 desc = "QuestDifficulty++++++",     duration = 26, color = 'lB', },
         { time = 545, event = { 'atkBufferCap', 6, 'animDuration', 3, 'extraQuestVar', 1 } },
         { time = 550, event = { 'atkBufferCap', 6, 'animDuration', 5 } },
-        { time = 570, event = { 'animDuration', 11 }, --[[26]]                             text = "" },
-        { time = 600, event = { 'animDuration', 16 }, --[[42]]                             text = "" },
-        { time = 630, event = { 'animDuration', 20 }, --[[62]]                             text = "" },
-        { time = 660, event = { 'animDuration', 64 }, --[[126]]                            text = "YOUR VISION WEAKENS_", desc = "QuestSpeed------", duration = 26, color = 'lB', },
-        { time = 750, event = { 'animDuration', -16, 'dmgHeal', 1 }, --[[110]]             text = "YOU'RE STILL GOING?", desc = "QuestSpeed++++, Heal++", duration = 26, color = 'lB', },
+        { time = 570, event = { 'animDuration', 11 },                             text = "" },
+        { time = 600, event = { 'animDuration', 16 },                            text = "" },
+        { time = 630, event = { 'animDuration', 20 },                             text = "" },
+        { time = 660, event = { 'animDuration', 64 },                            text = "YOUR VISION WEAKENS_", desc = "QuestSpeed------", duration = 26, color = 'lB', },
+        { time = 750, event = { 'animDuration', -16, 'dmgHeal', 1 },             text = "YOU'RE STILL GOING?", desc = "QuestSpeed++++, Heal++", duration = 26, color = 'lB', },
         { time = 840, event = { 'atkBufferCap', 6, 'extraQuestVar', 1, 'maxQuestSize', 1 }, text = "IT'S TIME TO STOP!",                 desc = "QuestDifficulty++++++",     duration = 26, color = 'lB', final = true },
         { time = 870, event = { 'extraQuestBase', .01 }, text = "YOU FEEL THE IMPENDING DOOM_",                 desc = "30 Seconds Remain",     duration = 12, color = 'lB', },
         { time = 885, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "15 Seconds Remain",     duration = 4, color = 'lB', },
@@ -766,25 +766,12 @@ ZCEMDevScore = {
     --Easy Mode - Special (v1.1) (No CR)
     emperor_development=13.23,quest_feast=281.00,best_friends=101,humble_pupil=5.67,shameless_cashgrab=130,overweight_gamer=69,clean_gamer=319,clean_break=312,professional_cleaner=100,rold_smythy=520,
 }
+]]
 
 function easyMode()
     TABLE.insert(GravityTimer, { 10.0, 9.0, 8.5, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0 })
     for i = 1, #ZCEMPieceData do
         TABLE.insert(PieceData, #PieceData, ZCEMPieceData[i])
     end
-    -- Fatigue
-    TABLE.insert(Fatigue, ZCEMFatigue.eEX)
-    -- Dev Scores
-    for i = 1, #ZCEMDevScore do
-        TABLE.insert(DevScore, ZCEMDevScore[i])
-    end
-    -- Trevor Smithy Placeholder Dev Scores
-    DevScore["-3"] = 26000
-    DevScore["-4"] = 26000*2
-    DevScore["-5"] = 26000*3
-    DevScore["-6"] = 26000*4
-    DevScore["-7"] = 26000*5
-    DevScore["-8"] = 26000*6
-    DevScore["-9"] = 26000*7
     return "SUCCESSFULLY LOADED ZCEM!"
 end
