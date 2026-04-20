@@ -76,6 +76,43 @@ d.rDP = {
     { time = 1e99 }, -- Total: dmgTimerMul-50%, killscreen at 476+150s
 }
 
+d.eEX = {
+    { time = 90,  event = { 'extraQuestBase', .2, 'animDuration', .5 } },
+    { time = 180, event = { 'extraQuestBase', .2, 'animDuration', .5 } },
+    { time = 240, event = { 'extraQuestBase', .2, 'animDuration', 1 } },
+    { time = 360, event = { 'dmgTimerMul', -.1, 'animDuration', 1 },                   text = "FATIGUE SETS IN_",          desc = "TimerSpeed++" },
+    { time = 390, event = { 'dmgCycle', -.5, 'dmgWrong', 1 },                          text = "YOUR BODY GROWS WEAK_",     desc = "DmgCycle--   Damage++" },
+    { time = 420, event = { 'dmgTimerMul', -.1, 'dmgHeal', -1, 'animDuration', 1 },    text = "ALL SENSES BLUR TOGETHER_", desc = "TimerSpeed++   Heal--" },
+    { time = 450, event = { 'dmgTimerMul', -.1, 'dmgWrong', 1 },                       text = "YOUR CONSCIOUSNESS FADES_", desc = "TimerSpeed++   Damage++" },
+    { time = 480, event = { 'dmgTimerMul', -.05, 'dmgCycle', -.5, 'animDuration', 1 }, text = "THIS IS THE END.",          desc = "TimerSpeed++   DmgCycle--" },
+    { time = 482, event = { 'dmgTimerMul', -.05 } },
+    { time = 485, event = { 'dmgTimerMul', -.05 } },
+    { time = 490, event = { 'dmgTimerMul', -.05 } },
+    { time = 540, event = { 'atkBufferCap', 6, 'animDuration', 1, 'maxQuestSize', 1 }, text = "FAREWELL.",                 desc = "QuestDifficulty++++++",     duration = 26, color = 'lB', },
+    { time = 545, event = { 'atkBufferCap', 6, 'animDuration', 3, 'extraQuestVar', 1 } },
+    { time = 550, event = { 'atkBufferCap', 6, 'animDuration', 5 } },
+    { time = 570, event = { 'animDuration', 11 }, --[[26]]                             text = "" },
+    { time = 600, event = { 'animDuration', 16 }, --[[42]]                             text = "" },
+    { time = 630, event = { 'animDuration', 20 }, --[[62]]                             text = "" },
+    { time = 660, event = { 'animDuration', 64 }, --[[126]]                            text = "YOUR VISION WEAKENS_", desc = "QuestSpeed------", duration = 26, color = 'lB', },
+    { time = 750, event = { 'animDuration', -16, 'dmgHeal', 1 }, --[[110]]             text = "YOU'RE STILL GOING?", desc = "QuestSpeed++++, Heal++", duration = 26, color = 'lB', },
+    { time = 840, event = { 'atkBufferCap', 6, 'extraQuestVar', 1, 'maxQuestSize', 1 }, text = "IT'S TIME TO STOP!",                 desc = "QuestDifficulty++++++",     duration = 26, color = 'lB', final = true },
+    { time = 870, event = { 'extraQuestBase', .01 }, text = "YOU FEEL THE IMPENDING DOOM_",                 desc = "30 Seconds Remain",     duration = 12, color = 'lB', },
+    { time = 885, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "15 Seconds Remain",     duration = 4, color = 'lB', },
+    { time = 890, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "10 Seconds Remain",     duration = 0.5, color = 'lB', },
+    { time = 891, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "9 Seconds Remain",     duration = 0.5, color = 'lB', },
+    { time = 892, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "8 Seconds Remain",     duration = 0.5, color = 'lB', },
+    { time = 893, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "7 Seconds Remain",     duration = 0.5, color = 'lB', },
+    { time = 894, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "6 Seconds Remain",     duration = 0.5, color = 'lB', },
+    { time = 895, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "5 Seconds Remain",     duration = 0.5, color = 'lB', },
+    { time = 896, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "4 Seconds Remain",     duration = 0.5, color = 'lB', },
+    { time = 897, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "3 Seconds Remain",     duration = 0.5, color = 'lB', },
+    { time = 898, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "2 Seconds Remain",     duration = 0.5, color = 'lB', },
+    { time = 899, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "1 Second Remains",     duration = 0.5, color = 'lB', },
+    { time = 900, event = { 'dmgCycle', -3.99, 'dmgTimerMul', -.49, 'dmgTime', 666 }, text = "Thank you so much for playing my mod!",                 desc = "WAH-BAAM!",     duration = 26, color = 'lB', },
+    { time = 1e99 }, -- Total: dmgTimerMul-50%, Cycle-1, Wrong+2
+}
+
 -- My formatter doesn't work if there's "…" inside
 for _, f in next, d do for _, v in next, f do if v.text then v.text = v.text:gsub("_", "…") end end end
 

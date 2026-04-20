@@ -1,6 +1,7 @@
 love.window.setIcon(love.image.newImageData('assets/iconZCEM.png'))
 
 require 'Zenitha'
+require 'data.easyMode'
 
 ZENITHA.setMainLoopSpeed(240)
 ZENITHA.setRenderRate(50)
@@ -1932,6 +1933,9 @@ require 'module/initialize'
 
 Initialize()
 RefreshDaily()
+if true then
+    MSG("dark", easyMode())
+end
 TABLE.update(TextColor, BaseTextColor)
 TABLE.update(ShadeColor, BaseShadeColor)
 GAME.refreshCurrentCombo()
