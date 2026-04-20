@@ -2058,7 +2058,7 @@ function GAME.refreshLayout()
     else
         mvl = M.VL
     end
-    local baseDist = 110 + (M.EX > 0 and (URM and M.EX == 2 and -30 or -10) or 0) + mvl * 20 + (GAME.closeCard and -30 or GAME.ecloseCard and -50 or 0)
+    local baseDist = 110 + (M.EX > 0 and (URM and M.EX == 2 and -30 or -10) or 0) + mvl * 20 + (GAME.closeCard and -30 or 0) + (GAME.ecloseCard and -50 or 0)
     --
     local baseL, baseR = 800 - 4 * baseDist - 70, 800 + 4 * baseDist + 70
     local baseY = 726 + (URM and M.GV == 2 and 50 or 15 * M.GV)
