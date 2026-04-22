@@ -27,6 +27,12 @@ Credits:
 **Mooniak**: Font designer (AbhayaLibre)  
 **Lorc, Delapouite & Quoting**: Some achievement icons (on https://game-icons.net, CC BY 3.0)
 
+## Community
+
+[Official Discord Server](https://discord.gg/thqhzSn72j)
+
+[Thread in TETR.IO Discord Server](https://discord.com/channels/673303546107658242/1345623182513541174)
+
 ## How to Play
 
 After you start the game, you will see three mod combinations, which are called "quests", shown at the top of the screen. Select the mods which are contained by the first (largest) one, then press the `Start` button to commit.
