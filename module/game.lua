@@ -4080,7 +4080,7 @@ function GAME.update(dt)
             end
         elseif M.EX == -1 and M.NH == -1 and GAME.time >= finalFatigueTime and GAME.time < finalFatigueTimePostOSP then
             GAME.dmgHeal = 0
-        elseif M.EX == -1 and M.NH == -1 and GAME.time >= finalFatigueTimePostOSP and finalFatigueOSPActivated then
+        elseif M.EX == -1 and M.NH == -1 and GAME.time >= finalFatigueTimePostOSP and GAME.finalFatigueOSPActivated then
             local stage = {event = { 'dmgCycle', -4.99, 'dmgTimerMul', -.99, 'dmgTime', 666 }, text = "Thank you so much for playing my mod!", desc = "WAH-BAAM!", duration = 26, color = 'lB', }
             local e = stage.event
             GAME.dmgCycle = -4.99
