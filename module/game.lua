@@ -278,19 +278,23 @@ function GAME.getComboZP(list)
     local m = TABLE.getValueSet(list)
     local zp = 1
     if m.EX then zp = zp * 1.4 elseif m.rEX then zp = zp * 2.6 end
-    if m.NH then zp = zp * 1.1 elseif m.rNH then zp = zp * 1.8 end
-    if m.MS then zp = zp * 1.2 elseif m.rMS then zp = zp * (m.rGV and 2.0 or 1.7) end
-    if m.GV then zp = zp * 1.1 elseif m.rGV then zp = zp * (1.2 + .02 * (#list - 1)) end
+    if m.NH then zp = zp * 1.1 elseif m.rNH then zp = zp * (1.4 + .05 * (#list - 1)) end
+    if m.MS then zp = zp * 1.2 elseif m.rMS then zp = zp * 1.7 end
+    if m.GV then zp = zp * 1.1 elseif m.rGV then zp = zp * 1.2 end
     if m.VL then zp = zp * 1.1 elseif m.rVL then zp = zp * (1.2 + .02 * (#list - 1)) end
-    if m.DH then zp = zp * 1.2 elseif m.rDH then zp = zp * (m.rIN and 2.2 or 1.62) end
-    if m.IN then zp = zp * 1.2 elseif m.rIN then zp = zp * 1.55 end
-    if m.AS then zp = zp * .85 elseif m.rAS then zp = zp * 1.05 end
-    if m.DP then zp = zp * .95 elseif m.rDP then zp = zp * (m.rEX and 1.75 or 2.1) end
+    if m.DH then zp = zp * 1.2 elseif m.rDH then zp = zp * 1.6 end
+    if m.IN then zp = zp * 1.2 elseif m.rIN then zp = zp * 1.6 end
+    if m.AS then zp = zp * .85 elseif m.rAS then zp = zp * 1.0 end
+    if m.DP then zp = zp * .95 elseif m.rDP then zp = zp * 2.1 end
+    if m.rMS and m.rGV then zp = zp * 1.1 end
+    if m.rEX and m.rVL then zp = zp * 1.2 end
+    if m.rDH and m.rIN then zp = zp * 1.4 end
+    if m.rEX and m.rDP then zp = zp * 0.84 end
 
     local hardCnt = table.concat(list):count('r')
     if m.EX then hardCnt = hardCnt + 1 end
     if hardCnt >= 2 then zp = zp * 0.99 ^ (hardCnt - 1) end
-    if zp > 100 then zp = 100 end -- 100.10x if not capped
+    if zp > 100 then zp = 100 end -- 99.99x if not capped
 
     return zp
 end
