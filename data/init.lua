@@ -466,6 +466,40 @@ for _, e in next, NegEvents do
     end
 end
 
+PetaReq = { [0] = 11, 14, 14, 15, 15, 16, 16, 17, 1e99, 1e99 }
+ExaReq = { [0] = 13, 17, 17, 18, 18, 19, 19, 20, 20, 1e99 }
+ZettaReq = { [0] = 15, 20, 20, 21, 21, 22, 22, 23, 23, 24 }
+YottaReq = { [0] = 17, 23, 23, 24, 24, 25, 25, 26, 26, 27 }
+RonnaReq = { [0] = 19, 26, 26, 27, 27, 28, 28, 29, 29, 30 }
+QuettaReq = { [0] = 21, 29, 29, 30, 30, 31, 31, 32, 32, 33 }
+
+MetricSpeedName = {
+    [["PETA"]],
+    [["EXA"]],
+    [["ZETTA"]],
+    [["YOTTA"]],
+    [["RONNA"]],
+    [["QUETTA"]],
+}
+
+ZCEMPieceData = {
+    { id = 'enightcore', text = { COLOR.lR, "eZ", }, popup = { COLOR.lR, "eZ - Nightcore+" } },
+    { id = 'eslowmo',    text = { COLOR.lG, "eS", }, popup = { COLOR.lG, "eS - Slow-mo+" } },
+    { id = 'eglassCard', text = { COLOR.lB, "eJ", }, popup = { COLOR.lB, "eJ - Glass Card+" } },
+    { id = 'efastLeak',  text = { COLOR.lO, "eL", }, popup = { COLOR.lO, "eL - Slow Leak" } },
+    { id = 'einvisUI',   text = { COLOR.lM, "eT", }, popup = { COLOR.lM, "eT - Transparent UI" } },
+    { id = 'einvisCard', text = { COLOR.lY, "eO", }, popup = { COLOR.lY, "eO - Transparent Card" } },
+    { id = 'ecloseCard', text = { COLOR.lC, "eI", }, popup = { COLOR.lC, "eI - Closer Card" } },
+}
+
+function easyMode()
+    TABLE.insert(GravityTimer, { 10.0, 9.0, 8.5, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0 })
+    for i = 1, #ZCEMPieceData do
+        TABLE.insert(PieceData, #PieceData, ZCEMPieceData[i])
+    end
+    return "SUCCESSFULLY LOADED ZCEM!"
+end
+
 local require = simpRequire((...) .. "/")
 ModData = require 'mod'
 ComboData = require 'combo'
