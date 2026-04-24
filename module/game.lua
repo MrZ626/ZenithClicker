@@ -1,5 +1,5 @@
 local max, min = math.max, math.min
-local floor, ceil = math.floor, math.ceil
+local floor = math.floor
 local abs, rnd = math.abs, math.random
 local roundUnit = MATH.roundUnit
 local expApproach = MATH.expApproach
@@ -262,6 +262,7 @@ local GAME = {
 GAME.playing = false
 GAME.finishTime = -2600
 GAME.fullHealth = 20
+GAME.startingHealth = 20
 GAME.life = 0
 GAME.life2 = 0
 GAME.time = 0
@@ -669,77 +670,6 @@ function GAME.getComboName(list, mode)
             if len_noDP >= 7 and not STAT.easyName then
                 return len_noDP == 7 and [["SWAMP WATER LITE"]] or [["SWAMP WATER"]]
             end
-            --[[if #easyList == 4 and STAT.easyName and M.DH == 2 then --display for helping name 4 mod easyName combos
-                MSG.clear()
-                local alist1, alist2, blist1, blist2, clist1, clist2, dlist1, dlist2, elist1, elist2, flist1, flist2, glist1, glist2 = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
-                local a1, a2, b1, b2, c1, c2, d1, d2, e1, e2, f1, f2, g1, g2 = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} 
-                ins(alist1, list[1]); ins(alist2, list[2]); ins(alist2, list[3]); ins(alist2, list[4])
-                a1 = GAME.getComboName(alist1, 'ingame'); a2 = GAME.getComboName(alist2, 'ingame')
-                for _, v in ipairs(a2) do
-                    table.insert(a1, v)
-                end
-                MSG("dark", a1, 300)
-
-                ins(blist1, list[2]); ins(blist2, list[1]); ins(blist2, list[3]); ins(blist2, list[4])
-                b1 = GAME.getComboName(blist1, 'ingame'); b2 = GAME.getComboName(blist2, 'ingame')
-                for _, v in ipairs(b2) do
-                    table.insert(b1, v)
-                end
-                MSG("dark", b1, 300)
-
-                ins(clist1, list[3]); ins(clist2, list[1]); ins(clist2, list[2]); ins(clist2, list[4])
-                c1 = GAME.getComboName(clist1, 'ingame'); c2 = GAME.getComboName(clist2, 'ingame')
-                for _, v in ipairs(c2) do
-                    table.insert(c1, v)
-                end
-                MSG("dark", c1, 300)
-
-                ins(dlist1, list[4]); ins(dlist2, list[1]); ins(dlist2, list[2]); ins(dlist2, list[3])
-                d1 = GAME.getComboName(dlist1, 'ingame'); d2 = GAME.getComboName(dlist2, 'ingame')
-                for _, v in ipairs(d2) do
-                    table.insert(d1, v)
-                end
-                MSG("dark", d1, 300)
-
-                ins(elist1, list[1]); ins(elist1, list[2]); ins(elist2, list[3]); ins(elist2, list[4])
-                e1 = GAME.getComboName(elist1, 'ingame'); e2 = GAME.getComboName(elist2, 'ingame')
-                for _, v in ipairs(e2) do
-                    table.insert(e1, v)
-                end
-                MSG("dark", e1, 300)
-
-                ins(flist1, list[1]); ins(flist1, list[3]); ins(flist2, list[2]); ins(flist2, list[4])
-                f1 = GAME.getComboName(flist1, 'ingame'); f2 = GAME.getComboName(flist2, 'ingame')
-                for _, v in ipairs(f2) do
-                    table.insert(f1, v)
-                end
-                MSG("dark", f1, 300)
-
-                ins(glist1, list[1]); ins(glist1, list[4]); ins(glist2, list[2]); ins(glist2, list[3])
-                g1 = GAME.getComboName(glist1, 'ingame'); g2 = GAME.getComboName(glist2, 'ingame')
-                for _, v in ipairs(g2) do
-                    table.insert(g1, v)
-                end
-                MSG("dark", g1, 300)
-            end]]
-            --[[if #easyList == 5 and STAT.easyName and M.DH == 2 then
-                local sets = {{{1},{2, 3, 4, 5}},{{2},{1, 3, 4, 5}},{{3},{1, 2, 4, 5}},{{4},{1, 2, 3, 5}},{{5},{1, 2, 3, 4}},{{1, 2},{3, 4, 5}},{{1, 3},{2, 4, 5}},
-                {{1, 4},{2, 3, 5}},{{1, 5},{2, 3, 4}},{{2, 3},{1, 4, 5}},{{2, 4},{1, 3, 5}},{{2, 5},{1, 3, 4}},{{3, 4},{1, 2, 5}},{{3, 5},{1, 2, 4}},{{4, 5},{1, 2, 3}}}
-                MSG.clear()
-                for i = 1, #sets do
-                    local endList1, endList2, list1, list2 = {}, {},{},{}
-                    for j = 1, #sets[i] do
-                        for k = 1, #sets[i][j] do
-                            ins(j == 1 and list1 or list2, list[ sets[i][j][k] ])
-                        end
-                    end
-                    endList1 = GAME.getComboName(list1, 'ingame'); endList2 = GAME.getComboName(list2, 'ingame')
-                    for _, v in ipairs(endList2) do
-                        table.insert(endList1, v)
-                    end
-                    MSG("dark", endList1, 300)
-                end
-            end]]
         else
             local cmbID = table.concat(list)
             if cmbID:count('r') >= 2 then
@@ -3179,10 +3109,12 @@ function GAME.start()
     GAME.dmgTimerMul = 1
     GAME.dmgDelay = 15
     GAME.dmgCycle = 5
+    GAME.lifeLeak = 0
 
     -- Player
-    GAME.life = 20
-    GAME.fullHealth = 20
+    GAME.fullHealth = M.DP > 0 and 15 or 20
+    GAME.startingHealth = GAME.fullHealth
+    GAME.life = GAME.fullHealth
     GAME.dmgTimer = GAME.dmgDelay
     GAME.chain = 0
     GAME.gigaspeed = false
@@ -3218,7 +3150,7 @@ function GAME.start()
 
     -- rDP
     GAME.onAlly = false
-    GAME.life2 = 20
+    GAME.life2 = GAME.fullHealth
     GAME.rankLimit = 26000
     GAME.reviveCount = 0
     GAME.reviveDifficulty = 0
@@ -3235,12 +3167,6 @@ function GAME.start()
     elseif M.DP == 2 then
         GAME.rankLimit = 16
         GAME.dmgHeal = 4
-    end
-
-    if M.DP ~= 0 then
-        GAME.life = 15
-        GAME.life2 = 15
-        GAME.fullHealth = 15
     end
 
     GAME.refreshLifeState()
@@ -3884,6 +3810,7 @@ function GAME.finish(reason)
         end
         SubmitAchv('zenith_explorer_plus', GAME.roundHeight)
         SubmitAchv('supercharged_plus', GAME.achv_maxChain)
+        if GAME.fullHealth <= 5 then IssueSecret('cardiac_arrest') end
         if GAME.time <= 600 then
             GAME.submitTimedAchievements()
         end
@@ -4361,6 +4288,16 @@ function GAME.update(dt)
         GAME.dmgTimer = GAME.dmgCycle
         GAME.takeDamage(GAME.dmgTime, 'time')
     end
+
+    -- Life leak
+    if GAME.lifeLeak > 0 then
+        GAME.fullHealth = GAME.fullHealth - dt * GAME.lifeLeak * (M.DP == 0 and 1 or .5)
+        GAME.life = min(GAME.life, GAME.fullHealth)
+        GAME.life2 = min(GAME.life2, GAME.fullHealth)
+        if GAME.life <= 0 then
+            GAME.takeDamage(1e99, 'wrong')
+        end
+    end
 end
 
-_G.GAME = GAME
+return GAME
