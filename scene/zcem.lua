@@ -13,6 +13,8 @@ local colorRev = false
 local bpmMode = false
 local lastNonTera = 'f0'
 local mode = ''
+local comboTimer = 0
+local combo = 0
 local leftx, rightx, leftbx, rightbx = 40, 500, 220, 685
 local startHour = os.date('%H')
 local startMin = os.date('%M')
@@ -140,9 +142,12 @@ function scene.load()
     refreshWidgets()
 end
 
--- function scene.unload()
---     SaveStat()
--- end
+function scene.update(dt)
+    comboTimer = comboTimer - dt
+    if comboTimer <= 0 then
+        combo = 0
+    end
+end
 
 local bindHint = {
     "CARD-1",
@@ -924,7 +929,25 @@ scene.widgetList = {
                 SFX.play('allclear')
                 MSG('dark', 'All Clear')
             else
-                SFX.play('no')
+                if combo == 0 or STAT.unlockAll then
+                    MSG.clear()
+                    MSG("dark", "What do you want me to deselect?")
+                    SFX.play('no')
+                elseif combo < 16 then
+                    local str = ''
+                    for i = 1, combo do
+                        str = str .. '?'
+                    end
+                    MSG.clear()
+                    MSG("dark", str)
+                    SFX.play('combo_' .. combo)
+                else
+                    MSG("dark", "Fine, okay, everything is unlocked now.")
+                    GAME.unlockAll()
+                    SFX.play('combo_16')
+                end
+                combo = combo + 1
+                comboTimer = 3
             end
             URM = false
             GAME.nightcore = false
@@ -951,6 +974,7 @@ scene.widgetList = {
             RefreshBGM(mode)
             GAME.refreshRPC()
             RefreshHelpText()
+            refreshWidgets()
         end,
     },
     WIDGET.new { -- normal piece button

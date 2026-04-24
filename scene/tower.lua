@@ -18,7 +18,7 @@ HoldingButtons = {}
 local HoldingButtons = HoldingButtons
 
 URM = false
-RevUnlocked = false
+RevUnlocked = STAT.unlockAll --false
 UsingTouch = MOBILE
 local usingTouch = UsingTouch
 local revHold = {}
@@ -381,7 +381,7 @@ function scene.load()
             "[WARNING]\nThe web version is for trial purposes only.\nPlease note that your progress may be lost without warning, and this cannot be fixed.\nDownload the desktop version to keep playing in the future, with far better performance.\nThank you for your support!",
             12.6)
     end
-    RevUnlocked = TABLE.countAll(GAME.completion, 0) < 9
+    RevUnlocked = TABLE.countAll(GAME.completion, 0) < 9 or STAT.unlockAll
 
     for i = 1, #MD.deck do ShortCut[i]:set(STAT.keybind[i]:upper()) end
 

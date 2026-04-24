@@ -20,7 +20,7 @@ function Card.new(d)
         id = d.id,
         lockfull = d.lockfull,
 
-        lock = true,
+        lock = STAT.unlockAll and false or true,
         active = false,
         front = true,
         upright = true,
@@ -339,7 +339,7 @@ function Card:setActive(auto, key)
         easyOn = self.active and (key == 3 or KBIsDown('lalt', 'ralt'))
         --
         revOn = self.active and (key == 2 or KBIsDown('lctrl', 'rctrl'))
-        if revOn and completion[self.id] == 0 then
+        if revOn and completion[self.id] == 0 and not STAT.unlockAll then
             revOn = false
             noSpin = true
             self.active = false

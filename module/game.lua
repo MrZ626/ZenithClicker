@@ -2034,15 +2034,23 @@ function GAME.refreshCursor()
 end
 
 function GAME.refreshLockState()
-    CD.EX.lock = STAT.maxFloor < 9
-    CD.NH.lock = STAT.maxFloor < 2
-    CD.MS.lock = STAT.maxFloor < 3
-    CD.GV.lock = STAT.maxFloor < 4
-    CD.VL.lock = STAT.maxFloor < 5
-    CD.DH.lock = STAT.maxFloor < 6
-    CD.IN.lock = STAT.maxFloor < 7
-    CD.AS.lock = STAT.maxFloor < 8
-    CD.DP.lock = not ACHV.intended_glitch
+    CD.EX.lock = STAT.maxFloor < 9 and not STAT.unlockAll
+    CD.NH.lock = STAT.maxFloor < 2 and not STAT.unlockAll
+    CD.MS.lock = STAT.maxFloor < 3 and not STAT.unlockAll
+    CD.GV.lock = STAT.maxFloor < 4 and not STAT.unlockAll
+    CD.VL.lock = STAT.maxFloor < 5 and not STAT.unlockAll
+    CD.DH.lock = STAT.maxFloor < 6 and not STAT.unlockAll
+    CD.IN.lock = STAT.maxFloor < 7 and not STAT.unlockAll
+    CD.AS.lock = STAT.maxFloor < 8 and not STAT.unlockAll
+    CD.DP.lock = not ACHV.intended_glitch and not STAT.unlockAll
+end
+
+
+function GAME.unlockAll()
+    RevUnlocked = true
+    STAT.unlockAll = true
+    GAME.refreshLockState()
+    SaveStat()
 end
 
 function GAME.refreshPBText()
