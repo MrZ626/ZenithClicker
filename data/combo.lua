@@ -693,7 +693,7 @@ d.gameeEX = {
     { set = "eEX eMS eGV eDP",    name = "Grand Bedtime Feasts" },
     { set = "eEX eMS eVL eDH",    name = "Professional Cleaner" },
     { set = "eEX eMS eVL eIN",    name = "Organized Perfection" },
-    { set = "eEX eMS eVL eAS",    name = "The Hungry Smithy" },
+    { set = "eEX eMS eVL eAS",    name = "The Cooking Smithy" },
     { set = "eEX eMS eVL eDP",    name = "Organized Best Friends" },
     { set = "eEX eMS eDH eIN",    name = "Perfectly Clean" },
     { set = "eEX eMS eDH eAS",    name = "Clean Gaming Addict" },
