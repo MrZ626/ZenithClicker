@@ -349,14 +349,21 @@ function GAME.getComboZP(list)
            zp = zp * 0.9 
         end
     end
-    if m.NH then zp = zp * 1.1 elseif m.rNH then zp = zp * 1.8 elseif m.eNH then zp = zp * 0.90 end
-    if m.MS then zp = zp * 1.2 elseif m.rMS then zp = zp * (m.rGV and 2.0 or 1.7) elseif m.eMS then zp = zp * (((m.eAS or m.AS or m.rAS) and not m.eIN) and 19/16 or 10/9) end
-    if m.GV then zp = zp * 1.1 elseif m.rGV then zp = zp * (1.2 + .02 * (#list - 1)) elseif m.eGV then zp = zp * 0.85 end
-    if m.VL then zp = zp * 1.1 elseif m.rVL then zp = zp * (1.2 + .02 * (#list - 1)) elseif m.eVL then zp = zp * 0.9 end
-    if m.DH then zp = zp * 1.2 elseif m.rDH then zp = zp * (m.rIN and 2.2 or m.eIN and 1.5 or 1.62) elseif m.eDH then zp = zp * 0.8 end
-    if m.IN then zp = zp * 1.2 elseif m.rIN then zp = zp * 1.55 elseif m.eIN then zp = zp * (0.98^(#list)) end
-    if m.AS then zp = zp * .85 elseif m.rAS then zp = zp * 1.05 elseif m.eAS then zp = zp * 0.8 end
-    if m.DP then zp = zp * .95 elseif m.rDP then zp = zp * (m.rEX and 1.75 or m.eEX and 1.75 or 2.1) elseif m.eDP then zp = zp * (m.eDH and 0.85 or 0.90) end
+    if m.NH then zp = zp * 1.1 elseif m.rNH then zp = zp * (1.4 + .05 * (#list - 1))    elseif m.eNH then zp = zp * 0.90 end
+    if m.MS then zp = zp * 1.2 elseif m.rMS then zp = zp * 1.7                          elseif m.eMS then zp = zp * 10/9 end
+    if m.GV then zp = zp * 1.1 elseif m.rGV then zp = zp * 1.2                          elseif m.eGV then zp = zp * 0.85 end
+    if m.VL then zp = zp * 1.1 elseif m.rVL then zp = zp * (1.2 + .02 * (#list - 1))    elseif m.eVL then zp = zp * 0.9 end
+    if m.DH then zp = zp * 1.2 elseif m.rDH then zp = zp * 1.6                          elseif m.eDH then zp = zp * 0.8 end
+    if m.IN then zp = zp * 1.2 elseif m.rIN then zp = zp * 1.6                          elseif m.eIN then zp = zp * (0.98^(#list)) end
+    if m.AS then zp = zp * .85 elseif m.rAS then zp = zp * 1.0                          elseif m.eAS then zp = zp * 0.8 end
+    if m.DP then zp = zp * .95 elseif m.rDP then zp = zp * 2.1                          elseif m.eDP then zp = zp * 0.9 end
+    if m.rMS and m.rGV then zp = zp * 1.1 end
+    if m.rEX and m.rVL then zp = zp * 1.2 end
+    if m.rDH and m.rIN then zp = zp * 1.4 elseif m.rDH and m.eIN then zp = zp * 0.9 end
+    if (m.rEX or m.eEX) and m.rDP then zp = zp * 0.84 end
+
+    if m.eMS and (m.eAS or m.AS or m.rAS) and not m.EIN then zp = zp * 1.06875 end
+    if m.eDP and m.eDH then zp = zp * 17/18 end
 
     if GAME.enightcore then zp = zp * .9 end
     if GAME.eslowmo then zp = zp * .826 end
@@ -374,7 +381,7 @@ function GAME.getComboZP(list)
     local hardCnt = table.concat(list):count('r')
     if m.EX then hardCnt = hardCnt + 1 end
     if hardCnt >= 2 then zp = zp * 0.99 ^ (hardCnt - 1) end
-    if zp > 100 then zp = 100 end -- 100.10x if not capped
+    if zp > 99.98 then zp = 100 end -- Current Abyss: 99.99x
 
     return zp
 end
