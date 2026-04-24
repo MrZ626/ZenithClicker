@@ -371,7 +371,7 @@ function GAME.getComboZP(list)
     if GAME.efastLeak then zp = zp * .75 end
     if GAME.einvisUI then zp = zp * .826 end
     if GAME.einvisCard and not STAT.oldTransparentCard then
-        zp = zp * ((m.rDH and 0.9 or 1) * ((URM and m.rIN) and 0.95 or (not URM and m.rIN) and 0.9 or m.IN and 0.875 or m.eIN and 0.825 or 0.85) * (m.eDP and 0.9 or (m.DP or m.rDP) and 0.95 or 1))
+        zp = zp * ((m.rDH and 0.9 or 1) * ((URM and m.rIN) and 0.95 or (not URM and m.rIN) and 0.9 or m.IN and 0.875 or m.eIN and 0.83 or 0.85) * (m.eDP and 0.9 or (m.DP or m.rDP) and 0.95 or 1))
     end
     if GAME.ecloseCard then
         local maxCardDistance = max(((m.rEX and URM) and 2 or (m.rEX or m.EX) and 1 or 0) - (m.rVL and 2 or (m.eVL or m.VL) and 1 or 0),0)
