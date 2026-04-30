@@ -754,7 +754,7 @@ local d = {
         desc = [[HFD while every quest triggers wound using EX NH MS VL DH rAS]],
         quote = [[All forms of creativity through restraint, deceit, and evasion.]],
         credit = "@The_111thBlitzer",
-        rank = floorRank(1, 100, 2, 226, 3, 4, 5),
+        rank = numberRank(0, 50, 100, 150, 200, 260, 420),
         hide = function() return GAME.completion.AS == 0 end,
     },
     { -- fel_magic
@@ -785,6 +785,7 @@ local d = {
         quote = [["All the words, of a melody of rain. Resonating within ripples, Dreams of human remain."]],
         credit = "@obsidian",
         rank = floorRank(1, 3, 5, 6, 7, 8, 1500),
+        hide = function() return GAME.completion.NH == 0 or GAME.completion.GV == 0 end,
     },
     { -- spotless
         ex = true,
