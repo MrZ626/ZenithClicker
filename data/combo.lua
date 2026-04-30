@@ -28,6 +28,7 @@ d.menu = {
     { set = "MS rDH rIN AS",      name = "Kitsune Trickery" },
     { set = "EX NH MS VL DH rAS", name = "The Artist Trinity" },
     { set = "VL DH rIN",          name = "Empurple" },
+    { set = "rNH MS rGV AS",      name = "Autoplay is Awesome" },
     { set = "DH AS DP",           name = "A Mutual Agreement" },
     { set = "VL AS DP",           name = "The Cheaters" },
     { set = "NH rGV",             name = "Clutch Main" },

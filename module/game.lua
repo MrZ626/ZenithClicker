@@ -2602,7 +2602,6 @@ function GAME.finish(reason)
         SubmitAchv('empty_box', GAME.achv_noResetH or GAME.roundHeight)
         SubmitAchv('the_perfectionist', GAME.achv_perfectH or GAME.roundHeight)
         SubmitAchv('sunk_cost', GAME.achv_demoteH or GAME.roundHeight)
-        SubmitAchv('patience_is_a_virtue', GAME.achv_noManualCommitH or GAME.roundHeight)
         SubmitAchv(GAME.comboStr, GAME.roundHeight)
         local soat = SubmitAchv('the_spike_of_all_time', GAME.maxSpikeWeak)
         SubmitAchv('the_spike_of_all_time_plus', GAME.maxSpike, soat)
@@ -2639,6 +2638,8 @@ function GAME.finish(reason)
             SubmitAchv('the_masterful_juggler', GAME.achv_maxChain)
         elseif GAME.comboStr == 'DHVLrIN' then
             SubmitAchv('empurple', GAME.achv_noChargeH or GAME.roundHeight)
+        elseif GAME.comboStr == 'ASMSrGVrNH' then
+            SubmitAchv('autoplay_is_awesome', GAME.achv_noManualCommitH or GAME.roundHeight)
         elseif GAME.comboStr == 'EXMSNHVLrAS' then
             SubmitAchv('faltered', GAME.achv_noChargeH or GAME.roundHeight)
         elseif GAME.comboStr == 'ASDHDP' then
@@ -2959,7 +2960,7 @@ function GAME.update(dt)
 
     -- Life leak
     if GAME.lifeLeak > 0 then
-        GAME.fullHealth = GAME.fullHealth - dt* GAME.timerMul * GAME.lifeLeak * (M.DP == 0 and 1 or .5)
+        GAME.fullHealth = GAME.fullHealth - dt * GAME.timerMul * GAME.lifeLeak * (M.DP == 0 and 1 or .5)
         GAME.life = min(GAME.life, GAME.fullHealth)
         GAME.life2 = min(GAME.life2, GAME.fullHealth)
         if GAME.life <= 0 then

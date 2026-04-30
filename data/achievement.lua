@@ -777,14 +777,14 @@ local d = {
         rank = floorRank(1, 3, 5, 7, 9, 10, 1800),
         hide = function() return GAME.completion.IN == 0 end,
     },
-    { -- patience_is_a_virtue
+    { -- autoplay_is_awesome
         ex = true,
-        id = 'patience_is_a_virtue',
-        name = "Patience is a Virtue",
-        desc = [[HFD without manually committing]],
-        quote = [[Opportunities always favor those who are prepared and wait.]],
-        credit = "@The_111thBlitzer",
-        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+        id = 'autoplay_is_awesome',
+        name = "Autoplay is Awesome",
+        desc = [[HFD without manually committing, with rNH MS rGV AS]],
+        quote = [["All the words, Belong to a melody of rain. Resonating within ripples, Dreams of human remain."]],
+        credit = "@obsidian",
+        rank = floorRank(1, 3, 5, 6, 7, 8, 10),
     },
     { -- spotless
         ex = true,

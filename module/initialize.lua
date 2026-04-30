@@ -61,7 +61,6 @@ function Initialize(save)
         STAT.version = 168
     end
     if STAT.version == 168 or STAT.version == 169 then
-        if ACHV.patience_is_a_virtue and ACHV.patience_is_a_virtue > 0 and ACHV.talentless == ACHV.patience_is_a_virtue then ACHV.patience_is_a_virtue = nil end
         ACHV.mastery = nil
         ACHV.terminal_velocity = nil
         ACHV.false_god = nil
