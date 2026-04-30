@@ -75,7 +75,7 @@ jobs:
       - name: Build core love package
         uses: love-actions/love-actions-core@v1
         with:
-          build-list: ./data/ ./assets/ ./module/ ./Zenitha/ ./conf.lua ./main.lua ./version.lua
+          build-list: ./data/ ./assets/ ./scene/ ./module/ ./Zenitha/ ./conf.lua ./main.lua ./version.lua
           package-path: ${{ env.CORE_LOVE_PACKAGE_PATH }}
       - name: Upload core love package
         uses: actions/upload-artifact@v4
