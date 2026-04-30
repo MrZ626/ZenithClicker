@@ -162,6 +162,10 @@ return {
         QP2 made the target "garbage lines dig with spin", so I changed it to "quests with wound triggered".
         Hmm it's not that matching? But anyway it plays not bad lol
     ]],
+    ['EX NH MS VL DH rAS'] = STRING.trimIndent [[
+        The Artist Trinity, an original combo from ZC community.
+        A combination of all three "artist" combos! So cool but also so hard, glhf on challenging this!
+    ]],
     ['GV IN'] = STRING.trimIndent [[
         The Grandmaster, a combo ported from QP2, and it's not very worth talking about.
         IN gameplay but need a bit more concentrating.
@@ -267,6 +271,10 @@ return {
     ['VL DH rIN'] = STRING.trimIndent [[
         Empurple, an original combo from ZC community.
         Main difficulty should come from "hard mode" of reverse mod, reducing XP you could get.
+    ]],
+    ['rNH MS rGV AS'] = STRING.trimIndent [[
+        Autoplay is Awesome, an original combo from ZC community.
+        This achievement replaced "Patience is a Virtual" with mods specified, which makes it plays much better.
     ]],
     ['EX NH MS VL rAS'] = STRING.trimIndent [[
         Faltered, an original combo from ZC community.
