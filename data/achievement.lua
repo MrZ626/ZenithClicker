@@ -754,7 +754,7 @@ local d = {
         desc = [[HFD while every quest triggers wound using EX NH MS VL DH rAS]],
         quote = [[All forms of creativity through restraint, deceit, and evasion.]],
         credit = "@The_111thBlitzer",
-        rank = floorRank(1, 2, 3, 4, 5, 6, 7),
+        rank = floorRank(1, 100, 2, 226, 3, 4, 5),
         hide = function() return GAME.completion.AS == 0 end,
     },
     { -- fel_magic

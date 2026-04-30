@@ -198,6 +198,7 @@ local GAME = {
     achv_escapeQuest = nil,
     achv_felMagicBurnt = nil,
     achv_felMagicQuest = nil,
+    achv_artistTrinityH = nil,
     achv_resetCount = nil,
     achv_noResetH = nil,
     achv_obliviousQuest = nil,
@@ -1874,6 +1875,10 @@ function GAME.commit(auto)
         if GAME.achv_escapeBurnt then
             GAME.achv_escapeBurnt = false
             GAME.achv_escapeQuest = GAME.achv_escapeQuest + 1
+        else
+            if GAME.comboStr == 'DHEXMSNHVLrAS' and not GAME.achv_artistTrinityH then
+                GAME.achv_artistTrinityH = GAME.roundHeight
+            end
         end
         if GAME.achv_felMagicBurnt then
             GAME.achv_felMagicBurnt = false
@@ -1967,6 +1972,7 @@ function GAME.commit(auto)
         GAME.cancelBurn()
         GAME.dmgTimer = min(GAME.dmgTimer + max(2.6, GAME.dmgDelay / 2), GAME.dmgDelay)
 
+        GAME.achv_artistTrinityBurnt = false
         for i = dblCorrect and 2 or 1, 1, -1 do
             local p = dblCorrect and i or correct
             rem(GAME.quests, p).name:release()
@@ -2230,10 +2236,12 @@ function GAME.start()
     GAME.achv_escapeQuest = 0
     GAME.achv_felMagicBurnt = false
     GAME.achv_felMagicQuest = 0
+    GAME.achv_artistTrinityH = nil
+    GAME.achv_artistTrinityBurnt = false
     GAME.achv_resetCount = 0
     GAME.achv_obliviousQuest = 0
     GAME.achv_doublePass = 0
-    GAME.achv_level19capH = false
+    GAME.achv_level19capH = nil
     GAME.achv_totalResetCount = 0
     GAME.achv_altFromSurge = 0
     if M.DP > 0 then IssueAchv('intended_glitch') end
@@ -2625,6 +2633,8 @@ function GAME.finish(reason)
             SubmitAchv('clutch_main', GAME.achv_clutchQuest)
         elseif GAME.comboStr == 'ASDHMS' then
             SubmitAchv('the_escape_artist', GAME.achv_escapeQuest)
+        elseif GAME.comboStr == 'DHEXMSNHVLrAS' then
+            SubmitAchv('the_artist_trinity', GAME.achv_artistTrinityH or GAME.roundHeight)
         elseif GAME.comboStr == 'ASDHrIN' then
             SubmitAchv('the_oblivious_artist', GAME.achv_obliviousQuest)
         elseif GAME.comboStr == 'rGV' then
