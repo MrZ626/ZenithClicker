@@ -255,14 +255,20 @@ For the exact formula, see function `calculateRating()` in this [file](/module/s
 
 You gain ZP after a run, with `ZP = altitude * multiplier`, which `multiplier` is taken from:
 
-|   Mod    |  EX   |  NH   |  MS   |    GV     |    VL     |      DH      |  IN   |  AS   |     DP      |
-| :------: | :---: | :---: | :---: | :-------: | :-------: | :----------: | :---: | :---: | :---------: |
-| Upright  |  1.4  |  1.1  |  1.2  |    1.1    |    1.1    |     1.2      |  1.2  | 0.85  |    0.95     |
-| Reversed |  2.6  |  1.8  |  2.0  | 1.2+.02*M | 1.2+.02*M | 1.62+.58*rIN | 1.55  | 1.06  | 2.1-.35*rEX |
+|   Mod    |  EX   |    NH     |  MS   |  GV   |    VL     |  DH   |  IN   |  AS   |  DP   |
+| :------: | :---: | :-------: | :---: | :---: | :-------: | :---: | :---: | :---: | :---: |
+| Upright  |  1.4  |    1.1    |  1.2  |  1.1  |    1.1    |  1.2  |  1.2  | 0.85  | 0.95  |
+| Reversed |  2.6  | 1.4+.05*M |  1.7  |  1.2  | 1.2+.02*M |  1.6  |  1.6  |  1.0  |  2.1  |
+
+> **Special Bonuses** (applied when both activated):  
+> rMS+rGV 1.1x  
+> rEX+rVL 1.2x  
+> rDH+rIN 1.4x  
+> rEX+rDP 0.84x
 
 > M = [Total Mod Count] -1  
 > `Hard Mode Decay` = 0.99, applies `number_of_EX_or_Rev - 1` times  
-> `multiplier` is capped at `100x` *(101.22x if not capped)*
+> `multiplier` forced to `100x` for all revs *(99.99x Originally)*
 
 Total ZP is soft-capped by your skill:
 
