@@ -274,7 +274,7 @@ return {
     ]],
     ['rNH MS rGV AS'] = STRING.trimIndent [[
         Autoplay is Awesome, an original combo from ZC community.
-        This achievement replaced "Patience is a Virtual" with mods specified, which makes it plays much better.
+        This achievement replaced "Patience is a Virtue" with mods specified, which makes it play much better.
     ]],
     ['EX NH MS VL rAS'] = STRING.trimIndent [[
         Faltered, an original combo from ZC community.
