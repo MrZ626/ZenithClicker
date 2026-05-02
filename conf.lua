@@ -14,13 +14,13 @@ if love['_os'] == 'Web' then
 end
 
 function love.conf(t)
-    local identity = 'Zenith_Clicker'
+    local identity = 'ZC_Unabstracted'
     local mobile = love._os == 'Android' or love._os == 'iOS'
 
     local fs = love.filesystem
     fs.setIdentity(identity)
 
-    t.identity = 'Zenith_Clicker'
+    t.identity = 'ZC_Unabstracted'
     t.externalstorage = true
     t.version = "11.4"
     t.gammacorrect = false
@@ -52,7 +52,7 @@ function love.conf(t)
     W.fullscreentype = mobile and 'exclusive' or 'desktop' -- Fullscreen type
     W.width, W.height = 1280, 720
     W.minwidth, W.minheight = 288, 180
-    W.title = 'Zenith Clicker'
+    W.title = 'Zenith Clicker Unabstracted'
 
     if love._os == 'Linux' and fs.getInfo('assets/icon.png') then
         W.icon = 'assets/icon.png'

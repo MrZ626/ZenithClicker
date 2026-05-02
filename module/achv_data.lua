@@ -59,6 +59,7 @@ end
 Achievements = {
     { title = "Zenith Clicker UNABSTRACTED"},
     {
+        ex = true,
         id = "zcu_single_rating",
         name = "placeholder_name",
         desc = "Highest isolated AR value of one game",
