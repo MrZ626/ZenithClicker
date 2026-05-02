@@ -1,7 +1,7 @@
 local next = next
 local max, min = math.max, math.min
 local sin, cos = math.sin, math.cos
-local floor, abs = math.floor, math.abs
+local floor, ceil, abs = math.floor, math.ceil, math.abs
 
 local distance, clamp = MATH.distance, MATH.clamp
 local interpolate, clampInterpolate = MATH.interpolate, MATH.clampInterpolate
@@ -851,6 +851,18 @@ end
 local gvTimerColor1 = { 1, .942, .872, 0 }
 local gvTimerColor2 = { 0, 0, 0, 0 }
 local altitudeText = { 0, COLOR.dL, "m" }
+local windupColor = {
+    { COLOR.HEX "F5BE3FFF" },
+    { COLOR.HEX "ED7F2EFF" },
+    { COLOR.HEX "E74322FF" },
+    { COLOR.HEX "E63676FF" },
+    { COLOR.HEX "E83AD5FF" },
+    { COLOR.HEX "9E2DF6FF" },
+    { COLOR.HEX "002FF5FF" },
+    { COLOR.HEX "4295F8FF" },
+    { COLOR.HEX "79FA52FF" },
+    { COLOR.HEX "C6FC4FFF" },
+}
 function scene.overDraw()
     local t = love.timer.getTime()
     if GAME.zenithTraveler then return end
@@ -1424,6 +1436,22 @@ function scene.overDraw()
             gc_setLineWidth(10)
             gc_line(0, 0, 420 * cos(a), 420 * sin(a))
         end
+    end
+
+    -- Windup animation
+    gc_replaceTransform(SCR.xOy_m)
+    gc_translate(0, -170)
+    for i = 1, #GAME.windupAnim do
+        local w = GAME.windupAnim[i]
+        local k = MATH.clampInterpolate(.25, 1, .15, .8, w.bumpTime) * w.alpha
+        local r = MATH.between(w.time, 1, w.totalTime - .5) and 42 * (.5 - w.time % .5) ^ 4.2 or 0
+        windupColor[w.lv][4] = w.alpha
+        gc_setColor(windupColor[w.lv])
+        gc_mDraw(TEXTURE.windup, w.x, w.y, r, k)
+        gc_setColor(1, 1, 1, r / (42 * .5 ^ 4.2))
+        gc_mDraw(TEXTURE.windup, w.x, w.y, r, k)
+        gc_setColor(1, 1, 1, w.alpha)
+        gc_mDraw(TEXTURE.windupText[ceil(w.lv / 2)], w.x, w.y, 0, k)
     end
 
     -- Test

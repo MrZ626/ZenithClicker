@@ -448,6 +448,54 @@ TEXTURE.lightDot = GC.initCanvas(32, 32, function()
     GC.blurCircle(.26, 16, 16, 16)
 end)
 
+TEXTURE.windup = GC.initCanvas(128, 128, function()
+    GC.clear(1, 1, 1, 0)
+    local l = {}
+    for i = 0, 15 do
+        local a = i / 16 * MATH.tau
+        local d = i % 2 == 0 and 58 or 45
+        local dx, dy = d * math.cos(a), d * math.sin(a)
+        table.insert(l, 64 + dx)
+        table.insert(l, 64 + dy)
+    end
+    GC.setLineWidth(10)
+    GC.polygon('line', l)
+end)
+do
+    local w = 13
+    local d1 = 20
+    local d2 = 16
+    TEXTURE.windupText = {
+        GC.initCanvas(128, 128, function()
+            GC.clear(1, 1, 1, 0)
+            GC.rectangle('fill', 64 - w / 2, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2, 64 + 31, w, -w)
+        end),
+        GC.initCanvas(128, 128, function()
+            GC.clear(1, 1, 1, 0)
+            GC.rectangle('fill', 64 - w / 2 - d1 / 2, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - d1 / 2, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 + d1 / 2, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + d1 / 2, 64 + 31, w, -w)
+        end),
+        GC.initCanvas(128, 128, function()
+            GC.clear(1, 1, 1, 0)
+            GC.rectangle('fill', 64 - w / 2 - d2, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - d2, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 + 00, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + 00, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 + d2, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + d2, 64 + 31, w, -w)
+        end),
+        GC.initCanvas(128, 128, function()
+            local w = w - 2
+            GC.clear(1, 1, 1, 0)
+            FONT.set(70, '_mono')
+            GC.rectangle('fill', 64 - w / 2 - 19, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - 19, 64 + 31, w, -w)
+            GC.print("?", 53, 5, 0, 1.1, 1.26) -- Not very fitting, but this is not used
+        end),
+        GC.initCanvas(128, 128, function()
+            GC.clear(1, 1, 1, 0)
+            FONT.set(70, '_mono')
+            GC.print("?", 39, 6, 0, 1.26) -- Not very fitting, but this is not used
+        end),
+    }
+end
+
 TEXTURE.recRevBG = GC.initCanvas(1586, 606, function()
     GC.draw(TEXTURE.panel.glass_a)
     GC.draw(TEXTURE.panel.glass_b)
