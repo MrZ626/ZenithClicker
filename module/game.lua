@@ -1909,6 +1909,7 @@ function GAME.commit(auto)
         else
             if GAME.comboStr == 'DHEXMSNHVLrAS' and not GAME.achv_artistTrinityH then
                 GAME.achv_artistTrinityH = GAME.roundHeight
+                if GAME.totalQuest >= 6 then SFX.play('btb_break') end
             end
         end
         if GAME.achv_felMagicBurnt then
