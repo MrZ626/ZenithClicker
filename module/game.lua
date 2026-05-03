@@ -93,6 +93,7 @@ local ins, rem = table.insert, table.remove
 ---
 ---@field gravDelay false | number
 ---@field gravTimer false | number
+---@field resetCount number
 ---
 ---@field omega boolean
 ---@field negFloor number
@@ -200,7 +201,6 @@ local GAME = {
     achv_felMagicBurnt = nil,
     achv_felMagicQuest = nil,
     achv_artistTrinityH = nil,
-    achv_resetCount = nil,
     achv_noResetH = nil,
     achv_obliviousQuest = nil,
     achv_doublePass = nil,
@@ -657,7 +657,7 @@ function GAME.genQuest()
     GAME.faultWrong = false
     GAME.dmgWrongExtra = 0
     GAME.gravTimer = false
-    GAME.achv_resetCount = 0
+    GAME.resetCount = 0
     for _, C in ipairs(CD) do C.touchCount, C.required, C.required2 = 0, false, false end
     for _, v in next, GAME.quests[1].combo do CD[v].required = true end
     if M.DP > 0 and GAME.quests[2] then for _, v in next, GAME.quests[2].combo do CD[v].required2 = true end end
@@ -1570,15 +1570,15 @@ function GAME.cancelAll(instant)
 
     TASK.removeTask_code(GAME.task_cancelAll)
     TASK.new(GAME.task_cancelAll, instant)
-    if GAME.gravTimer and (not (URM and M.GV == 2) and GAME.achv_resetCount < 15) then GAME.gravTimer = GAME.gravDelay end
+    if GAME.gravTimer and (not (URM and M.GV == 2) and GAME.resetCount < 15) then GAME.gravTimer = GAME.gravDelay end
 end
 
 function GAME.task_cancelAll(instant)
     if GAME.playing and not instant then
-        if GAME.achv_resetCount == 0 then
+        if GAME.resetCount == 0 then
             GAME.achv_noResetH = GAME.roundHeight
         end
-        GAME.achv_resetCount = GAME.achv_resetCount + 1
+        GAME.resetCount = GAME.resetCount + 1
         -- if GAME.achv_totalResetCount == 0 then
         --     if GAME.comboStr == 'ASDHNHVL' then
         --         SubmitAchv('minimalism', GAME.achv_maxChain)
@@ -1916,7 +1916,7 @@ function GAME.commit(auto)
             GAME.achv_felMagicBurnt = false
             GAME.achv_felMagicQuest = GAME.achv_felMagicQuest + 1
         end
-        if GAME.achv_resetCount % 2 == 1 then
+        if GAME.resetCount % 2 == 1 then
             GAME.achv_obliviousQuest = GAME.achv_obliviousQuest + 1
         end
 
@@ -2270,7 +2270,6 @@ function GAME.start()
     GAME.achv_felMagicQuest = 0
     GAME.achv_artistTrinityH = nil
     GAME.achv_artistTrinityBurnt = false
-    GAME.achv_resetCount = 0
     GAME.achv_obliviousQuest = 0
     GAME.achv_doublePass = 0
     GAME.achv_level19capH = nil
@@ -2808,7 +2807,7 @@ local questStyleDP = {
 }
 
 local KBisDown = love.keyboard.isDown
-function GAME.update(dt,realDT)
+function GAME.update(dt, realDT)
     GAME.spikeTimer = GAME.spikeTimer - dt
     for i = #GAME.windupAnim, 1, -1 do
         local w = GAME.windupAnim[i]
