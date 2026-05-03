@@ -3009,13 +3009,6 @@ function GAME.update(dt,realDT)
         end
     end
 
-    -- Damage
-    GAME.dmgTimer = GAME.dmgTimer - dt / GAME.dmgTimerMul
-    if GAME.dmgTimer <= 0 then
-        GAME.dmgTimer = GAME.dmgCycle
-        GAME.takeDamage(GAME.dmgTime, 'time')
-    end
-
     -- Life leak
     if GAME.lifeLeak > 0 then
         GAME.fullHealth = GAME.fullHealth - dt * GAME.timerMul * GAME.lifeLeak * (M.DP == 0 and 1 or .5)
@@ -3024,6 +3017,13 @@ function GAME.update(dt,realDT)
         if GAME.life <= 0 then
             GAME.takeDamage(1e99, 'wrong')
         end
+    end
+
+    -- Damage
+    GAME.dmgTimer = GAME.dmgTimer - dt / GAME.dmgTimerMul
+    if GAME.dmgTimer <= 0 then
+        GAME.dmgTimer = GAME.dmgCycle
+        GAME.takeDamage(GAME.dmgTime, 'time')
     end
 end
 
