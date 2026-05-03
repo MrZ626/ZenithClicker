@@ -1570,7 +1570,7 @@ function GAME.cancelAll(instant)
 
     TASK.removeTask_code(GAME.task_cancelAll)
     TASK.new(GAME.task_cancelAll, instant)
-    if GAME.gravTimer and (not (URM and M.GV == 2) and GAME.resetCount < 15) then GAME.gravTimer = GAME.gravDelay end
+    if GAME.gravTimer and GAME.resetCount < 15 and not (URM and M.GV == 2) then GAME.gravTimer = GAME.gravDelay end
 end
 
 function GAME.task_cancelAll(instant)
