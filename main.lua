@@ -448,6 +448,16 @@ TEXTURE.lightDot = GC.initCanvas(32, 32, function()
     GC.blurCircle(.26, 16, 16, 16)
 end)
 
+TEXTURE.surgeIcon = GC.initCanvas(512, 512, function()
+    GC.clear(1, 1, 1, 0)
+    GC.setColor(1, 1, 1)
+    GC.translate(256, 256)
+    for _ = 0, 2 do
+        GC.circle('fill', 0, 0, 180, 4)
+        GC.rotate(.5236)
+    end
+end)
+
 TEXTURE.windup = GC.initCanvas(128, 128, function()
     GC.clear(1, 1, 1, 0)
     local l = {}

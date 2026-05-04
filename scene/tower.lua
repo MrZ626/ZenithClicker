@@ -414,7 +414,7 @@ end
 local KBIsDown, MSIsDown = love.keyboard.isDown, love.mouse.isDown
 local expApproach = MATH.expApproach
 function scene.update(dt)
-    local realDT=dt
+    local realDT = dt
     if kbIsDown('left', 'right', 'up', 'down') then
         local spd = ZENITHA._cursor.speed * dt * (kbIsDown('lctrl', 'rctrl') and .6 or 1)
         if kbIsDown('left') then MX = MX - spd end
@@ -429,7 +429,7 @@ function scene.update(dt)
         GAME.height = max(GAME.height - dt * (f * (f + 1) + 10) * (M.VL + 1), 0)
     end
     if dt > .26 then dt = .26 end
-    GAME.update(dt,realDT)
+    GAME.update(dt, realDT)
     GAME.lifeShow = expApproach(GAME.lifeShow, GAME.life, dt * 10)
     GAME.lifeShow2 = expApproach(GAME.lifeShow2, GAME.life2, dt * 10)
     GAME.bgH = expApproach(GAME.bgH, GAME.height, dt * 2.6)
@@ -536,29 +536,37 @@ local gc_blurCircle, gc_strokePrint = GC.blurCircle, GC.strokePrint
 local gc_setColorMask = GC.setColorMask
 local setFont = FONT.set
 
-local chargeIcon = GC.load {
-    w = 512, h = 512,
-    { 'move',   256,  256 },
-    { 'fCirc',  0,    0,  180, 4 },
-    { 'rotate', .5236 },
-    { 'fCirc',  0,    0,  180, 4 },
-    { 'rotate', .5236 },
-    { 'fCirc',  0,    0,  180, 4 },
-}
-
 local TEXTURE = TEXTURE
 local Cards = Cards
 local TextColor = TextColor
 local ShadeColor = ShadeColor
 local bgQuad = GC.newQuad(0, 0, 0, 0, 0, 0)
 local rulerQuad = GC.newQuad(0, 0, 32, 300, TEXTURE.ruler)
-local reviveQuad = {
-    GC.newQuad(0, 0, 1042, 296, TEXTURE.revive.norm),
-    GC.newQuad(0, 355, 1042, 342, TEXTURE.revive.norm),
-    GC.newQuad(0, 740, 1042, 354, TEXTURE.revive.norm),
+
+local reviveInfo = {
+    quad = {
+        GC.newQuad(0, 0, 1042, 296, TEXTURE.revive.norm),
+        GC.newQuad(0, 355, 1042, 342, TEXTURE.revive.norm),
+        GC.newQuad(0, 740, 1042, 354, TEXTURE.revive.norm),
+    },
+    move = { -155, -147, -154 },
+    rotation = { -.095, .15, -.17 },
 }
-local reviveMove = { -155, -147, -154 }
-local reviveRot = { -.095, .15, -.17 }
+local gvTimerColor1 = { 1, .942, .872, 0 }
+local gvTimerColor2 = { 0, 0, 0, 0 }
+local altitudeText = { 0, COLOR.dL, "m" }
+local windupColor = {
+    { COLOR.HEX "F5BE3FFF" },
+    { COLOR.HEX "ED7F2EFF" },
+    { COLOR.HEX "E74322FF" },
+    { COLOR.HEX "E63676FF" },
+    { COLOR.HEX "E83AD5FF" },
+    { COLOR.HEX "9E2DF6FF" },
+    { COLOR.HEX "002FF5FF" },
+    { COLOR.HEX "4295F8FF" },
+    { COLOR.HEX "79FA52FF" },
+    { COLOR.HEX "C6FC4FFF" },
+}
 
 function DrawBG(brightness, showRuler)
     gc_replaceTransform(SCR.origin)
@@ -849,21 +857,6 @@ function scene.draw()
     end
 end
 
-local gvTimerColor1 = { 1, .942, .872, 0 }
-local gvTimerColor2 = { 0, 0, 0, 0 }
-local altitudeText = { 0, COLOR.dL, "m" }
-local windupColor = {
-    { COLOR.HEX "F5BE3FFF" },
-    { COLOR.HEX "ED7F2EFF" },
-    { COLOR.HEX "E74322FF" },
-    { COLOR.HEX "E63676FF" },
-    { COLOR.HEX "E83AD5FF" },
-    { COLOR.HEX "9E2DF6FF" },
-    { COLOR.HEX "002FF5FF" },
-    { COLOR.HEX "4295F8FF" },
-    { COLOR.HEX "79FA52FF" },
-    { COLOR.HEX "C6FC4FFF" },
-}
 function scene.overDraw()
     local t = love.timer.getTime()
     if GAME.zenithTraveler then return end
@@ -1012,7 +1005,7 @@ function scene.overDraw()
                         .16
                     )
                     gc_setColor(0, 0, 0)
-                    gc_mDraw(chargeIcon, 326, 270, GAME.time * 2.6, .25 * k * bk)
+                    gc_mDraw(TEXTURE.surgeIcon, 326, 270, GAME.time * 2.6, .25 * k * bk)
                 end
 
                 if URM and M.NH == 2 then
@@ -1022,7 +1015,7 @@ function scene.overDraw()
                 -- Spike ball
                 gc_setColor(r, g, b, a)
                 gc_blurCircle(-.26, 326, 270, 100 * k)
-                gc_mDraw(chargeIcon, 326, 270, GAME.time * 2.6, .25 * k * bk)
+                gc_mDraw(TEXTURE.surgeIcon, 326, 270, GAME.time * 2.6, .25 * k * bk)
 
                 -- Spark
                 if not (URM and M.NH == 2) then
@@ -1108,7 +1101,7 @@ function scene.overDraw()
                 local texture = TEXTURE.revive[M.DP < 2 and 'norm' or allyDie and 'rev_right' or 'rev_left']
                 local taskID
                 for i = #GAME.reviveTasks, 1, -1 do
-                    gc_mDrawQ(texture, reviveQuad[i], 0, 0, 0, .4)
+                    gc_mDrawQ(texture, reviveInfo.quad[i], 0, 0, 0, .4)
                     if GAME.reviveTasks[i] == GAME.currentTask then
                         taskID = i
                         break
@@ -1116,8 +1109,8 @@ function scene.overDraw()
                 end
 
                 -- Text
-                gc_rotate(reviveRot[taskID])
-                gc_translate(reviveMove[taskID], 0)
+                gc_rotate(reviveInfo.rotation[taskID])
+                gc_translate(reviveInfo.move[taskID], 0)
                 local txt = task.textObj
                 local w, h = txt:getDimensions()
                 local ky = h < 40 and 1 or .7
