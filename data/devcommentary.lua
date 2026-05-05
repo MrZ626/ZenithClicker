@@ -312,6 +312,10 @@ return {
         Zero-to-sixty, an original combo from ZC community.
         Though this combo includes AS, it's actually easier to play with mouse lol
     ]],
+    ['VL IN AS'] = STRING.trimIndent [[
+        Under The Radar, an original combo from ZC community.
+        "What's the exact condition of entering Gigaspeed?"
+    ]],
     ['rNH MS DP'] = STRING.trimIndent [[
         Scarcity Mindset, an original combo from ZC community.
         This is more complex and interesting than psychokinesis, the only regret is that we cannot play this with 3 nexts...
