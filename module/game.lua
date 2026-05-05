@@ -982,6 +982,7 @@ end
 
 function GAME.upFloor()
     local roundFloorTime = roundUnit(GAME.floorTime, .001)
+    local roundTime = roundUnit(GAME.time, .001)
     if GAME.floor == 1 then
         if GAME.comboStr == 'rEXrNHrVL' then SubmitAchv('hardcore_beginning', roundFloorTime) end
     elseif GAME.floor == 2 then
@@ -992,6 +993,7 @@ function GAME.upFloor()
         if GAME.comboStr == 'EXrDPrVL' then SubmitAchv('unfair_battle', roundFloorTime) end
     elseif GAME.floor == 5 then
         if GAME.comboStr == 'DHDP' then SubmitAchv('museum_heist', roundFloorTime) end
+        if GAME.comboStr == 'ASINVL' and GAME.gigaCount == 0 then SubmitAchv('under_the_radar', roundTime) end
     elseif GAME.floor == 6 then
         if GAME.comboStr == 'EXVLrGV' then SubmitAchv('workaholic', roundFloorTime) end
     elseif GAME.floor == 7 then
@@ -1047,7 +1049,6 @@ function GAME.upFloor()
 
     -- End game
     if GAME.floor >= 10 then
-        local roundTime = roundUnit(GAME.time, .001)
         if GAME.gigaspeed then
             if GAME.time < STAT.minTime then
                 STAT.minTime = roundTime
@@ -2671,19 +2672,18 @@ function GAME.finish(reason)
             SubmitAchv('spotless', GAME.achv_noDamageH or GAME.roundHeight)
         elseif GAME.comboStr == 'rAS' then
             SubmitAchv('arrogance', GAME.achv_noPerfectH or GAME.roundHeight)
-            SubmitAchv('fel_magic', GAME.achv_felMagicQuest)
         elseif GAME.comboStr == 'rDP' then
             SubmitAchv('overprotection', GAME.achv_protectH or GAME.roundHeight)
-        elseif GAME.comboStr == 'rGVrINrMS' then
-            SubmitAchv('the_masterful_juggler', GAME.achv_maxChain)
         elseif GAME.comboStr == 'DHVLrIN' then
             SubmitAchv('empurple', GAME.achv_noChargeH or GAME.roundHeight)
+        elseif GAME.comboStr == 'rGVrINrMS' then
+            SubmitAchv('the_masterful_juggler', GAME.achv_maxChain)
         elseif GAME.comboStr == 'ASMSrGVrNH' then
             SubmitAchv('autoplay_is_awesome', GAME.achv_noManualCommitH or GAME.roundHeight)
         elseif GAME.comboStr == 'EXMSNHVLrAS' then
             SubmitAchv('faltered', GAME.achv_noChargeH or GAME.roundHeight)
-        elseif GAME.comboStr == 'ASDHDP' then
-            SubmitAchv('a_mutual_agreement', GAME.achv_shareModH or GAME.roundHeight)
+        elseif GAME.comboStr == 'ASDPINNH' then
+            SubmitAchv('dna', GAME.achv_shareModH or GAME.roundHeight)
         elseif GAME.comboStr == 'ASDPVL' then
             SubmitAchv('the_cheaters', GAME.achv_noShareModH or GAME.roundHeight)
         elseif GAME.comboStr == 'VLrGV' then

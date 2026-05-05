@@ -272,6 +272,10 @@ return {
         Empurple, an original combo from ZC community.
         Main difficulty should come from "hard mode" of reverse mod, reducing XP you could get.
     ]],
+    ['rMS rGV rIN'] = STRING.trimIndent [[
+        The Masterful Juggler, an original combo from ZC community.
+        Combined with the target "Highest B2B chain reached", this makes more sense.
+    ]],
     ['rNH MS rGV AS'] = STRING.trimIndent [[
         Autoplay is Awesome, an original combo from ZC community.
         This achievement replaced "Patience is a Virtue" with mods specified, which makes it play much better.
@@ -299,10 +303,6 @@ return {
         Wax Wings, an original... achievement I made? If I remember correctly...
         Playing "without losing a rank" with EX VL fits so well with the community combo "Icarus"'s myth story.
         It's so unbelievable that it successfully combines mod combo & rank system & texts and plays interesting.
-    ]],
-    ['rMS rGV rIN'] = STRING.trimIndent [[
-        The Masterful Juggler, an original combo from ZC community.
-        Combined with the target "Highest B2B chain reached", this makes more sense.
     ]],
     ['DH rIN AS'] = STRING.trimIndent [[
         The Oblivious Artist, an original combo from ZC community.
