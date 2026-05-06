@@ -1219,7 +1219,7 @@ end
 function ReloadTexts()
     local sep = (TEXTS.mod:getFont():getHeight() + TEXTS.title:getFont():getHeight()) / 2
     for _, text in next, TEXTS do text:setFont(FONT.get(text:getFont():getHeight() < sep and 30 or 50)) end
-    for _, text in next, ShortCut do text:setFont(FONT.get(text:getFont():getHeight() < sep and 30 or 50)) end
+    for _, text in next, CardHintText do text:setFont(FONT.get(text:getFont():getHeight() < sep and 30 or 50)) end
     for _, quest in next, GAME.quests do quest.name:setFont(FONT.get(70)) end
     TEXTS.height:setFont(FONT.get(30))
     TEXTS.time:setFont(FONT.get(30))
