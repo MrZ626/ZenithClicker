@@ -2772,7 +2772,7 @@ function GAME.finish(reason)
         end)
     end
 
-    if URM and GAME.height < 0 then
+    if URM and GAME.height < -10 then
         PieceSFXID = 0
         GAME.nightcore = false
         GAME.slowmo = false
