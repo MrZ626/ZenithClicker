@@ -413,7 +413,7 @@ end
 local KBIsDown, MSIsDown = love.keyboard.isDown, love.mouse.isDown
 local expApproach = MATH.expApproach
 function scene.update(dt)
-    local realDT = dt
+    if dt > .26 then dt = .26 end
     if kbIsDown('left', 'right', 'up', 'down') then
         local spd = ZENITHA._cursor.speed * dt * (kbIsDown('lctrl', 'rctrl') and .6 or 1)
         if kbIsDown('left') then MX = MX - spd end
@@ -427,8 +427,7 @@ function scene.update(dt)
         local f = GAME.calculateFloor(GAME.bgH)
         GAME.height = max(GAME.height - dt * (f * (f + 1) + 10) * (M.VL + 1), 0)
     end
-    if dt > .26 then dt = .26 end
-    GAME.update(dt, realDT)
+    GAME.update(dt)
     GAME.lifeShow = expApproach(GAME.lifeShow, GAME.life, dt * 10)
     GAME.lifeShow2 = expApproach(GAME.lifeShow2, GAME.life2, dt * 10)
     GAME.bgH = expApproach(GAME.bgH, GAME.height, dt * 2.6)

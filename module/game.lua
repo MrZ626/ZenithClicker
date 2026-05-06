@@ -640,7 +640,11 @@ function GAME.genQuest()
         if #combo >= 4 then
             local pwr = #combo * 2 - 7
             if TABLE.find(combo, 'DH') then pwr = pwr + 1 end
-            SFX.play('garbagewindup_' .. MATH.clamp(pwr, 1, 5), 1, 0)
+            local tone = GAME.nightcore and 12 or 0
+            if GAME.slowmo then tone = tone - 12 end
+            for i = 1, tone == 0 and 1 or 2 do
+                SFX.play('garbagewindup_' .. MATH.clamp(pwr, 1, 5), 1 / i, 0, tone)
+            end
             GAME.showWindup(pwr)
         end
 
@@ -2812,11 +2816,11 @@ local questStyleDP = {
 }
 
 local KBisDown = love.keyboard.isDown
-function GAME.update(dt, realDT)
+function GAME.update(dt)
     GAME.spikeTimer = GAME.spikeTimer - dt
     for i = #GAME.windupAnim, 1, -1 do
         local w = GAME.windupAnim[i]
-        w.bumpTime = w.bumpTime - realDT
+        w.bumpTime = w.bumpTime - (GAME.slowmo and dt / 2 or dt)
         if w.lv < w.lvFin then
             if w.bumpTime <= 0 then
                 w.lv = w.lv + 1
@@ -2825,7 +2829,7 @@ function GAME.update(dt, realDT)
                 end
             end
         end
-        w.time = w.time + realDT
+        w.time = w.time + dt
         w.alpha = min((w.totalTime - w.time) * 5, 1)
         if w.time > w.totalTime then rem(GAME.windupAnim, i) end
     end
