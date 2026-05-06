@@ -2407,7 +2407,7 @@ function GAME.finish(reason)
                     IssueAchv('its_kinda_rare')
                 end
             end
-            if STAT.mod == 'vanilla' and not TestMode and SupportCurl then
+            if GAME.totalQuest >= 20 and STAT.mod == 'vanilla' and not TestMode and SupportCurl then
                 local curl =
                     SYSTEM == 'Windows' and [[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H "Content-Type: application/json" -d "$1"]] or
                     [[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H 'Content-Type: application/json' -d '$1']]
