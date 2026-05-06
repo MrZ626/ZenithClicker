@@ -1270,7 +1270,7 @@ function scene.overDraw()
     if not GAME.invisUI then
         -- Allspin keyboard hint
         if M.AS > 0 and M.EX == 0 then
-            local texts=CardHintText
+            local texts = CardHintText
             for i = 1, #Cards do
                 local obj = texts[i]
                 local x, y = Cards[i].x + 90, Cards[i].y + 155
@@ -1431,6 +1431,12 @@ function scene.overDraw()
             gc_line(0, 0, 420 * cos(a), 420 * sin(a))
         end
     end
+
+    -- Piece Data
+    gc_replaceTransform(SCR.xOy_m)
+    GC.setColor(1, 1, 1, .26 * GAME.uiHide)
+    FONT.set(70, 'symbol')
+    GC.printf(GAME.pieceFstr, 0, -170, 620, 'center', 0, 4.2, 4.2, 310, 48)
 
     -- Windup animation
     gc_replaceTransform(SCR.xOy_m)

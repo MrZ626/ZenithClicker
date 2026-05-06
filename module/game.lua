@@ -135,6 +135,7 @@ local GAME = {
     comboZP = 1,
     isUltraRun = false,
     endFloorFstr = {},
+    pieceFstr = {},
 
     completion = { -- 0=not mastered, 1=mastered, 2=rev mastered
         EX = 0,
@@ -2128,6 +2129,10 @@ function GAME.start()
     GAME.playing = true
 
     -- Statistics
+    TABLE.clear(GAME.pieceFstr)
+    for i = 1, #PieceData - 1 do
+        if GAME[PieceData[i].id] then TABLE.append(GAME.pieceFstr, PieceData[i].piece) end
+    end
     GAME.comboStr = table.concat(TABLE.sort(GAME.getHand(true)))
     GAME.prevPB = BEST.highScore[(GAME.isUltraRun and 'u' or '') .. GAME.comboStr]
     if GAME.prevPB == 0 then GAME.prevPB = -2600 end

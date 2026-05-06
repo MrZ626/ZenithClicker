@@ -524,6 +524,7 @@ FONT.load {
     serif = "assets/AbhayaLibre-Regular.ttf",
     sans = "assets/DINPro-Medium.otf",
     led = "assets/UniDreamLED.ttf",
+    symbol = "assets/symbols.otf",
 }
 FontLoaded = SYSTEM == 'Web' or MATH.roll(.62)
 FONT.setDefaultFont(FontLoaded and 'sans' or 'serif')
@@ -841,6 +842,7 @@ end
 
 BgScale = 1
 
+CHAR = require 'module/char'
 require 'data/base'
 SHADER = require 'module/shader'
 GAME = require 'module/game'
