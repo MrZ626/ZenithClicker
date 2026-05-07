@@ -1434,8 +1434,8 @@ function scene.overDraw()
     -- Piece Data
     gc_replaceTransform(SCR.xOy_m)
     GC.setColor(1, 1, 1, .26 * GAME.uiHide)
-    FONT.set(70, 'symbol')
-    GC.printf(GAME.pieceFstr, 0, -170, 620, 'center', 0, 4.2, 4.2, 310, 48)
+    local w, h = GAME.pieceFstrObj:getDimensions()
+    GC.draw(GAME.pieceFstrObj, 0, -170, 0, min(4.2, 740 / w), nil, w / 2, h * .57)
 
     -- Windup animation
     gc_replaceTransform(SCR.xOy_m)

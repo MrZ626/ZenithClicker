@@ -136,6 +136,7 @@ local GAME = {
     isUltraRun = false,
     endFloorFstr = {},
     pieceFstr = {},
+    pieceFstrObj = GC.newText(FONT.get(70, 'symbol')),
 
     completion = { -- 0=not mastered, 1=mastered, 2=rev mastered
         EX = 0,
@@ -1568,6 +1569,7 @@ function GAME.refreshPieceFstr()
     for i = 1, #PieceData - 1 do
         if GAME[PieceData[i].id] then TABLE.append(GAME.pieceFstr, PieceData[i].piece) end
     end
+    GAME.pieceFstrObj:set(GAME.pieceFstr)
 end
 
 function GAME.swapControl()
