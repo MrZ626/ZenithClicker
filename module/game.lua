@@ -2691,8 +2691,8 @@ function GAME.finish(reason)
             SubmitAchv('autoplay_is_awesome', GAME.achv_noManualCommitH or GAME.roundHeight)
         elseif GAME.comboStr == 'EXMSNHVLrAS' then
             SubmitAchv('faltered', GAME.achv_noChargeH or GAME.roundHeight)
-        elseif GAME.comboStr == 'ASDPINNH' then
-            SubmitAchv('dna', GAME.achv_shareModH or GAME.roundHeight)
+        elseif GAME.comboStr == 'ASDHDP' then
+            SubmitAchv('a_mutual_agreement', GAME.achv_shareModH or GAME.roundHeight)
         elseif GAME.comboStr == 'ASDPVL' then
             SubmitAchv('the_cheaters', GAME.achv_noShareModH or GAME.roundHeight)
         elseif GAME.comboStr == 'VLrGV' then
