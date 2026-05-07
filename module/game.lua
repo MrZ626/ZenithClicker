@@ -1563,6 +1563,13 @@ function GAME.refreshDailyChallengeText()
     SCN.scenes.tower.widgetList.daily:reset()
 end
 
+function GAME.refreshPieceFstr()
+    TABLE.clear(GAME.pieceFstr)
+    for i = 1, #PieceData - 1 do
+        if GAME[PieceData[i].id] then TABLE.append(GAME.pieceFstr, PieceData[i].piece) end
+    end
+end
+
 function GAME.swapControl()
     if GAME[GAME.getLifeKey(true)] > 0 then
         GAME.onAlly = not GAME.onAlly
@@ -2133,10 +2140,7 @@ function GAME.start()
     GAME.playing = true
 
     -- Statistics
-    TABLE.clear(GAME.pieceFstr)
-    for i = 1, #PieceData - 1 do
-        if GAME[PieceData[i].id] then TABLE.append(GAME.pieceFstr, PieceData[i].piece) end
-    end
+    GAME.refreshPieceFstr()
     GAME.comboStr = table.concat(TABLE.sort(GAME.getHand(true)))
     GAME.prevPB = BEST.highScore[(GAME.isUltraRun and 'u' or '') .. GAME.comboStr]
     if GAME.prevPB == 0 then GAME.prevPB = -2600 end
