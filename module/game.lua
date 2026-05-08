@@ -2335,7 +2335,6 @@ function GAME.finish(reason)
     GAME.teramusic = false
     GAME.currentTask = false
 
-    local unlockDuo
     if GAME.totalQuest > 2.6 then
         LOG('info', ("[%s] (%s) F%d %.1fm in %.3fs"):format(reason, table.concat(GAME.getHand(true), ', '), GAME.floor, GAME.roundHeight, GAME.time))
 
@@ -2344,11 +2343,7 @@ function GAME.finish(reason)
             for k, v in next, M do
                 if v > GAME.completion[k] then
                     if GAME.completion[k] == 0 then
-                        if k == 'DP' then
-                            unlockDuo = true
-                        else
-                            unlockRev = unlockRev + 1
-                        end
+                        unlockRev = unlockRev + 1
                         RevUnlocked = true
                     end
                     GAME.completion[k] = v
@@ -2775,17 +2770,6 @@ function GAME.finish(reason)
     TASK.unlock('dcTimer')
     GAME.refreshDailyChallengeText()
     GAME.prevPB = max(GAME.prevPB, GAME.height)
-
-    if unlockDuo then
-        CD.DP.lock = true
-        TASK.new(function()
-            TASK.yieldT(0.42)
-            CD.DP.lock = false
-            CD.DP:spin()
-            CD.DP:bounce(1200, .62)
-            SFX.play('supporter')
-        end)
-    end
 
     if URM and GAME.height < -10 then
         PieceSFXID = 0
