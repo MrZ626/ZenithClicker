@@ -87,7 +87,7 @@ function RefreshAchvList(canShuffle)
                 wreath = r >= 5 and floor(MATH.clampInterpolate(0, 0, .9999, 6, r % 1)) or 0
                 if A.type ~= 'issued' then
                     overallProgress.rank[rank] = overallProgress.rank[rank] + 1
-                    if wreath > 0 then overallProgress.wreath[wreath] = overallProgress.wreath[wreath] + 1 end
+                    overallProgress.wreath[wreath] = overallProgress.wreath[wreath] + 1
                     if A.type == 'competitive' then
                         overallProgress.ptGet = overallProgress.ptGet + floor(rank)
                         overallProgress.ptAll = overallProgress.ptAll + 5
@@ -210,6 +210,7 @@ function RefreshAchvList(canShuffle)
             end
         end
     end
+    print(TABLE.dump(overallProgress))
 end
 
 local function submit(id, score, silent, realSilent)
