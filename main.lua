@@ -1647,7 +1647,21 @@ function Daemon_Slow()
         end
 
         -- HTTP returns
-        local msg = ASYNC.get('submitDaily')
+        local msg = ASYNC.get('checkUpdate')
+        if msg then
+            local suc, res = pcall(JSON.decode, msg)
+            if suc and res then
+                if (require 'version'.appVer):lower() == res.tag_name then
+                    LOG('info', "Already on latest version (" .. res.tag_name .. ")")
+                else
+                    SFX.play('social_notify_major')
+                    MSG('info', "New version " .. res.tag_name .. " available!", 6.26)
+                end
+            else
+                LOG('info', "Failed to check for updates")
+            end
+        end
+        msg = ASYNC.get('submitDaily')
         if msg then
             local suc, res = pcall(JSON.decode, msg)
             local duration = GAME.playing and 0 or 10

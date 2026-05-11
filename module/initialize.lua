@@ -1,3 +1,4 @@
+UPDCMD = "curl -s -X GET https://api.github.com/repos/MrZ626/ZenithClicker/releases/latest"
 if SYSTEM == "Windows" or SYSTEM == "Linux" then
     SupportCurl = true
 elseif SYSTEM == "Android" then
@@ -12,6 +13,9 @@ elseif SYSTEM == "Android" then
         end
         f:close()
     end
+end
+if SupportCurl then
+    ASYNC.runCmd('checkUpdate', UPDCMD)
 end
 if FILE.exist('data.luaon') then
     if not FILE.exist('best.luaon') then
