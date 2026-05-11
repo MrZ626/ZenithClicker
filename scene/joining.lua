@@ -1,6 +1,7 @@
 ---@type Zenitha.Scene
 local scene = {}
 
+local initialized = false
 local t1, t2
 
 function scene.load()
@@ -22,8 +23,10 @@ function scene.update(dt)
                 GAME.bgH, GAME.height = 0, 0
                 GAME.refreshLockState()
                 Initialize(true)
+                GAME.finishTera = false
                 GAME.clearResultStat()
-            else
+            end
+            if not initialized then
                 BGM.setMaxSources(42)
                 BGM.load(FILE.load('data/bgm.lua', '-luaon'))
                 SFX.load('assets/sfx.ogg', FILE.load('data/sfx.lua', '-luaon'))
@@ -31,13 +34,15 @@ function scene.update(dt)
                 TASK.new(Daemon_Slow)
                 TASK.new(Daemon_Fast)
                 TEXTS.load:set("GETTING READY TO SPECTATE...")
+
+                ---@diagnostic disable-next-line
+                local _ = TEXTURE.panel.glass_a, TEXTURE.panel.glass_b, TEXTURE.panel.throb_a, TEXTURE.panel.throb_b
+                for i = 2, 9 do TEXTURE.towerBG[i]:setWrap('mirroredrepeat', 'mirroredrepeat') end
+                TEXTURE.towerBG[1]:setWrap('mirroredrepeat', 'clampzero')
+                TEXTURE.towerBG[10]:setWrap('mirroredrepeat', 'clampzero')
+                _, _ = TEXTURE.moon, TEXTURE.stars
+                initialized = true
             end
-            ---@diagnostic disable-next-line
-            local _ = TEXTURE.panel.glass_a, TEXTURE.panel.glass_b, TEXTURE.panel.throb_a, TEXTURE.panel.throb_b
-            for i = 2, 9 do TEXTURE.towerBG[i]:setWrap('mirroredrepeat', 'mirroredrepeat') end
-            TEXTURE.towerBG[1]:setWrap('mirroredrepeat', 'clampzero')
-            TEXTURE.towerBG[10]:setWrap('mirroredrepeat', 'clampzero')
-            _, _ = TEXTURE.moon, TEXTURE.stars
         end
     elseif t2 > 0 then
         t2 = t2 - dt
