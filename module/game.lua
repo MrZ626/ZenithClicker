@@ -2291,7 +2291,17 @@ function GAME.start()
     if M.DP > 0 then IssueAchv('intended_glitch') end
 end
 
----@param reason 'forfeit' | 'wrong' | 'time'
+function GAME.clearResultStat()
+    TEXTS.endHeight:set("")
+    TEXTS.endFloor:set("")
+    TEXTS.endResult:set("")
+    TEXTS.zpChange:set("")
+    TEXTS.floorTime:set("")
+    TEXTS.rankTime:set("")
+    GAME.resIB:clear()
+end
+
+---@param reason 'forfeit' | 'wrong' | 'time' | 'reset'
 function GAME.finish(reason)
     SCN.scenes.tower.widgetList.help:setVisible(not GAME.zenithTraveler)
     SCN.scenes.tower.widgetList.help2:setVisible(not GAME.zenithTraveler)
@@ -2748,13 +2758,7 @@ function GAME.finish(reason)
         if GAME.fullHealth <= 5 then IssueSecret('cardiac_arrest') end
         SaveStat()
     else
-        TEXTS.endHeight:set("")
-        TEXTS.endFloor:set("")
-        TEXTS.endResult:set("")
-        TEXTS.zpChange:set("")
-        TEXTS.floorTime:set("")
-        TEXTS.rankTime:set("")
-        GAME.resIB:clear()
+        GAME.clearResultStat()
     end
     ReleaseAchvBuffer()
 

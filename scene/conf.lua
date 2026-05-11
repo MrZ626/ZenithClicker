@@ -204,7 +204,7 @@ function scene.keyDown(key, isRep)
         end
         return true
     end
-    ZENITHA._cursor.active=true
+    ZENITHA._cursor.active = true
     return true
 end
 
@@ -588,6 +588,18 @@ scene.widgetList = {
                     else
                         MSG('warn', "No buffered Daily Challenge score")
                         SFX.play('failure', 1, 0, Tone(0))
+                    end
+                elseif data == 'resetall' then
+                    if TASK.lock('reset_all', 4.2) then
+                        SFX.play('hyperalert')
+                        MSG('warn', "Reset all progress? This action cannot be undone. Press again to confirm.", 4.2)
+                    else
+                        TASK.unlock('reset_all')
+                        SFX.play('clearquad')
+                        SFX.play('inject')
+                        SFX.play('thunder' .. math.random(6))
+                        MSG.clear()
+                        SCN.swapTo('joining', 'fade', true)
                     end
                 else
                     local msg = "Invalid code '" .. data .. "' in clipboard."

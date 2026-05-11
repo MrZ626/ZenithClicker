@@ -544,7 +544,7 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     dcBest     = GC.newText(FONT.get(30)),
     dcTimer    = GC.newText(FONT.get(30)),
     title      = GC.newText(FONT.get(50), "EXPERT QUICK PICK"),
-    load       = GC.newText(FONT.get(50), "JOINING ROOM..."),
+    load       = GC.newText(FONT.get(50)),
     pb         = GC.newText(FONT.get(50)),
     endResult  = GC.newText(FONT.get(30)),
     endHeight  = GC.newText(FONT.get(50)),
@@ -610,69 +610,75 @@ Metatable = {
     best_highscore = { __index = function() return 0 end },
     best_speedrun = { __index = function() return 1e99 end },
 }
-BEST = {
-    highScore = setmetatable({}, Metatable.best_highscore),
-    speedrun = setmetatable({}, Metatable.best_speedrun),
-}
 
-STAT = {
-    mod = 'vanilla',
-    version = nil, -- will be set after loading
-    system = SYSTEM,
-    joinDate = os.date("%b %Y"),
-    hid = os.date("%d%S%m%M%y%H") .. math.random(26000, 42000) .. math.random(42000, 62000),
-    uid = "ANON-" .. os.date("%d_") .. math.random(2600, 6200),
-    keybind = {
-        "q", "w", "e", "r", "t", "y", "u", "i", "o",
-        "a", "s", "d", "f", "g", "h", "j", "k", "l",
-        "space", "z", "x", "c"
-    },
-    aboutme = "Click the Zenith!",
-    maxFloor = 1,
-    maxHeight = 0,
-    heightDate = "NO DATE",
-    minTime = 2600,
-    timeDate = "NO DATE",
+-- Create BEST, STAT, ACHV tables, only used when launching and on resetall
+function INIT_DATA()
+    BEST = {
+        highScore = setmetatable({}, Metatable.best_highscore),
+        speedrun = setmetatable({}, Metatable.best_speedrun),
+    }
 
-    zp = 0,
-    dzp = 0,
-    peakZP = 0,
-    peakDZP = 0,
-    dailyBest = 0,
-    dailyMastered = false,
-    lastDay = 0,
-    vipListCount = 0,
-    clockOutCount = 0,
-    clicker = false,
+    STAT = {
+        mod = 'vanilla',
+        version = nil, -- will be set after loading
+        system = SYSTEM,
+        joinDate = os.date("%b %Y"),
+        hid = os.date("%d%S%m%M%y%H") .. math.random(26000, 42000) .. math.random(42000, 62000),
+        uid = "ANON-" .. os.date("%d_") .. math.random(2600, 6200),
+        keybind = {
+            "q", "w", "e", "r", "t", "y", "u", "i", "o",
+            "a", "s", "d", "f", "g", "h", "j", "k", "l",
+            "space", "z", "x", "c"
+        },
+        aboutme = "Click the Zenith!",
+        maxFloor = 1,
+        maxHeight = 0,
+        heightDate = "NO DATE",
+        minTime = 2600,
+        timeDate = "NO DATE",
 
-    totalGame = 0,
-    totalTime = 0,
-    totalQuest = 0,
-    totalPerfect = 0,
-    totalHeight = 0,
-    totalBonus = 0,
-    totalFloor = 0,
-    totalFlip = 0,
-    totalAttack = 0,
-    totalGiga = 0,
-    totalF10 = 0,
-    badge = {},
+        zp = 0,
+        dzp = 0,
+        peakZP = 0,
+        peakDZP = 0,
+        dailyBest = 0,
+        dailyMastered = false,
+        lastDay = 0,
+        vipListCount = 0,
+        clockOutCount = 0,
+        clicker = false,
 
-    fullscreen = true,
-    syscursor = false,
-    cardBrightness = 90,
-    bgBrightness = 40,
-    bg = true,
-    sfx = 60,
-    bgm = 100,
+        totalGame = 0,
+        totalTime = 0,
+        totalQuest = 0,
+        totalPerfect = 0,
+        totalHeight = 0,
+        totalBonus = 0,
+        totalFloor = 0,
+        totalFlip = 0,
+        totalAttack = 0,
+        totalGiga = 0,
+        totalF10 = 0,
+        badge = {},
 
-    autoMute = false,
-    oldHitbox = false,
-}
+        fullscreen = true,
+        syscursor = false,
+        cardBrightness = 90,
+        bgBrightness = 40,
+        bg = true,
+        sfx = 60,
+        bgm = 100,
 
-ACHV = {}
+        autoMute = false,
+        oldHitbox = false,
+    }
 
-AchvNotice = {}
+    ACHV = {}
+
+    AchvNotice = {}
+end
+
+INIT_DATA()
 
 TestMode = false
 
@@ -1359,6 +1365,20 @@ end
 local KBisDown = love.keyboard.isDown
 function ZENITHA.globalEvent.keyDown(key, isRep)
     if isRep then return end
+    -- if KBisDown('lctrl') and KBisDown('lshift') and KBisDown('lalt') and key == 'r' then
+    --     if TASK.lock('reset_all', 4.2) then
+    --         SFX.play('hyperalert')
+    --         MSG('warn', "Reset all progress? This action cannot be undone. Press again to confirm.", 4.2)
+    --     else
+    --         TASK.unlock('reset_all')
+    --         SFX.play('clearquad')
+    --         SFX.play('inject')
+    --         SFX.play('thunder' .. math.random(6))
+    --         MSG.clear()
+    --         SCN.swapTo('joining', 'fade', true)
+    --     end
+    --     return
+    -- end
     if KBisDown('lctrl', 'rctrl') then return end
     if key == 'f12' then
         if TASK.lock('dev') then
