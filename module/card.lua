@@ -176,9 +176,11 @@ function Card:setActive(auto, key)
             revOn = false
             noSpin = true
             self.active = false
-            self:shake()
-            SFX.play('no')
-            MSG('dark', "Reach F10 with this mod first!")
+            if STAT.maxFloor >= 10 then
+                self:shake()
+                SFX.play('no')
+                MSG('dark', "Reach F10 with this mod first!")
+            end
             return
         end
         local wasRev = M[self.id] == 2
