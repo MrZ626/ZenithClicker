@@ -963,6 +963,7 @@ BgmData = {
 }
 
 BgmPlaying = false ---@type ZC.bgmName | false
+SongNamePlaying = false -- Same as BgmPlaying, but this distinguishes f0(r) and f1(r) for album page
 BgmLooping = false
 BgmNeedSkip = false
 BgmNeedStop = false
@@ -979,6 +980,7 @@ end
 function PlayBGM(name, force)
     if GAME.teramusic and not force then return end
 
+    SongNamePlaying = name
     local last = BgmPlaying
 
     if GAME.playing and RevMusicMode() then name = name .. 'r' end

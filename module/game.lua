@@ -2114,7 +2114,6 @@ function GAME.start()
     end
     if URM and M.VL == 2 and not UltraVlCheck('start') then return end
     TASK.removeTask_code(Task_MusicEnd)
-    MusicPlayer = false
 
     GAME.omega = false
     GAME.negFloor = 1
