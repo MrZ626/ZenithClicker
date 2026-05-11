@@ -268,8 +268,8 @@ function scene.draw()
         end
     elseif page == 2 then
         FONT.set(70)
-        gc_setColor(clr.T)
-        GC.print("COMING SOON", 60, 560, -.26, 1.6)
+        gc_setColor(clr.D)
+        GC.print("COMING SOON", 60, 600, -.26, 1.6)
     elseif page == 3 then
         -- Music player
         local len = 800
