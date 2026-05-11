@@ -6,6 +6,7 @@ local scene = {}
 -- 2. Utils
 -- 3. Musics
 local page = 1
+local maxPage = 3
 
 local clr = {
     D = { COLOR.HEX '191E31FF' },
@@ -177,7 +178,7 @@ function scene.keyDown(key, isRep)
         if key == 'escape' then
             SFX.play('menuclick')
             SCN.back('none')
-        elseif MATH.between(tonumber(key) or 0, 1, 3) then
+        elseif MATH.between(tonumber(key) or 0, 1, maxPage) then
             local p = tonumber(key)
             if p and p ~= page then
                 page = p
@@ -363,8 +364,9 @@ function scene.draw()
 end
 
 local pageVisFunc = {}
-for p = 1, 3 do pageVisFunc[p] = function() return page == p end end
+for p = 1, maxPage do pageVisFunc[p] = function() return page == p end end
 
+-- Page 1
 local videoY = baseY + 370
 local page1 = {
     -- Audio
@@ -510,6 +512,7 @@ local page1 = {
     },
 }
 
+-- Page 2
 local page2 = {
     -- Account
     WIDGET.new { -- title
@@ -768,6 +771,7 @@ local page2 = {
     },
 }
 
+-- Page 3
 local albumY = baseY + 260
 local page3 = {
     -- Album
@@ -905,6 +909,7 @@ albumBtn {
     visibleFunc = function() return page == 3 and ACHV.blazing_speed and BEST.highScore.rEX >= Floors[9].top end,
 }
 
+-- Tabs
 local tab = {
     WIDGET.new {
         type = 'button',
