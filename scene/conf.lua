@@ -82,6 +82,20 @@ local bgmColors = {
     terar = { COLOR.HEX 'C0C0C0' },
     fomg = { COLOR.HEX '00437A' },
 }
+local bgmHeight = {
+    [0] = Floors[0].top,
+    Floors[0].top,
+    Floors[1].top,
+    Floors[2].top,
+    Floors[3].top,
+    Floors[4].top,
+    Floors[5].top,
+    Floors[6].top,
+    Floors[7].top,
+    Floors[8].top,
+    Floors[9].top + 10,
+    Floors[9].top + 26, -- special
+}
 
 local function refreshWidgets()
     for _, W in next, scene.widgetList do W:setVisible() end
@@ -245,6 +259,17 @@ local function drawSliderComponents(y, title, t1, t2, value)
     gc_ucs_back()
 end
 
+function scene.update(dt)
+    if page == 3 and (BgmPlaying == 'tera' or BgmPlaying == 'terar') then
+        GAME.height = GAME.height + dt * (BgmPlaying == 'tera' and 20 or 42) * (GAME.height >= 1650 and .2 or 1)
+        if GAME.height >= 1726 then GAME.bgH, GAME.height = -30, -30 end
+        dt = dt * 2.6
+    end
+    GAME.bgH = MATH.expApproach(GAME.bgH, GAME.height, dt * 1.6)
+    StarPS:moveTo(0, -GAME.bgH * 2 * BgScale)
+    StarPS:update(dt)
+end
+
 function scene.draw()
     DrawBG(STAT.bgBrightness)
 
@@ -321,7 +346,7 @@ function scene.draw()
         gc.push('transform')
         gc_replaceTransform(SCR.origin)
         if BgmPlaying == 'tera' or BgmPlaying == 'terar' then
-            gc_setAlpha(.26)
+            gc_setAlpha(.42)
         else
             gc_setAlpha(.2 + .06 * math.sin(playTime / beatLen * 1.5708))
         end
@@ -878,6 +903,7 @@ for i = 0, 10 do
         color = bgmColors['f' .. i],
         text = "" .. i,
         onClick = function()
+            GAME.height = bgmHeight[i]
             PlayBGM('f' .. i)
             refreshSongInfo()
         end,
@@ -890,6 +916,7 @@ for i = 0, 10 do
         color = bgmColors['f' .. i .. 'r'],
         text = "R" .. i,
         onClick = function()
+            GAME.height = (bgmHeight[i] + bgmHeight[i + 1]) / 2
             PlayBGM('f' .. i .. 'r')
             refreshSongInfo()
         end,
@@ -912,6 +939,7 @@ albumBtn {
     fontSize = 50,
     text = "FΩ",
     onClick = function()
+        GAME.height = 6200
         PlayBGM('fomg')
         refreshSongInfo()
     end,
