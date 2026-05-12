@@ -175,7 +175,7 @@ function scene.keyDown(key, isRep)
             end
         end
     else
-        if key == 'escape' then
+        if key == 'escape' or key == 'f1' then
             SFX.play('menuclick')
             SCN.back('none')
         elseif MATH.between(tonumber(key) or 0, 1, maxPage) then
