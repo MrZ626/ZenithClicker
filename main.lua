@@ -984,30 +984,37 @@ function PlayBGM(name, force)
 
     if GAME.playing and RevMusicMode() then name = name .. 'r' end
     if name == 'fomgr' then name = 'fomg' end
-    if name:sub(1, 2) == 'f0' then
+    if name == 'f0r' then
         BgmPlaying = 'f0'
-    elseif name:sub(1, 2) == 'f1' and name:sub(1, 3) ~= 'f10' then
+    elseif name == 'f1r' then
         BgmPlaying = 'f1'
     else
         BgmPlaying = name
     end
 
     if not BgmData[BgmPlaying] then return end
-    BgmLooping = BgmData[BgmPlaying].loop
-    BgmNeedSkip = BgmData[BgmPlaying].teleport
+
     BgmNeedStop = false
 
     if BgmPlaying == 'f0' then
         BgmLooping = false
+        BgmNeedSkip = BgmData[BgmPlaying].teleport
+
         BGM.play(BgmSet.f0)
         RefreshBGM(name)
     elseif BgmPlaying == 'f1' then
+        BgmLooping = BgmData[BgmPlaying].loop
+        BgmNeedSkip = BgmData[BgmPlaying].teleport
+
         BGM.play(BgmSet.f1, force and '' or '-sdin')
         local start = math.random(3, 5) * BgmData.f1.introLen
         BgmNeedSkip[1] = start + BgmData.f1.introLen
         BGM.set('all', 'seek', start)
         RefreshBGM(name)
     elseif name == 'tera' then
+        BgmLooping = BgmData[BgmPlaying].loop
+        BgmNeedSkip = BgmData[BgmPlaying].teleport
+
         BGM.play('tera', '-sdin')
         local startFrom
         if last then
@@ -1019,10 +1026,10 @@ function PlayBGM(name, force)
         BgmNeedSkip[1] = start + BgmData.tera.introLen
         BGM.set('all', 'seek', start)
         RefreshBGM()
-    else
-        if BGM.play(name, force and '' or '-sdin') then
-            RefreshBGM()
-        end
+    elseif BGM.play(name, force and '' or '-sdin') then
+        BgmLooping = BgmData[BgmPlaying].loop
+        BgmNeedSkip = BgmData[BgmPlaying].teleport
+        RefreshBGM()
     end
 end
 
