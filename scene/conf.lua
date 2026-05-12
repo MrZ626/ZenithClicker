@@ -279,21 +279,15 @@ function scene.draw()
         local beatLen = 60 / BgmData[BgmPlaying].bpm
         local beatBar = BgmData[BgmPlaying].bar
 
-        -- Glow
-        gc.push('transform')
-        gc_replaceTransform(SCR.origin)
-        gc_setColor(1, 1, 1, .06 + .04 * math.sin(playTime / beatLen * 1.5708))
-        gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * SCR.w, SCR.h)
-        gc_draw(TEXTURE.transition, SCR.w, 0, 0, -.42 / 128 * SCR.w, SCR.h)
-        gc.pop()
-
         gc_ucs_move(50, 120)
 
+        -- Time
         FONT.set(30)
         gc_setColor(clr.T)
         gc_print(STRING.time_simp(playTime), 0, 49, 0, .626)
         gc_print(playingBgmLengthStr, len - 45, 49, 0, .626)
 
+        -- Repeat marks
         local data = BgmData[BgmPlaying]
         if BgmLooping then
             if data.loop[1] == 0 then
@@ -304,24 +298,42 @@ function scene.draw()
             end
         end
 
+        -- Progress bar
         gc_setColor(clr.L)
         gc_rectangle('fill', 0, 46, len, 4)
         if BgmPlaying == 'tera' then
             gc_setColor(COLOR.rainbow_light(2.6 * t))
         elseif BgmPlaying == 'terar' then
-            gc_setColor(COLOR.rainbow_light(26 * t))
+            gc_setColor(COLOR.rainbow_light(20 * t))
         else
-            gc_setColor(bgmColors[BgmPlaying] or clr.LT)
+            gc_setColor(bgmColors[SongNamePlaying])
         end
         gc_rectangle('fill', 0, 46, len * playTime / playingBgmLength, 4)
 
+        -- Ambient Glow
+        gc.push('transform')
+        gc_replaceTransform(SCR.origin)
+        if BgmPlaying == 'tera' or BgmPlaying == 'terar' then
+            gc_setAlpha(.26)
+        else
+            gc_setAlpha(.2 + .06 * math.sin(playTime / beatLen * 1.5708))
+        end
+        gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * SCR.w, SCR.h)
+        gc_draw(TEXTURE.transition, SCR.w, 0, 0, -.42 / 128 * SCR.w, SCR.h)
+        gc.pop()
+
+        -- Title
+        gc_setAlpha(1)
         gc_mStr(playingBgmTitle, len / 2, 0)
-        gc_setColor(1, 1, 1, .35 - .26 * math.sin(playTime / (beatBar * beatLen) * 3.1416))
+        if not (BgmPlaying == 'tera' or BgmPlaying == 'terar') then
+            gc_setColor(1, 1, 1, .35 - .26 * math.sin(playTime / (beatBar * beatLen) * 3.1416))
+        end
         gc_mStr(playingBgmTitle, len / 2, 0)
         gc_setColor(clr.LT)
         gc_setAlpha(.26)
         gc_printf(data.meta, len / 2, 56, 2 * len, 'center', 0, .42, .42, len)
 
+        -- Skip marks
         if BgmNeedSkip then
             local alpha = .26 + .62 * (-2.6 * t % 1)
             gc_setColor(COLOR.C)
