@@ -639,7 +639,7 @@ function DrawBG(brightness, showRuler)
                 end
 
                 -- Cover
-                local f10CoverAlpha = GAME.zenithTraveler and icLerp(1660, 1650, GAME.bgH) or 1 - GAME.floorTime / 2.6
+                local f10CoverAlpha = max(icLerp(1660, 1650, GAME.bgH), 1 - (love.timer.getTime() - GAME.f10Time) / 2.6)
                 if f10CoverAlpha > 0 then
                     gc_setColor(.5, .5, .5, f10CoverAlpha)
                     gc_rectangle('fill', 0, 0, SCR.w, SCR.h)

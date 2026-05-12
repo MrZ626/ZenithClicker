@@ -221,6 +221,7 @@ GAME.time = 0
 GAME.spikeCounter = 0
 GAME.spikeTimer = 0
 GAME.floorTime = 0
+GAME.f10Time = love.timer.getTime()
 GAME.reviveTime = false
 GAME.floor = 1
 GAME.rank = 1
@@ -1055,6 +1056,7 @@ function GAME.upFloor()
 
     -- End game
     if GAME.floor >= 10 then
+        GAME.f10Time = love.timer.getTime()
         if GAME.gigaspeed then
             if GAME.time < STAT.minTime then
                 STAT.minTime = roundTime
