@@ -34,7 +34,7 @@ local songList = {
     f9 = "Dr Ocelot - Broken Record",
     f10 = "petrtech - Deified Validation",
     tera = "Dr Ocelot - Schnellfeuer BULLET",
-    f1ex = "Dr Ocelot - Infernal Registration",
+    f1_withEX = "Dr Ocelot - Infernal Registration",
 
     f0r = "Dr Ocelot - Awaiting Judgement",
     f1r = "Dr Ocelot - Desecrated Ruins",
@@ -85,7 +85,7 @@ local function refreshWidgets()
 end
 
 local function refreshSongInfo()
-    playingBgmTitle = songList[SongNamePlaying] or "Rewrite"
+    playingBgmTitle = SongNamePlaying == 'f1' and GAME.mod.EX > 0 and songList.f1_withEX or songList[SongNamePlaying] or "Rewrite"
     playingBgmLength = BGM.getDuration()
     playingBgmLengthStr = STRING.time_simp(playingBgmLength)
     GAME.refreshRPC()

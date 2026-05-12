@@ -986,7 +986,7 @@ function PlayBGM(name, force)
     if name == 'fomgr' then name = 'fomg' end
     if name == 'f0r' then
         BgmPlaying = 'f0'
-    elseif name == 'f1r' then
+    elseif name == 'f1r' then -- Note: 'f1ex' is only a track name, not musicID
         BgmPlaying = 'f1'
     else
         BgmPlaying = name
