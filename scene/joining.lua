@@ -19,11 +19,22 @@ function scene.update(dt)
         t1 = t1 - dt
         if t1 <= 0 then
             if SCN.args[1] then
-                INIT_DATA()
                 GAME.bgH, GAME.height = 0, 0
+                GAME.finishTera = false
+                for k in next, GAME.completion do
+                    GAME.completion[k] = 0
+                    GAME.mod[k] = 0
+                    if Cards[k].active then
+                        Cards[k]:setActive(true)
+                    end
+                end
+                for i = 1, #PieceData - 1 do
+                    GAME[PieceData[i].id] = false
+                end
+                INIT_DATA()
+                URM = false
                 GAME.refreshLockState()
                 Initialize(true)
-                GAME.finishTera = false
                 GAME.clearResultStat()
             end
             if not initialized then
