@@ -913,7 +913,7 @@ local d = {
         quote = [[Excessive restraint can make one deeply entangled in it.]],
         comp = '<',
         scoreSimp = function(flip) return floor(flip) .. " Flips" end,
-        rank = numberRankRev(90, 86, 84, 82, 80, 77, 74),
+        rank = numberRankRev(100, 88, 85, 82, 80, 78, 74),
         hide = function() return GAME.completion.NH == 0 end,
     },
     { -- detail_oriented
