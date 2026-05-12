@@ -49,8 +49,10 @@ local songList = {
     terar = "Dr Ocelot - Kugelhagel OVERDRIVE",
 
     fomg = "Ronezkj15 - Strained Endurance",
-    f1_withEX = "Dr Ocelot - Infernal Registration",
-    f1r_withEX = "Dr Ocelot - Infernal Registration+",
+    f0_EX = "Dr Ocelot - Watchful Eye (EX)",
+    f0r_EX = "Dr Ocelot - Awaiting Judgement (EX)",
+    f1_EX = "Dr Ocelot - Infernal Registration",
+    f1r_EX = "Dr Ocelot - Desecrated Ruins (EX)",
 }
 local bgmColors = {
     f1 = { COLOR.HEX 'E46A24' },
@@ -86,16 +88,8 @@ local function refreshWidgets()
 end
 
 local function refreshSongInfo()
-    if SongNamePlaying == 'f0' and GAME.anyRev then
-        playingBgmTitle = songList.f0r
-    elseif SongNamePlaying == 'f1' and GAME.anyRev then
-        if GAME.mod.EX > 0 then
-            playingBgmTitle = songList.f1r_withEX
-        else
-            playingBgmTitle = songList.f1r
-        end
-    elseif SongNamePlaying == 'f1' and GAME.mod.EX > 0 then
-        playingBgmTitle = songList.f1_withEX
+    if SongNamePlaying == 'f0' or SongNamePlaying == 'f1' then
+        playingBgmTitle = songList[SongNamePlaying .. (RevMusicMode() and 'r' or '') .. (GAME.mod.EX > 0 and '_EX' or '')]
     else
         playingBgmTitle = songList[SongNamePlaying] or "Rewrite"
     end
