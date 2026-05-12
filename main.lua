@@ -12,8 +12,7 @@ STRING.install()
 
 SCR.setSize(1600, 1000)
 
-for _, v in next, {
-    'customAssets',
+FILE.createDirectory({
     'customAssets/achievements',
     'customAssets/badges',
     'customAssets/card',
@@ -24,7 +23,7 @@ for _, v in next, {
     'customAssets/revive',
     'customAssets/stat',
     'customAssets/tower',
-} do love.filesystem.createDirectory(v) end
+})
 
 
 ---@return love.Texture
