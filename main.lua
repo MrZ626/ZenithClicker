@@ -1656,7 +1656,7 @@ function Daemon_Slow()
         local msg = ASYNC.get('checkUpdate')
         if msg then
             local suc, res = pcall(JSON.decode, msg)
-            if suc and res then
+            if suc and res and res.tag_name then
                 if (require 'version'.appVer):lower() == res.tag_name then
                     LOG('info', "Already on latest version (" .. res.tag_name .. ")")
                 else
