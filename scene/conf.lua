@@ -101,8 +101,9 @@ local function refreshWidgets()
     for _, W in next, scene.widgetList do W:setVisible() end
 end
 
+local sp = { f0 = 1, f1 = 1, f0r = 1, f1r = 1 }
 local function refreshSongInfo()
-    if SongNamePlaying == 'f0' or SongNamePlaying == 'f1' then
+    if sp[SongNamePlaying] then
         playingBgmTitle = songList[SongNamePlaying .. (RevMusicMode() and 'r' or '') .. (GAME.mod.EX > 0 and '_EX' or '')]
     else
         playingBgmTitle = songList[SongNamePlaying] or "Rewrite"
