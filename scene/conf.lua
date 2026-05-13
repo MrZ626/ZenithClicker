@@ -260,7 +260,12 @@ local function drawSliderComponents(y, title, t1, t2, value)
     gc_ucs_back()
 end
 
+local playing
 function scene.update(dt)
+    if SongNamePlaying ~= playing then
+        refreshSongInfo()
+        playing = SongNamePlaying
+    end
     if page == 3 and (BgmPlaying == 'tera' or BgmPlaying == 'terar') then
         GAME.height = GAME.height + dt * (BgmPlaying == 'tera' and 20 or 42) * (GAME.height >= 1650 and .2 or 1)
         if GAME.height >= 1726 then GAME.bgH, GAME.height = -30, -30 end
