@@ -356,14 +356,14 @@ function scene.draw()
         if resetall_anim > .1 then
             local t2 = MATH.iLerp(.1, 1, resetall_anim)
             gc_setColor(1, 1, 1, t2 * .42)
-            GC.mDraw(TEXTURE.warning, w / 2, h / 2, 0, MATH.lerp(1.2, 4.2, t2))
+            GC.mDraw(TEXTURE.warning, w / 2, h / 2, 0, MATH.lerp(1.2, 6.2, t2))
             GC.setLineWidth(2)
             gc_setColor(1, t % .16 < .08 and 0 or 1, 0, resetall_anim * 2)
             gc_mRect('line', 450, 420, 520, 140, 20)
         end
         gc_setColor((anonUser and -t or TASK.getLock('just_saved') or 0) % .5, 0, 0, .26)
         gc_mRect('fill', 450, 420, 520, 140, 20)
-        gc_setColor(1, t % .16 < .08 and .2 + resetall_anim * .6 or .2, .2, resetall_anim ^ .26 * .62)
+        gc_setColor(1, t % .16 < .08 and .2 + resetall_anim * .6 or .2, .2, resetall_anim ^ .26 * .26)
         gc_mRect('fill', 450, 420, 520 * resetall_anim, 140, 20)
         gc_setColor(1, 1, 1, .1)
         FONT.set(50)
@@ -658,29 +658,29 @@ local page2 = {
                 return
             end
             TASK.unlock('changeName')
-            repeat
-                newName = newName:upper()
-                if #newName < 3 or #newName > 16 or newName:find('[^A-Z0-9_%-]') then
-                    MSG('dark', "New name must be 3-16 characters long and contain the following: A-Z, 0-9, -, _")
-                    break
-                end
-                if newName == STAT.uid then
-                    MSG('dark', "New name is the same as the old one.")
-                    break
-                end
-                if newName:match('^ANON[-_]') then
-                    MSG('dark', "You can’t enter ANON as your new name.")
-                    break
-                end
-                STAT.uid = newName
-                SaveStat()
-                SFX.play('supporter')
-                MSG('dark', "Your name was changed to " .. STAT.uid)
-                if SCN.cur == 'stat' then RefreshProfile() end
-                IssueAchv('identity')
+            newName = newName:upper()
+            if #newName < 3 or #newName > 16 or newName:find('[^A-Z0-9_%-]') then
+                MSG('dark', "New name must be 3-16 characters long and contain the following: A-Z, 0-9, -, _")
+                SFX.play('staffwarning')
                 return
-            until true
-            SFX.play('staffwarning')
+            end
+            if newName == STAT.uid then
+                MSG('dark', "New name is the same as the old one.")
+                SFX.play('staffwarning')
+                return
+            end
+            if newName:match('^ANON[-_]') then
+                MSG('dark', "You can’t enter ANON as your new name.")
+                SFX.play('staffwarning')
+                return
+            end
+            STAT.uid = newName
+            SaveStat()
+            SFX.play('supporter')
+            MSG('dark', "Your name was changed to " .. STAT.uid)
+            if SCN.cur == 'stat' then RefreshProfile() end
+            refreshUID()
+            IssueAchv('identity')
         end,
     },
     WIDGET.new {
@@ -900,7 +900,8 @@ local page2 = {
                 SFX.play('combo_' .. resetall_cnt .. ((clear == 's2' or clear == 'c4') and '_power' or ''))
                 if GAME.mod.AS == 1 then
                     if clear == lastClear then
-                        SFX.play('wound')
+                        for _ = 1, 2 do SFX.play('wound') end
+                        resetall_cnt = math.max(resetall_cnt - 2, 0)
                     elseif MATH.roll(.26) then
                         SFX.play('wound_repel')
                     end
@@ -912,7 +913,6 @@ local page2 = {
                     end
                 end
                 lastClear = clear
-                MSG(resetall_cnt <= 5 and 'info' or resetall_cnt <= 10 and 'warn' or 'error', "This action cannot be undone" .. ("!"):rep(resetall_cnt), MATH.clampInterpolate(1, 1, 16, .26, resetall_cnt))
                 return
             end
             FILE.delete('stat.luaon')
