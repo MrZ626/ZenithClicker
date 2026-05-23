@@ -1373,20 +1373,6 @@ end
 local KBisDown = love.keyboard.isDown
 function ZENITHA.globalEvent.keyDown(key, isRep)
     if isRep then return end
-    -- if KBisDown('lctrl') and KBisDown('lshift') and KBisDown('lalt') and key == 'r' then
-    --     if TASK.lock('reset_all', 4.2) then
-    --         SFX.play('hyperalert')
-    --         MSG('warn', "Reset all progress? This action cannot be undone. Press again to confirm.", 4.2)
-    --     else
-    --         TASK.unlock('reset_all')
-    --         SFX.play('clearquad')
-    --         SFX.play('inject')
-    --         SFX.play('thunder' .. math.random(6))
-    --         MSG.clear()
-    --         SCN.swapTo('joining', 'fade', true)
-    --     end
-    --     return
-    -- end
     if KBisDown('lctrl', 'rctrl') then return end
     if key == 'f12' then
         if TASK.lock('dev') then

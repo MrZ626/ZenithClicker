@@ -4,9 +4,10 @@ local scene = {}
 
 -- 1. Video & Audio
 -- 2. Utils
--- 3. Musics
+-- 3. Album
 local page = 1
 local maxPage = 3
+local uidList = {}
 
 local clr = {
     D = { COLOR.HEX '191E31FF' },
@@ -101,6 +102,19 @@ local function refreshWidgets()
     for _, W in next, scene.widgetList do W:setVisible() end
 end
 
+local function refreshUID()
+    TABLE.clear(uidList)
+    uidList[0] = "Active Profile:   " .. STAT.uid
+    for i = 1, 3 do
+        if FILE.exist('save' .. i) then
+            local dat = FILE.load('save' .. i .. "/stat.luaon")
+            uidList[i] = dat.uid
+        else
+            uidList[i] = false
+        end
+    end
+end
+
 local sp = { f0 = 1, f1 = 1, f0r = 1, f1r = 1 }
 local function refreshSongInfo()
     if sp[SongNamePlaying] then
@@ -130,6 +144,7 @@ function scene.load()
     TASK.unlock('rebind_control')
     refreshWidgets()
     refreshSongInfo()
+    refreshUID()
 end
 
 -- function scene.unload()
@@ -305,9 +320,13 @@ function scene.draw()
             gc_print(bindHint[#bindBuffer + 1], 600, 700, 0, .872)
         end
     elseif page == 2 then
-        FONT.set(70)
-        gc_setColor(clr.D)
-        GC.print("COMING SOON", 60, 600, -.26, 1.6)
+        FONT.set(30)
+        gc_setColor(clr.LT)
+        gc_mStr(uidList[0], 450, 360)
+        for i = 1, 3 do
+            gc_setColor(uidList[i] and clr.LT or clr.L)
+            gc_mStr(uidList[i] or "[empty]", 140, 230 + 340 + (i - 1) * 80 - 30)
+        end
     elseif page == 3 then
         -- Music player
         local len = 800
@@ -519,8 +538,6 @@ local page1 = {
         x = baseX + 730, y = baseY + 780, w = 260, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "REBIND  KEY",
-        sound_hover = 'menutap',
-        sound_release = 'menuclick',
         onClick = function()
             if bindBuffer then
                 bindBuffer = {}
@@ -552,6 +569,8 @@ local page1 = {
 }
 
 -- Page 2
+local resetall_cnt, lastClear
+local profY = baseY + 230
 local page2 = {
     -- Account
     WIDGET.new { -- title
@@ -566,8 +585,6 @@ local page2 = {
         x = baseX + 230, y = baseY + 140, w = 380, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "CHANGE  USERNAME",
-        sound_hover = 'menutap',
-        sound_release = 'menuclick',
         onClick = function()
             -- MSG.clear()
             local newName = CLIPBOARD.get()
@@ -612,8 +629,6 @@ local page2 = {
         x = baseX + 640, y = baseY + 140, w = 380, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "CHANGE  ABOUT ME",
-        sound_hover = 'menutap',
-        sound_release = 'menuclick',
         onClick = function()
             -- MSG.clear()
             local newText = CLIPBOARD.get()
@@ -652,13 +667,19 @@ local page2 = {
             SFX.play('staffwarning')
         end,
     },
+    -- Profile
+    WIDGET.new { -- title
+        type = 'text', alignX = 'left',
+        text = "PROFILE",
+        color = clr.T,
+        fontSize = 50,
+        x = baseX + 30, y = profY + 0,
+    },
     WIDGET.new {
         name = 'export', type = 'button',
-        x = baseX + 230, y = baseY + 220, w = 380, h = 50,
+        x = baseX + 230, y = profY + 80, w = 380, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "EXPORT  PROGRESS",
-        sound_hover = 'menutap',
-        sound_release = 'menuclick',
         onClick = function()
             -- MSG.clear()
             if TestMode then
@@ -679,11 +700,9 @@ local page2 = {
     },
     WIDGET.new {
         name = 'import', type = 'button',
-        x = baseX + 640, y = baseY + 220, w = 380, h = 50,
+        x = baseX + 640, y = profY + 80, w = 380, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "IMPORT  PROGRESS",
-        sound_hover = 'menutap',
-        sound_release = 'menuclick',
         onClick = function()
             -- MSG.clear()
             local data = CLIPBOARD.get():filterASCII():trim()
@@ -720,18 +739,6 @@ local page2 = {
                     else
                         MSG('warn', "No buffered Daily Challenge score")
                         SFX.play('failure', 1, 0, Tone(0))
-                    end
-                elseif data == 'resetall' then
-                    if TASK.lock('reset_all', 4.2) then
-                        SFX.play('hyperalert')
-                        MSG('warn', "Reset all progress? This action cannot be undone. Press again to confirm.", 4.2)
-                    else
-                        TASK.unlock('reset_all')
-                        SFX.play('clearquad')
-                        SFX.play('inject')
-                        SFX.play('thunder' .. math.random(6))
-                        MSG.clear()
-                        SCN.swapTo('joining', 'fade', true)
                     end
                 else
                     local msg = "Invalid code '" .. data .. "' in clipboard."
@@ -803,7 +810,128 @@ local page2 = {
             SFX.play('social_notify_major')
         end,
     },
+    WIDGET.new {
+        name = 'resetall', type = 'button',
+        x = baseX + 450, y = profY + 220, w = 260, h = 50,
+        color = clr.L,
+        fontSize = 30, textColor = clr.LT, text = "RESET ALL",
+        onClick = function()
+            if not (uidList[1] or uidList[2] or uidList[3]) then
+                SFX.play('staffwarning')
+                MSG('dark', "You must have at least 1 backup before resetting all progress!")
+                return
+            end
+            if TASK.lock('reset_all', 2.6) then
+                resetall_cnt = 0
+                lastClear = false
+                SFX.play('hyperalert')
+                MSG('warn', "Reset all progress? This action cannot be undone. Spam to confirm.", 4.2)
+                return
+            end
+            if not TASK.forceLock('reset_all', 1) and resetall_cnt < 16 then
+                resetall_cnt = resetall_cnt + 1
+                local spin = MATH.roll(.26)
+                local clear = spin and 's' .. math.random(2) or 'c' .. math.random(2, 4)
+                SFX.play(spin and 'clearspin' or clear == 'c4' and 'clearquad' or 'clearline')
+                SFX.play('combo_' .. resetall_cnt .. ((clear == 's2' or clear == 'c4') and '_power' or ''))
+                if GAME.mod.AS == 1 then
+                    if clear == lastClear then
+                        SFX.play('wound')
+                    elseif MATH.roll(.26) then
+                        SFX.play('wound_repel')
+                    end
+                elseif GAME.mod.AS == 2 then
+                    if clear == lastClear then
+                        for _ = 1, 3 do SFX.play('wound') end
+                        TASK.unlock('reset_all')
+                        SCN.back('none')
+                    end
+                end
+                lastClear = clear
+                MSG('warn', "Reset all progress? This action cannot be undone" .. ("!"):rep(resetall_cnt), 4.2)
+                return
+            end
+            FILE.delete('stat.luaon')
+            FILE.delete('achv.luaon')
+            FILE.delete('best.luaon')
+            TASK.unlock('reset_all')
+            SFX.play('combo_16_power')
+            SFX.play('clearquad')
+            SFX.play('inject')
+            SFX.play('thunder' .. math.random(6))
+            MSG.clear()
+            SCN.swapTo('joining', 'fade', true)
+        end,
+    },
 }
+for i = 1, 3 do
+    local y = profY + 340 + (i - 1) * 80
+    TABLE.append(page2, {
+        WIDGET.new {
+            name = 'save' .. i, type = 'button',
+            x = baseX + 355, y = y, w = 160, h = 50,
+            color = clr.L,
+            fontSize = 30, textColor = clr.LT, text = "BACKUP",
+            onClick = function()
+                if uidList[i] and TASK.lock('save_slot' .. i, 2.6) then
+                    SFX.play('hyperalert')
+                    MSG('warn', "Save slot " .. i .. "? This cannot be undone. Press again to confirm.", 4.2)
+                    return
+                end
+                TASK.unlock('save_slot' .. i)
+                FILE.createDirectory('save' .. i)
+                FILE.copy('stat.luaon', 'save' .. i .. '/stat.luaon')
+                FILE.copy('achv.luaon', 'save' .. i .. '/achv.luaon')
+                FILE.copy('best.luaon', 'save' .. i .. '/best.luaon')
+                uidList[i] = STAT.uid
+                SFX.play('allclear')
+                MSG('check', "Progress backed up to slot " .. i .. "!", 2.6)
+                WIDGET._reset()
+            end,
+        },
+        WIDGET.new {
+            name = 'load' .. i, type = 'button',
+            x = baseX + 555, y = y, w = 160, h = 50,
+            color = clr.L,
+            fontSize = 30, textColor = clr.LT, text = "LOAD",
+            onClick = function()
+                if TASK.lock('load_slot' .. i, 2.6) then
+                    SFX.play('hyperalert')
+                    MSG('warn', "Load slot " .. i .. "? Current save will be overwritten. Press again to confirm.", 4.2)
+                    return
+                end
+                TASK.unlock('load_slot' .. i)
+                FILE.copy('save' .. i .. '/stat.luaon', 'stat.luaon')
+                FILE.copy('save' .. i .. '/achv.luaon', 'achv.luaon')
+                FILE.copy('save' .. i .. '/best.luaon', 'best.luaon')
+                SCN.swapTo('joining', 'fade', true)
+            end,
+            visibleFunc = function() return page == 2 and uidList[i] end,
+        },
+        WIDGET.new {
+            name = 'clear' .. i, type = 'button',
+            x = baseX + 755, y = y, w = 160, h = 50,
+            color = clr.L,
+            fontSize = 30, textColor = clr.LT, text = "CLEAR",
+            onClick = function()
+                if TASK.lock('clear_slot' .. i, 2.6) then
+                    SFX.play('hyperalert')
+                    MSG('warn', "Clear slot " .. i .. "? This action cannot be undone. Press again to confirm.", 4.2)
+                    return
+                end
+                TASK.unlock('clear_slot' .. i)
+                FILE.delete('save' .. i)
+                uidList[i] = false
+                SFX.play('clearquad')
+                SFX.play('inject')
+                SFX.play('thunder' .. math.random(6))
+                MSG.clear()
+                WIDGET._reset()
+            end,
+            visibleFunc = function() return page == 2 and uidList[i] end,
+        },
+    })
+end
 
 -- Page 3
 local albumY = baseY + 260
@@ -821,7 +949,6 @@ local page3 = {
         x = baseX + 130, y = albumY, w = 150, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "-30s",
-        sound_hover = 'menutap',
         onClick = function()
             TASK.removeTask_code(Task_MusicEnd)
             BGM.set('all', 'seek', math.max(BGM.tell() - 30, 0))
@@ -832,7 +959,6 @@ local page3 = {
         x = baseX + 330, y = albumY, w = 150, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "-5s",
-        sound_hover = 'menutap',
         onClick = function()
             TASK.removeTask_code(Task_MusicEnd)
             BGM.set('all', 'seek', math.max(BGM.tell() - 5, 0))
@@ -843,7 +969,6 @@ local page3 = {
         x = baseX + 540, y = albumY, w = 150, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "+5s",
-        sound_hover = 'menutap',
         onClick = function()
             TASK.removeTask_code(Task_MusicEnd)
             BGM.set('all', 'seek', math.min(BGM.tell() + 5, BGM.getDuration()))
@@ -854,7 +979,6 @@ local page3 = {
         x = baseX + 740, y = albumY, w = 150, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "+30s",
-        sound_hover = 'menutap',
         onClick = function()
             TASK.removeTask_code(Task_MusicEnd)
             BGM.set('all', 'seek', math.min(BGM.tell() + 30, BGM.getDuration()))
@@ -865,7 +989,6 @@ local page3 = {
         x = baseX + 450, y = albumY + 80, w = 200, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "NO LOOPS",
-        sound_hover = 'menutap',
         onClick = function()
             BgmLooping, BgmNeedSkip = false, false
         end,
@@ -877,7 +1000,6 @@ local function albumBtn(param)
         w = 65,
         fontSize = 30,
         textColor = 'D',
-        sound_hover = 'menutap',
     }, param)))
 end
 for i = 0, 10 do
@@ -950,7 +1072,6 @@ local tab = {
         type = 'button',
         pos = { 0, 0 }, x = 60, y = 140, w = 160, h = 60,
         color = { .15, .15, .15 },
-        sound_hover = 'menutap',
         fontSize = 30, text = "    BACK", textColor = 'DL',
         onClick = function() love.keypressed('escape') end,
     },
@@ -958,7 +1079,6 @@ local tab = {
         type = 'button',
         pos = { 1, 0 }, x = -60, y = 140, w = 160, h = 60,
         color = { COLOR.HEX '383838' },
-        sound_hover = 'menutap',
         fontSize = 30, text = "CONF   ", textColor = 'DL',
         onClick = function() love.keypressed('1') end,
     },
@@ -966,7 +1086,6 @@ local tab = {
         type = 'button',
         pos = { 1, 0 }, x = -60, y = 230, w = 160, h = 60,
         color = { COLOR.HEX '383838' },
-        sound_hover = 'menutap',
         fontSize = 30, text = "UTILS  ", textColor = 'DL',
         onClick = function() love.keypressed('2') end,
     },
@@ -974,11 +1093,14 @@ local tab = {
         type = 'button',
         pos = { 1, 0 }, x = -60, y = 320, w = 160, h = 60,
         color = { COLOR.HEX '383838' },
-        sound_hover = 'menutap',
         fontSize = 30, text = "ALBUM  ", textColor = 'DL',
         onClick = function() love.keypressed('3') end,
     },
 }
+
+for _, W in next, page1 do if W.type == 'button' or W.type == 'checkBox' then W.sound_hover, W.sound_release = 'menutap', 'menuclick' end end
+for _, W in next, page2 do if W.type == 'button' or W.type == 'checkBox' then W.sound_hover, W.sound_release = 'menutap', 'menuclick' end end
+for _, W in next, page3 do if W.type == 'button' or W.type == 'checkBox' then W.sound_hover = 'menutap' end end -- Album buttons should be quiet
 
 scene.widgetList = {}
 TABLE.append(scene.widgetList, page1)

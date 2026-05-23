@@ -32,6 +32,7 @@ function scene.update(dt)
                     GAME[PieceData[i].id] = false
                 end
                 INIT_DATA()
+                LoadSave()
                 URM = false
                 GAME.refreshLockState()
                 Initialize(true)

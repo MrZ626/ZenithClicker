@@ -24,13 +24,19 @@ if FILE.exist('data.luaon') then
     love.filesystem.remove('data.luaon')
 end
 if FILE.exist('conf.luaon') then love.filesystem.remove('conf.luaon') end
-TABLE.update(BEST, FILE.safeLoad('best.luaon', '-luaon') or NONE)
-TABLE.update(STAT, FILE.safeLoad('stat.luaon', '-luaon') or NONE)
-TABLE.update(ACHV, FILE.safeLoad('achv.luaon', '-luaon') or NONE)
 if FILE.exist('avatar') then
     local suc, res = pcall(GC.newImage, 'avatar')
     if suc then AVATAR = res end
 end
+
+function LoadSave()
+    TABLE.update(BEST, FILE.safeLoad('best.luaon', '-luaon') or NONE)
+    TABLE.update(STAT, FILE.safeLoad('stat.luaon', '-luaon') or NONE)
+    TABLE.update(ACHV, FILE.safeLoad('achv.luaon', '-luaon') or NONE)
+end
+
+LoadSave()
+
 function Initialize(save)
     if STAT.totalF10 == 0 and STAT.totalGiga > 0 then STAT.totalF10 = math.floor(STAT.totalGiga * 0.872) end
     if STAT.totalBonus == 0 and STAT.totalGame > 2.6 then STAT.totalBonus = STAT.totalHeight * 0.5 end
