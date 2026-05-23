@@ -128,7 +128,7 @@ local function timePast(t1, t2)
 end
 local function refreshUID()
     TABLE.clear(uidList)
-    uidList[0] = { uid = STAT.uid, modTime = "just now" }
+    uidList[0] = { uid = "Active Profile:   " .. STAT.uid, modTime = "just now" }
     for i = 1, 3 do
         if FILE.exist('save' .. i) then
             local dat = FILE.load('save' .. i .. "/stat.luaon")
@@ -348,12 +348,12 @@ function scene.draw()
         gc_setColor(clr.LT)
         gc_mStr(uidList[0].uid, 450, 360)
         for i = 1, 3 do
+            gc_setColor(clr.L)
             if uidList[i] then
+                gc_mStr(uidList[i].modTime, 140, 230 + 340 + (i - 1) * 80 - 30 + 15)
                 gc_setColor(clr.LT)
                 gc_mStr(uidList[i].uid, 140, 230 + 340 + (i - 1) * 80 - 30 - 15)
-                gc_mStr(uidList[i].modTime, 140, 230 + 340 + (i - 1) * 80 - 30 + 15)
             else
-                gc_setColor(clr.L)
                 gc_mStr("[empty]", 140, 230 + 340 + (i - 1) * 80 - 30)
             end
         end
