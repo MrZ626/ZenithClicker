@@ -8,7 +8,9 @@ local scene = {}
 local page = 1
 local maxPage = 3
 local uidList = {} ---@type ({uid: string, modTime?: string} | false)[]
+
 local anonUser
+local resetall_cnt, resetall_anim, lastClear
 
 local clr = {
     D = { COLOR.HEX '191E31FF' },
@@ -156,6 +158,7 @@ end
 function scene.load()
     MSG.clear()
     bindBuffer = nil
+    resetall_cnt, resetall_anim, lastClear = 0, 0, false
     SetMouseVisible(true)
     if GAME.anyRev ~= colorRev then
         colorRev = GAME.anyRev
@@ -316,6 +319,8 @@ function scene.update(dt)
     GAME.bgH = MATH.expApproach(GAME.bgH, GAME.height, dt * 1.6)
     StarPS:moveTo(0, -GAME.bgH * 2 * BgScale)
     StarPS:update(dt)
+    if not TASK.getLock('reset_all') then resetall_cnt = 0 end
+    resetall_anim = MATH.expApproach(resetall_anim, resetall_cnt / 16, dt * 12)
 end
 
 function scene.draw()
@@ -350,6 +355,8 @@ function scene.draw()
     elseif page == 2 then
         gc_setColor((anonUser and -love.timer.getTime() or TASK.getLock('just_saved') or 0) % .5, 0, 0, .26)
         gc_mRect('fill', 450, 420, 520, 140)
+        gc_setColor(1, love.timer.getTime() % .16 < .08 and .2 + resetall_anim * .6 or .2, .2, resetall_anim ^ .26 * .62)
+        gc_mRect('fill', 450, 420, 520 * resetall_anim, 140)
         gc_setColor(1, 1, 1, .1)
         FONT.set(50)
         gc_print("0", 200, 345)
@@ -614,7 +621,6 @@ local page1 = {
 }
 
 -- Page 2
-local resetall_cnt, lastClear
 local profY = baseY + 220
 local page2 = {
     -- Account
@@ -872,9 +878,9 @@ local page2 = {
                 lastClear = false
                 SFX.play('hyperalert')
                 if instaReset then
-                    MSG('warn', "Reset all progress? This action cannot be undone. Press again to confirm.", 4.2)
+                    MSG('warn', "Reset all progress? This action cannot be undone. Press again to confirm.", 2.6)
                 else
-                    MSG('info', "Reset all progress? This action cannot be undone. Spam to confirm.", 4.2)
+                    MSG('info', "Reset all progress? This action cannot be undone. Spam to confirm.", 2.6)
                 end
                 return
             end
@@ -898,7 +904,7 @@ local page2 = {
                     end
                 end
                 lastClear = clear
-                MSG(resetall_cnt <= 5 and 'info' or resetall_cnt <= 10 and 'warn' or 'error', "Reset all progress? This action cannot be undone" .. ("!"):rep(resetall_cnt), 4.2)
+                MSG(resetall_cnt <= 5 and 'info' or resetall_cnt <= 10 and 'warn' or 'error', "Reset all progress? This action cannot be undone" .. ("!"):rep(resetall_cnt), MATH.clampInterpolate(1, 1, 16, .26, resetall_cnt))
                 return
             end
             FILE.delete('stat.luaon')
