@@ -2871,6 +2871,7 @@ function GAME.update(dt)
     end
 
     -- Timers
+    if STAT.srTimer_life then STAT.srTimer_game = STAT.srTimer_game + dt end
     GAME.time = GAME.time + dt * GAME.timerMul
     local r = min(GAME.rank, 62)
     GAME.rankTimer[r] = GAME.rankTimer[r] + dt

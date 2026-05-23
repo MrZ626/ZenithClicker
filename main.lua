@@ -543,6 +543,7 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     zpChange   = GC.newText(FONT.get(30)),
     dcBest     = GC.newText(FONT.get(30)),
     dcTimer    = GC.newText(FONT.get(30)),
+    srTimer    = GC.newText(FONT.get(30)),
     title      = GC.newText(FONT.get(50), "EXPERT QUICK PICK"),
     load       = GC.newText(FONT.get(50)),
     pb         = GC.newText(FONT.get(50)),
@@ -623,6 +624,8 @@ function INIT_DATA()
         version = nil, -- will be set after loading
         system = SYSTEM,
         modTime = os.time(),
+        srTimer_life = 0,
+        srTimer_game = 0,
         joinDate = os.date("%b %Y"),
         hid = os.date("%d%S%m%M%y%H") .. math.random(26000, 42000) .. math.random(42000, 62000),
         uid = "ANON-" .. os.date("%d_") .. math.random(2600, 6200),
@@ -1448,6 +1451,8 @@ function ZENITHA.globalEvent.keyDown(key, isRep)
     end
 end
 
+function ZENITHA.globalEvent.quit() SaveStat() end
+
 do -- Auto mute when unfocused
     local function task_autoSoundOff()
         coroutine.yield()
@@ -1756,6 +1761,11 @@ function Daemon_Fast()
         end
 
         local dt = yield()
+
+        -- Speedrun timer
+        if STAT.srTimer_life then
+            STAT.srTimer_life = STAT.srTimer_life + dt
+        end
 
         -- Mouse holding animation
         if not STAT.syscursor then
