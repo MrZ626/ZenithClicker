@@ -426,7 +426,6 @@ local page1 = {
         color = clr.T,
         fontSize = 50,
         x = baseX + 30, y = baseY + 60,
-        visibleFunc = pageVisFunc[1],
     },
     WIDGET.new { -- sfx
         type = 'slider',
@@ -439,7 +438,6 @@ local page1 = {
             ApplySettings()
         end,
         sound_drag = 'rotate',
-        visibleFunc = pageVisFunc[1],
     },
     WIDGET.new { -- bgm
         type = 'slider',
@@ -452,7 +450,6 @@ local page1 = {
             ApplySettings()
         end,
         sound_drag = 'rotate',
-        visibleFunc = pageVisFunc[1],
     },
     WIDGET.new { -- mute
         type = 'checkBox',
@@ -462,7 +459,6 @@ local page1 = {
         x = baseX + 55, y = baseY + 290,
         disp = function() return STAT.autoMute end,
         code = function() STAT.autoMute = not STAT.autoMute end,
-        visibleFunc = pageVisFunc[1],
     },
     -- Video
     WIDGET.new { -- title
@@ -471,7 +467,6 @@ local page1 = {
         color = clr.T,
         fontSize = 50,
         x = baseX + 30, y = videoY + 0,
-        visibleFunc = pageVisFunc[1],
     },
     WIDGET.new { -- card brightness
         type = 'slider',
@@ -481,7 +476,6 @@ local page1 = {
         disp = function() return STAT.cardBrightness end,
         code = function(value) STAT.cardBrightness = value end,
         sound_drag = 'rotate',
-        visibleFunc = pageVisFunc[1],
     },
     WIDGET.new { -- bg brightness
         type = 'slider',
@@ -491,7 +485,6 @@ local page1 = {
         disp = function() return STAT.bgBrightness end,
         code = function(value) STAT.bgBrightness = value end,
         sound_drag = 'rotate',
-        visibleFunc = pageVisFunc[1],
     },
     WIDGET.new { -- fancy
         type = 'checkBox',
@@ -501,7 +494,6 @@ local page1 = {
         x = baseX + 55, y = videoY + 230,
         disp = function() return STAT.bg end,
         code = WIDGET.c_pressKey 'f9',
-        visibleFunc = pageVisFunc[1],
     },
     WIDGET.new { -- star
         type = 'checkBox',
@@ -511,7 +503,6 @@ local page1 = {
         x = baseX + 55, y = videoY + 300,
         disp = function() return not STAT.syscursor end,
         code = WIDGET.c_pressKey 'f10',
-        visibleFunc = pageVisFunc[1],
     },
     WIDGET.new { -- fullscreen
         type = 'checkBox',
@@ -521,7 +512,6 @@ local page1 = {
         x = baseX + 55, y = videoY + 370,
         disp = function() return STAT.fullscreen end,
         code = WIDGET.c_pressKey 'f11',
-        visibleFunc = pageVisFunc[1],
     },
     -- Keybind
     WIDGET.new {
@@ -558,7 +548,6 @@ local page1 = {
                 end
             end
         end,
-        visibleFunc = pageVisFunc[1],
     },
 }
 
@@ -571,7 +560,6 @@ local page2 = {
         color = clr.T,
         fontSize = 50,
         x = baseX + 30, y = baseY + 60,
-        visibleFunc = pageVisFunc[2],
     },
     WIDGET.new {
         name = 'changeName', type = 'button',
@@ -618,7 +606,6 @@ local page2 = {
             until true
             SFX.play('staffwarning')
         end,
-        visibleFunc = pageVisFunc[2],
     },
     WIDGET.new {
         name = 'changeAboutme', type = 'button',
@@ -664,7 +651,6 @@ local page2 = {
             until true
             SFX.play('staffwarning')
         end,
-        visibleFunc = pageVisFunc[2],
     },
     WIDGET.new {
         name = 'export', type = 'button',
@@ -690,7 +676,6 @@ local page2 = {
             MSG('dark', "Progress exported!")
             SFX.play('social_notify_minor')
         end,
-        visibleFunc = pageVisFunc[2],
     },
     WIDGET.new {
         name = 'import', type = 'button',
@@ -817,7 +802,6 @@ local page2 = {
             end
             SFX.play('social_notify_major')
         end,
-        visibleFunc = pageVisFunc[2],
     },
 }
 
@@ -831,7 +815,6 @@ local page3 = {
         color = clr.T,
         fontSize = 50,
         x = baseX + 30, y = baseY + 60,
-        visibleFunc = pageVisFunc[3],
     },
     WIDGET.new { -- -30s
         type = 'button',
@@ -843,7 +826,6 @@ local page3 = {
             TASK.removeTask_code(Task_MusicEnd)
             BGM.set('all', 'seek', math.max(BGM.tell() - 30, 0))
         end,
-        visibleFunc = pageVisFunc[3],
     },
     WIDGET.new { -- -5s
         type = 'button',
@@ -855,7 +837,6 @@ local page3 = {
             TASK.removeTask_code(Task_MusicEnd)
             BGM.set('all', 'seek', math.max(BGM.tell() - 5, 0))
         end,
-        visibleFunc = pageVisFunc[3],
     },
     WIDGET.new { -- +5s
         type = 'button',
@@ -867,7 +848,6 @@ local page3 = {
             TASK.removeTask_code(Task_MusicEnd)
             BGM.set('all', 'seek', math.min(BGM.tell() + 5, BGM.getDuration()))
         end,
-        visibleFunc = pageVisFunc[3],
     },
     WIDGET.new { -- +30s
         type = 'button',
@@ -879,7 +859,6 @@ local page3 = {
             TASK.removeTask_code(Task_MusicEnd)
             BGM.set('all', 'seek', math.min(BGM.tell() + 30, BGM.getDuration()))
         end,
-        visibleFunc = pageVisFunc[3],
     },
     WIDGET.new { -- no loop
         type = 'button',
@@ -890,7 +869,6 @@ local page3 = {
         onClick = function()
             BgmLooping, BgmNeedSkip = false, false
         end,
-        visibleFunc = pageVisFunc[3],
     },
 }
 local function albumBtn(param)
@@ -900,7 +878,6 @@ local function albumBtn(param)
         fontSize = 30,
         textColor = 'D',
         sound_hover = 'menutap',
-        visibleFunc = pageVisFunc[3],
     }, param)))
 end
 for i = 0, 10 do
@@ -961,6 +938,11 @@ albumBtn {
     end,
     visibleFunc = function() return page == 3 and ACHV.blazing_speed and BEST.highScore.rEX >= Floors[9].top end,
 }
+
+-- Apply visibility functions if not set
+for _, W in next, page1 do W.visibleFunc = W.visibleFunc or pageVisFunc[1] end
+for _, W in next, page2 do W.visibleFunc = W.visibleFunc or pageVisFunc[2] end
+for _, W in next, page3 do W.visibleFunc = W.visibleFunc or pageVisFunc[3] end
 
 -- Tabs
 local tab = {
