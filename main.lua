@@ -621,6 +621,7 @@ function INIT_DATA()
         mod = 'vanilla',
         version = nil, -- will be set after loading
         system = SYSTEM,
+        modTime = os.time(),
         joinDate = os.date("%b %Y"),
         hid = os.date("%d%S%m%M%y%H") .. math.random(26000, 42000) .. math.random(42000, 62000),
         uid = "ANON-" .. os.date("%d_") .. math.random(2600, 6200),
@@ -681,11 +682,21 @@ INIT_DATA()
 
 TestMode = false
 
-function SaveBest() if not TestMode then love.filesystem.write('best.luaon', 'return' .. TABLE.dumpDeflate(BEST)) end end
+function SaveBest()
+    if TestMode then return end
+    love.filesystem.write('best.luaon', 'return' .. TABLE.dumpDeflate(BEST))
+end
 
-function SaveStat() if not TestMode then love.filesystem.write('stat.luaon', 'return' .. TABLE.dumpDeflate(STAT)) end end
+function SaveStat()
+    if TestMode then return end
+    STAT.modTime = os.time()
+    love.filesystem.write('stat.luaon', 'return' .. TABLE.dumpDeflate(STAT))
+end
 
-function SaveAchv() if not TestMode then love.filesystem.write('achv.luaon', 'return' .. TABLE.dumpDeflate(ACHV)) end end
+function SaveAchv()
+    if TestMode then return end
+    love.filesystem.write('achv.luaon', 'return' .. TABLE.dumpDeflate(ACHV))
+end
 
 local msgTime = 0
 local bufferedMsg = {}

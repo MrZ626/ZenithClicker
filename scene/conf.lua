@@ -7,7 +7,7 @@ local scene = {}
 -- 3. Album
 local page = 1
 local maxPage = 3
-local uidList = {}
+local uidList = {} ---@type ({uid: string, modTime?: string} | false)[]
 
 local clr = {
     D = { COLOR.HEX '191E31FF' },
@@ -102,13 +102,37 @@ local function refreshWidgets()
     for _, W in next, scene.widgetList do W:setVisible() end
 end
 
+local function timePast(t1, t2)
+    if not t1 then return "unknown" end
+    local diff = math.abs(t2 - t1)
+    local unit
+    if diff < 60 then
+        return "just now"
+    elseif diff < 3600 then
+        diff = math.floor(diff / 60)
+        unit = 'm'
+    elseif diff < 86400 then
+        diff = math.floor(diff / 3600)
+        unit = 'h'
+    elseif diff < 2592000 then
+        diff = math.floor(diff / 86400)
+        unit = 'd'
+    elseif diff < 31536000 then
+        diff = math.floor(diff / 2592000)
+        unit = 'mo'
+    else
+        diff = math.floor(diff / 31536000)
+        unit = 'y'
+    end
+    return diff .. unit .. (t2 > t1 and " ago" or " from future")
+end
 local function refreshUID()
     TABLE.clear(uidList)
-    uidList[0] = "Active Profile:   " .. STAT.uid
+    uidList[0] = { uid = STAT.uid, modTime = "just now" }
     for i = 1, 3 do
         if FILE.exist('save' .. i) then
             local dat = FILE.load('save' .. i .. "/stat.luaon")
-            uidList[i] = dat.uid
+            uidList[i] = { uid = dat.uid, modTime = timePast(dat.modTime, os.time()) }
         else
             uidList[i] = false
         end
@@ -322,10 +346,16 @@ function scene.draw()
     elseif page == 2 then
         FONT.set(30)
         gc_setColor(clr.LT)
-        gc_mStr(uidList[0], 450, 360)
+        gc_mStr(uidList[0].uid, 450, 360)
         for i = 1, 3 do
-            gc_setColor(uidList[i] and clr.LT or clr.L)
-            gc_mStr(uidList[i] or "[empty]", 140, 230 + 340 + (i - 1) * 80 - 30)
+            if uidList[i] then
+                gc_setColor(clr.LT)
+                gc_mStr(uidList[i].uid, 140, 230 + 340 + (i - 1) * 80 - 30 - 15)
+                gc_mStr(uidList[i].modTime, 140, 230 + 340 + (i - 1) * 80 - 30 + 15)
+            else
+                gc_setColor(clr.L)
+                gc_mStr("[empty]", 140, 230 + 340 + (i - 1) * 80 - 30)
+            end
         end
     elseif page == 3 then
         -- Music player
@@ -864,6 +894,56 @@ local page2 = {
         end,
     },
 }
+local function saveSlot(i)
+    if TestMode then
+        SFX.play('staffwarning')
+        MSG('dark', "You are not a good person.")
+        return
+    end
+    if uidList[i] and TASK.lock('save_slot' .. i, 2.6) then
+        SFX.play('hyperalert')
+        MSG('warn', "Save slot " .. i .. "? This cannot be undone. Press again to confirm.", 4.2)
+        return
+    end
+    TASK.unlock('save_slot' .. i)
+    SaveStat()
+    FILE.createDirectory('save' .. i)
+    FILE.copy('stat.luaon', 'save' .. i .. '/stat.luaon')
+    FILE.copy('achv.luaon', 'save' .. i .. '/achv.luaon')
+    FILE.copy('best.luaon', 'save' .. i .. '/best.luaon')
+    uidList[i] = { uid = STAT.uid, modTime = "just now" }
+    SFX.play('allclear')
+    MSG('check', "Progress backed up to slot " .. i .. "!", 2.6)
+    WIDGET._reset()
+end
+local function loadSlot(i)
+    if TASK.lock('load_slot' .. i, 2.6) then
+        SFX.play('hyperalert')
+        MSG('warn', "Load from slot " .. i .. "? Current save will be overwritten. Press again to confirm.", 4.2)
+        return
+    end
+    TASK.unlock('load_slot' .. i)
+    FILE.copy('save' .. i .. '/stat.luaon', 'stat.luaon')
+    FILE.copy('save' .. i .. '/achv.luaon', 'achv.luaon')
+    FILE.copy('save' .. i .. '/best.luaon', 'best.luaon')
+    SFX.play('levelup'); SFX.play('levelup')
+    SCN.swapTo('joining', 'fade', true)
+end
+local function clearSlot(i)
+    if TASK.lock('clear_slot' .. i, 2.6) then
+        SFX.play('hyperalert')
+        MSG('warn', "Clear slot " .. i .. "? This action cannot be undone. Press again to confirm.", 4.2)
+        return
+    end
+    TASK.unlock('clear_slot' .. i)
+    FILE.delete('save' .. i)
+    uidList[i] = false
+    SFX.play('clearquad')
+    SFX.play('inject')
+    SFX.play('thunder' .. math.random(6))
+    MSG.clear()
+    WIDGET._reset()
+end
 for i = 1, 3 do
     local y = profY + 340 + (i - 1) * 80
     TABLE.append(page2, {
@@ -872,40 +952,14 @@ for i = 1, 3 do
             x = baseX + 355, y = y, w = 160, h = 50,
             color = clr.L,
             fontSize = 30, textColor = clr.LT, text = "BACKUP",
-            onClick = function()
-                if uidList[i] and TASK.lock('save_slot' .. i, 2.6) then
-                    SFX.play('hyperalert')
-                    MSG('warn', "Save slot " .. i .. "? This cannot be undone. Press again to confirm.", 4.2)
-                    return
-                end
-                TASK.unlock('save_slot' .. i)
-                FILE.createDirectory('save' .. i)
-                FILE.copy('stat.luaon', 'save' .. i .. '/stat.luaon')
-                FILE.copy('achv.luaon', 'save' .. i .. '/achv.luaon')
-                FILE.copy('best.luaon', 'save' .. i .. '/best.luaon')
-                uidList[i] = STAT.uid
-                SFX.play('allclear')
-                MSG('check', "Progress backed up to slot " .. i .. "!", 2.6)
-                WIDGET._reset()
-            end,
+            onClick = function() saveSlot(i) end,
         },
         WIDGET.new {
             name = 'load' .. i, type = 'button',
             x = baseX + 555, y = y, w = 160, h = 50,
             color = clr.L,
             fontSize = 30, textColor = clr.LT, text = "LOAD",
-            onClick = function()
-                if TASK.lock('load_slot' .. i, 2.6) then
-                    SFX.play('hyperalert')
-                    MSG('warn', "Load slot " .. i .. "? Current save will be overwritten. Press again to confirm.", 4.2)
-                    return
-                end
-                TASK.unlock('load_slot' .. i)
-                FILE.copy('save' .. i .. '/stat.luaon', 'stat.luaon')
-                FILE.copy('save' .. i .. '/achv.luaon', 'achv.luaon')
-                FILE.copy('save' .. i .. '/best.luaon', 'best.luaon')
-                SCN.swapTo('joining', 'fade', true)
-            end,
+            onClick = function() loadSlot(i) end,
             visibleFunc = function() return page == 2 and uidList[i] end,
         },
         WIDGET.new {
@@ -913,21 +967,7 @@ for i = 1, 3 do
             x = baseX + 755, y = y, w = 160, h = 50,
             color = clr.L,
             fontSize = 30, textColor = clr.LT, text = "CLEAR",
-            onClick = function()
-                if TASK.lock('clear_slot' .. i, 2.6) then
-                    SFX.play('hyperalert')
-                    MSG('warn', "Clear slot " .. i .. "? This action cannot be undone. Press again to confirm.", 4.2)
-                    return
-                end
-                TASK.unlock('clear_slot' .. i)
-                FILE.delete('save' .. i)
-                uidList[i] = false
-                SFX.play('clearquad')
-                SFX.play('inject')
-                SFX.play('thunder' .. math.random(6))
-                MSG.clear()
-                WIDGET._reset()
-            end,
+            onClick = function() clearSlot(i) end,
             visibleFunc = function() return page == 2 and uidList[i] end,
         },
     })
