@@ -866,18 +866,19 @@ local page2 = {
                 MSG('dark', "You must have at least 1 backup before resetting all progress!")
                 return
             end
+            local instaReset = anonUser or TASK.getLock('just_saved')
             if TASK.lock('reset_all', 2.6) then
                 resetall_cnt = 0
                 lastClear = false
                 SFX.play('hyperalert')
-                if anonUser or TASK.getLock('just_saved') then
+                if instaReset then
                     MSG('warn', "Reset all progress? This action cannot be undone. Press again to confirm.", 4.2)
                 else
                     MSG('info', "Reset all progress? This action cannot be undone. Spam to confirm.", 4.2)
                 end
                 return
             end
-            if not (anonUser or TASK.getLock('just_saved')) and not TASK.forceLock('reset_all', 1) and resetall_cnt < 16 then
+            if not instaReset and not TASK.forceLock('reset_all', 1) and resetall_cnt < 16 then
                 resetall_cnt = resetall_cnt + 1
                 local spin = MATH.roll(.26)
                 local clear = spin and 's' .. math.random(2) or 'c' .. math.random(2, 4)
@@ -904,7 +905,9 @@ local page2 = {
             FILE.delete('achv.luaon')
             FILE.delete('best.luaon')
             TASK.unlock('reset_all')
-            SFX.play('combo_16_power')
+            if not instaReset then
+                SFX.play('combo_16_power')
+            end
             SFX.play('clearquad')
             SFX.play('inject')
             SFX.play('thunder' .. math.random(6))
