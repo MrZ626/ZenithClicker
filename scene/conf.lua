@@ -927,11 +927,6 @@ local function saveSlot(i)
         MSG('dark', "For safety, you can only update a backup with same username", 4.2)
         return
     end
-    if uidList[i] and TASK.lock('save_slot' .. i, 2.6) then
-        SFX.play('hyperalert')
-        MSG('warn', "Save slot " .. i .. "? This cannot be undone. Press again to confirm.", 4.2)
-        return
-    end
     TASK.unlock('save_slot' .. i)
     TASK.lock('just_saved', 10)
     SaveStat()
