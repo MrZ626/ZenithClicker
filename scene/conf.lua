@@ -8,6 +8,7 @@ local scene = {}
 local page = 1
 local maxPage = 3
 local uidList = {} ---@type ({uid: string, modTime?: string} | false)[]
+local anonUser
 
 local clr = {
     D = { COLOR.HEX '191E31FF' },
@@ -127,6 +128,7 @@ local function timePast(t1, t2)
     return diff .. unit .. (t2 > t1 and " ago" or " from future")
 end
 local function refreshUID()
+    anonUser = STAT.uid:sub(1, 5) == 'ANON-'
     TABLE.clear(uidList)
     uidList[0] = { uid = "Active Profile:   " .. STAT.uid, modTime = "just now" }
     for i = 1, 3 do
@@ -166,6 +168,7 @@ function scene.load()
     TASK.unlock('export')
     TASK.unlock('import')
     TASK.unlock('rebind_control')
+    TASK.unlock('just_saved')
     refreshWidgets()
     refreshSongInfo()
     refreshUID()
@@ -330,6 +333,7 @@ function scene.draw()
     gc_setColor(1, 1, 1, .04)
     gc_rectangle('fill', 0, 3, 3, h + 3)
 
+    local t = love.timer.getTime()
     if page == 1 then
         -- Sliders
         drawSliderComponents(120, "EFFECT VOLUME", "QUIET (F3)", "LOUD (F3)", STAT.sfx)
@@ -344,7 +348,7 @@ function scene.draw()
             gc_print(bindHint[#bindBuffer + 1], 600, 700, 0, .872)
         end
     elseif page == 2 then
-        gc_setColor(0, 0, 0, .26)
+        gc_setColor((anonUser and -love.timer.getTime() or TASK.getLock('just_saved') or 0) % .5, 0, 0, .26)
         gc_mRect('fill', 450, 420, 520, 140)
         gc_setColor(1, 1, 1, .1)
         FONT.set(50)
@@ -373,7 +377,6 @@ function scene.draw()
         -- Music player
         local len = 800
 
-        local t = love.timer.getTime()
         local playTime = BGM.tell()
         local beatLen = 60 / BgmData[BgmPlaying].bpm
         local beatBar = BgmData[BgmPlaying].bar
@@ -867,10 +870,14 @@ local page2 = {
                 resetall_cnt = 0
                 lastClear = false
                 SFX.play('hyperalert')
-                MSG('warn', "Reset all progress? This action cannot be undone. Spam to confirm.", 4.2)
+                if anonUser or TASK.getLock('just_saved') then
+                    MSG('warn', "Reset all progress? This action cannot be undone. Press again to confirm.", 4.2)
+                else
+                    MSG('info', "Reset all progress? This action cannot be undone. Spam to confirm.", 4.2)
+                end
                 return
             end
-            if not TASK.forceLock('reset_all', 1) and resetall_cnt < 16 then
+            if not (anonUser or TASK.getLock('just_saved')) and not TASK.forceLock('reset_all', 1) and resetall_cnt < 16 then
                 resetall_cnt = resetall_cnt + 1
                 local spin = MATH.roll(.26)
                 local clear = spin and 's' .. math.random(2) or 'c' .. math.random(2, 4)
@@ -890,7 +897,7 @@ local page2 = {
                     end
                 end
                 lastClear = clear
-                MSG('warn', "Reset all progress? This action cannot be undone" .. ("!"):rep(resetall_cnt), 4.2)
+                MSG(resetall_cnt <= 5 and 'info' or resetall_cnt <= 10 and 'warn' or 'error', "Reset all progress? This action cannot be undone" .. ("!"):rep(resetall_cnt), 4.2)
                 return
             end
             FILE.delete('stat.luaon')
@@ -912,12 +919,18 @@ local function saveSlot(i)
         MSG('dark', "You are not a good person.")
         return
     end
+    if uidList[i] and STAT.uid ~= uidList[i].uid then
+        SFX.play('staffwarning')
+        MSG('dark', "For safety, you can only update a backup with same username", 4.2)
+        return
+    end
     if uidList[i] and TASK.lock('save_slot' .. i, 2.6) then
         SFX.play('hyperalert')
         MSG('warn', "Save slot " .. i .. "? This cannot be undone. Press again to confirm.", 4.2)
         return
     end
     TASK.unlock('save_slot' .. i)
+    TASK.lock('just_saved', 10)
     SaveStat()
     FILE.createDirectory('save' .. i)
     FILE.copy('stat.luaon', 'save' .. i .. '/stat.luaon')
@@ -948,6 +961,7 @@ local function clearSlot(i)
         return
     end
     TASK.unlock('clear_slot' .. i)
+    TASK.unlock('just_saved')
     FILE.delete('save' .. i)
     uidList[i] = false
     SFX.play('clearquad')
