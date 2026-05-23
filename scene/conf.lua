@@ -353,10 +353,18 @@ function scene.draw()
             gc_print(bindHint[#bindBuffer + 1], 600, 700, 0, .872)
         end
     elseif page == 2 then
-        gc_setColor((anonUser and -love.timer.getTime() or TASK.getLock('just_saved') or 0) % .5, 0, 0, .26)
-        gc_mRect('fill', 450, 420, 520, 140)
-        gc_setColor(1, love.timer.getTime() % .16 < .08 and .2 + resetall_anim * .6 or .2, .2, resetall_anim ^ .26 * .62)
-        gc_mRect('fill', 450, 420, 520 * resetall_anim, 140)
+        if resetall_anim > .1 then
+            local t2 = MATH.iLerp(.1, 1, resetall_anim)
+            gc_setColor(1, 1, 1, t2 * .42)
+            GC.mDraw(TEXTURE.warning, w / 2, h / 2, 0, MATH.lerp(1.2, 4.2, t2))
+            GC.setLineWidth(2)
+            gc_setColor(1, t % .16 < .08 and 0 or 1, 0, resetall_anim * 2)
+            gc_mRect('line', 450, 420, 520, 140, 20)
+        end
+        gc_setColor((anonUser and -t or TASK.getLock('just_saved') or 0) % .5, 0, 0, .26)
+        gc_mRect('fill', 450, 420, 520, 140, 20)
+        gc_setColor(1, t % .16 < .08 and .2 + resetall_anim * .6 or .2, .2, resetall_anim ^ .26 * .62)
+        gc_mRect('fill', 450, 420, 520 * resetall_anim, 140, 20)
         gc_setColor(1, 1, 1, .1)
         FONT.set(50)
         gc_print("0", 200, 345)
@@ -370,7 +378,7 @@ function scene.draw()
             gc_print(i, 30, y - 45)
             FONT.set(30)
             gc_setColor(0, 0, 0, .26)
-            gc_mRect('fill', 450, y, 860, 80)
+            gc_mRect('fill', 450, y, 860, 80, 20)
             gc_setColor(clr.L)
             if uidList[i] then
                 gc_mStr(uidList[i].modTime, 140, y - 20 + 15)
@@ -878,9 +886,9 @@ local page2 = {
                 lastClear = false
                 SFX.play('hyperalert')
                 if instaReset then
-                    MSG('warn', "Reset all progress? This action cannot be undone. Press again to confirm.", 2.6)
+                    MSG('warn', "Reset all progress? Press again to confirm.", 2.6)
                 else
-                    MSG('info', "Reset all progress? This action cannot be undone. Spam to confirm.", 2.6)
+                    MSG('info', "Reset all progress? Spam to confirm.", 2.6)
                 end
                 return
             end
@@ -904,7 +912,7 @@ local page2 = {
                     end
                 end
                 lastClear = clear
-                MSG(resetall_cnt <= 5 and 'info' or resetall_cnt <= 10 and 'warn' or 'error', "Reset all progress? This action cannot be undone" .. ("!"):rep(resetall_cnt), MATH.clampInterpolate(1, 1, 16, .26, resetall_cnt))
+                MSG(resetall_cnt <= 5 and 'info' or resetall_cnt <= 10 and 'warn' or 'error', "This action cannot be undone" .. ("!"):rep(resetall_cnt), MATH.clampInterpolate(1, 1, 16, .26, resetall_cnt))
                 return
             end
             FILE.delete('stat.luaon')

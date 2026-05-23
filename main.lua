@@ -130,6 +130,7 @@ TEXTURE = {
     towerBG = { assets 'tower/f1.jpg', assets 'tower/f2.jpg', assets 'tower/f3.jpg', assets 'tower/f4.jpg', assets 'tower/f5.jpg', assets 'tower/f6.jpg', assets 'tower/f7.jpg', assets 'tower/f8.jpg', assets 'tower/f9.jpg', assets 'tower/f10.png' },
     moon = assets 'tower/moon.png',
     stars = assets 'tower/stars.png',
+    warning = assets 'finalwarning.png',
 
     revive = {
         norm = assets 'revive/norm.png',
