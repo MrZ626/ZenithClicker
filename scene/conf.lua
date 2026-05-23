@@ -356,7 +356,7 @@ function scene.draw()
         if resetall_anim > .1 then
             local t2 = MATH.iLerp(.1, 1, resetall_anim)
             gc_setColor(1, 1, 1, t2 * .42)
-            GC.mDraw(TEXTURE.warning, w / 2, h / 2, 0, MATH.lerp(1, 2.6, t2)^2.6)
+            GC.mDraw(TEXTURE.warning, w / 2, h / 2, 0, MATH.lerp(1, 2.6, t2) ^ 2.6)
             GC.setLineWidth(2)
             gc_setColor(1, t % .16 < .08 and 0 or 1, 0, resetall_anim * 2)
             gc_mRect('line', 450, 420, 520, 140, 20)
@@ -919,13 +919,12 @@ local page2 = {
             FILE.delete('achv.luaon')
             FILE.delete('best.luaon')
             TASK.unlock('reset_all')
-            if not instaReset then
-                SFX.play('combo_16_power')
-            end
+            if not instaReset then SFX.play('combo_16_power') end
             SFX.play('clearquad')
             SFX.play('inject')
             SFX.play('thunder' .. math.random(6))
             MSG.clear()
+            SCN._pop()
             SCN.swapTo('joining', 'fade', true)
         end,
     },
@@ -964,6 +963,7 @@ local function loadSlot(i)
     FILE.copy('save' .. i .. '/achv.luaon', 'achv.luaon')
     FILE.copy('save' .. i .. '/best.luaon', 'best.luaon')
     SFX.play('levelup'); SFX.play('levelup')
+    SCN._pop()
     SCN.swapTo('joining', 'fade', true)
 end
 local function clearSlot(i)

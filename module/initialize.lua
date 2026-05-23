@@ -273,6 +273,7 @@ function Initialize(save)
         MSG('dark', "Achievements lost due to update:\n" .. achvLost:sub(1, #achvLost - 1), 6.26)
     end
 
+    GAME.refreshRev()
     GAME.refreshLockState()
     GAME.refreshPBText()
     love.window.setFullscreen(STAT.fullscreen)
