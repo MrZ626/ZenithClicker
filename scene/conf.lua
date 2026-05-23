@@ -272,7 +272,7 @@ scene.resize = refreshWidgets
 
 -- Panel size
 local w, h = 900, 830
-local baseX, baseY = (1600 - w) / 2, (1000 - h) / 2
+local baseX, baseY = 800 - w / 2, 500 - h / 2 + 10
 
 local gc = love.graphics
 local gc_replaceTransform = gc.replaceTransform
@@ -320,7 +320,7 @@ function scene.draw()
 
     -- Panel
     gc_replaceTransform(SCR.xOy)
-    gc.translate(800 - w / 2, 510 - h / 2)
+    gc.translate(baseX, baseY)
     gc_setColor(clr.D)
     gc_rectangle('fill', 0, 0, w, h)
     gc_setColor(0, 0, 0, .26)
@@ -344,17 +344,29 @@ function scene.draw()
             gc_print(bindHint[#bindBuffer + 1], 600, 700, 0, .872)
         end
     elseif page == 2 then
+        gc_setColor(0, 0, 0, .26)
+        gc_mRect('fill', 450, 420, 520, 140)
+        gc_setColor(1, 1, 1, .1)
+        FONT.set(50)
+        gc_print("0", 200, 345)
         FONT.set(30)
         gc_setColor(clr.LT)
         gc_mStr(uidList[0].uid, 450, 360)
         for i = 1, 3 do
+            local y = 220 + 330 + (i - 1) * 90
+            gc_setColor(1, 1, 1, .1)
+            FONT.set(50)
+            gc_print(i, 30, y - 45)
+            FONT.set(30)
+            gc_setColor(0, 0, 0, .26)
+            gc_mRect('fill', 450, y, 860, 80)
             gc_setColor(clr.L)
             if uidList[i] then
-                gc_mStr(uidList[i].modTime, 140, 230 + 340 + (i - 1) * 80 - 30 + 15)
+                gc_mStr(uidList[i].modTime, 140, y - 20 + 15)
                 gc_setColor(clr.LT)
-                gc_mStr(uidList[i].uid, 140, 230 + 340 + (i - 1) * 80 - 30 - 15)
+                gc_mStr(uidList[i].uid, 140, y - 20 - 15)
             else
-                gc_mStr("[empty]", 140, 230 + 340 + (i - 1) * 80 - 30)
+                gc_mStr("[empty]", 140, y - 20)
             end
         end
     elseif page == 3 then
@@ -466,7 +478,7 @@ local pageVisFunc = {}
 for p = 1, maxPage do pageVisFunc[p] = function() return page == p end end
 
 -- Page 1
-local videoY = baseY + 370
+local videoY = baseY + 360
 local page1 = {
     -- Audio
     WIDGET.new { -- title
@@ -474,11 +486,11 @@ local page1 = {
         text = "AUDIO",
         color = clr.T,
         fontSize = 50,
-        x = baseX + 30, y = baseY + 60,
+        x = baseX + 30, y = baseY + 50,
     },
     WIDGET.new { -- sfx
         type = 'slider',
-        x = baseX + 240 + 85, y = baseY + 120, w = 400,
+        x = baseX + 240 + 85, y = baseY + 110, w = 400,
         axis = { 0, 100, 10 },
         frameColor = 'dD', fillColor = clr.D,
         disp = function() return STAT.sfx end,
@@ -490,7 +502,7 @@ local page1 = {
     },
     WIDGET.new { -- bgm
         type = 'slider',
-        x = baseX + 240 + 85, y = baseY + 200, w = 400,
+        x = baseX + 240 + 85, y = baseY + 190, w = 400,
         axis = { 0, 100, 10 },
         frameColor = 'dD', fillColor = clr.D,
         disp = function() return STAT.bgm end,
@@ -505,7 +517,7 @@ local page1 = {
         fillColor = clr.cbFill,
         frameColor = clr.cbFrame,
         textColor = clr.T, text = "MUTE ON UNFOCUS",
-        x = baseX + 55, y = baseY + 290,
+        x = baseX + 55, y = baseY + 280,
         disp = function() return STAT.autoMute end,
         code = function() STAT.autoMute = not STAT.autoMute end,
     },
@@ -565,7 +577,7 @@ local page1 = {
     -- Keybind
     WIDGET.new {
         type = 'button',
-        x = baseX + 730, y = baseY + 780, w = 260, h = 50,
+        x = baseX + 730, y = baseY + 770, w = 260, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "REBIND  KEY",
         onClick = function()
@@ -600,7 +612,7 @@ local page1 = {
 
 -- Page 2
 local resetall_cnt, lastClear
-local profY = baseY + 230
+local profY = baseY + 220
 local page2 = {
     -- Account
     WIDGET.new { -- title
@@ -608,11 +620,11 @@ local page2 = {
         text = "ACCOUNT",
         color = clr.T,
         fontSize = 50,
-        x = baseX + 30, y = baseY + 60,
+        x = baseX + 30, y = baseY + 50,
     },
     WIDGET.new {
         name = 'changeName', type = 'button',
-        x = baseX + 230, y = baseY + 140, w = 380, h = 50,
+        x = baseX + 230, y = baseY + 130, w = 380, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "CHANGE  USERNAME",
         onClick = function()
@@ -656,7 +668,7 @@ local page2 = {
     },
     WIDGET.new {
         name = 'changeAboutme', type = 'button',
-        x = baseX + 640, y = baseY + 140, w = 380, h = 50,
+        x = baseX + 640, y = baseY + 130, w = 380, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "CHANGE  ABOUT ME",
         onClick = function()
@@ -945,7 +957,7 @@ local function clearSlot(i)
     WIDGET._reset()
 end
 for i = 1, 3 do
-    local y = profY + 340 + (i - 1) * 80
+    local y = profY + 330 + (i - 1) * 90
     TABLE.append(page2, {
         WIDGET.new {
             name = 'save' .. i, type = 'button',
@@ -974,7 +986,7 @@ for i = 1, 3 do
 end
 
 -- Page 3
-local albumY = baseY + 260
+local albumY = baseY + 250
 local page3 = {
     -- Album
     WIDGET.new { -- title
@@ -982,7 +994,7 @@ local page3 = {
         text = "ALBUM",
         color = clr.T,
         fontSize = 50,
-        x = baseX + 30, y = baseY + 60,
+        x = baseX + 30, y = baseY + 50,
     },
     WIDGET.new { -- -30s
         type = 'button',
@@ -1044,7 +1056,7 @@ local function albumBtn(param)
 end
 for i = 0, 10 do
     albumBtn {
-        x = baseX + 75 + 75 * i, y = baseY + 460,
+        x = baseX + 75 + 75 * i, y = baseY + 450,
         color = bgmColors['f' .. i],
         text = "" .. i,
         onClick = function()
@@ -1057,7 +1069,7 @@ for i = 0, 10 do
         end,
     }
     albumBtn {
-        x = baseX + 75 + 75 * i, y = baseY + 540,
+        x = baseX + 75 + 75 * i, y = baseY + 530,
         color = bgmColors['f' .. i .. 'r'],
         text = "R" .. i,
         onClick = function()
@@ -1069,7 +1081,7 @@ for i = 0, 10 do
     }
 end
 albumBtn {
-    x = baseX + 450 - 200, y = baseY + 700, w = 120,
+    x = baseX + 450 - 200, y = baseY + 690, w = 120,
     color = bgmColors.tera,
     text = "TERA",
     onClick = function()
@@ -1079,7 +1091,7 @@ albumBtn {
     visibleFunc = function() return page == 3 and ACHV.blazing_speed end,
 }
 albumBtn {
-    x = baseX + 450, y = baseY + 700, w = 120,
+    x = baseX + 450, y = baseY + 690, w = 120,
     color = bgmColors.fomg,
     fontSize = 50,
     text = "FΩ",
@@ -1091,7 +1103,7 @@ albumBtn {
     visibleFunc = function() return page == 3 and STAT.maxHeight >= 6200 end,
 }
 albumBtn {
-    x = baseX + 450 + 200, y = baseY + 700, w = 120,
+    x = baseX + 450 + 200, y = baseY + 690, w = 120,
     color = bgmColors.terar,
     text = "TERAR",
     onClick = function()
