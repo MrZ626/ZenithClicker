@@ -1725,7 +1725,7 @@ scene.widgetList = {
                 })
             end
         end,
-        visibleFunc = function() print(TABLE.countAll(GAME.completion, 0))return not GAME.playing and TABLE.countAll(GAME.completion, 0) < 9 end,
+        visibleFunc = function() return not GAME.playing and TABLE.countAll(GAME.completion, 0) < 9 end,
     },
 }
 
