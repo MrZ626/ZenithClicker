@@ -146,7 +146,7 @@ end
 local sp = { f0 = 1, f1 = 1, f0r = 1, f1r = 1 }
 local function refreshSongInfo()
     if sp[SongNamePlaying] then
-        playingBgmTitle = songList[SongNamePlaying .. (RevMusicMode() and 'r' or '') .. (GAME.mod.EX > 0 and '_EX' or '')]
+        playingBgmTitle = songList[SongNamePlaying .. (GAME.mod.EX > 0 and '_EX' or '')]
     else
         playingBgmTitle = songList[SongNamePlaying] or "Rewrite"
     end
@@ -1088,7 +1088,6 @@ for i = 0, 10 do
         onClick = function()
             GAME.height = bgmHeight[i]
             PlayBGM('f' .. i)
-            refreshSongInfo()
         end,
         visibleFunc = function()
             return page == 3 and STAT.maxFloor >= i
@@ -1101,7 +1100,6 @@ for i = 0, 10 do
         onClick = function()
             GAME.height = (bgmHeight[i] + bgmHeight[i + 1]) / 2
             PlayBGM('f' .. i .. 'r')
-            refreshSongInfo()
         end,
         visibleFunc = function() return page == 3 and STAT.maxFloor >= 10 and TABLE.findAll(GAME.completion, 2) end,
     }
@@ -1112,7 +1110,6 @@ albumBtn {
     text = "TERA",
     onClick = function()
         PlayBGM('tera')
-        refreshSongInfo()
     end,
     visibleFunc = function() return page == 3 and ACHV.blazing_speed end,
 }
@@ -1124,7 +1121,6 @@ albumBtn {
     onClick = function()
         GAME.height = 6200
         PlayBGM('fomg')
-        refreshSongInfo()
     end,
     visibleFunc = function() return page == 3 and STAT.maxHeight >= 6200 end,
 }
@@ -1134,7 +1130,6 @@ albumBtn {
     text = "TERAR",
     onClick = function()
         PlayBGM('terar')
-        refreshSongInfo()
     end,
     visibleFunc = function() return page == 3 and ACHV.blazing_speed and BEST.highScore.rEX >= Floors[9].top end,
 }
