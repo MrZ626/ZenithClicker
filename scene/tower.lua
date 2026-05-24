@@ -32,6 +32,7 @@ local function switchVisitor(bool)
         love.mouse.setRelativeMode(bool)
         ZENITHA._cursor.active = not bool
         for _, W in next, scene.widgetList do W:setVisible(not bool) end
+        scene.widgetList.help2:setVisible()
         if usingTouch then scene.widgetList.help:setVisible(true) end
         if bool then IssueAchv('zenith_traveler') end
         TABLE.clear(HoldingButtons)
@@ -1724,7 +1725,7 @@ scene.widgetList = {
                 })
             end
         end,
-        visibleFunc = function() return not GAME.playing and TABLE.countAll(GAME.completion, 0) < 9 end,
+        visibleFunc = function() print(TABLE.countAll(GAME.completion, 0))return not GAME.playing and TABLE.countAll(GAME.completion, 0) < 9 end,
     },
 }
 
