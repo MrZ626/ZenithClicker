@@ -2358,24 +2358,23 @@ function GAME.finish(reason)
                     GAME.completion[k] = v
                 end
             end
-            if unlockRev > 0 or not GAME.anyRev and MATH.roll(.1) and TABLE.countAll(GAME.completion, 2) == 0 then
+            if (unlockRev > 0 or TABLE.countAll(GAME.completion, 1) > 0 and not GAME.anyRev and MATH.roll(.1)) and TABLE.countAll(GAME.completion, 2) == 0 then
                 local hintText
                 if unlockRev == 0 then
                     hintText = "You've already unlocked REVERSED MOD!\n"
                 else
                     hintText = "You've already unlocked " .. (unlockRev == 1 and "a new REVERSED MOD!\n" or unlockRev .. " new REVERSED MODS!\n")
                 end
-                hintText = hintText .. (
-                    MOBILE and
-                    STRING.trimIndent [[
+                if MOBILE then
+                    hintText = hintText .. [[
                         To activate it, press and hold the blue area at the left side,
                         then click on a card that has a star on it.
-                    ]] or
-                    STRING.trimIndent [[
-                        Activate it by right-clicking on a card that has a star on it.
                     ]]
-                )
-                MSG('dark', hintText, 6.26)
+                else
+                    hintText = hintText .. "\nActivate it by right-clicking on a card that has a star on it."
+                end
+
+                MSG('dark', STRING.trimIndent(hintText), 6.26)
                 SFX.play('notify')
             end
             if GAME.height >= 12600 then
