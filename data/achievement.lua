@@ -587,7 +587,7 @@ local d = {
         quote = [[Put your blood, sweat, and tears into the climb, or fall.]],
         credit = "@Tizago",
         rank = floorRank(1, 3, 4, 5, 6, 7, 8),
-        hide = function() return GAME.completion.EX == 0 end,
+        hide = function() return GAME.completion.EX == 0 or GAME.completion.VL == 0 end,
     },
     { -- ASGVrDPrMS
         ex = true,
