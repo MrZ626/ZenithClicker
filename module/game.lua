@@ -175,6 +175,7 @@ local GAME = {
     windupAnim = {}, ---@type Windup[]
 
     zenithTraveler = false,
+    pieceEffectID = 0,
     nightcore = false,
     slowmo = false,
     glassCard = false,
@@ -2774,7 +2775,7 @@ function GAME.finish(reason)
     GAME.prevPB = max(GAME.prevPB, GAME.height)
 
     if URM and GAME.height < -10 then
-        PieceSFXID = 0
+        GAME.pieceEffectID = 0
         GAME.nightcore = false
         GAME.slowmo = false
         GAME.glassCard = false

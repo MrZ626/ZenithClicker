@@ -34,6 +34,7 @@ function scene.update(dt)
                 INIT_DATA()
                 LoadSave()
                 URM = false
+                GAME.pieceEffectID = 0
                 GAME.floor = 0
                 Initialize(true)
                 GAME.clearResultStat()

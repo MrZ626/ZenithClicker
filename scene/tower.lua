@@ -1702,16 +1702,16 @@ scene.widgetList = {
                     SFX.play('no')
                 end
             else
-                PieceSFXID = (PieceSFXID or 0) % #PieceData + 1
-                if PieceSFXID < #PieceData then
-                    local piece = ('zsjltoi'):sub(PieceSFXID, PieceSFXID)
+                GAME.pieceEffectID = GAME.pieceEffectID % #PieceData + 1
+                if GAME.pieceEffectID < #PieceData then
+                    local piece = ('zsjltoi'):sub(GAME.pieceEffectID, GAME.pieceEffectID)
                     SFX.play(piece, 1, 0, Tone(6))
                 else
                     SFX.play('allclear')
                 end
 
                 for i = 1, #PieceData - 1 do
-                    GAME[PieceData[i].id] = PieceSFXID == i
+                    GAME[PieceData[i].id] = GAME.pieceEffectID == i
                 end
 
                 GAME.refreshLayout()
@@ -1720,7 +1720,7 @@ scene.widgetList = {
 
                 MSG({
                     cat = 'dark',
-                    str = PieceData[PieceSFXID].popup,
+                    str = PieceData[GAME.pieceEffectID].popup,
                     time = 1.2
                 })
             end
