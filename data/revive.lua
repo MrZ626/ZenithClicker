@@ -109,7 +109,7 @@ local d = {
     { rank = { 4, 6 }, prompt = 'keep_health_safe',     target = 8,   short = "Safe HP 8s",              text = "Keep HP safe\nfor 8 seconds",                 cond = F6 },
     { rank = { 4, 5 }, prompt = 'keep_health_danger',   target = 3,   short = "Critical HP 3s",          text = "Keep HP critical\nfor 3 seconds",             cond = F6 },
     { rank = { 2, 5 }, prompt = 'keep_no_mouse',        target = 4,   short = "No mouse 4s",             text = "Don't use the mouse\nfor 4 seconds",          cond = f5 },
-    { rank = { 2, 4 }, prompt = 'keep_no_commit',       target = 6,   short = "No commit 6s",            text = "Don't commit\nfor 6 seconds",                 cond = f5 },
+    { rank = { 2, 4 }, prompt = 'keep_no_commit',       target = 6,   short = "No commit 6s",            text = "Don't commit\nfor 6 seconds",                 cond = function() return math.max(GAME.floor, GAME.negFloor) <= 5 and not (URM and GAME.mod.GV == 2) end },
     { rank = { 3, 6 }, prompt = 'keep_no_cancel',       target = 8,   short = "No cancel 8s",            text = "Don't cancel\nfor 8 seconds" },
     { rank = { 2, 5 }, prompt = 'keep_no_keyboard',     target = 10,  short = "No keyboard 10s",         text = "Don't use the keyboard\nfor 10 seconds",      cond = F6 },
     { rank = { 3, 5 }, prompt = 'keep_no_perfect',      target = 12,  short = "No perfect 12s",          text = "Have no perfect\npasses for 12 seconds" },
