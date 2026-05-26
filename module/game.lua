@@ -225,6 +225,7 @@ GAME.floorTime = 0
 GAME.f10Time = love.timer.getTime()
 GAME.reviveTime = false
 GAME.floor = 1
+GAME.negFloor = 1
 GAME.rank = 1
 GAME.xp = 0
 GAME.height = 0
