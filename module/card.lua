@@ -559,7 +559,7 @@ function Card:draw()
     if GAME.glassCard then
         local w, h = 240, 330
         gc_setColor((faceUp and ModData.textColor or ModData.color)[self.id])
-        gc_setAlpha((STAT.cardBrightness / 100) ^ 2 * .872)
+        gc_setAlpha((CONF.cardBrightness / 100) ^ 2 * .872)
         gc_mRect('fill', 0, 0, w * 2, h * 2, 26)
 
         if self.burn then
@@ -612,7 +612,7 @@ function Card:draw()
                     )
                 end
             else
-                local b = STAT.cardBrightness / 100
+                local b = CONF.cardBrightness / 100
                 gc_setColor(b, b, b)
             end
             gc_draw(img, -img:getWidth() / 2, -img:getHeight() / 2)

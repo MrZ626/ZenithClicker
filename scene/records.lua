@@ -355,15 +355,15 @@ end
 function scene.keyDown(key, isRep)
     if isRep then return true end
     local ctrl = love.keyboard.isDown('lctrl', 'rctrl')
-    local bindID = TABLE.find(STAT.keybind, key)
+    local bindID = TABLE.find(CONF.keybind, key)
     if bindID and bindID <= 18 then
         local i = bindID > 9 and bindID - 9 or bindID
         setMod(i, ctrl)
         refresh()
-    elseif key == STAT.keybind[19] or key == 'return' then
+    elseif key == CONF.keybind[19] or key == 'return' then
         -- Confirm
         cd = min(cd, .01)
-    elseif key == STAT.keybind[20] then
+    elseif key == CONF.keybind[20] then
         -- Reset
         for i = 1, #set.sel do set.sel[i] = 0 end
         set.match = 'include'
@@ -833,7 +833,7 @@ widgetSet.other = {
         color = clr.btn1,
         sound_hover = 'menutap',
         fontSize = 30, text = "    RESET", textColor = clr.btn2,
-        onClick = function() love.keypressed(STAT.keybind[20]) end,
+        onClick = function() love.keypressed(CONF.keybind[20]) end,
     },
     -- Hint
     WIDGET.new {

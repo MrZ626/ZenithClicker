@@ -26,7 +26,7 @@ local revHold = {}
 local scene = {}
 
 local function switchVisitor(bool)
-    if not GAME.playing and GAME.zenithTraveler ~= bool and STAT.bg then
+    if not GAME.playing and GAME.zenithTraveler ~= bool and CONF.bg then
         SFX.play(bool and 'pause_exit' or 'pause_start', 1, 0, Tone(-2))
         GAME.zenithTraveler = bool
         love.mouse.setRelativeMode(bool)
@@ -43,7 +43,7 @@ local function MouseOnCard(x, y)
     if FloatOnCard and Cards[FloatOnCard]:mouseOn(x, y) then
         return FloatOnCard
     end
-    if FloatOnCard and not usingTouch or STAT.oldHitbox then
+    if FloatOnCard and not usingTouch or CONF.oldHitbox then
         local cid, dist = 0, 1e99
         for i = 1, #Cards do
             if Cards[i]:mouseOn(x, y) then
@@ -65,7 +65,7 @@ local function MouseOnCard(x, y)
 end
 
 function SetMouseVisible(bool)
-    if STAT.syscursor then
+    if CONF.syscursor then
         love.mouse.setVisible(bool)
     else
         CursorHide = not bool
@@ -100,7 +100,7 @@ local function mouseTrigger(x, y, k)
 end
 
 local function keyTrigger(key)
-    local bindID = TABLE.find(STAT.keybind, key)
+    local bindID = TABLE.find(CONF.keybind, key)
     if bindID and bindID <= 18 and (M.AS > 0 or (not GAME.playing and (bindID == 8 or bindID == 17))) then
         if bindID > 9 then bindID = bindID - 9 end
         local C = Cards[bindID]
@@ -243,7 +243,7 @@ function scene.load()
     end
     RevUnlocked = TABLE.countAll(GAME.completion, 0) < 9
 
-    for i = 1, #MD.deck do CardHintText[i]:set(STAT.keybind[i]:upper()) end
+    for i = 1, #MD.deck do CardHintText[i]:set(CONF.keybind[i]:upper()) end
 
     GAME.refreshDailyChallengeText()
     TASK.unlock('sure_quit')
@@ -285,8 +285,8 @@ local function getBtnPressed()
     if msIsDown(4) then btnPressed = btnPressed + 1 end
     if msIsDown(5) then btnPressed = btnPressed + 1 end
     if msIsDown(6) then btnPressed = btnPressed + 1 end
-    if kbIsDown(STAT.keybind[21]) then btnPressed = btnPressed + 1 end
-    if kbIsDown(STAT.keybind[22]) then btnPressed = btnPressed + 1 end
+    if kbIsDown(CONF.keybind[21]) then btnPressed = btnPressed + 1 end
+    if kbIsDown(CONF.keybind[22]) then btnPressed = btnPressed + 1 end
     return btnPressed
 end
 
@@ -571,7 +571,7 @@ function DrawBG(brightness, showRuler)
     gc_replaceTransform(SCR.origin)
     if GAME.bgH > -50 then
         local bgFloor = GAME.calculateFloor(GAME.bgH)
-        if STAT.bg and not GAME.invisUI then
+        if CONF.bg and not GAME.invisUI then
             if bgFloor < 10 then
                 gc_setColor(1, 1, 1)
                 local bottom = Floors[bgFloor - 1].top
@@ -706,7 +706,7 @@ function scene.draw()
         drawPBline(STAT.maxHeight, true)
         return
     else
-        DrawBG(STAT.bgBrightness, true)
+        DrawBG(CONF.bgBrightness, true)
     end
 
     if not GAME.invisUI then

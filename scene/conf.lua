@@ -231,7 +231,7 @@ function scene.keyDown(key, isRep)
             else
                 table.insert(bindBuffer, key)
                 if #bindBuffer >= 22 then
-                    STAT.keybind = bindBuffer
+                    CONF.keybind = bindBuffer
                     bindBuffer = nil
                     SaveStat()
                     MSG('dark', "Keybinding updated.")
@@ -243,6 +243,7 @@ function scene.keyDown(key, isRep)
         end
     else
         if key == 'escape' or key == 'f1' then
+            SaveConf()
             SFX.play('menuclick')
             SCN.back('none')
         elseif MATH.between(tonumber(key) or 0, 1, maxPage) then
@@ -324,7 +325,7 @@ function scene.update(dt)
 end
 
 function scene.draw()
-    DrawBG(STAT.bgBrightness)
+    DrawBG(CONF.bgBrightness)
 
     -- Panel
     gc_replaceTransform(SCR.xOy)
@@ -341,10 +342,10 @@ function scene.draw()
     local t = love.timer.getTime()
     if page == 1 then
         -- Sliders
-        drawSliderComponents(120, "EFFECT VOLUME", "QUIET (F3)", "LOUD (F3)", STAT.sfx)
-        drawSliderComponents(200, "MUSIC VOLUME", "QUIET (F4)", "LOUD (F4)", STAT.bgm)
-        drawSliderComponents(430, "CARD  BRIGHTNESS", "DARK (F5)", "BRIGHT (F6)", STAT.cardBrightness)
-        drawSliderComponents(510, "BG  BRIGHTNESS", "DARK (F7)", "BRIGHT (F8)", STAT.bgBrightness)
+        drawSliderComponents(120, "EFFECT VOLUME", "QUIET (F3)", "LOUD (F3)", CONF.sfx)
+        drawSliderComponents(200, "MUSIC VOLUME", "QUIET (F4)", "LOUD (F4)", CONF.bgm)
+        drawSliderComponents(430, "CARD  BRIGHTNESS", "DARK (F5)", "BRIGHT (F6)", CONF.cardBrightness)
+        drawSliderComponents(510, "BG  BRIGHTNESS", "DARK (F7)", "BRIGHT (F8)", CONF.bgBrightness)
 
         -- Keybind
         if bindBuffer then
@@ -511,9 +512,9 @@ local page1 = {
         x = baseX + 240 + 85, y = baseY + 110, w = 400,
         axis = { 0, 100, 10 },
         frameColor = 'dD', fillColor = clr.D,
-        disp = function() return STAT.sfx end,
+        disp = function() return CONF.sfx end,
         code = function(value)
-            STAT.sfx = value
+            CONF.sfx = value
             ApplySettings()
         end,
         sound_drag = 'rotate',
@@ -523,9 +524,9 @@ local page1 = {
         x = baseX + 240 + 85, y = baseY + 190, w = 400,
         axis = { 0, 100, 10 },
         frameColor = 'dD', fillColor = clr.D,
-        disp = function() return STAT.bgm end,
+        disp = function() return CONF.bgm end,
         code = function(value)
-            STAT.bgm = value
+            CONF.bgm = value
             ApplySettings()
         end,
         sound_drag = 'rotate',
@@ -536,8 +537,8 @@ local page1 = {
         frameColor = clr.cbFrame,
         textColor = clr.T, text = "MUTE ON UNFOCUS",
         x = baseX + 55, y = baseY + 280,
-        disp = function() return STAT.autoMute end,
-        code = function() STAT.autoMute = not STAT.autoMute end,
+        disp = function() return CONF.autoMute end,
+        code = function() CONF.autoMute = not CONF.autoMute end,
     },
     -- Video
     WIDGET.new { -- title
@@ -552,8 +553,8 @@ local page1 = {
         x = baseX + 240 + 85, y = videoY + 60, w = 400,
         axis = { 80, 100, 5 },
         frameColor = 'dD', fillColor = clr.D,
-        disp = function() return STAT.cardBrightness end,
-        code = function(value) STAT.cardBrightness = value end,
+        disp = function() return CONF.cardBrightness end,
+        code = function(value) CONF.cardBrightness = value end,
         sound_drag = 'rotate',
     },
     WIDGET.new { -- bg brightness
@@ -561,8 +562,8 @@ local page1 = {
         x = baseX + 240 + 85, y = videoY + 140, w = 400,
         axis = { 30, 80, 10 },
         frameColor = 'dD', fillColor = clr.D,
-        disp = function() return STAT.bgBrightness end,
-        code = function(value) STAT.bgBrightness = value end,
+        disp = function() return CONF.bgBrightness end,
+        code = function(value) CONF.bgBrightness = value end,
         sound_drag = 'rotate',
     },
     WIDGET.new { -- fancy
@@ -571,7 +572,7 @@ local page1 = {
         frameColor = clr.cbFrame,
         textColor = clr.T, text = "FANCY BACKGROUND  (F9)",
         x = baseX + 55, y = videoY + 230,
-        disp = function() return STAT.bg end,
+        disp = function() return CONF.bg end,
         code = WIDGET.c_pressKey 'f9',
     },
     WIDGET.new { -- star
@@ -580,7 +581,7 @@ local page1 = {
         frameColor = clr.cbFrame,
         textColor = clr.T, text = "STAR FORCE  (F10)",
         x = baseX + 55, y = videoY + 300,
-        disp = function() return not STAT.syscursor end,
+        disp = function() return not CONF.syscursor end,
         code = WIDGET.c_pressKey 'f10',
     },
     WIDGET.new { -- fullscreen
@@ -589,7 +590,7 @@ local page1 = {
         frameColor = clr.cbFrame,
         textColor = clr.T, text = "FULLSCREEN  (F11)",
         x = baseX + 55, y = videoY + 370,
-        disp = function() return STAT.fullscreen end,
+        disp = function() return CONF.fullscreen end,
         code = WIDGET.c_pressKey 'f11',
     },
     -- Keybind
@@ -608,11 +609,11 @@ local page1 = {
                     SFX.play('notify')
                     MSG('dark', {
                             "Current Keybinding:\n" ..
-                            table.concat(TABLE.sub(STAT.keybind, 1, 9), ', ') .. "\n" ..
-                            table.concat(TABLE.sub(STAT.keybind, 10, 18), ', ') .. "\n" ..
-                            "Commit: " .. STAT.keybind[19] .. "\n" ..
-                            "Reset: " .. STAT.keybind[20] .. "\n" ..
-                            "Click L/R: " .. STAT.keybind[21] .. ", " .. STAT.keybind[22] .. "\n",
+                            table.concat(TABLE.sub(CONF.keybind, 1, 9), ', ') .. "\n" ..
+                            table.concat(TABLE.sub(CONF.keybind, 10, 18), ', ') .. "\n" ..
+                            "Commit: " .. CONF.keybind[19] .. "\n" ..
+                            "Reset: " .. CONF.keybind[20] .. "\n" ..
+                            "Click L/R: " .. CONF.keybind[21] .. ", " .. CONF.keybind[22] .. "\n",
                             COLOR.F, "PRESS AGAIN TO REBIND\n",
                             COLOR.LD, "(F1-F12 ` Tab Ctrl Alt are not allowed)"
                         },
@@ -772,10 +773,10 @@ local page2 = {
                     SFX.play('cutin_superlobby', 1, 0, Tone(-2))
                     SCN.go('_console')
                 elseif data == 'old_hitbox' then
-                    STAT.oldHitbox = not STAT.oldHitbox
-                    MSG('dark', "Force old hitbox: " .. (STAT.oldHitbox and "ON" or "OFF"))
-                    SFX.play(STAT.oldHitbox and 'social_online' or 'social_offline')
-                    TEXTS.version:set(SYSTEM .. (STAT.oldHitbox and " T" or " V") .. (require 'version'.verStr))
+                    CONF.oldHitbox = not CONF.oldHitbox
+                    MSG('dark', "Force old hitbox: " .. (CONF.oldHitbox and "ON" or "OFF"))
+                    SFX.play(CONF.oldHitbox and 'social_online' or 'social_offline')
+                    TEXTS.version:set(SYSTEM .. (CONF.oldHitbox and " T" or " V") .. (require 'version'.verStr))
                 elseif data == 'true_ending' then
                     SFX.play('warp')
                     SCN.go('ending', 'warp')
@@ -909,6 +910,7 @@ local page2 = {
                     if clear == lastClear then
                         for _ = 1, 3 do SFX.play('wound') end
                         TASK.unlock('reset_all')
+                        SaveConf()
                         SCN.back('none')
                     end
                 end

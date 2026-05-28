@@ -39,6 +39,7 @@ function LoadSave()
     end
     TABLE.update(BEST, FILE.safeLoad('best.luaon', '-luaon') or NONE)
     TABLE.update(ACHV, FILE.safeLoad('achv.luaon', '-luaon') or NONE)
+    TABLE.update(CONF, FILE.safeLoad('conf.luaon', '-luaon') or NONE)
 end
 
 LoadSave()
@@ -67,8 +68,8 @@ function Initialize(save)
         STAT.version = 166
     end
     if STAT.version == 166 then
-        STAT.sfx = STAT.sfx and 60 or 0
-        STAT.bgm = STAT.bgm and 100 or 0
+        if type(STAT.sfx) == 'boolean' then STAT.sfx = STAT.sfx and 60 or 0 end
+        if type(STAT.bgm) == 'boolean' then STAT.bgm = STAT.bgm and 100 or 0 end
         STAT.version = 167
     end
     if STAT.version == 167 then
@@ -207,6 +208,16 @@ function Initialize(save)
         end
         STAT.version = 191
     end
+    if STAT.version == 191 then
+        if not CONF then
+            for k in next, CONF do
+                if STAT[k] ~= nil then
+                    CONF[k] = STAT[k]
+                end
+            end
+        end
+        STAT.version = 192
+    end
 
     -- Some initialization
     for i = 1, #Cards do
@@ -277,11 +288,12 @@ function Initialize(save)
     GAME.refreshLockState()
     GAME.refreshPBText()
     RefreshHelpText()
-    love.window.setFullscreen(STAT.fullscreen)
+    love.window.setFullscreen(CONF.fullscreen)
     ApplySettings()
     GAME.refreshCursor()
 
     if save or STAT.version ~= oldVer then
+        SaveConf()
         SaveStat()
         SaveBest()
         SaveAchv()

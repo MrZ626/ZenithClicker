@@ -172,7 +172,7 @@ end
 function scene.load()
     t = 0
     e = 1
-    STAT.bg = true
+    CONF.bg = true
     GAME.bgH = event[1][2]
     GAME.bgX = 0
     GAME.revDeckSkin = false
@@ -181,12 +181,12 @@ function scene.load()
         SFX.setVol(0)
         GAME.negFloor = 10
         GAME.finish('forfeit')
-        SFX.setVol(STAT.sfx / 100)
+        SFX.setVol(CONF.sfx / 100)
     end
     TASK.removeTask_code(Task_MusicEnd)
     PlayBGM('fomg', true)
-    STAT.bgm = math.max(STAT.bgm, math.min(STAT.sfx, 20))
-    BGM.setVol(STAT.bgm / 100)
+    CONF.bgm = math.max(CONF.bgm, math.min(CONF.sfx, 20))
+    BGM.setVol(CONF.bgm / 100)
 end
 
 function scene.unload()
@@ -195,7 +195,7 @@ function scene.unload()
     TASK.new(function()
         for i = 1, 100 do
             TASK.yieldT(.01)
-            BGM.setVol(STAT.bgm / 100 * i / 100)
+            BGM.setVol(CONF.bgm / 100 * i / 100)
         end
     end)
     PlayBGM('f0')
@@ -218,7 +218,7 @@ function scene.update(dt)
             TASK.new(function()
                 for i = 99, 0, -1 do
                     TASK.yieldT(.1)
-                    BGM.setVol(STAT.bgm / 100 * i / 100)
+                    BGM.setVol(CONF.bgm / 100 * i / 100)
                 end
                 TASK.yieldT(2.6)
                 SFX.play('victory')

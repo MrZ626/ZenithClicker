@@ -31,7 +31,7 @@ function scene.update(dt)
                 for i = 1, #PieceData - 1 do
                     GAME[PieceData[i].id] = false
                 end
-                INIT_DATA()
+                InitProfile()
                 LoadSave()
                 URM = false
                 GAME.pieceEffectID = 0

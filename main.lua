@@ -612,8 +612,25 @@ Metatable = {
     best_speedrun = { __index = function() return 1e99 end },
 }
 
--- Create BEST, STAT, ACHV tables, only used when launching and on resetall
-function INIT_DATA()
+CONF = {
+    keybind = {
+        "q", "w", "e", "r", "t", "y", "u", "i", "o",
+        "a", "s", "d", "f", "g", "h", "j", "k", "l",
+        "space", "z", "x", "c"
+    },
+    fullscreen = true,
+    syscursor = false,
+    cardBrightness = 90,
+    bgBrightness = 40,
+    bg = true,
+    sfx = 60,
+    bgm = 100,
+    autoMute = false,
+    oldHitbox = false,
+}
+-- Create BEST, STAT, ACHV tables,
+-- only called when launching and on resetall
+function InitProfile()
     BEST = {
         highScore = setmetatable({}, Metatable.best_highscore),
         speedrun = setmetatable({}, Metatable.best_speedrun),
@@ -629,11 +646,6 @@ function INIT_DATA()
         joinDate = os.date("%b %Y"),
         hid = os.date("%d%S%m%M%y%H") .. math.random(26000, 42000) .. math.random(42000, 62000),
         uid = "ANON-" .. os.date("%d_") .. math.random(2600, 6200),
-        keybind = {
-            "q", "w", "e", "r", "t", "y", "u", "i", "o",
-            "a", "s", "d", "f", "g", "h", "j", "k", "l",
-            "space", "z", "x", "c"
-        },
         aboutme = "Click the Zenith!",
         maxFloor = 1,
         maxHeight = 0,
@@ -664,17 +676,6 @@ function INIT_DATA()
         totalGiga = 0,
         totalF10 = 0,
         badge = {},
-
-        fullscreen = true,
-        syscursor = false,
-        cardBrightness = 90,
-        bgBrightness = 40,
-        bg = true,
-        sfx = 60,
-        bgm = 100,
-
-        autoMute = false,
-        oldHitbox = false,
     }
 
     ACHV = {}
@@ -682,7 +683,7 @@ function INIT_DATA()
     AchvNotice = {}
 end
 
-INIT_DATA()
+InitProfile()
 
 TestMode = false
 
@@ -700,6 +701,11 @@ end
 function SaveAchv()
     if TestMode then return end
     love.filesystem.write('achv.luaon', 'return' .. TABLE.dumpDeflate(ACHV))
+end
+
+function SaveConf()
+    if TestMode then return end
+    love.filesystem.write('conf.luaon', 'return' .. TABLE.dumpDeflate(CONF))
 end
 
 local msgTime = 0
@@ -1075,7 +1081,7 @@ function RefreshHelpText()
         end
     else
         s.help.text = "?"
-        normalHelp[#normalHelp] = ("Commit: $1    Reset: $2    Forfeit/Quit: ESC"):repD(STAT.keybind[19]:upper(), STAT.keybind[20]:upper())
+        normalHelp[#normalHelp] = ("Commit: $1    Reset: $2    Forfeit/Quit: ESC"):repD(CONF.keybind[19]:upper(), CONF.keybind[20]:upper())
         s.help.floatText = normalHelp
         s.help2.text = "?"
         local hand = GAME.getHand(true)
@@ -1241,10 +1247,10 @@ function Tone(pitch)
 end
 
 function ApplySettings()
-    love.mouse.setVisible(STAT.syscursor)
-    ZENITHA.globalEvent.drawCursor = STAT.syscursor and NULL or starCursor
-    SFX.setVol(STAT.sfx / 100)
-    BGM.setVol(STAT.bgm / 100)
+    love.mouse.setVisible(CONF.syscursor)
+    ZENITHA.globalEvent.drawCursor = CONF.syscursor and NULL or starCursor
+    SFX.setVol(CONF.sfx / 100)
+    BGM.setVol(CONF.bgm / 100)
 end
 
 function ReloadTexts()
@@ -1385,6 +1391,15 @@ function ZENITHA.globalEvent.resize()
     end
 end
 
+local function task_saveConf()
+    TASK.yieldT(2.6)
+    SaveConf()
+end
+local function confUpdate()
+    TASK.removeTask_code(task_saveConf)
+    TASK.new(task_saveConf)
+end
+
 local KBisDown = love.keyboard.isDown
 function ZENITHA.globalEvent.keyDown(key, isRep)
     if isRep then return end
@@ -1396,57 +1411,66 @@ function ZENITHA.globalEvent.keyDown(key, isRep)
             ZENITHA.setDevMode(not ZENITHA.getDevMode() and 1 or false)
         end
     elseif key == 'f11' then
-        STAT.fullscreen = not STAT.fullscreen
-        love.window.setFullscreen(STAT.fullscreen)
-        MSG('dark', "Fullscreen: " .. (STAT.fullscreen and "ON" or "OFF"), 1)
+        CONF.fullscreen = not CONF.fullscreen
+        love.window.setFullscreen(CONF.fullscreen)
+        confUpdate()
+        MSG('dark', "Fullscreen: " .. (CONF.fullscreen and "ON" or "OFF"), 1)
     elseif key == 'f10' then
-        STAT.syscursor = not STAT.syscursor
+        CONF.syscursor = not CONF.syscursor
         SetMouseVisible(true)
         ApplySettings()
-        MSG('dark', "Star Force: " .. (STAT.syscursor and "OFF" or "ON"), 1)
+        confUpdate()
+        MSG('dark', "Star Force: " .. (CONF.syscursor and "OFF" or "ON"), 1)
     elseif key == 'f9' then
-        if not GAME.zenithTraveler then STAT.bg = not STAT.bg end
-        MSG('dark', "BG: " .. (STAT.bg and "ON" or "OFF"), 1)
+        if not GAME.zenithTraveler then CONF.bg = not CONF.bg end
+        confUpdate()
+        MSG('dark', "BG: " .. (CONF.bg and "ON" or "OFF"), 1)
     elseif key == 'f8' then
-        if STAT.bgBrightness < 80 then
-            STAT.bgBrightness = MATH.clamp(STAT.bgBrightness + 10, 30, 80)
-            MSG('dark', "BG " .. STAT.bgBrightness .. "%", 1)
+        if CONF.bgBrightness < 80 then
+            CONF.bgBrightness = MATH.clamp(CONF.bgBrightness + 10, 30, 80)
+            confUpdate()
+            MSG('dark', "BG " .. CONF.bgBrightness .. "%", 1)
         end
     elseif key == 'f7' then
-        if STAT.bgBrightness > 30 then
-            STAT.bgBrightness = MATH.clamp(STAT.bgBrightness - 10, 30, 80)
-            MSG('dark', "BG " .. STAT.bgBrightness .. "%", 1)
+        if CONF.bgBrightness > 30 then
+            CONF.bgBrightness = MATH.clamp(CONF.bgBrightness - 10, 30, 80)
+            confUpdate()
+            MSG('dark', "BG " .. CONF.bgBrightness .. "%", 1)
         end
     elseif key == 'f5' then
-        if STAT.cardBrightness > 80 then
-            STAT.cardBrightness = MATH.clamp(STAT.cardBrightness - 5, 80, 100)
-            MSG('dark', "Card " .. STAT.cardBrightness .. "%", 1)
+        if CONF.cardBrightness > 80 then
+            CONF.cardBrightness = MATH.clamp(CONF.cardBrightness - 5, 80, 100)
+            confUpdate()
+            MSG('dark', "Card " .. CONF.cardBrightness .. "%", 1)
         end
     elseif key == 'f6' then
-        if STAT.cardBrightness < 100 then
-            STAT.cardBrightness = MATH.clamp(STAT.cardBrightness + 5, 80, 100)
-            MSG('dark', "Card " .. STAT.cardBrightness .. "%", 1)
+        if CONF.cardBrightness < 100 then
+            CONF.cardBrightness = MATH.clamp(CONF.cardBrightness + 5, 80, 100)
+            confUpdate()
+            MSG('dark', "Card " .. CONF.cardBrightness .. "%", 1)
         end
     elseif key == 'f3' then
-        if STAT.sfx > 0 then
-            TempSFX = STAT.sfx
-            STAT.sfx = 0
+        if CONF.sfx > 0 then
+            TempSFX = CONF.sfx
+            CONF.sfx = 0
         else
-            STAT.sfx = TempSFX or 60
+            CONF.sfx = TempSFX or 60
             TempSFX = false
         end
-        MSG('dark', STAT.sfx > 0 and "SFX ON" or "SFX OFF", 1)
+        confUpdate()
+        MSG('dark', CONF.sfx > 0 and "SFX ON" or "SFX OFF", 1)
         ApplySettings()
         SFX.play('menuclick')
     elseif key == 'f4' then
-        if STAT.bgm > 0 then
-            TempBGM = STAT.bgm
-            STAT.bgm = 0
+        if CONF.bgm > 0 then
+            TempBGM = CONF.bgm
+            CONF.bgm = 0
         else
-            STAT.bgm = TempBGM or 100
+            CONF.bgm = TempBGM or 100
             TempBGM = false
         end
-        MSG('dark', STAT.bgm > 0 and "BGM ON" or "BGM OFF", 1)
+        confUpdate()
+        MSG('dark', CONF.bgm > 0 and "BGM ON" or "BGM OFF", 1)
         ApplySettings()
     end
 end
@@ -1473,7 +1497,7 @@ do -- Auto mute when unfocused
         end
     end
     function ZENITHA.globalEvent.focus(f)
-        if not STAT.autoMute then return end
+        if not CONF.autoMute then return end
         if f then
             TASK.removeTask_code(task_autoSoundOff)
             TASK.new(task_autoSoundOn)
@@ -1768,7 +1792,7 @@ function Daemon_Fast()
         end
 
         -- Mouse holding animation
-        if not STAT.syscursor then
+        if not CONF.syscursor then
             pressValue = msIsDown(1, 2) and 1 or expApproach(pressValue, 0, dt * 12)
         end
 
@@ -1854,7 +1878,7 @@ RefreshDaily()
 TABLE.update(TextColor, BaseTextColor)
 TABLE.update(ShadeColor, BaseShadeColor)
 GAME.refreshCurrentCombo()
-TEXTS.version:set(SYSTEM .. (STAT.oldHitbox and " T" or " V") .. (require 'version'.verStr))
+TEXTS.version:set(SYSTEM .. (CONF.oldHitbox and " T" or " V") .. (require 'version'.verStr))
 
 if SYSTEM == 'Web' then
     _G[('DiscordRPC')] = { update = NULL, setEnable = NULL }
