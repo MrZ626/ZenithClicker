@@ -404,7 +404,7 @@ d.gameEX = {
     { set = "EX VL DH IN DP", name = "False Allies" },
     { set = "EX VL DH AS DP", name = "Hello BPM Year" },
     { set = "EX VL IN AS DP", name = "Oblivious Spider" },
-    { set = "EX DH IN AS DP", name = "Professional Bodybuilder" },
+    { set = "EX DH IN AS DP", name = "Spinning Contraptions" },
     { set = "NH MS GV VL DH", name = "Quintuple threat" },
     { set = "NH MS GV VL IN", name = "The Guardian of Change" },
     { set = "NH MS GV VL AS", name = "Dreadlock" },
