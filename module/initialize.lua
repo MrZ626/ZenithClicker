@@ -33,9 +33,7 @@ function LoadSave()
     local stat = FILE.safeLoad('stat.luaon', '-luaon')
     if stat then
         TABLE.update(STAT, stat)
-        if not stat.srTimer_life then
-            STAT.srTimer_life, STAT.srTimer_game = nil, nil
-        end
+        STAT.srTimer_life, STAT.srTimer_game = STAT.totalTime, MATH.roundUnit(STAT.totalTime * 1.26, .001)
     end
     TABLE.update(BEST, FILE.safeLoad('best.luaon', '-luaon') or NONE)
     TABLE.update(ACHV, FILE.safeLoad('achv.luaon', '-luaon') or NONE)

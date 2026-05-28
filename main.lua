@@ -1787,9 +1787,7 @@ function Daemon_Fast()
         local dt = yield()
 
         -- Speedrun timer
-        if STAT.srTimer_life then
-            STAT.srTimer_life = STAT.srTimer_life + dt
-        end
+        STAT.srTimer_life = STAT.srTimer_life + dt
 
         -- Mouse holding animation
         if not CONF.syscursor then

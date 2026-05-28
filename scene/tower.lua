@@ -1331,14 +1331,12 @@ function scene.overDraw()
         end
 
         -- Speedrun Timer
-        if STAT.srTimer_life then
-            gc_replaceTransform(SCR.xOy_dl)
-            setFont(30)
-            gc_setColor(TextColor)
-            gc_setAlpha(.42)
-            TEXTS.srTimer:set(STRING.time(STAT.srTimer_game) .. "/ " .. STRING.time_simp(STAT.srTimer_life))
-            gc_draw(TEXTS.srTimer, 7, -70 + GAME.uiHide * 30)
-        end
+        gc_replaceTransform(SCR.xOy_dl)
+        setFont(30)
+        gc_setColor(TextColor)
+        gc_setAlpha(.42)
+        TEXTS.srTimer:set(STRING.time(STAT.srTimer_game) .. "/ " .. STRING.time(STAT.srTimer_life,2))
+        gc_draw(TEXTS.srTimer, 7, -70 + GAME.uiHide * 30)
 
         -- Card Info
         if not GAME.playing and FloatOnCard then
