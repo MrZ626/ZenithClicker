@@ -20,6 +20,7 @@ function scene.update(dt)
         if t1 <= 0 then
             if SCN.args[1] then
                 GAME.bgH, GAME.height = 0, 0
+                GAME.prevPB = -2600
                 GAME.finishTera = false
                 for k in next, GAME.completion do
                     GAME.completion[k] = 0
