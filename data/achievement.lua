@@ -106,9 +106,9 @@ local d = {
     { -- what_ever_it_takes
         id = 'what_ever_it_takes',
         name = "Whatever It Takes",
-        desc = [[players KO's in Quick Pick]],
+        desc = [[players KO'd in Quick Pick]],
         quote = [[Mere sacrifices in the pursuit of greatness...]],
-        scoreSimp = function(n) return string.format("%d KOs", n) end,
+        scoreSimp = function(n) return n .. " KOs" end,
         rank = numberRank(0, 6, 26, 62, 126, 260, 620),
         type = 'unranked',
     },
