@@ -121,10 +121,11 @@ addText({
         "RICMAN",
         "RONEZKJ15",
         "RTXILE",
-        "S. ZHANG",
+        "S.ZHANG",
         "SPRITZY SHEEP",
         "THE_111THBLITZER",
         "TIZAGO",
+        "TREVOR_SMITHY",
         "WAH",
         "ZYRIXIA",
     }, ",  ")
