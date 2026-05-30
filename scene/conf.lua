@@ -984,29 +984,27 @@ local function clearSlot(i)
     MSG.clear()
     WIDGET._reset()
 end
+local slBtnTextColor = { 0, 0, 0, .62 }
 for i = 1, 3 do
     local y = profY + 330 + (i - 1) * 90
     TABLE.append(page2, {
         WIDGET.new {
             name = 'save' .. i, type = 'button',
             x = baseX + 355, y = y, w = 160, h = 50,
-            color = clr.L,
-            fontSize = 30, textColor = clr.LT, text = "BACKUP",
+            fontSize = 30, color = 'lG', textColor = slBtnTextColor, text = "BACKUP",
             onClick = function() saveSlot(i) end,
         },
         WIDGET.new {
             name = 'load' .. i, type = 'button',
             x = baseX + 555, y = y, w = 160, h = 50,
-            color = clr.L,
-            fontSize = 30, textColor = clr.LT, text = "LOAD",
+            fontSize = 30, color = 'lY', textColor = slBtnTextColor, text = "LOAD",
             onClick = function() loadSlot(i) end,
             visibleFunc = function() return page == 2 and uidList[i] end,
         },
         WIDGET.new {
             name = 'clear' .. i, type = 'button',
             x = baseX + 755, y = y, w = 160, h = 50,
-            color = clr.L,
-            fontSize = 30, textColor = clr.LT, text = "CLEAR",
+            fontSize = 30, color = 'lR', textColor = slBtnTextColor, text = "CLEAR",
             onClick = function() clearSlot(i) end,
             visibleFunc = function() return page == 2 and uidList[i] end,
         },
