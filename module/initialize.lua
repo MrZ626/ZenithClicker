@@ -77,7 +77,7 @@ function Initialize(save)
         end
         if STAT.version == 193 then
             if STAT.totalHeight > 0 and STAT.totalKO == 0 then
-                STAT.totalKO = math.floor(STAT.totalHeight * (7 / 2000))
+                STAT.totalKO = math.floor(STAT.totalHeight * (6 / 2000))
                 STAT.totalRevive = ((ACHV.the_responsible_one or 0) + (ACHV.the_unreliable_one or 0)) * 6
             end
             STAT.version = 194
