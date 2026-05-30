@@ -109,7 +109,7 @@ local ins, rem = table.insert, table.remove
 ---@field rankLimit number
 ---@field reviveCount number
 ---@field reviveDifficulty number
----@field killCount number
+---@field allyKill number
 ---@field quests Question[]
 ---@field reviveTasks ReviveTask[]
 ---@field currentTask ReviveTask |false
@@ -828,7 +828,7 @@ function GAME.takeDamage(dmg, reason, toAlly)
         elseif GAME[GAME.getLifeKey(not toAlly)] > 0 then
             if toAlly then
                 SFX.play('elim')
-                GAME.killCount = GAME.killCount + 1
+                GAME.allyKill = GAME.allyKill + 1
             else
                 GAME.swapControl()
             end
@@ -2225,7 +2225,7 @@ function GAME.start()
     GAME.rankLimit = 26000
     GAME.reviveCount = 0
     GAME.reviveDifficulty = 0
-    GAME.killCount = 0
+    GAME.allyKill = 0
     GAME.currentTask = false
     GAME.DPlock = false
     GAME.lastFlip = false
@@ -2724,7 +2724,7 @@ function GAME.finish(reason)
             SubmitAchv('guardian_angel', GAME.achv_maxReviveH or 0)
             SubmitAchv('carried', GAME.achv_carriedH or GAME.roundHeight)
             if M.DP == 2 then
-                SubmitAchv('the_unreliable_one', GAME.killCount)
+                SubmitAchv('the_unreliable_one', GAME.allyKill)
                 if GAME.floor < 10 and GAME.time >= 600 and GAME.fatigueSet == Fatigue.rDP then
                     IssueSecret('rDP_meta')
                 end
