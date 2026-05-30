@@ -2683,7 +2683,7 @@ function GAME.finish(reason)
         SubmitAchv('elegance', STAT.totalPerfect, true, true)
         SubmitAchv('garbage_offensive', STAT.totalAttack, true, true)
         SubmitAchv('tower_climber', STAT.totalHeight, true, true)
-        SubmitAchv('tower_regular', STAT.totalFloor, true, true)
+        SubmitAchv('what_ever_it_takes', STAT.totalKO, true, true)
         SubmitAchv('speed_player', STAT.totalGiga, true, true)
         _t = 0
         for id in next, MD.name do _t = _t + min(BEST.speedrun[id], 2600) end

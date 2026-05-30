@@ -103,13 +103,13 @@ local d = {
         rank = numberRank(0, 2600, 6200, 12600, 26e3, 62e3, 260e3),
         type = 'unranked',
     },
-    { -- tower_regular
-        id = 'tower_regular',
-        name = "Tower Regular",
-        desc = [[floors climbed]],
-        quote = [["I have been here before!"]],
-        scoreSimp = function(n) return string.format("%d Floors", n) end,
-        rank = numberRank(0, 126, 260, 620, 1260, 2600, 12600),
+    { -- what_ever_it_takes
+        id = 'what_ever_it_takes',
+        name = "Whatever It Takes",
+        desc = [[players KO's in Quick Pick]],
+        quote = [[Mere sacrifices in the pursuit of greatness...]],
+        scoreSimp = function(n) return string.format("%d KOs", n) end,
+        rank = numberRank(0, 6, 26, 62, 126, 260, 620),
         type = 'unranked',
     },
     { -- speed_player
