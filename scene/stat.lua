@@ -357,12 +357,12 @@ function RefreshProfile()
     GC.setColor(1, 1, 1)
     local maxComp = TABLE.countAll(GAME.completion, 0) == 9 and 9 or 18
     for _, l in next, {
-        { t = { textColor, "1-Mod Ascent" },                                                      x = 26,  y = 33 },
-        { t = { textColor, "1-Mod Speedrun" },                                                    x = 26,  y = 58 },
-        { t = { textColor, "Achievements" },                                                      x = 26,  y = 83 },
-        { t = { scoreColor, crProgress.f10 .. " / " .. maxComp },                                 x = 200, y = 33 },
-        { t = { scoreColor, crProgress.sr .. " / " .. maxComp },                                  x = 200, y = 58 },
-        { t = { scoreColor, crProgress.achvGet .. " / " .. crProgress.achvAll },                  x = 200, y = 83 },
+        { t = { textColor, "1-Mod Ascent" },                                                      x = 16,  y = 33 },
+        { t = { textColor, "1-Mod Speedrun" },                                                    x = 16,  y = 58 },
+        { t = { textColor, "Achievements" },                                                      x = 16,  y = 83 },
+        { t = { scoreColor, crProgress.f10 .. " / " .. maxComp },                                 x = 190, y = 33 },
+        { t = { scoreColor, crProgress.sr .. " / " .. maxComp },                                  x = 190, y = 58 },
+        { t = { scoreColor, crProgress.achvGet .. " / " .. crProgress.achvAll },                  x = 190, y = 83 },
         { t = { textColor, "Best Altitude" },                                                     x = 300, y = 8 },
         { t = { textColor, "Best Speedrun" },                                                     x = 300, y = 33 },
         { t = { textColor, "Zenith Points" },                                                     x = 300, y = 58 },
@@ -381,20 +381,19 @@ function RefreshProfile()
     GC.setColor(boxColor)
     GC.rectangle('fill', 0, 0, 570, bh)
     FONT.set(30)
-    GC.setColor(lblColor)
-    GC.print("FULL  STATS", 7, 2, 0, .8)
     for _, l in next, {
-        { k = "Game",    v = { scoreColor, STAT.totalGame },                                                       x = 26,  y = 33, d = 80 },
-        { k = "Ascent",  v = { scoreColor, STAT.totalF10 },                                                        x = 26,  y = 58, d = 80 },
-        { k = "Giga",    v = { scoreColor, STAT.totalGiga },                                                       x = 26,  y = 83, d = 80 },
-        { k = "Flip",    v = { scoreColor, STAT.totalFlip },                                                       x = 194, y = 08, d = 82 },
-        { k = "Quest",   v = { scoreColor, STAT.totalQuest },                                                      x = 194, y = 33, d = 82 },
-        { k = "Perfect", v = { scoreColor, STAT.totalPerfect },                                                    x = 194, y = 58, d = 82 },
-        { k = "Attack",  v = { scoreColor, STAT.totalAttack },                                                     x = 194, y = 83, d = 82 },
-        { k = "Time",    v = { scoreColor, ("%dh%dm"):format(STAT.totalTime / 3600, STAT.totalTime % 3600 / 60) }, x = 380, y = 08, d = 80 },
-        { k = "Floor",   v = { scoreColor, STAT.totalFloor },                                                      x = 380, y = 33, d = 80 },
-        { k = "Height",  v = { scoreColor, floor(STAT.totalHeight * .001), textColor, " km" },                     x = 380, y = 58, d = 80 },
-        { k = "Bonus",   v = { scoreColor, floor(STAT.totalBonus * .001), textColor, " km" },                      x = 380, y = 83, d = 80 },
+        { k = "Game",    v = { scoreColor, STAT.totalGame },                                   x = 26,  y = 08, d = 80 },
+        { k = "Ascent",  v = { scoreColor, STAT.totalF10 },                                    x = 26,  y = 33, d = 80 },
+        { k = "Giga",    v = { scoreColor, STAT.totalGiga },                                   x = 26,  y = 58, d = 80 },
+        { k = "Floor",   v = { scoreColor, STAT.totalFloor },                                  x = 26,  y = 83, d = 80 },
+        { k = "Flip",    v = { scoreColor, STAT.totalFlip },                                   x = 194, y = 08, d = 82 },
+        { k = "Quest",   v = { scoreColor, STAT.totalQuest },                                  x = 194, y = 33, d = 82 },
+        { k = "Perfect", v = { scoreColor, STAT.totalPerfect },                                x = 194, y = 58, d = 82 },
+        { k = "Attack",  v = { scoreColor, STAT.totalAttack },                                 x = 194, y = 83, d = 82 },
+        { k = "Height",  v = { scoreColor, floor(STAT.totalHeight * .001), textColor, " km" }, x = 380, y = 08, d = 82 },
+        { k = "Bonus",   v = { scoreColor, floor(STAT.totalBonus * .001), textColor, " km" },  x = 380, y = 33, d = 82 },
+        { k = "KOs",     v = { scoreColor, STAT.totalKO },                                     x = 380, y = 58, d = 82 },
+        { k = "Revives", v = { scoreColor, STAT.totalRevive },                                 x = 380, y = 83, d = 82 },
     } do
         GC.setColor(textColor)
         GC.print(l.k, l.x, l.y, 0, .75)

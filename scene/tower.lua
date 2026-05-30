@@ -566,6 +566,10 @@ local windupColor = {
     { COLOR.HEX "79FA52FF" },
     { COLOR.HEX "C6FC4FFF" },
 }
+local koMsgColor = {
+    kill = { COLOR.HEX "FFB300FF" },
+    death = { COLOR.HEX "910000FF" },
+}
 
 function DrawBG(brightness, showRuler)
     gc_replaceTransform(SCR.origin)
@@ -1335,7 +1339,7 @@ function scene.overDraw()
         setFont(30)
         gc_setColor(TextColor)
         gc_setAlpha(.42)
-        TEXTS.srTimer:set(STRING.time(STAT.srTimer_game) .. "/ " .. STRING.time(STAT.srTimer_life,2))
+        TEXTS.srTimer:set(STRING.time(STAT.srTimer_game) .. "/ " .. STRING.time(STAT.srTimer_life, 2))
         gc_draw(TEXTS.srTimer, 7, -70 + GAME.uiHide * 30)
 
         -- Card Info
@@ -1440,11 +1444,13 @@ function scene.overDraw()
         end
     end
 
-    -- Piece Data
-    gc_replaceTransform(SCR.xOy_m)
-    GC.setColor(1, 1, 1, .26 * GAME.uiHide)
-    local w, h = GAME.pieceFstrObj:getDimensions()
-    GC.draw(GAME.pieceFstrObj, 0, -170, 0, min(4.2, 740 / w), nil, w / 2, h * .57)
+    -- Piece effect
+    do
+        gc_replaceTransform(SCR.xOy_m)
+        GC.setColor(1, 1, 1, .26 * GAME.uiHide)
+        local w, h = GAME.pieceFstrObj:getDimensions()
+        GC.draw(GAME.pieceFstrObj, 0, -170, 0, min(4.2, 740 / w), nil, w / 2, h * .57)
+    end
 
     -- Windup animation
     gc_replaceTransform(SCR.xOy_m)
@@ -1461,6 +1467,59 @@ function scene.overDraw()
         gc_setColor(1, 1, 1, w.alpha)
         gc_mDraw(TEXTURE.windupText[ceil(w.lv / 2)], w.x, w.y, 0, k)
     end
+
+    -- Kill animation
+    if #GAME.koAnim > 0 then
+        gc_replaceTransform(SCR.xOy_ur)
+        gc_translate(-10, 80 - GAME.uiHide * 70)
+        gc_scale(.6)
+        for i = 1, #GAME.koAnim do
+            local k = GAME.koAnim[i]
+            local w1, w2 = k.id1:getWidth() + 20, k.id2:getWidth() + 20
+            local x1, x2 = -w2 - 40 - w1 / 2, -w2 / 2
+            gc_ucs_move(0, (k.pos - .5) * 55)
+            gc_setLineWidth(2)
+
+            local clr = k.toOppo and koMsgColor.kill or koMsgColor.death
+            gc_setColor(clr)
+            gc_setAlpha(k.a * .42)
+            if k.toOppo then
+                if k.showP1 then
+                    gc_mRect('fill', x1, 0, w1, 45, 5)
+                end
+                gc_setColor(0, 0, 0, k.a * .42)
+                gc_mRect('fill', x2, 0, w2, 45, 5)
+            else
+                gc_mRect('fill', x2, 0, w2, 45, 5)
+                if k.showP1 then
+                    gc_setColor(0, 0, 0, k.a * .42)
+                    gc_mRect('fill', x1, 0, w1, 45, 5)
+                end
+            end
+
+            gc_setColor(clr)
+            gc_setAlpha(k.a)
+            gc_mRect('line', x2, 0, w2, 45, 5)
+            gc_mDraw(k.id2, x2, 0)
+            if k.showP1 then
+                gc_mRect('line', x1, 0, w1, 45, 5)
+                gc_mDraw(k.id1, x1, 0)
+            end
+            gc_setColor(1, 1, 1, k.a)
+            local x = -40 / 2 + 9 - w2
+            gc_setLineWidth(3)
+            gc_line(x - 20, 0, x, 0)
+            gc_line(x - 12, -12, x, 0, x - 12, 12)
+            gc_ucs_back()
+        end
+    end
+    -- gc_replaceTransform(SCR.xOy_u)
+    -- gc_translate(0, 26)
+    -- gc_setColor(1, 1, 1)
+    -- gc_setLineWidth(1)
+    -- gc_mRect('line', 0, 0, -26 * 10, 20)
+    -- gc_setColor(1, 0, 0)
+    -- gc_mRect('fill', 0, 0, -GAME.koCharge * 10, 20)
 
     -- Test
     if TestMode then

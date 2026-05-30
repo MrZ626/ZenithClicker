@@ -68,7 +68,6 @@ return {
     ]],
 
     ['rEX'] = STRING.trimIndent [[
-        Exactly same with EX in QP2, even "less kill bonus", yeah, I treat "passing a quest containing DP mod" as a kill (though it's obviously much weaker)
         Until I write this, there are still only 2 players mastered rEX in QP2, way too hard for everyone to even have a try.
         I tried to shrink cards spacing furthermore, but that turns out to be too hard, so I abandoned this idea. But you could try this challenge with...
         Anyways, Zenith Clicker's aim is to let everyone enjoy all mods! Just practice a few weeks to beat rEX here! Or use AS to skip the challenge :>

@@ -675,6 +675,8 @@ function InitProfile()
         totalAttack = 0,
         totalGiga = 0,
         totalF10 = 0,
+        totalKO = 0,
+        totalRevive = 0,
         badge = {},
     }
 

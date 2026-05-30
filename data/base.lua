@@ -85,7 +85,7 @@ NegTexts = {
         begin = [[You find yourself in an unfamiliar place.]],
         noAS = [[You passed the security check without any prohibited items.]],
         ASoff = [[To prevent mech heart users from entering, the AS mod has been confiscated.]],
-        -- egg = [[Garbo checks the imprisoned mech heart users here from time to time, except rtxtile, who kept escaping somehow?]],
+        -- egg = [[Garbo checks the imprisoned mech heart users here from time to time, except rtxile, who kept escaping somehow?]],
     },
     b2 = { -- Zenith Restaurant
         desc = "A lively restaurant with a lovely atmosphere.\nThough the prices here are slightly outrageous...",
@@ -561,6 +561,7 @@ end
 
 ModData = require 'data/mod'
 ComboData = require 'data/combo'
+UsernameData = require 'data/username'
 Fatigue = require 'data/fatigue'
 RevivePrompts = require 'data/revive'
 Achievements = require 'data/achievement'
