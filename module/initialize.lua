@@ -26,7 +26,7 @@ function LoadSave()
     local stat = FILE.safeLoad('stat.luaon', '-luaon')
     if stat then
         TABLE.update(STAT, stat)
-        STAT.srTimer_life, STAT.srTimer_game = STAT.totalTime, MATH.roundUnit(STAT.totalTime * 1.26, .001)
+        STAT.srTimer_game, STAT.srTimer_life = STAT.totalTime, MATH.roundUnit(STAT.totalTime * 1.26, .001)
     end
     TABLE.update(BEST, FILE.safeLoad('best.luaon', '-luaon') or NONE)
     TABLE.update(ACHV, FILE.safeLoad('achv.luaon', '-luaon') or NONE)
@@ -68,6 +68,12 @@ function Initialize(save)
                 end
             end
             STAT.version = 192
+        end
+        if STAT.version == 192 then
+            if STAT.srTimer_game > STAT.srTimer_life then
+                STAT.srTimer_game, STAT.srTimer_life = STAT.srTimer_life, STAT.srTimer_game
+            end
+            STAT.version = 193
         end
     end
 
