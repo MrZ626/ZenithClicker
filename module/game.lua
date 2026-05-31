@@ -174,7 +174,6 @@ local GAME = {
     teraspeedFloor = {},
     windupAnim = {}, ---@type Windup[]
     koCharge = 0,
-    koUpdateCD = 0,
     koBuffer = {}, ---@type {uid:string, timer:number, valid:boolean}[]
     koAnim = {}, ---@type {id1:love.Text, id2:love.Text, a:number, timer:number, pos:number, showP1:boolean, toOppo:boolean}[]
 
@@ -997,14 +996,6 @@ function GAME.getRandomUID()
     local uid
     repeat uid = TABLE.getRandom(UsernameData) until uid ~= STAT.uid
     return uid
-end
-
-function GAME.bufferKO()
-    ins(GAME.koBuffer, {
-        uid = GAME.getRandomUID(),
-        timer = MATH.lerp(.62, 2.6, math.random() ^ 2),
-        valid = true,
-    })
 end
 
 function GAME.awardKO(id1, id2, valid, toOppo)
@@ -2018,7 +2009,7 @@ function GAME.commit(auto)
         attack = MATH.roundRnd(attack)
 
         local kc = dp and 6 or 1
-        if dblCorrect then kc = kc * 2.6 end
+        if dblCorrect then kc = kc * 2 end
         kc = kc + max(surge - 260 / surge, 0)
         GAME.koCharge = GAME.koCharge + kc
 
@@ -2261,7 +2252,6 @@ function GAME.start()
     -- KO
     GAME.koCount = 0
     GAME.koCharge = 0
-    GAME.koUpdateCD = 0
 
     -- rDP
     GAME.onAlly = false
@@ -2879,9 +2869,13 @@ function GAME.update(dt)
         if w.time > w.totalTime then rem(GAME.windupAnim, i) end
     end
 
-    for i = 1, #GAME.koBuffer do
+    for i = #GAME.koBuffer, 1, -1 do
         local k = GAME.koBuffer[i]
         k.timer = k.timer - dt
+        if k.timer <= 0 then
+            GAME.awardKO(STAT.uid, k.uid, k.valid, true)
+            rem(GAME.koBuffer, i)
+        end
     end
     for i = #GAME.koAnim, 1, -1 do
         local k = GAME.koAnim[i]
@@ -2898,25 +2892,19 @@ function GAME.update(dt)
             rem(GAME.koAnim, i)
         end
     end
-    while GAME.koCharge > 26 do
-        GAME.koCharge = GAME.koCharge - 26
-        GAME.bufferKO()
-    end
-    GAME.koUpdateCD = GAME.koUpdateCD - dt
-    if GAME.koUpdateCD < 0 then
-        for i = #GAME.koBuffer, 1, -1 do
-            local k = GAME.koBuffer[i]
-            if k.timer <= 0 then
-                GAME.awardKO(STAT.uid, k.uid, k.valid, true)
-                rem(GAME.koBuffer, i)
-            end
-        end
-        GAME.koUpdateCD = MATH.rand(.62, 1.26)
-    end
 
     if not GAME.playing then return end
 
     GAME.koCharge = max(GAME.koCharge - dt * min(GAME.height, 6200) / 2600, 0)
+    while GAME.koCharge > 26 do
+        GAME.koCharge = GAME.koCharge - 26
+        local t = MATH.lerp(.62, 2.6, math.random() ^ 2)
+        ins(GAME.koBuffer, {
+            uid = GAME.getRandomUID(),
+            timer = t + math.random() * .1,
+            valid = true,
+        })
+    end
 
     if TestMode then
         if KBisDown(']') then
