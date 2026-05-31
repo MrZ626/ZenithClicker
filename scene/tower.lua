@@ -1513,13 +1513,6 @@ function scene.overDraw()
             gc_ucs_back()
         end
     end
-    -- gc_replaceTransform(SCR.xOy_u)
-    -- gc_translate(0, 26)
-    -- gc_setColor(1, 1, 1)
-    -- gc_setLineWidth(1)
-    -- gc_mRect('line', 0, 0, -26 * 10, 20)
-    -- gc_setColor(1, 0, 0)
-    -- gc_mRect('fill', 0, 0, -GAME.koCharge * 10, 20)
 
     -- Test
     if TestMode then
@@ -1563,14 +1556,24 @@ function scene.overDraw()
         gc_mDraw(TEXTS.version, GAME.invisUI and 0 or -260 * GAME.uiHide, -10, 0, .62)
     end
 
+    -- Debug: display holding buttons
     -- GC.replaceTransform(SCR.xOy)
-    -- local y=0
-    -- GC.setColor(1,1,1)
+    -- local y = 0
+    -- GC.setColor(1, 1, 1)
     -- FONT.set(20)
-    -- for k in next,HoldingButtons do
-    --     GC.print(k,100,100+y)
-    --     y=y+30
+    -- for k in next, HoldingButtons do
+    --     GC.print(k, 100, 100 + y)
+    --     y = y + 30
     -- end
+
+    -- Debug: display KO charge
+    -- gc_replaceTransform(SCR.xOy_u)
+    -- gc_translate(0, 26)
+    -- gc_setColor(1, 1, 1)
+    -- gc_setLineWidth(1)
+    -- gc_mRect('line', 0, 0, -26 * 10, 20)
+    -- gc_setColor(1, 0, 0)
+    -- gc_mRect('fill', 0, 0, -GAME.koCharge * 10, 20)
 end
 
 local function button_start()
