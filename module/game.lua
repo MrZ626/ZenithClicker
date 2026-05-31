@@ -1012,7 +1012,7 @@ function GAME.awardKO(id1, id2, valid, toOppo)
     })
     if toOppo then
         GAME.koCount = GAME.koCount + 1
-        SFX.play('elim', .62)
+        SFX.play('elim', .5)
     end
 end
 
