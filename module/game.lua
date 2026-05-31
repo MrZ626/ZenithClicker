@@ -2008,10 +2008,12 @@ function GAME.commit(auto)
 
         attack = MATH.roundRnd(attack)
 
-        local kc = dp and 6 or 1
-        if dblCorrect then kc = kc * 2 end
-        kc = kc + max(surge - 260 / surge, 0)
-        GAME.koCharge = GAME.koCharge + kc
+        if not GAME.DPlock then
+            local kc = dp and 6 or 1
+            if dblCorrect then kc = kc * 2 end
+            kc = kc + max(surge - 260 / surge, 0)
+            GAME.koCharge = GAME.koCharge + kc
+        end
 
         GAME.incrementPrompt('send', attack)
         GAME.totalAttack = GAME.totalAttack + attack
