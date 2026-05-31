@@ -2933,8 +2933,7 @@ function GAME.update(dt)
             end
         end
         if KBisDown('return') and TASK.lock("test_eliminate", .26) then
-            GAME.addHeight(15)
-            SFX.play('elim')
+            GAME.awardKO(STAT.uid, GAME.getRandomUID(), true, true)
         end
         if KBisDown('rshift') then
             GAME.time = GAME.time + dt * 62
