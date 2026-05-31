@@ -1662,7 +1662,7 @@ function GAME.commit(auto)
     if not auto and not GAME.achv_noManualCommitH then GAME.achv_noManualCommitH = GAME.roundHeight end
 
     local hand = TABLE.sort(GAME.getHand(false))
-    local allyWasDead = GAME[GAME.getLifeKey(true)] == 0
+    local oldAllyHP = GAME[GAME.getLifeKey(true)]
 
     if #hand == 0 and GAME.questTime < .1 then return SFX.play('no') end
 
@@ -1783,7 +1783,7 @@ function GAME.commit(auto)
             if GAME.chain < 4 then
                 SFX.play('clearline', .62)
             else
-                check_achv_romantic_homicide = M.DP == 2 and GAME.chain >= 62 and GAME[GAME.getLifeKey(true)] == 0
+                check_achv_romantic_homicide = M.DP == 2 and GAME.chain >= 62 and oldAllyHP == 0
                 if GAME.currentTask then
                     if GAME.chain >= 4 and GAME.chain <= 10 and GAME.chain % 2 == 0 then
                         GAME.incrementPrompt('b2b_break_' .. GAME.chain)
@@ -1990,18 +1990,16 @@ function GAME.commit(auto)
         attack = attack + surge
         GAME.achv_altFromSurge = GAME.achv_altFromSurge + surge * GAME.rank / 4 * GAME.attackMul
 
-        local oldAllyLife = GAME[GAME.getLifeKey(true)]
-        ---@cast oldAllyLife number
         if M.DP > 0 then
-            if GAME[GAME.getLifeKey(true)] == 0 then
+            if oldAllyHP == 0 then
                 xp = xp / 2
                 attack = attack / 2
-            elseif not allyWasDead and not GAME.achv_carriedH then
+            elseif oldAllyHP > 0 and not GAME.achv_carriedH then
                 GAME.achv_carriedH = GAME.roundHeight
                 if GAME.totalQuest >= 26 then SFX.play('btb_break') end
             end
             if M.DP == 2 then
-                GAME.takeDamage(URM and attack / 2.6 or attack / 4, 'wrong', oldAllyLife > 0)
+                GAME.takeDamage(URM and attack / 2.6 or attack / 4, 'wrong', oldAllyHP > 0)
                 if not GAME.playing then return end
                 if check_achv_romantic_homicide then IssueAchv('romantic_homicide') end
             end
@@ -2020,7 +2018,7 @@ function GAME.commit(auto)
         GAME.totalAttack = GAME.totalAttack + attack
         GAME.totalSurge = GAME.totalSurge + surge
 
-        if GAME.DPlock then attack = min(attack, URM and oldAllyLife * 2.6 or oldAllyLife * 4) end
+        if GAME.DPlock then attack = min(attack, URM and oldAllyHP * 2.6 or oldAllyHP * 4) end
         if attack > 0 then GAME.addHeight(attack * GAME.attackMul) end
         GAME.addXP(attack + xp)
 
