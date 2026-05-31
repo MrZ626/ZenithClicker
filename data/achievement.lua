@@ -934,16 +934,6 @@ local d = {
         quote = [[Real magic exists!]],
         rank = floorRank(26, 42, 62, 126, 3, 4, 5),
     },
-    { -- divine_rejection
-        ex = true,
-        id = 'divine_rejection',
-        name = "Divine Rejection",
-        desc = [[End a run just before F10]],
-        quote = [[A blinding flash of light, a painful crash to the bottom.]],
-        credit = '@Flowerling',
-        scoreSimp = function(h) return string.format("%.1fm", h) end,
-        rank = numberRank(1626, 1626, 1635, 1640, 1645, 1647.8, 1649),
-    },
     { -- fickle_fuel
         ex = true,
         id = 'fickle_fuel',
@@ -965,6 +955,16 @@ local d = {
         scoreSimp = function(dist) return dist == 0 and "Flawless Landing!" or string.format("%.1fm away", dist) end,
         rank = numberRankRev(26, 16, 8, 4, 2, 1, 0),
         credit = "@osk",
+    },
+    { -- slayer_of_the_tower
+        ex = true,
+        id = 'slayer_of_the_tower',
+        name = "Slayer of the Tower",
+        desc = [[Highest amount of friendly KOs in a single run]],
+        quote = [[Unruly intent to become a False God, only to fall soon enough.]],
+        credit = "@The_111thBlitzer",
+        scoreSimp = function(ko) return floor(ko) .. " KOs" end,
+        rank = numberRank(0, 6, 9, 12, 15, 18, 26),
     },
     { -- lovers_promise
         id = 'lovers_promise',

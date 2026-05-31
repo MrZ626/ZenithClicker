@@ -282,8 +282,9 @@ TEXTURE = {
             scarcity_mindset = aq(4, 1),
             detail_oriented = aq(8, 6),
             psychokinesis = aq(8, 6),
-            divine_rejection = aq(7, 6),
+            fickle_fuel = aq(9, 5),
             moon_struck = aq(7, 6),
+            slayer_of_the_tower = aq(1, 3),
             lovers_promise = aq(8, 7),
 
             hardcore_beginning = aq(16, 5),
@@ -301,7 +302,6 @@ TEXTURE = {
             dazed = aq(5, 6),
             drag_racing = aq(5, 6),
             space_race = aq(5, 6),
-            fickle_fuel = aq(9, 5),
             the_spike_of_all_time_plus = aq(5, 6),
 
             -- Special, no texture needed
