@@ -846,6 +846,7 @@ function GAME.takeDamage(dmg, reason, toAlly)
 end
 
 function GAME.addHeight(h, realHeight)
+    if GAME.DPlock then return end
     h = h * (realHeight and 1 or GAME.rank / 4)
     GAME.heightBonus = GAME.heightBonus + h
     GAME.heightBuffer = GAME.heightBuffer + h
