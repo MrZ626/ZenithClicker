@@ -995,7 +995,17 @@ end
 
 function GAME.getRandomUID()
     local uid
-    repeat uid = TABLE.getRandom(UsernameData) until uid ~= STAT.uid
+    local lib = UsernameData[
+    GAME.height < 0 and 1 or
+    GAME.height < 1000 and 2 or
+    GAME.height < 2600 and 3 or
+    GAME.height < 6200 and 4 or
+    5
+    ]
+    repeat uid = TABLE.getRandom(lib) until uid ~= STAT.uid
+    if GAME.height < 0 then
+        uid = uid:gsub("GUEST", "GHOST")
+    end
     return uid
 end
 
