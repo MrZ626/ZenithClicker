@@ -1010,7 +1010,7 @@ function GAME.getRandomUID()
 end
 
 function GAME.awardKO(id1, id2, valid, toOppo)
-    if GAME.playing and valid then GAME.addHeight((M.EX == 2 and 8 or 15) * .26) end
+    if GAME.playing and valid then GAME.addHeight((M.EX == 2 and 8 or 15) * .26 * GAME.attackMul) end
     ins(GAME.koAnim, 1, {
         id1 = GC.newText(FONT.get(30), id1),
         id2 = GC.newText(FONT.get(30), id2),
