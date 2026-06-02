@@ -175,6 +175,7 @@ NegEvents = {
             GAME.attackMul = GAME.attackMul - .1
             GAME.dmgTimerMul = GAME.dmgTimerMul + .01
             GAME.mod.AS = 0
+            TEXTS.chain:set(tostring(GAME.chain))
             GAME.refreshModIcon()
             GAME.refreshRPC()
         end,
