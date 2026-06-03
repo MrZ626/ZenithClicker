@@ -994,7 +994,6 @@ function GAME.showWindup(lv)
 end
 
 function GAME.getRandomUID()
-    local uid
     local lib = UsernameData[
     GAME.height < 0 and 1 or
     GAME.height < 1000 and 2 or
@@ -1002,10 +1001,15 @@ function GAME.getRandomUID()
     GAME.height < 6200 and 4 or
     5
     ]
-    repeat uid = TABLE.getRandom(lib) until uid ~= STAT.uid
-    if GAME.height < 0 then
-        uid = uid:gsub("GUEST", "GHOST")
-    end
+
+    local uid
+    local attempts = 0
+    repeat
+        uid = TABLE.getRandom(lib)
+        attempts = attempts + 1
+    until uid ~= STAT.uid and (TASK.lock('uid_used_' .. uid, 260) or attempts >= 26)
+
+    if GAME.height < 0 then uid = uid:gsub("GUEST", "GHOST") end
     return uid
 end
 
