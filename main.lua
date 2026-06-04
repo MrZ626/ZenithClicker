@@ -576,7 +576,7 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     slogan_EX  = GC.newText(FONT.get(30), "THRONG THE TOWER!"),
     slogan_rEX = GC.newText(FONT.get(30), "OVERFLOW THE TOWER!"),
     forfeit    = GC.newText(FONT.get(50), "KEEP HOLDING TO FORFEIT"),
-    credit     = GC.newText(FONT.get(30), "Almost all assets from TETR.IO"),
+    credit     = GC.newText(FONT.get(30), "Most assets from TETR.IO"),
     test       = GC.newText(FONT.get(50), "TEST"),
 }
 if not FontLoaded then
