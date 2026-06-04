@@ -849,8 +849,8 @@ function GAME.takeDamage(dmg, reason, toAlly)
     end
 end
 
-function GAME.addHeight(h, realHeight)
-    if GAME.DPlock then return end
+function GAME.addHeight(h, realHeight, bypassDPlock)
+    if GAME.DPlock and not bypassDPlock then return end
     h = h * (realHeight and 1 or GAME.rank / 4)
     GAME.heightBonus = GAME.heightBonus + h
     GAME.heightBuffer = GAME.heightBuffer + h
@@ -2036,7 +2036,7 @@ function GAME.commit(auto)
         GAME.totalSurge = GAME.totalSurge + surge
 
         if GAME.DPlock then attack = min(attack, URM and oldAllyHP * 2.6 or oldAllyHP * 4) end
-        if attack > 0 then GAME.addHeight(attack * GAME.attackMul) end
+        if attack > 0 then GAME.addHeight(attack * GAME.attackMul, false, oldAllyHP > 0) end
         GAME.addXP(attack + xp)
 
         -- rMS little shuffle
