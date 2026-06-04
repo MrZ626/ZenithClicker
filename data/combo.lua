@@ -64,9 +64,16 @@ d.game = {
     { set = "EX MS",       name = "Block Rationing" },
 }
 
--- rDH database, from tetr.io's community:
--- https://docs.google.com/spreadsheets/d/1syh3q2oiduCZb1cJ5QI95Y2XhhedAfhv4YnEH9z2tbc
 d.gameEX = {
+    { set = "EX",             name = "The Emperor" },
+    { set = "NH",             name = "Temperance" },
+    { set = "MS",             name = "Wheel of Fortune" },
+    { set = "GV",             name = "The Tower" },
+    { set = "VL",             name = "Strength" },
+    { set = "DH",             name = "The Devil" },
+    { set = "IN",             name = "The Hermit" },
+    { set = "AS",             name = "The Magician" },
+    { set = "DP",             name = "The Lovers" },
     { set = "rEX",            name = "The Tyrant" },
     { set = "rNH",            name = "Asceticism" },
     { set = "rMS",            name = "Loaded Dice" },
@@ -86,15 +93,8 @@ d.gameEX = {
     { set = "urAS",           name = "Depraved Grimoire" },
     { set = "urDP",           name = "Severed Eden" },
 
-    { set = "EX",             name = "The Emperor" },
-    { set = "NH",             name = "Temperance" },
-    { set = "MS",             name = "Wheel of Fortune" },
-    { set = "GV",             name = "The Tower" },
-    { set = "VL",             name = "Strength" },
-    { set = "DH",             name = "The Devil" },
-    { set = "IN",             name = "The Hermit" },
-    { set = "AS",             name = "The Magician" },
-    { set = "DP",             name = "The Lovers" },
+    -- rDH database, from tetr.io's community:
+    -- https://docs.google.com/spreadsheets/d/1syh3q2oiduCZb1cJ5QI95Y2XhhedAfhv4YnEH9z2tbc
     { set = "EX NH",          name = "A Fair Leader" },
     { set = "EX MS",          name = "Block Rationing" },
     { set = "EX GV",          name = "Invictus" },
