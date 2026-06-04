@@ -238,6 +238,10 @@ local M = GAME.mod
 local MD = ModData
 local CD = Cards
 
+function GAME.ultrafyComboName(n)
+    return n:sub(1, 1) == '"' and '"ULTRA ' .. n:sub(n:sub(2, 4) == "THE" and 6 or 2) or "ULTRA " .. n
+end
+
 ---Unsorted, like {'rEX','NH',...}
 ---@param real boolean current mod setting or literally selected cards
 function GAME.getHand(real)
@@ -1276,8 +1280,7 @@ function GAME.refreshRPC()
             local comboName = GAME.getComboName(hand, 'rpc')
             stateStr = stateStr .. " - "
             if GAME.anyUltra then
-                ---@cast comboName string
-                comboName = comboName:gsub("([^\"])", "ULTRA %1", 1)
+                comboName = GAME.ultrafyComboName(comboName)
             end
             stateStr = stateStr .. comboName
         end
@@ -1398,8 +1401,7 @@ function GAME.refreshCurrentCombo()
     local hand = GAME.getHand(not GAME.playing)
     local comboName = GAME.getComboName(hand, 'button')
     if not GAME.playing and GAME.anyUltra and #hand > 0 then
-        ---@cast comboName string
-        comboName = comboName:gsub("([^\"])", "ULTRA %1", 1)
+        comboName = GAME.ultrafyComboName(comboName)
     end
     TEXTS.mod:set(comboName)
     if not GAME.playing then
