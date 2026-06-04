@@ -1,5 +1,6 @@
 ---@type Zenitha.Scene
 local scene = {}
+local firstClear
 
 EndText = GC.newText(FONT.get(70))
 EndText2 = GC.newText(FONT.get(70), "ZENITH CLICKER!")
@@ -170,6 +171,7 @@ do
 end
 
 function scene.load()
+    firstClear = SCN.args[1]
     t = 0
     e = 1
     CONF.bg = true
@@ -201,10 +203,23 @@ function scene.unload()
     PlayBGM('f0')
 end
 
-function scene.keyDown() return true end
+function scene.keyDown(key, isRep)
+    if isRep then return end
+    if key == 'escape' and not firstClear then
+        if TASK.lock('sure_quit', 2.6) then
+            SFX.play('menuclick')
+            MSG('dark', "PRESS AGAIN TO SKIP", 2.6)
+        else
+            SFX.play('menuback')
+            BGM.set('all', 'volume', 0, 1.6)
+            SCN.back('slowFade')
+        end
+    end
+    return true
+end
 
 function scene.update(dt)
-    if love.keyboard.isDown('space', 'escape') and t < 98.72 then
+    if love.keyboard.isDown('space') and t < 98.72 then
         dt = dt * 12.6
     end
     if t < 120 then

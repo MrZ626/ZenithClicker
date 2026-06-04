@@ -540,9 +540,10 @@ NegEvents = {
             GAME.height = -1800
             FloatOnCard = nil
             GAME.refreshLayout()
+            local firstClear = not STAT.clicker
             STAT.clicker = true
             SFX.play('warp')
-            SCN.go('ending', "warp")
+            SCN.go('ending', "warp", firstClear)
         end
     },
     { h = -1e99 },
