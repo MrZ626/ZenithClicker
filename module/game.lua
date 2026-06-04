@@ -2022,7 +2022,7 @@ function GAME.commit(auto)
         attack = MATH.roundRnd(attack)
 
         if not GAME.DPlock then
-            local kc = dp and 6 or 1
+            local kc = attack == 0 and 0 or dp and 6 or 1
             if dblCorrect then kc = kc * 2 end
             kc = kc + max(surge - 260 / surge, 0)
             if oldAllyHP == 0 then kc = kc / 2 end
