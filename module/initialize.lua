@@ -82,6 +82,10 @@ function Initialize(save)
             end
             STAT.version = 194
         end
+        if STAT.version == 194 then
+            ACHV.slayer_of_the_tower = math.min(ACHV.slayer_of_the_tower or 0, 42)
+            STAT.version = 195
+        end
     end
 
     -- Some initialization
