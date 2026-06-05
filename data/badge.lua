@@ -1,5 +1,5 @@
 local d = {
-    [0] = {
+    [0] = { -- place holder for empty slots in profile
         prio = 1e99,
         name = "---",
         desc = "???",

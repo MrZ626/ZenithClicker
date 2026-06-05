@@ -280,8 +280,6 @@ local function refreshAchivement()
     for id in next, MD.name do _t = _t + BEST.highScore['r' .. id] end
     submit('divine_challenger', _t, true)
 
-    if not ACHV.false_god and MATH.sumAll(GAME.completion) >= 2 * #MD.deck then issue('false_god', ACHV.subjugation) end
-
     if not ACHV.the_harbinger then
         local allRevF5 = true
         for id in next, MD.name do

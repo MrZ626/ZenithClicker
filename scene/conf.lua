@@ -1101,7 +1101,7 @@ for i = 0, 10 do
             GAME.height = (bgmHeight[i] + bgmHeight[i + 1]) / 2
             PlayBGM('f' .. i .. 'r')
         end,
-        visibleFunc = function() return page == 3 and STAT.maxFloor >= 10 and TABLE.findAll(GAME.completion, 2) end,
+        visibleFunc = function() return page == 3 and STAT.maxFloor >= 10 and TABLE.countAll(GAME.completion, 2) > 0 end,
     }
 end
 albumBtn {

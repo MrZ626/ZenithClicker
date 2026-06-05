@@ -231,15 +231,16 @@ function RefreshProfile()
         scene.widgetList[i]:setVisible(false)
     end
 
+    local rating, cap = CalculateCR()
+
     -- Clicker Badge
     if STAT.clicker then
         GC.setColor(1, 1, 1)
         GC.mDraw(TEXTURE.stat.clicker, 970, 182, 0, .626)
-        local rating, cap = calculateRating()
         local clickerLV = 0
         if STAT.totalTime >= 3600 * 26 then clickerLV = clickerLV + 1 end
         if STAT.maxHeight >= 10000 and STAT.minTime <= 42 then clickerLV = clickerLV + 1 end
-        if MATH.sumAll(GAME.completion) == 18 then clickerLV = clickerLV + 1 end
+        if MATH.sumAll(GAME.completion) == 2 * #ModData.deck then clickerLV = clickerLV + 1 end
         if rating >= 25000 then clickerLV = clickerLV + 1 end
         if rating == cap then clickerLV = clickerLV + 1 end
         for i = 0, clickerLV - 1 do
@@ -263,7 +264,6 @@ function RefreshProfile()
     local bw, bh = 370, 120
 
     -- Rating
-    local rating, cap = calculateRating()
     GC.ucs_move(25, 370)
     GC.setColor(boxColor)
     GC.rectangle('fill', 0, 0, bw, bh)
