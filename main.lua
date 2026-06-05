@@ -628,6 +628,11 @@ CONF = {
     autoMute = false,
     oldHitbox = false,
 }
+SR = {}
+
+TABLE.update(CONF, FILE.safeLoad('conf.luaon', '-luaon') or NONE)
+TABLE.update(SR, FILE.safeLoad('speedrun.luaon', '-luaon') or NONE)
+
 -- Create BEST, STAT, ACHV tables,
 -- only called when launching and on resetall
 function InitProfile()
@@ -710,6 +715,11 @@ end
 function SaveConf()
     if TestMode then return end
     love.filesystem.write('conf.luaon', 'return' .. TABLE.dumpDeflate(CONF))
+end
+
+function SaveSR()
+    if TestMode then return end
+    love.filesystem.write('speedrun.luaon', 'return' .. TABLE.dumpDeflate(SR))
 end
 
 CRprogress = {
@@ -880,6 +890,12 @@ end
 function IssueSpeedrunMilestone(id)
     if not STAT.srMilestone[id] then
         STAT.srMilestone[id] = STAT.srTimer_life * (STAT.srActive and 1 or -1)
+        if STAT.srActive then
+            if STAT.srTimer_life < (SR[id] or 1e99) then
+                SR[id] = STAT.srTimer_life
+                SaveSR()
+            end
+        end
         if STAT.srTimer_life < 3600 * 2.6 then
             MSG('speedrun', SpeedrunData[id].name .. ": " .. STRING.time(STAT.srMilestone[id]), 6.26)
         end
@@ -1371,6 +1387,7 @@ function ReloadTexts()
     EndText2:setFont(FONT.get(70))
     for _, text in next, SRSplitText1 do text:setFont(FONT.get(50)) end
     for _, text in next, SRSplitText2 do text:setFont(FONT.get(50)) end
+    for _, text in next, SRSplitText3 do text:setFont(FONT.get(30)) end
     if SCN.cur == 'stat' then RefreshProfile() end
     if SCN.cur == 'records' then SCN.scenes.records.load() end
     if SCN.cur == 'achv' then RefreshAchvList() end

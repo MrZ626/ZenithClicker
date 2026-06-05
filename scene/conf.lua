@@ -11,6 +11,7 @@ local maxPage = 4
 local uidList = {} ---@type ({uid: string, modTime?: string} | false)[]
 SRSplitText1 = {} ---@type love.Text[]
 SRSplitText2 = {} ---@type love.Text[]
+SRSplitText3 = {} ---@type love.Text[]
 
 local anonUser
 local resetall_cnt, resetall_anim, lastClear
@@ -166,6 +167,7 @@ function scene.load()
         if not SRSplitText1[i] then
             SRSplitText1[i] = GC.newText(FONT.get(50), "")
             SRSplitText2[i] = GC.newText(FONT.get(50), "")
+            SRSplitText3[i] = GC.newText(FONT.get(30), "")
         end
         SRSplitText1[i]:set(SpeedrunData[i].name)
         local t = STAT.srMilestone[SpeedrunData[i].id]
@@ -175,6 +177,11 @@ function scene.load()
             SRSplitText2[i]:set("*" .. STRING.time(-t))
         else
             SRSplitText2[i]:set(STRING.time(t))
+        end
+        if SR[SpeedrunData[i].id] then
+            SRSplitText3[i]:set(STRING.time(SR[SpeedrunData[i].id]))
+        else
+            SRSplitText3[i]:set("N/A")
         end
     end
     SetMouseVisible(true)
@@ -489,7 +496,7 @@ function scene.draw()
 
         gc_setLineWidth(2)
         setFont(30)
-        local textH = SRSplitText2[1]:getHeight()
+        local textH = SRSplitText1[1]:getHeight()
         for i = 1, #SpeedrunData do
             local y = i * 115
             gc_setColor(clr.T)
@@ -498,6 +505,8 @@ function scene.draw()
             gc_line(100 + SRSplitText1[i]:getWidth() + 20, y, w - 100 - SRSplitText2[i]:getWidth() - 20, y)
             gc_setColor(clr.L)
             gc_print(SpeedrunData[i].desc, 100, y + 26, 0, .626)
+            gc_setAlpha(.62)
+            gc_draw(SRSplitText3[i], w - 100, y + 26, 0, .626, .626, SRSplitText3[i]:getWidth())
         end
     end
 

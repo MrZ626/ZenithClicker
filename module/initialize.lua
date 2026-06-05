@@ -32,7 +32,6 @@ function LoadSave()
     end
     TABLE.update(BEST, FILE.safeLoad('best.luaon', '-luaon') or NONE)
     TABLE.update(ACHV, FILE.safeLoad('achv.luaon', '-luaon') or NONE)
-    TABLE.update(CONF, FILE.safeLoad('conf.luaon', '-luaon') or NONE)
 end
 
 LoadSave()
