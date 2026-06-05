@@ -1,12 +1,12 @@
 local d = {
     {
         id = 'star_9',
-        name = "9*%",
+        name = "9-star",
         desc = "Master all upright mods",
     },
     {
         id = 'star_18',
-        name = "18*%",
+        name = "18-star",
         desc = "Master all reversed mods",
     },
     {
