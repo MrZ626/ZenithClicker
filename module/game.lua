@@ -2914,7 +2914,7 @@ function GAME.update(dt)
 
     if not GAME.playing then return end
 
-    GAME.koCharge = max(GAME.koCharge - dt * min(GAME.height, 6200) / 2600, 0)
+    GAME.koCharge = max(GAME.koCharge - dt * min(abs(GAME.height), 6200) / 2600, 0)
     while GAME.koCharge > 26 do
         GAME.koCharge = GAME.koCharge - 26
         local t = MATH.lerp(.62, 2.6, math.random() ^ 2)
