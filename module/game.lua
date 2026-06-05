@@ -1029,7 +1029,7 @@ function GAME.awardKO(id1, id2, valid, toOppo)
         toOppo = toOppo,
     })
     if toOppo then
-        GAME.koCount = GAME.koCount + 1
+        if not id2:match("^GHOST%-") then GAME.koCount = GAME.koCount + 1 end
         SFX.play('elim', .5)
     end
 end
