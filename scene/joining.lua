@@ -22,6 +22,10 @@ function scene.update(dt)
                 GAME.bgH, GAME.height = 0, 0
                 GAME.prevPB = -2600
                 GAME.finishTera = false
+                for i = #GAME.koAnim, 1, -1 do
+                    local k = GAME.koAnim[i]
+                    k.a, k.timer = -1, -1
+                end
                 for k in next, GAME.completion do
                     GAME.completion[k] = 0
                     GAME.mod[k] = 0
