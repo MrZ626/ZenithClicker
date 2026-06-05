@@ -710,6 +710,86 @@ function SaveConf()
     love.filesystem.write('conf.luaon', 'return' .. TABLE.dumpDeflate(CONF))
 end
 
+CRprogress = {
+    f10 = 0,
+    sr = 0,
+    achvGet = 0,
+    achvAll = 0,
+}
+function RefreshCRprogress()
+    local s
+
+    s = 0
+    for i = 1, #ModData.deck do
+        local id = ModData.deck[i].id
+        if BEST.highScore[id] >= Floors[9].top then s = s + 1 end
+        if BEST.highScore['r' .. id] >= Floors[9].top then s = s + 1 end
+    end
+    CRprogress.f10 = s
+
+    s = 0
+    for i = 1, #ModData.deck do
+        local id = ModData.deck[i].id
+        if BEST.speedrun[id] < 1e26 then s = s + 1 end
+        if BEST.speedrun['r' .. id] < 1e26 then s = s + 1 end
+    end
+    CRprogress.sr = s
+
+    local p, P = 0, 0
+    for i = 1, #Achievements do
+        local A = Achievements[i]
+        if A.type == 'competitive' then
+            P = P + 5
+            if ACHV[A.id] then
+                local rank = math.floor(A.rank(ACHV[A.id]))
+                p = p + rank
+            end
+        end
+    end
+    CRprogress.achvGet, CRprogress.achvAll = p, P
+end
+
+local function norm(x, k) return 1 + (x - 1) / (k * x + 1) end
+function CalculateCR()
+    local cap = 25000
+    local cr = 0
+
+    -- Best height (5K)
+    cr = cr + 5000 * norm(MATH.icLerp(50, 6200, STAT.maxHeight), 6.2)
+
+    -- Best time (5K)
+    cr = cr + 5000 * norm(MATH.icLerp(420, 76.2, STAT.minTime), -.5)
+
+    -- Mod completion (3K)
+    cr = cr + 3000 * norm(MATH.icLerp(0, #ModData.deck * 2, CRprogress.f10), .62)
+
+    -- Mod speedrun (2K)
+    cr = cr + 2000 * norm(MATH.icLerp(0, #ModData.deck * 2, CRprogress.sr), .62)
+
+    -- Zenith point (3K)
+    cr = cr + 3000 * norm(MATH.icLerp(0, 26e4, STAT.zp), 4.2)
+
+    -- Daily challenge (2K)
+    cr = cr + 2000 * norm(MATH.icLerp(0, 6200, STAT.dzp), 2.6)
+
+    -- Achievement (5K)
+    cr = cr + 5000 * norm(MATH.icLerp(0, CRprogress.achvAll, CRprogress.achvGet), 2.6)
+
+    -- ACHV Wreath (competitive achievement count)
+    for i = 1, #Achievements do
+        local A = Achievements[i]
+        if A.type == 'competitive' then
+            cap = cap + 1
+            local r = A.rank(ACHV[A.id] or A.noScore or 0)
+            if r == 5.9999 then
+                cr = cr + 1
+            end
+        end
+    end
+
+    return MATH.round(cr), cap
+end
+
 local msgTime = 0
 local bufferedMsg = {}
 
