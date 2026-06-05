@@ -1005,6 +1005,21 @@ local function saveSlot(i)
     WIDGET._reset()
 end
 local function loadSlot(i)
+    if not anonUser then
+        local hasBackup
+        for _, user in next, uidList do
+            if user and STAT.uid == user.uid then
+                hasBackup = true
+                break
+            end
+        end
+        if not hasBackup then
+            SFX.play('staffwarning')
+            MSG('dark', "For safety, you can only load a backup when current save is backed up", 4.2)
+            return
+        end
+    end
+
     if TASK.lock('load_slot' .. i, 2.6) then
         SFX.play('hyperalert')
         MSG('warn', "Load from slot " .. i .. "? Current save will be overwritten. Press again to confirm.", 4.2)
@@ -1019,6 +1034,11 @@ local function loadSlot(i)
     SCN.swapTo('joining', 'fade', 'load')
 end
 local function clearSlot(i)
+    if uidList[i] and STAT.uid ~= uidList[i].uid then
+        SFX.play('staffwarning')
+        MSG('dark', "For safety, you can only delete a backup with same username", 4.2)
+        return
+    end
     if TASK.lock('clear_slot' .. i, 2.6) then
         SFX.play('hyperalert')
         MSG('warn', "Clear slot " .. i .. "? This action cannot be undone. Press again to confirm.", 4.2)
