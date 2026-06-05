@@ -86,6 +86,10 @@ function Initialize(save)
             ACHV.slayer_of_the_tower = math.min(ACHV.slayer_of_the_tower or 0, 42)
             STAT.version = 195
         end
+        if STAT.version == 195 then
+            STAT.badge.exceed_dev_half, STAT.badge.exceed_dev = nil, nil
+            STAT.version = 196
+        end
     end
 
     -- Some initialization
