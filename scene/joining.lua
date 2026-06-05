@@ -37,6 +37,7 @@ function scene.update(dt)
                 URM = false
                 GAME.pieceEffectID = 0
                 GAME.floor = 0
+                STAT.srActive = SCN.args[1] == 'reset'
                 Initialize(true)
                 GAME.clearResultStat()
             end

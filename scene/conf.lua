@@ -5,9 +5,12 @@ local scene = {}
 -- 1. Video & Audio
 -- 2. Utils
 -- 3. Album
+-- 4. Speedrun
 local page = 1
-local maxPage = 3
+local maxPage = 4
 local uidList = {} ---@type ({uid: string, modTime?: string} | false)[]
+SRSplitText1 = {} ---@type love.Text[]
+SRSplitText2 = {} ---@type love.Text[]
 
 local anonUser
 local resetall_cnt, resetall_anim, lastClear
@@ -159,6 +162,21 @@ function scene.load()
     MSG.clear()
     bindBuffer = nil
     resetall_cnt, resetall_anim, lastClear = 0, 0, false
+    for i = 1, #SpeedrunData do
+        if not SRSplitText1[i] then
+            SRSplitText1[i] = GC.newText(FONT.get(50), "")
+            SRSplitText2[i] = GC.newText(FONT.get(50), "")
+        end
+        SRSplitText1[i]:set(SpeedrunData[i].name)
+        local t = STAT.srMilestone[SpeedrunData[i].id]
+        if not t then
+            SRSplitText2[i]:set("N/A")
+        elseif t < 0 then
+            SRSplitText2[i]:set("*" .. STRING.time(-t))
+        else
+            SRSplitText2[i]:set(STRING.time(t))
+        end
+    end
     SetMouseVisible(true)
     if GAME.anyRev ~= colorRev then
         colorRev = GAME.anyRev
@@ -283,17 +301,18 @@ local baseX, baseY = 800 - w / 2, 500 - h / 2 + 10
 
 local gc = love.graphics
 local gc_replaceTransform = gc.replaceTransform
+local gc_line, gc_setLineWidth = gc.line, gc.setLineWidth
 local gc_draw, gc_setColor, gc_rectangle = gc.draw, gc.setColor, gc.rectangle
 local gc_print, gc_printf = gc.print, gc.printf
 local gc_ucs_move, gc_ucs_back = GC.ucs_move, GC.ucs_back
 local gc_setAlpha, gc_mRect, gc_mStr = GC.setAlpha, GC.mRect, GC.mStr
-
+local setFont = FONT.set
 local function drawSliderComponents(y, title, t1, t2, value)
     gc_ucs_move(0, y)
     gc_setColor(0, 0, 0, .26)
     gc_mRect('fill', w / 2, 0, w - 40, 65, 5)
     gc_mRect('fill', w - 90, 0, 123, 48, 3)
-    FONT.set(30)
+    setFont(30)
     gc_setColor(clr.T)
     gc_print(title, 40, -20, 0, .85, 1)
     gc_setAlpha(.42)
@@ -349,7 +368,7 @@ function scene.draw()
 
         -- Keybind
         if bindBuffer then
-            FONT.set(30)
+            setFont(30)
             gc_print("Press key for...", 600, 670, 0, .872)
             gc_print(bindHint[#bindBuffer + 1], 600, 700, 0, .872)
         end
@@ -367,17 +386,17 @@ function scene.draw()
         gc_setColor(1, t % .16 < .08 and .2 + resetall_anim * .6 or .2, .2, resetall_anim ^ .26 * .26)
         gc_mRect('fill', 450, 420, 520 * resetall_anim, 140, 20)
         gc_setColor(1, 1, 1, .1)
-        FONT.set(50)
+        setFont(50)
         gc_print("0", 200, 345)
-        FONT.set(30)
+        setFont(30)
         gc_setColor(clr.LT)
         gc_mStr(uidList[0].uid, 450, 360)
         for i = 1, 3 do
             local y = 220 + 330 + (i - 1) * 90
             gc_setColor(1, 1, 1, .1)
-            FONT.set(50)
+            setFont(50)
             gc_print(i, 30, y - 45)
-            FONT.set(30)
+            setFont(30)
             gc_setColor(0, 0, 0, .26)
             gc_mRect('fill', 450, y, 860, 80, 20)
             gc_setColor(clr.L)
@@ -400,7 +419,7 @@ function scene.draw()
         gc_ucs_move(50, 120)
 
         -- Time
-        FONT.set(30)
+        setFont(30)
         gc_setColor(clr.T)
         gc_print(STRING.time_simp(playTime), 0, 49, 0, .626)
         gc_print(playingBgmLengthStr, len - 45, 49, 0, .626)
@@ -462,6 +481,24 @@ function scene.draw()
             gc_mRect('fill', len * BgmNeedSkip[2] / playingBgmLength, 48, 2, 9)
         end
         gc_ucs_back()
+    elseif page == 4 then
+        -- Glowing Background
+        gc_setColor(COLOR.rainbow_light(t, .26))
+        gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * w, h)
+        gc_draw(TEXTURE.transition, w, 0, 0, -.42 / 128 * w, h)
+
+        gc_setLineWidth(2)
+        setFont(30)
+        local textH = SRSplitText2[1]:getHeight()
+        for i = 1, #SpeedrunData do
+            local y = i * 115
+            gc_setColor(clr.T)
+            gc_draw(SRSplitText1[i], 100, y, 0, 1, 1, 0, textH / 2)
+            gc_draw(SRSplitText2[i], w - 100, y, 0, 1, 1, SRSplitText2[i]:getWidth(), textH / 2)
+            gc_line(100 + SRSplitText1[i]:getWidth() + 20, y, w - 100 - SRSplitText2[i]:getWidth() - 20, y)
+            gc_setColor(clr.L)
+            gc_print(SpeedrunData[i].desc, 100, y + 26, 0, .626)
+        end
     end
 
     -- Top bar & title
@@ -473,7 +510,7 @@ function scene.draw()
     gc_rectangle('fill', -1300, 70, 2600, 3)
     gc_replaceTransform(SCR.xOy_ul)
     gc_setColor(clr.L)
-    FONT.set(50)
+    setFont(50)
     if GAME.anyRev then
         gc_print("CONFIG", 15, 68, 0, 1, -1)
     else
@@ -489,7 +526,7 @@ function scene.draw()
     gc_rectangle('fill', -1300, -50, 2600, -3)
     gc_replaceTransform(SCR.xOy_dl)
     gc_setColor(clr.L)
-    FONT.set(30)
+    setFont(30)
     gc_print("TWEAK YOUR SETTINGS FOR A BETTER CLICKING EXPERIENCE", 15, -45, 0, .85, 1)
 end
 
@@ -781,6 +818,10 @@ local page2 = {
                     SFX.play('warp')
                     SCN.go('ending', 'warp')
                 elseif data == 'test' then
+                    if STAT.srActive then
+                        STAT.srActive = false
+                        SaveStat()
+                    end
                     TestMode = true
                     SFX.play('maintenance')
                 elseif data == 'dev' then
@@ -927,7 +968,7 @@ local page2 = {
             SFX.play('thunder' .. math.random(6))
             MSG.clear()
             SCN._pop()
-            SCN.swapTo('joining', 'fade', true)
+            SCN.swapTo('joining', 'fade', 'reset')
         end,
     },
 }
@@ -966,7 +1007,7 @@ local function loadSlot(i)
     FILE.copy('save' .. i .. '/best.luaon', 'best.luaon')
     SFX.play('levelup'); SFX.play('levelup')
     SCN._pop()
-    SCN.swapTo('joining', 'fade', true)
+    SCN.swapTo('joining', 'fade', 'load')
 end
 local function clearSlot(i)
     if TASK.lock('clear_slot' .. i, 2.6) then
@@ -1168,6 +1209,13 @@ local tab = {
         color = { COLOR.HEX '383838' },
         fontSize = 30, text = "ALBUM  ", textColor = 'DL',
         onClick = function() love.keypressed('3') end,
+    },
+    WIDGET.new {
+        type = 'button',
+        pos = { 1, 0 }, x = -60, y = 410, w = 160, h = 60,
+        color = { COLOR.HEX '383838' },
+        fontSize = 30, text = "SPLITS ", textColor = 'DL',
+        onClick = function() love.keypressed('4') end,
     },
 }
 

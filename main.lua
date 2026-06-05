@@ -643,6 +643,8 @@ function InitProfile()
         modTime = os.time(),
         srTimer_life = 0,
         srTimer_game = 0,
+        srMilestone = {},
+        srActive = true,
         joinDate = os.date("%b %Y"),
         hid = os.date("%d%S%m%M%y%H") .. math.random(26000, 42000) .. math.random(42000, 62000),
         uid = "ANON-" .. os.date("%d_") .. math.random(2600, 6200),
@@ -787,6 +789,8 @@ function CalculateCR()
         end
     end
 
+    if not STAT.badge.champion and cr >= 25000 then IssueSecret('champion', true) end
+
     return MATH.round(cr), cap
 end
 
@@ -869,6 +873,15 @@ function IssueSecret(id, silent)
             if not GAME.playing then
                 ReleaseAchvBuffer()
             end
+        end
+    end
+end
+
+function IssueSpeedrunMilestone(id)
+    if not STAT.srMilestone[id] then
+        STAT.srMilestone[id] = STAT.srTimer_life * (STAT.srActive and 1 or -1)
+        if STAT.srTimer_life < 3600 * 2.6 then
+            MSG('speedrun', SpeedrunData[id].name .. ": " .. STRING.time(STAT.srMilestone[id]), 6.26)
         end
     end
 end
@@ -964,6 +977,7 @@ end
 MSG.setSafeY(75)
 MSG.addCategory('dark', COLOR.D, COLOR.L)
 MSG.addCategory('bright', COLOR.L, COLOR.D)
+MSG.addCategory('speedrun', COLOR.LG, COLOR.D)
 for i = 0, 6 do MSG.addCategory(AchvData[i].id, AchvData[i].bg, COLOR.L, TEXTURE.achievement.frame[i]) end
 for i = 1, 6 do MSG.addCategory("wreath_" .. i, AchvData[5].bg, COLOR.L, GC.load { w = 256, { 'draw', TEXTURE.achievement.frame[5] }, { 'draw', TEXTURE.achievement.wreath[i] } }) end
 
@@ -1355,6 +1369,8 @@ function ReloadTexts()
     DevNoteText:setFont(FONT.get(30))
     EndText:setFont(FONT.get(70))
     EndText2:setFont(FONT.get(70))
+    for _, text in next, SRSplitText1 do text:setFont(FONT.get(50)) end
+    for _, text in next, SRSplitText2 do text:setFont(FONT.get(50)) end
     if SCN.cur == 'stat' then RefreshProfile() end
     if SCN.cur == 'records' then SCN.scenes.records.load() end
     if SCN.cur == 'achv' then RefreshAchvList() end
