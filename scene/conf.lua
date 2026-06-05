@@ -233,7 +233,7 @@ function scene.keyDown(key, isRep)
                 if #bindBuffer >= 22 then
                     CONF.keybind = bindBuffer
                     bindBuffer = nil
-                    SaveStat()
+                    SaveConf()
                     MSG('dark', "Keybinding updated.")
                     SFX.play('social_notify_major')
                 else
