@@ -889,14 +889,14 @@ end
 
 function IssueSpeedrunMilestone(id)
     if not STAT.srMilestone[id] then
-        STAT.srMilestone[id] = STAT.srTimer_life * (STAT.srActive and 1 or -1)
+        STAT.srMilestone[id] = STAT.srTimer_game * (STAT.srActive and 1 or -1)
         if STAT.srActive then
-            if STAT.srTimer_life < (SR[id] or 1e99) then
-                SR[id] = STAT.srTimer_life
+            if STAT.srTimer_game < (SR[id] or 1e99) then
+                SR[id] = STAT.srTimer_game
                 SaveSR()
             end
         end
-        if STAT.srTimer_life < 3600 * 2.6 then
+        if STAT.srTimer_game < 3600 * 2.6 then
             MSG('speedrun', SpeedrunData[id].name .. ": " .. STRING.time(STAT.srMilestone[id]), 6.26)
         end
     end

@@ -10,6 +10,11 @@ local d = {
         desc = "Master all reversed mods",
     },
     {
+        id = 'clicker',
+        name = "ANY%",
+        desc = "Reveal the true ending",
+    },
+    {
         id = 'mod_up',
         name = "MOD%",
         desc = "Speedrun all single upright mods",
@@ -23,11 +28,6 @@ local d = {
         id = 'rank_ss',
         name = "SS%",
         desc = "Achieve SS rank or higher",
-    },
-    {
-        id = 'clicker',
-        name = "ANY%",
-        desc = "Reveal the true ending",
     },
 }
 
