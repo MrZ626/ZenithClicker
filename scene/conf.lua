@@ -987,7 +987,7 @@ local function saveSlot(i)
         MSG('dark', "You are not a good person.")
         return
     end
-    if uidList[i] and STAT.uid ~= uidList[i].uid then
+    if uidList[i] and STAT.uid ~= uidList[i].uid and not uidList[i].uid:match("^ANON%-") then
         SFX.play('staffwarning')
         MSG('dark', "For safety, you can only update a backup with same username", 4.2)
         return
@@ -1034,7 +1034,7 @@ local function loadSlot(i)
     SCN.swapTo('joining', 'fade', 'load')
 end
 local function clearSlot(i)
-    if uidList[i] and STAT.uid ~= uidList[i].uid then
+    if uidList[i] and STAT.uid ~= uidList[i].uid and not uidList[i].uid:match("^ANON%-") then
         SFX.play('staffwarning')
         MSG('dark', "For safety, you can only delete a backup with same username", 4.2)
         return
