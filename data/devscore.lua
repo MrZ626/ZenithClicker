@@ -18,5 +18,4 @@ d.srMilestone = {
     rank_ss = 1262.648,
 }
 
-
 return d

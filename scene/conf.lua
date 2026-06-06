@@ -12,6 +12,7 @@ local uidList = {} ---@type ({uid: string, modTime?: string} | false)[]
 SRSplitText1 = {} ---@type love.Text[]
 SRSplitText2 = {} ---@type love.Text[]
 SRSplitText3 = {} ---@type love.Text[]
+local SRrank = {}
 
 local anonUser
 local resetall_cnt, resetall_anim, lastClear
@@ -164,13 +165,15 @@ function scene.load()
     bindBuffer = nil
     resetall_cnt, resetall_anim, lastClear = 0, 0, false
     for i = 1, #SpeedrunData do
+        local id = SpeedrunData[i].id
         if not SRSplitText1[i] then
             SRSplitText1[i] = GC.newText(FONT.get(50), "")
             SRSplitText2[i] = GC.newText(FONT.get(50), "")
             SRSplitText3[i] = GC.newText(FONT.get(30), "")
+            SRrank[i] = false
         end
         SRSplitText1[i]:set(SpeedrunData[i].name)
-        local t = STAT.srMilestone[SpeedrunData[i].id]
+        local t = STAT.srMilestone[id]
         if not t then
             SRSplitText2[i]:set("N/A")
         elseif t < 0 then
@@ -178,8 +181,13 @@ function scene.load()
         else
             SRSplitText2[i]:set(STRING.time(t))
         end
-        if SR[SpeedrunData[i].id] then
-            SRSplitText3[i]:set(STRING.time(SR[SpeedrunData[i].id]))
+        if SR[id] then
+            SRSplitText3[i]:set(STRING.time(SR[id]))
+            if SR[id] <= DevScore.srMilestone[id] then
+                SRrank[i] = 'overDev'
+            elseif SR[id] <= SpeedrunData[i].parTime then
+                SRrank[i] = 'diamond'
+            end
         else
             SRSplitText3[i]:set("N/A")
         end
@@ -497,16 +505,26 @@ function scene.draw()
         gc_setLineWidth(2)
         setFont(30)
         local textH = SRSplitText1[1]:getHeight()
+        local x1 = 120
+        local x2 = w - 150
         for i = 1, #SpeedrunData do
             local y = i * 115
             gc_setColor(clr.T)
-            gc_draw(SRSplitText1[i], 100, y, 0, 1, 1, 0, textH / 2)
-            gc_draw(SRSplitText2[i], w - 100, y, 0, 1, 1, SRSplitText2[i]:getWidth(), textH / 2)
-            gc_line(100 + SRSplitText1[i]:getWidth() + 20, y, w - 100 - SRSplitText2[i]:getWidth() - 20, y)
+            gc_draw(SRSplitText1[i], x1, y, 0, 1, 1, 0, textH / 2)
+            gc_draw(SRSplitText2[i], x2, y, 0, 1, 1, SRSplitText2[i]:getWidth(), textH / 2)
+            gc_line(x1 + SRSplitText1[i]:getWidth() + 20, y, x2 - SRSplitText2[i]:getWidth() - 20, y)
             gc_setColor(clr.L)
-            gc_print(SpeedrunData[i].desc, 100, y + 26, 0, .626)
+            gc_print(SpeedrunData[i].desc, x1, y + 26, 0, .626)
             gc_setAlpha(.62)
-            gc_draw(SRSplitText3[i], w - 100, y + 26, 0, .626, .626, SRSplitText3[i]:getWidth())
+            gc_draw(SRSplitText3[i], x2, y + 26, 0, .626, .626, SRSplitText3[i]:getWidth())
+            if SRrank[i] then
+                if SRrank[i] == 'overDev' then
+                    gc_setColor(1, 1, 1, .16)
+                    GC.mDraw(TEXTURE.achievement.overDev, x2 + 50, y + 12, 0, .3)
+                end
+                gc_setColor(1, 1, 1, .42)
+                GC.mDraw(TEXTURE.achievement.frame[5], x2 + 15, y + 38, 0, .1)
+            end
         end
     end
 
