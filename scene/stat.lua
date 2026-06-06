@@ -208,23 +208,24 @@ function RefreshProfile()
     GC.setColor(scoreColor)
     dblMidDraw(t30, bw / 2 + t50:getWidth() / 2 + t30:getWidth() / 2, bh / 2 + 4)
     -- Rank
-    local rank =
-        STAT.totalTime / 60 + STAT.totalFloor / 9 + STAT.totalGiga / 2 <= 62 and 0 or
-        MATH.clamp(math.ceil(rating / 1400), 1, 18)
+    local zRank = STAT.totalTime / 60 + STAT.totalFloor / 9 + STAT.totalGiga / 2 <= 62
+    local rank = MATH.clamp(math.ceil(rating / 1400), 1, 18)
     local rankIcon = TEXTURE.stat.rank[rank]
     GC.setColor(1, 1, 1)
-    GC.mDraw(rankIcon, bw / 2 - t50:getWidth() / 2 - 26, bh / 2, 0, 62 / rankIcon:getWidth())
-    if rank > 0 then
-        -- Progress Bar
-        GC.setColor(rating <= 25000 and textColor or scoreColor)
-        GC.line(7, bh - 30,
-            MATH.lerp(7, bw - 7,
-                rank <= 17 and rating % 1400 / 1400 or
-                rating <= 25000 and MATH.iLerp(23800, 25000, rating) or
-                MATH.iLerp(25000, cap, rating)),
-            bh - 30
-        )
+    local iconX, iconY = bw / 2 - t50:getWidth() / 2 - 26, bh / 2
+    GC.mDraw(TEXTURE.stat.rank[zRank and 0 or rank], iconX, iconY, 0, 62 / rankIcon:getWidth())
+    if zRank and STAT.srActive then
+        GC.mDraw(TEXTURE.stat.rank[rank], iconX + 31 / 2, iconY + 31 / 2, 0, 31 / rankIcon:getWidth())
     end
+    -- Progress Bar
+    GC.setColor(rating <= 25000 and textColor or scoreColor)
+    GC.line(7, bh - 30,
+        MATH.lerp(7, bw - 7,
+            rank <= 17 and rating % 1400 / 1400 or
+            rating <= 25000 and MATH.iLerp(23800, 25000, rating) or
+            MATH.iLerp(25000, cap, rating)),
+        bh - 30
+    )
     GC.ucs_back()
 
     -- Height

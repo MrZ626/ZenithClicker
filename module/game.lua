@@ -2680,7 +2680,7 @@ function GAME.finish(reason)
         end
         if not STAT.srMilestone.speedrun_1 and STAT.badge.speedrun_1 then IssueSpeedrunMilestone('mod_up') end
         if not STAT.srMilestone.speedrun_2 and STAT.badge.speedrun_2 then IssueSpeedrunMilestone('mod_rev') end
-        if not STAT.srMilestone.rank_ss and CalculateCR() > 20000 then IssueSpeedrunMilestone('rank_ss') end
+        if not STAT.srMilestone.rank_ss and CalculateCR() >= 19600 then IssueSpeedrunMilestone('rank_ss') end
 
         if not ACHV.the_harbinger then
             local allRevF5 = true
