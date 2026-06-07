@@ -36,61 +36,209 @@ end
 
 LoadSave()
 
-function Initialize(save)
-    if STAT.totalF10 == 0 and STAT.totalGiga > 0 then STAT.totalF10 = math.floor(STAT.totalGiga * 0.872) end
-    if STAT.totalBonus == 0 and STAT.totalGame > 2.6 then STAT.totalBonus = STAT.totalHeight * 0.5 end
-    if STAT.totalPerfect == 0 and STAT.totalQuest > 0 then STAT.totalPerfect = math.floor(STAT.totalQuest * 0.872) end
-    if BEST.version then STAT.version, BEST.version = BEST.version, nil end
-    local oldVer = STAT.version
-    if STAT.version then
-        if STAT.version == 188 then
-            STAT.hid = STAT.hid:sub(1, 12) .. math.random(26000, 42000) .. math.random(42000, 62000)
-            STAT.version = 189
-        end
-        if STAT.version == 189 then
-            if STAT.badge.zenith_and_nadir then
-                STAT.badge.zenith_and_nadir = nil
-                STAT.badge.universal_gravitation = true
+---@type (fun():number)[]
+local upgradeFunc = {
+    [false] = function()
+        for k in next, BEST.highScore do
+            if k:find('rNH') or k:find('rMS') or k:find('rVL') or k:find('rAS') then
+                BEST.highScore[k] = nil
             end
-            STAT.version = 190
         end
-        if STAT.version == 190 then
-            if ACHV.denying_the_dark then
-                ACHV.return_to_the_light = true
+        return 162
+    end,
+    [162] = function()
+        TABLE.clear(BEST.speedrun)
+        return 163
+    end,
+    [163] = function()
+        STAT.maxFloor = BEST.maxFloor or 1
+        BEST.maxFloor = nil
+        return 166
+    end,
+    [166] = function()
+        if type(STAT.sfx) == 'boolean' then STAT.sfx = STAT.sfx and 60 or 0 end
+        if type(STAT.bgm) == 'boolean' then STAT.bgm = STAT.bgm and 100 or 0 end
+        return 167
+    end,
+    [167] = function()
+        STAT.dzp = STAT.dailyHS or 0
+        STAT.dailyHS = nil
+        return 168
+    end,
+    [168] = function()
+        ACHV.mastery = nil
+        ACHV.terminal_velocity = nil
+        ACHV.false_god = nil
+        ACHV.supremacy = nil
+        ACHV.the_completionist = nil
+        ACHV.sunk_cost, ACHV.sink_cost = ACHV.sink_cost, nil
+        return 170
+    end,
+    [170] = function()
+        ACHV.quest_rationing = nil
+        return 171
+    end,
+    [171] = function()
+        ACHV.worn_out = nil
+        return 172
+    end,
+    [172] = function()
+        ACHV.speedrun_speedrunning = ACHV.speedrun_speedruning
+        return 173
+    end,
+    [173] = function()
+        ACHV.cruise_control, ACHV.stable_rise = ACHV.stable_rise, nil
+        ACHV.subjugation, ACHV.supremacy = ACHV.supremacy, nil
+        ACHV.smooth_dismount, ACHV.somersault = ACHV.somersault, nil
+        ACHV.omnipotence, ACHV.the_completionist = ACHV.omnipotence, nil
+        return 174
+    end,
+    [174] = function()
+        ACHV.overprotection, ACHV.overprotectiveness = ACHV.overprotection, nil
+        return 175
+    end,
+    [175] = function()
+        ACHV.petaspeed, ACHV.teraspeed = ACHV.teraspeed, nil
+        return 176
+    end,
+    [176] = function()
+        local banned
+        if ACHV.love_hotel and ACHV.love_hotel < 2.6 then ACHV.love_hotel, banned = 6.2, true end
+        if ACHV.unfair_battle and ACHV.unfair_battle < 4.2 then ACHV.unfair_battle, banned = 9.42, true end
+        if banned then STAT.badge.rDP_meta = true end
+        return 177
+    end,
+    [177] = function()
+        if ACHV.skys_the_limit then IssueSecret('fomg', true) end
+        if ACHV.superluminal then IssueSecret('superluminal', true) end
+        if ACHV.clicking_champion then IssueSecret('champion', true) end
+        if ACHV.mastery then IssueSecret('mastery_1', true) end
+        if ACHV.terminal_velocity then IssueSecret('speedrun_1', true) end
+        if ACHV.subjugation then IssueSecret('mastery_2', true) end
+        if ACHV.omnipotence then IssueSecret('speedrun_2', true) end
+        return 178
+    end,
+    [178] = function()
+        for i = #STAT.badge, 1, -1 do
+            STAT.badge[STAT.badge[i]] = true
+            STAT.badge[i] = nil
+        end
+        local banned
+        if ACHV.supercharged and ACHV.supercharged > 355 then ACHV.supercharged, banned = 355, true end
+        if ACHV.supercharged_plus and ACHV.supercharged_plus > 420 then
+            if MATH.between(ACHV.the_spike_of_all_time_plus, ACHV.supercharged_plus, ACHV.supercharged_plus + 260) then
+                ACHV.the_spike_of_all_time_plus, banned = 420, true
             end
-            STAT.version = 191
+            ACHV.supercharged_plus, banned = 420, true
         end
-        if STAT.version == 191 then
-            if not CONF then
-                for k in next, CONF do
-                    if STAT[k] ~= nil then
-                        CONF[k] = STAT[k]
-                    end
+        if banned then STAT.badge.rDP_meta = true end
+        return 179
+    end,
+    [179] = function()
+        if ACHV.perfect_speedrun then ACHV.perfect_speedrun = ACHV.perfect_speedrun * 75 / 70 end
+        return 180
+    end,
+    [180] = function()
+        ACHV.quest_rationing = ACHV.block_rationing
+        ACHV.block_rationing = nil
+        return 181
+    end,
+    [181] = function()
+        ACHV.drag_racing, ACHV.petaspeed = ACHV.petaspeed, nil
+        return 182
+    end,
+    [182] = function()
+        STAT.peakDZP = math.max(STAT.peakDZP, STAT.dzp)
+        STAT.peakZP = math.max(STAT.peakZP, STAT.zp)
+        return 183
+    end,
+    [183] = function()
+        ACHV.plonk = nil
+        return 184
+    end,
+    [184] = function()
+        if ACHV.moon_struck then ACHV.moon_struck = MATH.roundUnit(math.abs(ACHV.moon_struck - 2202.8), .1) end
+        return 185
+    end,
+    [185] = function()
+        STAT.badge.subluminal, STAT.badge.superluminal = STAT.badge.superluminal, nil
+        if TABLE.minAll(BEST.speedrun) <= 42 then STAT.badge.superluminal = true end
+        if TABLE.maxAll(BEST.highScore) >= 12600 then STAT.badge.fepsilon = true end
+        if ACHV.divine_rejection then
+            ACHV.divine_rejection = math.floor(ACHV.divine_rejection * 10) / 10
+        end
+        return 186
+    end,
+    [186] = function()
+        for k, v in next, BEST.highScore do
+            BEST.highScore[k] = math.floor(v * 10) / 10
+        end
+        return 187
+    end,
+    [187] = function()
+        ACHV.dazed = nil
+        return 188
+    end,
+    [188] = function()
+        STAT.hid = STAT.hid:sub(1, 12) .. math.random(26000, 42000) .. math.random(42000, 62000)
+        return 189
+    end,
+    [189] = function()
+        if STAT.badge.zenith_and_nadir then
+            STAT.badge.zenith_and_nadir = nil
+            STAT.badge.universal_gravitation = true
+        end
+        return 190
+    end,
+    [190] = function()
+        if ACHV.denying_the_dark then
+            ACHV.return_to_the_light = true
+        end
+        return 191
+    end,
+    [191] = function()
+        if not CONF then
+            for k in next, CONF do
+                if STAT[k] ~= nil then
+                    CONF[k] = STAT[k]
                 end
             end
-            STAT.version = 192
         end
-        if STAT.version == 192 then
-            if STAT.srTimer_game > STAT.srTimer_life then
-                STAT.srTimer_game, STAT.srTimer_life = STAT.srTimer_life, STAT.srTimer_game
-            end
-            STAT.version = 193
+        return 192
+    end,
+    [192] = function()
+        if STAT.srTimer_game > STAT.srTimer_life then
+            STAT.srTimer_game, STAT.srTimer_life = STAT.srTimer_life, STAT.srTimer_game
         end
-        if STAT.version == 193 then
-            if STAT.totalHeight > 0 and STAT.totalKO == 0 then
-                STAT.totalKO = math.floor(STAT.totalHeight * (6 / 2000))
-                STAT.totalRevive = ((ACHV.the_responsible_one or 0) + (ACHV.the_unreliable_one or 0)) * 6
-            end
-            STAT.version = 194
+        return 193
+    end,
+    [193] = function()
+        if STAT.totalHeight > 0 and STAT.totalKO == 0 then
+            STAT.totalKO = math.floor(STAT.totalHeight * (6 / 2000))
+            STAT.totalRevive = ((ACHV.the_responsible_one or 0) + (ACHV.the_unreliable_one or 0)) * 6
         end
-        if STAT.version == 194 then
-            ACHV.slayer_of_the_tower = math.min(ACHV.slayer_of_the_tower or 0, 42)
-            STAT.version = 195
-        end
-        if STAT.version == 195 then
-            STAT.badge.exceed_dev_half, STAT.badge.exceed_dev = nil, nil
-            STAT.version = 196
-        end
+        return 194
+    end,
+    [194] = function()
+        ACHV.slayer_of_the_tower = math.min(ACHV.slayer_of_the_tower or 0, 42)
+        return 195
+    end,
+    [195] = function()
+        STAT.badge.exceed_dev_half, STAT.badge.exceed_dev = nil, nil
+        return 196
+    end,
+    [196] = function()
+        for k in next, CONF do STAT[k] = nil end
+        return 197
+    end
+}
+
+function Initialize(save)
+    STAT.version, BEST.version = STAT.version or BEST.version, nil
+    if STAT.version == nil then STAT.version = false end
+    local oldVer = STAT.version
+    while upgradeFunc[STAT.version] do
+        STAT.version = upgradeFunc[STAT.version]()
     end
 
     -- Some initialization
