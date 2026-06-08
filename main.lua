@@ -1271,14 +1271,14 @@ function Task_MusicEnd(manual)
         outroStart = D.loop[2]
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
     elseif BgmPlaying == 'f10' or BgmPlaying == 'f10r' then
+        local t = BgmPlaying == 'f10' and 4.2 or 6.2
         if BGM.tell() < 28 * 4 * 60 / D.bpm then
-            BGM.stop(4.2)
-            TASK.yieldT(4.2)
+            BGM.stop(t)
+            TASK.yieldT(t)
         elseif BGM.tell() < 59 * 4 * 60 / D.bpm then
             BGM.set('all', 'seek', 59 * 4 * 60 / D.bpm)
             BgmNeedStop = BGM.tell() + 5 * 60 / D.bpm
         elseif BGM.tell() < 77.25 * 4 * 60 / D.bpm then
-            local t = BgmPlaying == 'f10' and 4.2 or 6.2
             BGM.stop(t)
             TASK.yieldT(t)
         else
