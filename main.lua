@@ -728,22 +728,26 @@ CRprogress = {
     achvGet = 0,
     achvAll = 0,
 }
-function RefreshCRprogress()
+
+local function norm(x, k) return 1 + (x - 1) / (k * x + 1) end
+function CalculateCR()
+    local deck = ModData.deck
+    local hs, sr = BEST.highScore, BEST.speedrun
     local s
 
     s = 0
-    for i = 1, #ModData.deck do
-        local id = ModData.deck[i].id
-        if BEST.highScore[id] >= Floors[9].top then s = s + 1 end
-        if BEST.highScore['r' .. id] >= Floors[9].top then s = s + 1 end
+    for i = 1, #deck do
+        local id = deck[i].id
+        if hs[id] >= Floors[9].top then s = s + 1 end
+        if hs['r' .. id] >= Floors[9].top then s = s + 1 end
     end
     CRprogress.f10 = s
 
     s = 0
-    for i = 1, #ModData.deck do
-        local id = ModData.deck[i].id
-        if BEST.speedrun[id] < 1e26 then s = s + 1 end
-        if BEST.speedrun['r' .. id] < 1e26 then s = s + 1 end
+    for i = 1, #deck do
+        local id = deck[i].id
+        if sr[id] < 1e26 then s = s + 1 end
+        if sr['r' .. id] < 1e26 then s = s + 1 end
     end
     CRprogress.sr = s
 
@@ -759,10 +763,7 @@ function RefreshCRprogress()
         end
     end
     CRprogress.achvGet, CRprogress.achvAll = p, P
-end
 
-local function norm(x, k) return 1 + (x - 1) / (k * x + 1) end
-function CalculateCR()
     local cap = 25000
     local cr = 0
 
@@ -773,10 +774,10 @@ function CalculateCR()
     cr = cr + 5000 * norm(MATH.icLerp(420, 76.2, STAT.minTime), -.5)
 
     -- Mod completion (3K)
-    cr = cr + 3000 * norm(MATH.icLerp(0, #ModData.deck * 2, CRprogress.f10), .62)
+    cr = cr + 3000 * norm(MATH.icLerp(0, #deck * 2, CRprogress.f10), .62)
 
     -- Mod speedrun (2K)
-    cr = cr + 2000 * norm(MATH.icLerp(0, #ModData.deck * 2, CRprogress.sr), .62)
+    cr = cr + 2000 * norm(MATH.icLerp(0, #deck * 2, CRprogress.sr), .62)
 
     -- Zenith point (3K)
     cr = cr + 3000 * norm(MATH.icLerp(0, 26e4, STAT.zp), 4.2)

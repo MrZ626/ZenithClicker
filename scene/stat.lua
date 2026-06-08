@@ -340,8 +340,6 @@ function scene.load()
         TWEEN.new(function(t) cardShow = t end):setDuration(.1):run()
     end)
 
-    RefreshCRprogress()
-
     RefreshProfile()
 end
 
