@@ -1239,38 +1239,38 @@ function Task_MusicEnd(manual)
     BgmLooping = false
     local D = BgmData[BgmPlaying]
     local outroStart
-    if BgmPlaying == 'f1' then
+    if BgmPlaying == 'f1' or BgmPlaying == 'f1r' then
         outroStart = D.loop[2] + 4 * 60 / D.bpm
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f2' then
+    elseif BgmPlaying == 'f2' or BgmPlaying == 'f2r' then
         outroStart = D.loop[2]
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f3' then
+    elseif BgmPlaying == 'f3' or BgmPlaying == 'f3r' then
         if BGM.tell() < D.loop[1] then
             outroStart = D.loop[2] + 0
         else
             outroStart = D.loop[2] + 8 * 60 / D.bpm
         end
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f4' then
+    elseif BgmPlaying == 'f4' or BgmPlaying == 'f4r' then
         outroStart = D.loop[2]
         BgmNeedStop = outroStart + 10 * 60 / D.bpm
-    elseif BgmPlaying == 'f5' then
+    elseif BgmPlaying == 'f5' or BgmPlaying == 'f5r' then
         outroStart = D.loop[2]
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f6' then
+    elseif BgmPlaying == 'f6' or BgmPlaying == 'f6r' then
         outroStart = D.loop[2]
         BgmNeedStop = outroStart + 4 * 60 / D.bpm
-    elseif BgmPlaying == 'f7' then
+    elseif BgmPlaying == 'f7' or BgmPlaying == 'f7r' then
         outroStart = D.loop[2]
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f8' then
+    elseif BgmPlaying == 'f8' or BgmPlaying == 'f8r' then
         outroStart = D.loop[2]
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f9' then
+    elseif BgmPlaying == 'f9' or BgmPlaying == 'f9r' then
         outroStart = D.loop[2]
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f10' then
+    elseif BgmPlaying == 'f10' or BgmPlaying == 'f10r' then
         if BGM.tell() < 28 * 4 * 60 / D.bpm then
             BGM.stop(4.2)
             TASK.yieldT(4.2)
@@ -1278,8 +1278,9 @@ function Task_MusicEnd(manual)
             BGM.set('all', 'seek', 59 * 4 * 60 / D.bpm)
             BgmNeedStop = BGM.tell() + 5 * 60 / D.bpm
         elseif BGM.tell() < 77.25 * 4 * 60 / D.bpm then
-            BGM.stop(4.2)
-            TASK.yieldT(4.2)
+            local t = BgmPlaying == 'f10' and 4.2 or 6.2
+            BGM.stop(t)
+            TASK.yieldT(t)
         else
             outroStart = D.loop[2]
             BgmNeedStop = outroStart + 8 * 60 / D.bpm
@@ -1290,47 +1291,6 @@ function Task_MusicEnd(manual)
             BgmNeedStop = outroStart + 13 * 60 / D.bpm
         else
             outroStart = D.loop[2] + 16 * 60 / D.bpm
-            BgmNeedStop = outroStart + 8 * 60 / D.bpm
-        end
-    elseif BgmPlaying == 'f1r' then
-        outroStart = D.loop[2] + 4 * 60 / D.bpm
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f2r' then
-        outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f3r' then
-        outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f4r' then
-        outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 10 * 60 / D.bpm
-    elseif BgmPlaying == 'f5r' then
-        outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f6r' then
-        outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 4 * 60 / D.bpm
-    elseif BgmPlaying == 'f7r' then
-        outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f8r' then
-        outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f9r' then
-        outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f10r' then
-        if BGM.tell() < 28 * 4 * 60 / D.bpm then
-            BGM.stop(6.2)
-            TASK.yieldT(6.2)
-        elseif BGM.tell() < 59 * 4 * 60 / D.bpm then
-            BGM.set('all', 'seek', 59 * 4 * 60 / D.bpm)
-            BgmNeedStop = BGM.tell() + 5 * 60 / D.bpm
-        elseif BGM.tell() < 77.25 * 4 * 60 / D.bpm then
-            BGM.stop(6.2)
-            TASK.yieldT(6.2)
-        else
-            outroStart = D.loop[2]
             BgmNeedStop = outroStart + 8 * 60 / D.bpm
         end
     elseif BgmPlaying == 'tera' then
