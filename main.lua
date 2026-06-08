@@ -1074,8 +1074,8 @@ BgmData = {
     f1 = { meta = '4|4  184 BPM  C Minor', bar = 4, bpm = 184, toneFix = 0, loop = { 18.261, 91.304 }, introLen = 1.304, teleport = { -1, 7.826 } },
     f2 = { meta = '4|4  110 BPM  D Major & B Minor', bar = 4, bpm = 110, toneFix = -1, loop = { 26.181, 113.454 } },
     f2r = { meta = '4|4  110 BPM  D Major & B Minor', bar = 4, bpm = 110, toneFix = -1, loop = { 26.181, 113.454 } },
-    f3 = { meta = '12|8  120 BPM  C Major & A Minor', bar = 4, bpm = 120, toneFix = -1, loop = { 56, 128 }, end1 = 128, end2 = 132 },
-    f3r = { meta = '12|8  120 BPM  C Major & A Minor', bar = 4, bpm = 120, toneFix = -1, loop = { 56, 128 }, end1 = 128, end2 = 132 },
+    f3 = { meta = '12|8  120 BPM  C Major & A Minor', bar = 4, bpm = 120, toneFix = -1, loop = { 56, 128 } },
+    f3r = { meta = '12|8  120 BPM  C Major & A Minor', bar = 4, bpm = 120, toneFix = -1, loop = { 56, 128 } },
     f4 = { meta = '5|8  180 BPM  F# Minor', bar = 5, bpm = 180, toneFix = 1, loop = { 13.333, 93.333 } },
     f4r = { meta = '5|8  180 BPM  F# Minor', bar = 5, bpm = 180, toneFix = 1, loop = { 13.333, 93.333 } },
     f5 = { meta = '4|4 6|8  130 BPM  E Minor', bar = 4, bpm = 130, toneFix = -1, loop = { 96, 169.846 } },
@@ -1090,8 +1090,8 @@ BgmData = {
     f9r = { meta = '4|4  160 BPM  E Minor', bar = 4, bpm = 160, toneFix = -1, loop = { 36, 144 } },
     f10 = { meta = '4|4  98 BPM  C Major & C Minor', bar = 4, bpm = 98, toneFix = 0, loop = { 203.877, 311.632 } },
     f10r = { meta = '4|4  98 BPM  C Major & C Minor', bar = 4, bpm = 98, toneFix = 0, loop = { 203.877, 311.632 } },
-    fomg = { meta = '4|4  90 & 100 BPM  Db Major & Bb Minor', bar = 4, bpm = 100, toneFix = 3, loop = { 38.4 - 11.862, 144 - 11.862 }, end1 = 144 - 11.862, end2 = 153.6 - 11.862 },
-    tera = { meta = '4|4  240 BPM  C# Minor', bar = 4, bpm = 240, toneFix = 1, loop = { 76, 140 }, introLen = 2, teleport = { -1, 20 }, end1 = 140, end2 = 142, end3 = 144, end4 = 146 },
+    fomg = { meta = '4|4  90 & 100 BPM  Bb Minor', bar = 4, bpm = 100, toneFix = 3, loop = { 38.4 - 11.862, 144 - 11.862 } },
+    tera = { meta = '4|4  240 BPM  C# Minor', bar = 4, bpm = 240, toneFix = 1, loop = { 76, 140 }, introLen = 2, teleport = { -1, 20 }}, -- 4 endings at 140/142/144/146
     terar = { meta = '4|4  240 BPM  C# Minor', bar = 4, bpm = 240, toneFix = 1, loop = { 84 - 15.565, 172 - 15.565 }, teleport = { 0, 18 - 15.565 } },
 }
 
@@ -1247,9 +1247,9 @@ function Task_MusicEnd(manual)
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
     elseif BgmPlaying == 'f3' then
         if BGM.tell() < D.loop[1] then
-            outroStart = D.end1
+            outroStart = D.loop[2] + 0
         else
-            outroStart = D.end2
+            outroStart = D.loop[2] + 8 * 60 / D.bpm
         end
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
     elseif BgmPlaying == 'f4' then
