@@ -3,7 +3,7 @@ local scene = {}
 
 
 -- 1. Video & Audio
--- 2. Utils
+-- 2. User
 -- 3. Album
 -- 4. Speedrun
 local page = 1
@@ -511,7 +511,7 @@ function scene.draw()
         local x2 = w - 130
         local achv = TEXTURE.achievement
         for i = 1, #SpeedrunData do
-            local y = i * 115
+            local y = 40 + i * 110
             gc_setColor(clr.T)
             gc_draw(SRSplitText1[i], x1, y, 0, 1, 1, 0, textH / 2)
             gc_draw(SRSplitText2[i], x2, y, 0, 1, 1, SRSplitText2[i]:getWidth(), textH / 2)
@@ -568,9 +568,11 @@ end
 local pageVisFunc = {}
 for p = 1, maxPage do pageVisFunc[p] = function() return page == p end end
 
+local pages = {}
+
 -- Page 1
 local videoY = baseY + 360
-local page1 = {
+pages[1] = {
     -- Audio
     WIDGET.new { -- title
         type = 'text', alignX = 'left',
@@ -703,7 +705,7 @@ local page1 = {
 
 -- Page 2
 local profY = baseY + 220
-local page2 = {
+pages[2] = {
     -- Account
     WIDGET.new { -- title
         type = 'text', alignX = 'left',
@@ -1083,7 +1085,7 @@ end
 local slBtnTextColor = { 0, 0, 0, .62 }
 for i = 1, 3 do
     local y = profY + 330 + (i - 1) * 90
-    TABLE.append(page2, {
+    TABLE.append(pages[2], {
         WIDGET.new {
             name = 'save' .. i, type = 'button',
             x = baseX + 355, y = y, w = 160, h = 50,
@@ -1109,7 +1111,7 @@ end
 
 -- Page 3
 local albumY = baseY + 250
-local page3 = {
+pages[3] = {
     -- Album
     WIDGET.new { -- title
         type = 'text', alignX = 'left',
@@ -1169,7 +1171,7 @@ local page3 = {
     },
 }
 local function albumBtn(param)
-    table.insert(page3, WIDGET.new(TABLE.update({
+    table.insert(pages[3], WIDGET.new(TABLE.update({
         type = 'button',
         w = 65,
         fontSize = 30,
@@ -1230,10 +1232,17 @@ albumBtn {
     visibleFunc = function() return page == 3 and ACHV.blazing_speed and BEST.highScore.rEX >= Floors[9].top end,
 }
 
--- Apply visibility functions if not set
-for _, W in next, page1 do W.visibleFunc = W.visibleFunc or pageVisFunc[1] end
-for _, W in next, page2 do W.visibleFunc = W.visibleFunc or pageVisFunc[2] end
-for _, W in next, page3 do W.visibleFunc = W.visibleFunc or pageVisFunc[3] end
+-- Page 4
+pages[4] = {
+    -- SRS
+    WIDGET.new { -- title
+        type = 'text', alignX = 'left',
+        text = "SPEEDRUN SPLITS",
+        color = clr.T,
+        fontSize = 50,
+        x = baseX + 30, y = baseY + 50,
+    },
+}
 
 -- Tabs
 local tab = {
@@ -1255,33 +1264,38 @@ local tab = {
         type = 'button',
         pos = { 1, 0 }, x = -60, y = 230, w = 160, h = 60,
         color = { COLOR.HEX '383838' },
-        fontSize = 30, text = "UTILS  ", textColor = 'DL',
+        fontSize = 30, text = "USER   ", textColor = 'DL',
         onClick = function() love.keypressed('2') end,
     },
     WIDGET.new {
         type = 'button',
         pos = { 1, 0 }, x = -60, y = 320, w = 160, h = 60,
         color = { COLOR.HEX '383838' },
-        fontSize = 30, text = "ALBUM  ", textColor = 'DL',
+        fontSize = 30, text = "ALB   ", textColor = 'DL',
         onClick = function() love.keypressed('3') end,
     },
     WIDGET.new {
         type = 'button',
         pos = { 1, 0 }, x = -60, y = 410, w = 160, h = 60,
         color = { COLOR.HEX '383838' },
-        fontSize = 30, text = "SPLITS ", textColor = 'DL',
+        fontSize = 30, text = "SRS   ", textColor = 'DL',
         onClick = function() love.keypressed('4') end,
     },
 }
 
-for _, W in next, page1 do if W.type == 'button' or W.type == 'checkBox' then W.sound_hover, W.sound_release = 'menutap', 'menuclick' end end
-for _, W in next, page2 do if W.type == 'button' or W.type == 'checkBox' then W.sound_hover, W.sound_release = 'menutap', 'menuclick' end end
-for _, W in next, page3 do if W.type == 'button' or W.type == 'checkBox' then W.sound_hover = 'menutap' end end -- Album buttons should be quiet
+-- Apply dafault visibility functions
+for i = 1, #pages do
+    for _, W in next, pages[i] do
+        W.visibleFunc = W.visibleFunc or pageVisFunc[i]
+        if W.type == 'button' or W.type == 'checkBox' then
+            W.sound_hover = 'menutap'
+            if i ~= 3 then W.sound_release = 'menuclick' end
+        end
+    end
+end
 
 scene.widgetList = {}
-TABLE.append(scene.widgetList, page1)
-TABLE.append(scene.widgetList, page2)
-TABLE.append(scene.widgetList, page3)
+for i = 1, #pages do TABLE.append(scene.widgetList, pages[i]) end
 TABLE.append(scene.widgetList, tab)
 
 return scene
