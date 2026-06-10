@@ -1489,6 +1489,8 @@ local compFunc = {
     ['<'] = function(a, b) return b - a > 1e-10 end,
 }
 
+
+-- Insert empty slots at specific positions to make sure titles always appear at odd-th index and are followed by an empty slot
 do
     local i = 1
     repeat
@@ -1503,6 +1505,7 @@ do
         i = i + 1
     until i > #d
 end
+-- Format checks and auto-completions
 for i = 1, #d do
     local achv = d[i]
     local id = achv.id
