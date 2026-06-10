@@ -1081,18 +1081,18 @@ BgmData = {
     f4r = { meta = '5|8  180 BPM  F# Minor', bar = 5, bpm = 180, toneFix = 1, loop = { 13.333, 93.333 } },
     f5 = { meta = '4|4 6|8  130 BPM  E Minor', bar = 4, bpm = 130, toneFix = -1, loop = { 96, 169.846 } },
     f5r = { meta = '4|4 6|8  130 BPM  E Minor', bar = 4, bpm = 130, toneFix = -1, loop = { 96, 169.846 } },
-    f6 = { meta = '4|4  65 BPM  A Minor', bar = 4, bpm = 65, toneFix = 2, loop = { 29.538, 103.384 } },
-    f6r = { meta = '4|4  65 BPM  G Minor', bar = 4, bpm = 65, toneFix = 0, loop = { 29.538, 103.384 } },
+    f6 = { meta = '4|4  130 BPM  A Minor', bar = 4, bpm = 130, toneFix = 2, loop = { 29.538, 103.384 } },
+    f6r = { meta = '4|4  130 BPM  G Minor', bar = 4, bpm = 130, toneFix = 0, loop = { 29.538, 103.384 } },
     f7 = { meta = '4|4  120 BPM  A+50c Minor', bar = 4, bpm = 120, toneFix = 2.5, loop = { 128, 192 } },
     f7r = { meta = '4|4  120 BPM  A+50c Minor', bar = 4, bpm = 120, toneFix = 2.5, loop = { 128, 192 }, teleport = { 8, 32 } },
     f8 = { meta = '4|4  150 BPM  E Minor', bar = 4, bpm = 150, toneFix = -1, loop = { 38.4, 134.4 } },
     f8r = { meta = '4|4  150 BPM  E Minor', bar = 4, bpm = 150, toneFix = -1, loop = { 38.4, 134.4 } },
     f9 = { meta = '4|4  160 BPM  E Minor', bar = 4, bpm = 160, toneFix = -1, loop = { 36, 144 } },
     f9r = { meta = '4|4  160 BPM  E Minor', bar = 4, bpm = 160, toneFix = -1, loop = { 36, 144 } },
-    f10 = { meta = '4|4  98 BPM  C Major & C Minor', bar = 4, bpm = 98, toneFix = 0, loop = { 203.877, 311.632 } },
-    f10r = { meta = '4|4  98 BPM  C Major & C Minor', bar = 4, bpm = 98, toneFix = 0, loop = { 203.877, 311.632 } },
-    fomg = { meta = '4|4  90 & 100 BPM  Bb Minor', bar = 4, bpm = 100, toneFix = 3, loop = { 38.4 - 11.862, 144 - 11.862 } },
-    tera = { meta = '4|4  240 BPM  C# Minor', bar = 4, bpm = 240, toneFix = 1, loop = { 76, 140 }, introLen = 2, teleport = { -1, 20 }}, -- 4 endings at 140/142/144/146
+    f10 = { meta = '4|4  196 BPM  C Major & C Minor', bar = 4, bpm = 196, toneFix = 0, loop = { 203.877, 311.632 } },
+    f10r = { meta = '4|4  196 BPM  C Major & C Minor', bar = 4, bpm = 196, toneFix = 0, loop = { 203.877, 311.632 } },
+    fomg = { meta = '4|4  180 & 200 BPM  Bb Minor', bar = 4, bpm = 200, toneFix = 3, loop = { 38.4 - 11.862, 144 - 11.862 } },
+    tera = { meta = '4|4  240 BPM  C# Minor', bar = 4, bpm = 240, toneFix = 1, loop = { 76, 140 }, introLen = 2, teleport = { -1, 20 } }, -- 4 endings at 140/142/144/146
     terar = { meta = '4|4  240 BPM  C# Minor', bar = 4, bpm = 240, toneFix = 1, loop = { 84 - 15.565, 172 - 15.565 }, teleport = { 0, 18 - 15.565 } },
 }
 
