@@ -89,7 +89,7 @@ local bgmColors = {
     f0r = { COLOR.HEX '8C2B15' },
     tera = { COLOR.HEX 'C0C0C0' },
     terar = { COLOR.HEX 'C0C0C0' },
-    fomg = { COLOR.HEX '00437A' },
+    fomg = { COLOR.HEX '004C89' },
 }
 local bgmHeight = {
     [0] = Floors[0].top,
@@ -430,8 +430,6 @@ function scene.draw()
         local len = 800
 
         local playTime = BGM.tell()
-        local beatLen = 60 / BgmData[BgmPlaying].bpm
-        local beatBar = BgmData[BgmPlaying].bar
 
         gc_ucs_move(50, 120)
 
@@ -470,7 +468,7 @@ function scene.draw()
         if BgmPlaying == 'tera' or BgmPlaying == 'terar' then
             gc_setAlpha(.42)
         else
-            gc_setAlpha(.2 + .06 * math.sin(playTime / beatLen * 1.5708))
+            gc_setAlpha(.26 - .12 * MusicBeat)
         end
         gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * SCR.w, SCR.h)
         gc_draw(TEXTURE.transition, SCR.w, 0, 0, -.42 / 128 * SCR.w, SCR.h)
@@ -480,9 +478,9 @@ function scene.draw()
         gc_setAlpha(1)
         gc_mStr(playingBgmTitle, len / 2, 0)
         if not (BgmPlaying == 'tera' or BgmPlaying == 'terar') then
-            gc_setColor(1, 1, 1, .35 - .26 * math.sin(playTime / (beatBar * beatLen) * 3.1416))
+            gc_setColor(1, 1, 1, MATH.lerp(.62, .26, MusicBeat))
+            gc_mStr(playingBgmTitle, len / 2, -1.26)
         end
-        gc_mStr(playingBgmTitle, len / 2, 0)
         gc_setColor(clr.LT)
         gc_setAlpha(.26)
         gc_printf(data.meta, len / 2, 56, 2 * len, 'center', 0, .42, .42, len)

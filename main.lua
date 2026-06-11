@@ -1071,30 +1071,34 @@ BgmSet = {
 
 ---@enum (key) ZC.bgmName
 BgmData = {
-    f0 = { meta = '4|4  184 BPM  C Minor', bar = 4, bpm = 184, toneFix = 0, loop = { 0, 114.7826 } },
-    f1 = { meta = '4|4  184 BPM  C Minor', bar = 4, bpm = 184, toneFix = 0, loop = { 18.261, 91.304 }, introLen = 1.304, teleport = { -1, 7.826 } },
-    f2 = { meta = '4|4  110 BPM  D Major & B Minor', bar = 4, bpm = 110, toneFix = -1, loop = { 26.181, 113.454 } },
-    f2r = { meta = '4|4  110 BPM  D Major & B Minor', bar = 4, bpm = 110, toneFix = -1, loop = { 26.181, 113.454 } },
-    f3 = { meta = '12|8  120 BPM  C Major & A Minor', bar = 4, bpm = 120, toneFix = -1, loop = { 56, 128 } },
-    f3r = { meta = '12|8  120 BPM  C Major & A Minor', bar = 4, bpm = 120, toneFix = -1, loop = { 56, 128 } },
-    f4 = { meta = '5|8  180 BPM  F# Minor', bar = 5, bpm = 180, toneFix = 1, loop = { 13.333, 93.333 } },
-    f4r = { meta = '5|8  180 BPM  F# Minor', bar = 5, bpm = 180, toneFix = 1, loop = { 13.333, 93.333 } },
-    f5 = { meta = '4|4 6|8  130 BPM  E Minor', bar = 4, bpm = 130, toneFix = -1, loop = { 96, 169.846 } },
-    f5r = { meta = '4|4 6|8  130 BPM  E Minor', bar = 4, bpm = 130, toneFix = -1, loop = { 96, 169.846 } },
-    f6 = { meta = '4|4  130 BPM  A Minor', bar = 4, bpm = 130, toneFix = 2, loop = { 29.538, 103.384 } },
-    f6r = { meta = '4|4  130 BPM  G Minor', bar = 4, bpm = 130, toneFix = 0, loop = { 29.538, 103.384 } },
-    f7 = { meta = '4|4  120 BPM  A+50c Minor', bar = 4, bpm = 120, toneFix = 2.5, loop = { 128, 192 } },
-    f7r = { meta = '4|4  120 BPM  A+50c Minor', bar = 4, bpm = 120, toneFix = 2.5, loop = { 128, 192 }, teleport = { 8, 32 } },
-    f8 = { meta = '4|4  150 BPM  E Minor', bar = 4, bpm = 150, toneFix = -1, loop = { 38.4, 134.4 } },
-    f8r = { meta = '4|4  150 BPM  E Minor', bar = 4, bpm = 150, toneFix = -1, loop = { 38.4, 134.4 } },
-    f9 = { meta = '4|4  160 BPM  E Minor', bar = 4, bpm = 160, toneFix = -1, loop = { 36, 144 } },
-    f9r = { meta = '4|4  160 BPM  E Minor', bar = 4, bpm = 160, toneFix = -1, loop = { 36, 144 } },
-    f10 = { meta = '4|4  196 BPM  C Major & C Minor', bar = 4, bpm = 196, toneFix = 0, loop = { 203.877, 311.632 } },
-    f10r = { meta = '4|4  196 BPM  C Major & C Minor', bar = 4, bpm = 196, toneFix = 0, loop = { 203.877, 311.632 } },
-    fomg = { meta = '4|4  180 & 200 BPM  Bb Minor', bar = 4, bpm = 200, toneFix = 3, loop = { 38.4 - 11.862, 144 - 11.862 } },
-    tera = { meta = '4|4  240 BPM  C# Minor', bar = 4, bpm = 240, toneFix = 1, loop = { 76, 140 }, introLen = 2, teleport = { -1, 20 } }, -- 4 endings at 140/142/144/146
-    terar = { meta = '4|4  240 BPM  C# Minor', bar = 4, bpm = 240, toneFix = 1, loop = { 84 - 15.565, 172 - 15.565 }, teleport = { 0, 18 - 15.565 } },
+    f0    = { meta = '4|4  184 BPM  C Minor           ', bar = 4, bpm = 184, toneFix = 0.0, loop = { 0, 114.7826 } },
+    f1    = { meta = '4|4  184 BPM  C Minor           ', bar = 4, bpm = 184, toneFix = 0.0, loop = { 18.261, 91.304 }, introLen = 1.304, teleport = { -1, 7.826 } },
+    f2    = { meta = '4|4  110 BPM  D Major & B Minor ', bar = 4, bpm = 110, toneFix = -1., loop = { 26.181, 113.454 } },
+    f2r   = { meta = '4|4  110 BPM  D Major & B Minor ', bar = 4, bpm = 110, toneFix = -1., loop = { 26.181, 113.454 } },
+    f3    = { meta = '12|8  120 BPM  C Major & A Minor', bar = 4, bpm = 120, toneFix = -1., loop = { 56, 128 } },
+    f3r   = { meta = '12|8  120 BPM  C Major & A Minor', bar = 4, bpm = 120, toneFix = -1., loop = { 56, 128 } },
+    f4    = { meta = '5|8  180 BPM  F# Minor          ', bar = 5, bpm = 180, toneFix = 1.0, loop = { 13.333, 93.333 } },
+    f4r   = { meta = '5|8  180 BPM  F# Minor          ', bar = 5, bpm = 180, toneFix = 1.0, loop = { 13.333, 93.333 } },
+    f5    = { meta = '4|4 6|8  130 BPM  E Minor       ', bar = 4, bpm = 130, toneFix = -1., loop = { 96, 169.846 } },
+    f5r   = { meta = '4|4 6|8  130 BPM  E Minor       ', bar = 4, bpm = 130, toneFix = -1., loop = { 96, 169.846 } },
+    f6    = { meta = '4|4  130 BPM  A Minor           ', bar = 4, bpm = 130, toneFix = 2.0, loop = { 29.538, 103.384 } },
+    f6r   = { meta = '4|4  130 BPM  G Minor           ', bar = 4, bpm = 130, toneFix = 0.0, loop = { 29.538, 103.384 } },
+    f7    = { meta = '4|4  120 BPM  A+50c Minor       ', bar = 4, bpm = 120, toneFix = 2.5, loop = { 128, 192 } },
+    f7r   = { meta = '4|4  120 BPM  A+50c Minor       ', bar = 4, bpm = 120, toneFix = 2.5, loop = { 128, 192 }, teleport = { 8, 32 } },
+    f8    = { meta = '4|4  150 BPM  E Minor           ', bar = 4, bpm = 150, toneFix = -1., loop = { 38.4, 134.4 } },
+    f8r   = { meta = '4|4  150 BPM  E Minor           ', bar = 4, bpm = 150, toneFix = -1., loop = { 38.4, 134.4 } },
+    f9    = { meta = '4|4  160 BPM  E Minor           ', bar = 4, bpm = 160, toneFix = -1., loop = { 36, 144 } },
+    f9r   = { meta = '4|4  160 BPM  E Minor           ', bar = 4, bpm = 160, toneFix = -1., loop = { 36, 144 } },
+    f10   = { meta = '4|4  196 BPM  C Major & C Minor ', bar = 4, bpm = 196, toneFix = 0.0, bpmData = { 49, 19.592, 98 }, loop = { 203.877, 311.632 } },
+    f10r  = { meta = '4|4  196 BPM  C Major & C Minor ', bar = 4, bpm = 196, toneFix = 0.0, bpmData = { 49, 19.592, 98 }, loop = { 203.877, 311.632 } },
+    fomg  = { meta = '4|4  180 & 200 BPM  Bb Minor    ', bar = 4, bpm = 200, toneFix = 3.0, bpmData = { 90, 10.667, 180, 25.333, 200 }, loop = { 38.4 - 11.862, 144 - 11.862 } },
+    tera  = { meta = '4|4  240 BPM  C# Minor          ', bar = 4, bpm = 240, toneFix = 1.0, loop = { 76, 140 }, introLen = 2, teleport = { -1, 20 } }, -- 4 endings at 140/142/144/146
+    terar = { meta = '4|4  240 BPM  C# Minor          ', bar = 4, bpm = 240, toneFix = 1.0, loop = { 84 - 15.565, 172 - 15.565 }, teleport = { 0, 18 - 15.565 } },
 }
+for _, v in next, BgmData do
+    v.meta = STRING.trim(v.meta)
+    if not v.bpmData then v.bpmData = { v.bpm } end
+end
 
 BgmPlaying = false ---@type ZC.bgmName | false
 SongNamePlaying = false -- Same as BgmPlaying, but this distinguishes f0(r) and f1(r) for album page
@@ -1797,6 +1801,7 @@ function Daemon_Slow()
     end
 end
 
+MusicBeat = 0 ---@type number 0-1, envelope: /|/|/|
 function Daemon_Fast()
     local max = math.max
     local hsv = COLOR.HSV
@@ -1810,12 +1815,15 @@ function Daemon_Fast()
     local startBtnPtr = 1
     local resetBtnPtr = 1
 
-    local t1 = -.1
+    local beatS, beatE = 0, 0    -- Current beat's Start & End time
+    local skipNextShuffle = true -- Flip-flop for MS shaking each 2 beats
+    local MSactive = false       -- for skipping meaningless Ypos resets to improve performance
     local t = 0
     while true do
         if BgmPlaying then
             local bar = 2 * 60 / BgmData[BgmPlaying].bpm * 4
             local T = BGM.tell()
+
             -- Throb transparency
             ThrobAlpha.card = max(.626 - 2 * T / bar % 1, .626 - 2 * (T / bar - .375) % 1)
             ThrobAlpha.bg1 = .626 - 2 * T / bar % 1
@@ -1827,18 +1835,49 @@ function Daemon_Fast()
                 GigaSpeed.bgAlpha = 1 - 4 * T / bar % 1
             end
 
-            -- Messy position shaking
-            if T < t1 then t1 = -.1 end
-            if T > t1 + 2 * 60 / BgmData[BgmPlaying].bpm then
-                t1 = T
-                if M.MS == 0 then
-                    for i = 1, deckSize do Cards[i].visY = 0 end
-                elseif URM and M.MS == 2 then
-                    for i = 1, deckSize do Cards[i].visY = math.random(-42, 42) end
-                else
-                    for i = 1, deckSize do Cards[i].visY = M.MS * math.random(-4, 4) end
+            -- Update MusicBeat
+            if T < beatS then
+                -- warp back
+                beatS, beatE = 0, 0
+            end
+            local newBeat
+            while T > beatE do
+                -- next beat
+                beatS = beatE
+                local dat = BgmData[BgmPlaying].bpmData
+                local bpm = dat[1]
+                for i = #dat - 1, 2, -2 do
+                    if beatS + .1 >= dat[i] then
+                        bpm = dat[i + 1]
+                        break
+                    end
                 end
-                GAME.refreshLayout()
+                beatE = beatS + 60 / bpm
+                newBeat = true
+                -- if TASK.lock('test', .1) then SFX.play('clearline', .62) end
+            end
+            MusicBeat = MATH.icLerp(beatS, beatE, T)
+
+            -- MS shaking (each 2 beats)
+            if newBeat then
+                if skipNextShuffle then
+                    if M.MS == 0 then
+                        if MSactive then
+                            for i = 1, deckSize do Cards[i].visY = 0 end
+                            GAME.refreshLayout()
+                        end
+                        MSactive = false
+                    else
+                        if URM and M.MS == 2 then
+                            for i = 1, deckSize do Cards[i].visY = math.random(-42, 42) end
+                        else
+                            for i = 1, deckSize do Cards[i].visY = M.MS * math.random(-4, 4) end
+                        end
+                        MSactive = true
+                        GAME.refreshLayout()
+                    end
+                end
+                skipNextShuffle = not skipNextShuffle
             end
 
             -- BGM time control
