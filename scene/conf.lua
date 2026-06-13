@@ -571,7 +571,6 @@ local pages = {}
 -- Page 1
 local videoY = baseY + 360
 pages[1] = {
-    -- Audio
     WIDGET.new { -- title
         type = 'text', alignX = 'left',
         text = "AUDIO",
@@ -704,7 +703,6 @@ pages[1] = {
 -- Page 2
 local profY = baseY + 220
 pages[2] = {
-    -- Account
     WIDGET.new { -- title
         type = 'text', alignX = 'left',
         text = "ACCOUNT",
@@ -799,7 +797,6 @@ pages[2] = {
             SFX.play('staffwarning')
         end,
     },
-    -- Profile
     WIDGET.new { -- title
         type = 'text', alignX = 'left',
         text = "PROFILE",
@@ -1110,7 +1107,6 @@ end
 -- Page 3
 local albumY = baseY + 250
 pages[3] = {
-    -- Album
     WIDGET.new { -- title
         type = 'text', alignX = 'left',
         text = "ALBUM",
@@ -1232,13 +1228,20 @@ albumBtn {
 
 -- Page 4
 pages[4] = {
-    -- SRS
     WIDGET.new { -- title
         type = 'text', alignX = 'left',
         text = "SPEEDRUN SPLITS",
         color = clr.T,
         fontSize = 50,
         x = baseX + 30, y = baseY + 50,
+    },
+    WIDGET.new { -- note
+        type = 'text', alignX = 'left',
+        text = "BACKUP YOUR SAVE AND TRY THESE WITH NEW SAVES!",
+        color = clr.L,
+        fontSize = 30,
+        textScale = .5,
+        x = baseX + 33, y = baseY + 90,
     },
 }
 
