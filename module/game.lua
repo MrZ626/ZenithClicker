@@ -1018,7 +1018,15 @@ function GAME.getRandomUID()
 end
 
 function GAME.awardKO(id1, id2, valid, toOppo)
-    if GAME.playing and valid then GAME.addHeight((M.EX == 2 and 8 or 15) * .26 * GAME.attackMul) end
+    if valid then
+        if GAME.playing then
+            GAME.addHeight((M.EX == 2 and 8 or 15) * .26 * GAME.attackMul)
+        end
+        if toOppo then
+            if not id2:match("^GHOST%-") then GAME.koCount = GAME.koCount + 1 end
+            SFX.play('elim', .5)
+        end
+    end
     ins(GAME.koAnim, 1, {
         id1 = GC.newText(FONT.get(30), id1),
         id2 = GC.newText(FONT.get(30), id2),
@@ -1028,10 +1036,6 @@ function GAME.awardKO(id1, id2, valid, toOppo)
         showP1 = id1 ~= id2,
         toOppo = toOppo,
     })
-    if toOppo then
-        if not id2:match("^GHOST%-") then GAME.koCount = GAME.koCount + 1 end
-        SFX.play('elim', .5)
-    end
 end
 
 function GAME.upFloor()
