@@ -393,7 +393,7 @@ local gc_replaceTransform, gc_translate = gc.replaceTransform, gc.translate
 local gc_setColor, gc_rectangle, gc_polygon, gc_print, gc_printf = gc.setColor, gc.rectangle, gc.polygon, gc.print, gc.printf
 local gc_ucs_move, gc_ucs_back = GC.ucs_move, GC.ucs_back
 local gc_setAlpha, gc_mRect, gc_mDraw, gc_mDrawQ = GC.setAlpha, GC.mRect, GC.mDraw, GC.mDrawQ
-local gc_stc_setComp, gc_stc_arc, gc_stc_stop = GC.stc_setComp, GC.stc_arc, GC.stc_stop
+local gc_stc_reset, gc_stc_arc, gc_stc_stop = GC.stc_reset, GC.stc_arc, GC.stc_stop
 local gc_setBlendMode = GC.setBlendMode
 function scene.draw()
     DrawBG(26)
@@ -489,9 +489,9 @@ function scene.draw()
 
                 -- Progress ring
                 if a.progress > 0 then
+                    gc_stc_reset()
                     if colorRev then gc_setColor(COLOR.lR) end
                     if a.progress < 1 then
-                        gc_stc_setComp()
                         gc_stc_arc('pie', 65, 65,
                             ea + -2.0944,
                             ea + -2.0944 + ka * a.progress,
