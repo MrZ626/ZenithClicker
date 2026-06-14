@@ -84,7 +84,7 @@ function RefreshProfile()
     -- github link
     FONT.set(50)
     GC.setColor(scoreColor)
-    GC.printf("↗  VIEW FULL RECORDS", 0, 640, 1200, 'center')
+    GC.printf("↗  VIEW GITHUB REPO", 0, 640, 1200, 'center')
     -- bottom dark
     GC.setColor(0, 0, 0, .3)
     GC.rectangle('fill', 0, 720, 1200, -3)
@@ -401,7 +401,7 @@ scene.widgetList = {
         onPress = function()
             if cardShow == 1 then
                 SFX.play('menuconfirm')
-                SCN.swapTo('records', 'none')
+                love.system.openURL("https://github.com/MrZ626/ZenithClicker")
             end
         end,
     },

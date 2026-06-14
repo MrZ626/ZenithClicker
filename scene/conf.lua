@@ -697,9 +697,9 @@ pages[1] = {
     },
 }
 
--- Page 2
 local profY = baseY + 220
 pages[2] = {
+    WIDGET.new { -- title
         type = 'text', alignX = 'left',
         text = "ACCOUNT",
         color = clr.T,
@@ -854,9 +854,6 @@ pages[2] = {
                     SFX.play('maintenance')
                 elseif data == 'dev' then
                     MSG('dark', OverDevProgressText)
-                elseif data == 'repo' then
-                    SFX.play('menuconfirm')
-                    love.system.openURL("https://github.com/MrZ626/ZenithClicker")
                 elseif data == 'UseAltName' then
                     UseAltName()
                     SFX.play('social_dm')
