@@ -1245,42 +1245,30 @@ pages[4] = {
     },
 }
 
+local function newTabBtn(text, y, key)
+    return WIDGET.new {
+        type = 'button',
+        pos = { 1, 0 }, x = -60, y = y, w = 160, h = 60,
+        color = { COLOR.HEX '383838' },
+        fontSize = 30, text = text, textColor = 'DL',
+        onClick = function() love.keypressed(key) end,
+    }
+end
+
 -- Tabs
 local tab = {
+    newTabBtn("CONF   ", 140 + 90 * 0, '1'),
+    newTabBtn("USER   ", 140 + 90 * 1, '2'),
+
+    -- Non-setting pages
+    newTabBtn("ALB   ", 400 + 90 * 0, '3'),
+    newTabBtn("SRS   ", 400 + 90 * 1, '4'),
     WIDGET.new {
         type = 'button',
         pos = { 0, 0 }, x = 60, y = 140, w = 160, h = 60,
         color = { .15, .15, .15 },
         fontSize = 30, text = "    BACK", textColor = 'DL',
         onClick = function() love.keypressed('escape') end,
-    },
-    WIDGET.new {
-        type = 'button',
-        pos = { 1, 0 }, x = -60, y = 140, w = 160, h = 60,
-        color = { COLOR.HEX '383838' },
-        fontSize = 30, text = "CONF   ", textColor = 'DL',
-        onClick = function() love.keypressed('1') end,
-    },
-    WIDGET.new {
-        type = 'button',
-        pos = { 1, 0 }, x = -60, y = 230, w = 160, h = 60,
-        color = { COLOR.HEX '383838' },
-        fontSize = 30, text = "USER   ", textColor = 'DL',
-        onClick = function() love.keypressed('2') end,
-    },
-    WIDGET.new {
-        type = 'button',
-        pos = { 1, 0 }, x = -60, y = 320, w = 160, h = 60,
-        color = { COLOR.HEX '383838' },
-        fontSize = 30, text = "ALB   ", textColor = 'DL',
-        onClick = function() love.keypressed('3') end,
-    },
-    WIDGET.new {
-        type = 'button',
-        pos = { 1, 0 }, x = -60, y = 410, w = 160, h = 60,
-        color = { COLOR.HEX '383838' },
-        fontSize = 30, text = "SRS   ", textColor = 'DL',
-        onClick = function() love.keypressed('4') end,
     },
 }
 
