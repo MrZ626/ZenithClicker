@@ -177,6 +177,14 @@ TEXTURE = {
             return l
         end)()
     },
+
+    channel = {
+        achievements = assets "channel/achievements.jpg",
+        records = assets "channel/me.jpg",
+        splits = assets "channel/standalone.jpg",
+        leaderboard = assets "channel/leaderboard.jpg",
+        -- players = assets "channel/players.jpg",
+    },
     achievement = {
         icons = assets 'achievements/achv_icons.png',
         iconQuad = {

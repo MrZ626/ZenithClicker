@@ -5,6 +5,7 @@ local clr = {
     D = { COLOR.HEX '19311EFF' },
     L = { COLOR.HEX '4DA667FF' },
     T = { COLOR.HEX '6FAC82FF' },
+    LT = { COLOR.HEX '98CBA8FF' },
     button = { COLOR.HEX '1F4E2C' },
 }
 local colorRev = false
@@ -42,9 +43,15 @@ function scene.keyDown(key, isRep)
 end
 
 local gc = love.graphics
+local gc_push, gc_pop = gc.push, gc.pop
 local gc_replaceTransform = gc.replaceTransform
-local gc_setColor, gc_rectangle, gc_print = gc.setColor, gc.rectangle, gc.print
+local gc_translate, gc_scale = gc.translate, gc.scale
+local gc_setColor, gc_setLineWidth = gc.setColor, gc.setLineWidth
+local gc_rectangle = gc.rectangle
+local gc_print = gc.print
+local gc_stc_reset, gc_stc_rect, gc_stc_stop = GC.stc_reset, GC.stc_rect, GC.stc_stop
 local gc_setAlpha = GC.setAlpha
+local setFont = FONT.set
 function scene.draw()
     DrawBG(26)
 
@@ -57,7 +64,7 @@ function scene.draw()
     gc_rectangle('fill', -1300, 70, 2600, 3)
     gc_replaceTransform(SCR.xOy_ul)
     gc_setColor(clr.L)
-    FONT.set(50)
+    setFont(50)
     if GAME.anyRev then
         gc_print("CLICKER CHANNEL", 15, 68, 0, 1, -1)
     else
@@ -73,39 +80,101 @@ function scene.draw()
     gc_rectangle('fill', -1300, -50, 2600, -3)
     gc_replaceTransform(SCR.xOy_dl)
     gc_setColor(clr.L)
-    FONT.set(30)
+    setFont(30)
     gc_print("WELCOME TO CLICKER CHANNEL!", 15, -45, 0, .85, 1)
 end
 
-local startY = -260
-local dy = 170
-local gap = 30
+local buttonContent = {
+    function(w, h)
+        gc_setColor(1, 1, 1)
+        GC.mDraw(TEXTURE.channel.achievements, w / 2, h / 2, 0, w / TEXTURE.channel.achievements:getWidth())
+        gc_setColor(0, 0, 0, .42)
+        gc_print("ACHIEVEMENTS", 22, 6 + 6, 0, .9)
+        gc_print("VIEW YOUR ACHIEVEMENTS AND THEIR PROGRESS", 26, 62 + 3, 0, .36)
+        gc_setColor(clr.LT)
+        gc_print("ACHIEVEMENTS", 22, 6, 0, .9)
+        gc_print("VIEW YOUR ACHIEVEMENTS AND THEIR PROGRESS", 26, 62, 0, .36)
+    end,
+    function(w, h)
+        gc_setColor(1, 1, 1)
+        GC.mDraw(TEXTURE.channel.records, w / 2, h / 2, 0, w / TEXTURE.channel.records:getWidth())
+        gc_setColor(0, 0, 0, .42)
+        gc_print("PERSONAL RECORDS", 22, 6 + 6, 0, .9)
+        gc_print("VIEW YOUR OWN RECORDS", 26, 62 + 3, 0, .36)
+        gc_setColor(clr.LT)
+        gc_print("PERSONAL RECORDS", 22, 6, 0, .9)
+        gc_print("VIEW YOUR OWN RECORDS", 26, 62, 0, .36)
+    end,
+    function(w, h)
+        gc_setColor(1, 1, 1)
+        GC.mDraw(TEXTURE.channel.splits, w / 2, h * .26, 0, w / TEXTURE.channel.splits:getWidth() * 2)
+        gc_setColor(0, 0, 0, .42)
+        gc_print("SPEEDRUN SPLITS", 22, 6 + 6, 0, .9)
+        gc_print("VIEW YOUR SPEEDRUN SPLITS", 26, 62 + 3, 0, .36)
+        gc_setColor(clr.LT)
+        gc_print("SPEEDRUN SPLITS", 22, 6, 0, .9)
+        gc_print("VIEW YOUR SPEEDRUN SPLITS", 26, 62, 0, .36)
+    end,
+    function(w, h)
+        gc_setColor(1, 1, 1)
+        GC.mDraw(TEXTURE.channel.leaderboard, w / 2, h / 2, 0, w / TEXTURE.channel.leaderboard:getWidth())
+        gc_setColor(0, 0, 0, .42)
+        gc_print("LEADERBOARD", 22, 6 + 6, 0, .9)
+        gc_print("VIEW THE DAILY CHALLENGE LEADERBOARD", 26, 62 + 3, 0, .36)
+        gc_setColor(clr.LT)
+        gc_print("LEADERBOARD", 22, 6, 0, .9)
+        gc_print("VIEW THE DAILY CHALLENGE LEADERBOARD", 26, 62, 0, .36)
+    end,
+}
+function scene.overDraw()
+    gc_replaceTransform(SCR.xOy)
+    gc_setLineWidth(10)
+    gc_setColor(1, 0, 0)
+    for i = 1, 4 do
+        local W = scene.widgetList[i]
+        gc_push()
+        gc_translate(W._x, W._y)
+        if W._pressTime > 0 then gc_scale(1 - W._pressTime / W._pressTimeMax * .0626) end
+        gc_translate(-W.w / 2, -W.h / 2)
+        gc_stc_reset()
+        gc_stc_rect(0, 0, W.w, W.h)
+        setFont(50)
+        buttonContent[i](W.w, W.h)
+        gc_stc_stop()
+        gc_pop()
+    end
+end
+
+local btnY = -260
+local btnW = 1100
+local btnH = 160
+local gap = 20
 
 scene.widgetList = {
     WIDGET.new {
         type = 'button',
-        pos = { .5, .5 }, x = 0, y = startY, w = 1000, h = dy - gap,
+        pos = { .5, .5 }, x = 0, y = btnY, w = btnW, h = btnH - gap,
         color = clr.button,
         sound_hover = 'menutap',
         onClick = function() love.keypressed('1') end,
     },
     WIDGET.new {
         type = 'button',
-        pos = { .5, .5 }, x = 0, y = startY + 1 * dy, w = 1000, h = dy - gap,
+        pos = { .5, .5 }, x = 0, y = btnY + btnH, w = btnW, h = btnH - gap,
         color = clr.button,
         sound_hover = 'menutap',
         onClick = function() love.keypressed('2') end,
     },
     WIDGET.new {
         type = 'button',
-        pos = { .5, .5 }, x = -250 - gap / 4, y = startY + 2 * dy, w = 500 - gap / 2, h = dy - gap,
+        pos = { .5, .5 }, x = (-btnW - gap) / 4, y = btnY + 2 * btnH, w = (btnW - gap) / 2, h = btnH - gap,
         color = clr.button,
         sound_hover = 'menutap',
         onClick = function() love.keypressed('3') end,
     },
     WIDGET.new {
         type = 'button',
-        pos = { .5, .5 }, x = 250 + gap / 4, y = startY + 2 * dy, w = 500 - gap / 2, h = dy - gap,
+        pos = { .5, .5 }, x = (btnW + gap) / 4, y = btnY + 2 * btnH, w = (btnW - gap) / 2, h = btnH - gap,
         color = clr.button,
         sound_hover = 'menutap',
         onClick = function() love.keypressed('4') end,
