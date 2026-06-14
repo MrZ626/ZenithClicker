@@ -1001,14 +1001,12 @@ for i = 1, 6 do MSG.addCategory("wreath_" .. i, AchvData[5].bg, COLOR.L, GC.load
 
 SCN.addSwapStyle('warp', require 'module/warp_swap')
 
-SCN.add('joining', require 'scene/joining')
-SCN.add('tower', require 'scene/tower')
-SCN.add('stat', require 'scene/stat')
-SCN.add('records', require 'scene/records')
-SCN.add('achv', require 'scene/achv')
-SCN.add('conf', require 'scene/conf')
-SCN.add('about', require 'scene/about')
-SCN.add('ending', require 'scene/ending')
+for _, v in next, love.filesystem.getDirectoryItems('scene') do
+    if FILE.isSafe('scene/' .. v) then
+        local sceneName = v:sub(1, -5)
+        SCN.add(sceneName, FILE.load('scene/' .. v, '-lua'))
+    end
+end
 ZENITHA.setFirstScene('joining')
 
 local gc = love.graphics
@@ -1340,12 +1338,7 @@ function ReloadTexts()
     TEXTS.time:setFont(FONT.get(30))
     TEXTS.gigatime:setFont(FONT.get(50))
     TEXTS.chain2:setFont(FONT.get(50, 'led'))
-    for _, W in next, SCN.scenes.tower.widgetList do W:reset() end
-    for _, W in next, SCN.scenes.stat.widgetList do W:reset() end
-    for _, W in next, SCN.scenes.achv.widgetList do W:reset() end
-    for _, W in next, SCN.scenes.conf.widgetList do W:reset() end
-    for _, W in next, SCN.scenes.about.widgetList do W:reset() end
-    for _, W in next, SCN.scenes.records.widgetList do W:reset() end
+    for _, W in next, SCN.scenes[SCN.cur].widgetList do W:reset() end
     AchvText:setFont(FONT.get(30))
     AboutText:setFont(FONT.get(70))
     DevNoteText:setFont(FONT.get(30))
@@ -1606,7 +1599,7 @@ WIDGET.setDefaultOption {
 
 function WIDGET._prototype.button:draw()
     gc.push('transform')
-    gc.translate(self._x, not (self.pos and self.pos[1] == .5) and self._y or self._y + DeckPress)
+    gc.translate(self._x, self._y + (SCN.cur == 'tower' and self.pos[1] == .5 and DeckPress or 0))
 
     if self._pressTime > 0 then
         gc.scale(1 - self._pressTime / self._pressTimeMax * .0626)
