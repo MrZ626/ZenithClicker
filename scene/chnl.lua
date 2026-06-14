@@ -46,9 +46,8 @@ local gc = love.graphics
 local gc_push, gc_pop = gc.push, gc.pop
 local gc_replaceTransform = gc.replaceTransform
 local gc_translate, gc_scale = gc.translate, gc.scale
-local gc_setColor, gc_setLineWidth = gc.setColor, gc.setLineWidth
-local gc_rectangle = gc.rectangle
-local gc_print = gc.print
+local gc_setShader, gc_setColor, gc_setLineWidth = gc.setShader, gc.setColor, gc.setLineWidth
+local gc_rectangle, gc_print = gc.rectangle, gc.print
 local gc_stc_reset, gc_stc_rect, gc_stc_stop = GC.stc_reset, GC.stc_rect, GC.stc_stop
 local gc_setAlpha = GC.setAlpha
 local setFont = FONT.set
@@ -84,10 +83,14 @@ function scene.draw()
     gc_print("WELCOME TO CLICKER CHANNEL!", 15, -45, 0, .85, 1)
 end
 
+local texture_chn = TEXTURE.channel
+local sd = SHADER.swapRG
 local buttonContent = {
     function(w, h)
         gc_setColor(1, 1, 1)
-        GC.mDraw(TEXTURE.channel.achievements, w / 2, h / 2, 0, w / TEXTURE.channel.achievements:getWidth())
+        if colorRev then gc_setShader(sd) end
+        GC.mDraw(texture_chn.achievements, w / 2, h / 2, 0, w / texture_chn.achievements:getWidth())
+        if colorRev then gc_setShader() end
         gc_setColor(0, 0, 0, .42)
         gc_print("ACHIEVEMENTS", 22, 6 + 6, 0, .9)
         gc_print("VIEW YOUR ACHIEVEMENTS AND THEIR PROGRESS", 26, 62 + 3, 0, .36)
@@ -97,7 +100,9 @@ local buttonContent = {
     end,
     function(w, h)
         gc_setColor(1, 1, 1)
-        GC.mDraw(TEXTURE.channel.records, w / 2, h / 2, 0, w / TEXTURE.channel.records:getWidth())
+        if colorRev then gc_setShader(sd) end
+        GC.mDraw(texture_chn.records, w / 2, h / 2, 0, w / texture_chn.records:getWidth())
+        if colorRev then gc_setShader() end
         gc_setColor(0, 0, 0, .42)
         gc_print("PERSONAL RECORDS", 22, 6 + 6, 0, .9)
         gc_print("VIEW YOUR OWN RECORDS", 26, 62 + 3, 0, .36)
@@ -107,7 +112,9 @@ local buttonContent = {
     end,
     function(w, h)
         gc_setColor(1, 1, 1)
-        GC.mDraw(TEXTURE.channel.splits, w / 2, h * .26, 0, w / TEXTURE.channel.splits:getWidth() * 2)
+        if colorRev then gc_setShader(sd) end
+        GC.mDraw(texture_chn.splits, w / 2, h * .26, 0, w / texture_chn.splits:getWidth() * 2)
+        if colorRev then gc_setShader() end
         gc_setColor(0, 0, 0, .42)
         gc_print("SPEEDRUN SPLITS", 22, 6 + 6, 0, .9)
         gc_print("VIEW YOUR SPEEDRUN SPLITS", 26, 62 + 3, 0, .36)
@@ -117,7 +124,9 @@ local buttonContent = {
     end,
     function(w, h)
         gc_setColor(1, 1, 1)
-        GC.mDraw(TEXTURE.channel.leaderboard, w / 2, h / 2, 0, w / TEXTURE.channel.leaderboard:getWidth())
+        if colorRev then gc_setShader(sd) end
+        GC.mDraw(texture_chn.leaderboard, w / 2, h / 2, 0, w / texture_chn.leaderboard:getWidth())
+        if colorRev then gc_setShader() end
         gc_setColor(0, 0, 0, .42)
         gc_print("LEADERBOARD", 22, 6 + 6, 0, .9)
         gc_print("VIEW THE DAILY CHALLENGE LEADERBOARD", 26, 62 + 3, 0, .36)
