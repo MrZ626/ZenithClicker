@@ -563,12 +563,9 @@ function scene.draw()
     gc_print("TWEAK YOUR SETTINGS FOR A BETTER CLICKING EXPERIENCE", 15, -45, 0, .85, 1)
 end
 
-local pageVisFunc = {}
-for p = 1, maxPage do pageVisFunc[p] = function() return page == p end end
-
+-- widget lists of each page, will be registered to scene.widgetList at the end
 local pages = {}
 
--- Page 1
 local videoY = baseY + 360
 pages[1] = {
     WIDGET.new { -- title
@@ -703,7 +700,6 @@ pages[1] = {
 -- Page 2
 local profY = baseY + 220
 pages[2] = {
-    WIDGET.new { -- title
         type = 'text', alignX = 'left',
         text = "ACCOUNT",
         color = clr.T,
@@ -1104,7 +1100,6 @@ for i = 1, 3 do
     })
 end
 
--- Page 3
 local albumY = baseY + 250
 pages[3] = {
     WIDGET.new { -- title
@@ -1226,7 +1221,6 @@ albumBtn {
     visibleFunc = function() return page == 3 and ACHV.blazing_speed and BEST.highScore.rEX >= Floors[9].top end,
 }
 
--- Page 4
 pages[4] = {
     WIDGET.new { -- title
         type = 'text', alignX = 'left',
@@ -1273,6 +1267,8 @@ local tab = {
 }
 
 -- Apply dafault visibility functions
+local pageVisFunc = {}
+for p = 1, maxPage do pageVisFunc[p] = function() return page == p end end
 for i = 1, #pages do
     for _, W in next, pages[i] do
         W.visibleFunc = W.visibleFunc or pageVisFunc[i]
