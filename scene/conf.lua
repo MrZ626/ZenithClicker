@@ -5,14 +5,9 @@ local scene = {}
 -- 1. Video & Audio
 -- 2. User
 -- 3. Album
--- 4. Speedrun
 local page = 1
-local maxPage = 4
+local maxPage = 3
 local uidList = {} ---@type ({uid: string, modTime?: string} | false)[]
-SRSplitText1 = {} ---@type love.Text[]
-SRSplitText2 = {} ---@type love.Text[]
-SRSplitText3 = {} ---@type love.Text[]
-local SRrank = {}
 
 local anonUser
 local resetall_cnt, resetall_anim, lastClear
@@ -164,36 +159,7 @@ function scene.load()
     MSG.clear()
     bindBuffer = nil
     resetall_cnt, resetall_anim, lastClear = 0, 0, false
-    for i = 1, #SpeedrunData do
-        local id = SpeedrunData[i].id
-        if not SRSplitText1[i] then
-            SRSplitText1[i] = GC.newText(FONT.get(50), "")
-            SRSplitText2[i] = GC.newText(FONT.get(50), "")
-            SRSplitText3[i] = GC.newText(FONT.get(30), "")
-            SRrank[i] = 0
-        end
-        SRSplitText1[i]:set(SpeedrunData[i].name)
-        local t = STAT.srMilestone[id]
-        if not t then
-            SRSplitText2[i]:set("N/A")
-        elseif t < 0 then
-            SRSplitText2[i]:set("*" .. STRING.time(-t))
-        else
-            SRSplitText2[i]:set(STRING.time(t))
-        end
-        if SR[id] then
-            SRSplitText3[i]:set(STRING.time(SR[id]))
-            if SR[id] <= DevScore.srMilestone[id] then
-                SRrank[i] = 3
-            elseif SR[id] <= SpeedrunData[i].par1 then
-                SRrank[i] = 2
-            elseif SR[id] <= SpeedrunData[i].par2 then
-                SRrank[i] = 1
-            end
-        else
-            SRSplitText3[i]:set("N/A")
-        end
-    end
+
     SetMouseVisible(true)
     if GAME.anyRev ~= colorRev then
         colorRev = GAME.anyRev
@@ -318,7 +284,6 @@ local baseX, baseY = 800 - w / 2, 500 - h / 2 + 10
 
 local gc = love.graphics
 local gc_replaceTransform = gc.replaceTransform
-local gc_line, gc_setLineWidth = gc.line, gc.setLineWidth
 local gc_draw, gc_setColor, gc_rectangle = gc.draw, gc.setColor, gc.rectangle
 local gc_print, gc_printf = gc.print, gc.printf
 local gc_ucs_move, gc_ucs_back = GC.ucs_move, GC.ucs_back
@@ -496,42 +461,6 @@ function scene.draw()
             gc_mRect('fill', len * BgmNeedSkip[2] / playingBgmLength, 48, 2, 9)
         end
         gc_ucs_back()
-    elseif page == 4 then
-        -- Glowing Background
-        gc_setColor(COLOR.rainbow_light(t, .26))
-        gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * w, h)
-        gc_draw(TEXTURE.transition, w, 0, 0, -.42 / 128 * w, h)
-
-        gc_setLineWidth(2)
-        setFont(30)
-        local textH = SRSplitText1[1]:getHeight()
-        local x1 = 130
-        local x2 = w - 130
-        local achv = TEXTURE.achievement
-        for i = 1, #SpeedrunData do
-            local y = 40 + i * 110
-            gc_setColor(clr.T)
-            gc_draw(SRSplitText1[i], x1, y, 0, 1, 1, 0, textH / 2)
-            gc_draw(SRSplitText2[i], x2, y, 0, 1, 1, SRSplitText2[i]:getWidth(), textH / 2)
-            gc_setAlpha(.62)
-            gc_line(x1 + SRSplitText1[i]:getWidth() + 20, y, x2 - SRSplitText2[i]:getWidth() - 20, y)
-            gc_setColor(clr.L)
-            gc_print(SpeedrunData[i].desc, x1, y + 26, 0, .626)
-            gc_setAlpha(.62)
-            local w3 = SRSplitText3[i]:getWidth()
-            gc_draw(SRSplitText3[i], x2, y + 26, 0, .626, .626, w3)
-            if SRrank[i] > 0 then
-                if SRrank[i] >= 3 then
-                    gc_setColor(1, 1, 1, .16)
-                    GC.mDraw(achv.overDev, x2 - 42, y + 12, 0, .36)
-                end
-                gc_setColor(clr.LT)
-                GC.mDraw(achv.frame[5], x2 - w3 * .626 - 18, y + 38, 0, .1)
-                if SRrank[i] >= 2 then
-                    GC.mDraw(achv.wreath[6], x2 - w3 * .626 - 18, y + 38, 0, .1)
-                end
-            end
-        end
     end
 
     -- Top bar & title
@@ -1218,24 +1147,6 @@ albumBtn {
     visibleFunc = function() return page == 3 and ACHV.blazing_speed and BEST.highScore.rEX >= Floors[9].top end,
 }
 
-pages[4] = {
-    WIDGET.new { -- title
-        type = 'text', alignX = 'left',
-        text = "SPEEDRUN SPLITS",
-        color = clr.T,
-        fontSize = 50,
-        x = baseX + 30, y = baseY + 50,
-    },
-    WIDGET.new { -- note
-        type = 'text', alignX = 'left',
-        text = "BACKUP YOUR SAVE AND TRY THESE WITH NEW SAVES!",
-        color = clr.L,
-        fontSize = 30,
-        textScale = .5,
-        x = baseX + 33, y = baseY + 90,
-    },
-}
-
 local function newTabBtn(text, y, key)
     return WIDGET.new {
         type = 'button',
@@ -1250,10 +1161,7 @@ end
 local tab = {
     newTabBtn("CONF   ", 140 + 90 * 0, '1'),
     newTabBtn("USER   ", 140 + 90 * 1, '2'),
-
-    -- Non-setting pages
-    newTabBtn("ALB   ", 400 + 90 * 0, '3'),
-    newTabBtn("SRS   ", 400 + 90 * 1, '4'),
+    newTabBtn("ALB   ", 140 + 90 * 2, '3'),
     WIDGET.new {
         type = 'button',
         pos = { 0, 0 }, x = 60, y = 140, w = 160, h = 60,

@@ -172,11 +172,11 @@ local function keyTrigger(key)
             if GAME.playing then
                 SFX.play('no')
             else
-                if URM and M.VL == 2 and not UltraVlCheck('achv') then return end
+                if URM and M.VL == 2 and not UltraVlCheck('chnl') then return end
                 SFX.play('menuhit1')
-                SCN.go('achv', 'none')
+                SCN.go('chnl', 'none')
             end
-            local W = scene.widgetList.achv
+            local W = scene.widgetList.chnl
             W._pressTime = W._pressTimeMax * 2
             W._hoverTime = W._hoverTimeMax
         elseif key == 'f1' then
@@ -1632,17 +1632,19 @@ scene.widgetList = {
         name = 'stat', type = 'button',
         pos = { 0, 0 }, x = 60, y = 230, w = 160, h = 60,
         color = { COLOR.HEX '1F4E2C' },
+        textColor = { COLOR.HEX '73E284' },
         sound_hover = 'menutap',
-        fontSize = 30, text = "    STAT", textColor = { COLOR.HEX '73E284' },
+        fontSize = 30, text = "    STAT",
         onPress = function() love.keypressed('`') end,
         onClick = function() love.keyreleased('`') end,
     },
     WIDGET.new {
-        name = 'achv', type = 'button',
+        name = 'chnl', type = 'button',
         pos = { 0, 0 }, x = 60, y = 320, w = 160, h = 60,
         color = { COLOR.HEX '1F4E2C' },
+        textColor = { COLOR.HEX '73E284' },
         sound_hover = 'menutap',
-        fontSize = 30, text = "    ACHV", textColor = { COLOR.HEX '73E284' },
+        fontSize = 30, text = "    CHNL",
         onPress = function() love.keypressed('tab') end,
         onClick = function() love.keyreleased('tab') end,
     },
@@ -1650,8 +1652,9 @@ scene.widgetList = {
         name = 'conf', type = 'button',
         pos = { 1, 0 }, x = -60, y = 230, w = 160, h = 60,
         color = { COLOR.HEX '253355' },
+        textColor = { COLOR.HEX '869EFF' },
         sound_hover = 'menutap',
-        fontSize = 30, text = "CONF   ", textColor = { COLOR.HEX '869EFF' },
+        fontSize = 30, text = "CONF   ",
         onPress = function() love.keypressed('f1') end,
         onClick = function() love.keyreleased('f1') end,
     },
@@ -1659,8 +1662,9 @@ scene.widgetList = {
         name = 'about', type = 'button',
         pos = { 1, 0 }, x = -60, y = 320, w = 160, h = 60,
         color = { COLOR.HEX '383838' },
+        textColor = { COLOR.HEX '909090' },
         sound_hover = 'menutap',
-        fontSize = 30, text = "ABOUT ", textColor = { COLOR.HEX '909090' },
+        fontSize = 30, text = "ABOUT ",
         onPress = function() love.keypressed('f2') end,
         onClick = function() love.keyreleased('f2') end,
     },

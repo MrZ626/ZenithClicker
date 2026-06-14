@@ -268,7 +268,6 @@ local function query()
 end
 
 function scene.load()
-    SetMouseVisible(true)
     if GAME.anyRev ~= colorRev then
         colorRev = GAME.anyRev
         for _, C in next, clr do
@@ -566,9 +565,9 @@ function scene.overDraw()
     gc_setColor(clr.L)
     setFont(50)
     if colorRev then
-        gc_print("PERSONAL RECORDS", 15, 68, 0, 1, -1)
+        gc_print("CLICKER CHANNEL / PERSONAL RECORDS", 15, 68, 0, 1, -1)
     else
-        gc_print("PERSONAL RECORDS", 15, 0)
+        gc_print("CLICKER CHANNEL / PERSONAL RECORDS", 15, 0)
     end
     gc_replaceTransform(SCR.xOy_ur)
     gc_printf(cd > 0 and "Searching..." or #recList .. " Result" .. (#recList == 1 and "" or "s"), -620, 0, 600, 'right')

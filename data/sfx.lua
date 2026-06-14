@@ -3,7 +3,7 @@ return {
     menuclick = { 212, 1.1 },
     menuconfirm = { 277, 2.7 },
     menuhit1 = { 795, 1.2 },
-    -- menuhit2 = { 426, 1.2 },
+    menuhit2 = { 426, 1.2 },
     -- menuhit3 = { 721, 1.2 },
     menuhover = { 462, 0.2 },
     menutap = { 580, 0.1 },

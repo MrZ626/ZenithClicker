@@ -508,8 +508,8 @@ function GAME.anim_setMenuHide(t)
     ---@cast w -nil
     w.stat.x = cLerp(60, -90, t * 1.5 - .5)
     w.stat:resetPos()
-    w.achv.x = cLerp(60, -90, t * 1.5)
-    w.achv:resetPos()
+    w.chnl.x = cLerp(60, -90, t * 1.5)
+    w.chnl:resetPos()
     w.conf.x = cLerp(-60, 90, t * 1.5 - .5)
     w.conf:resetPos()
     w.about.x = cLerp(-60, 90, t * 1.5)
@@ -1523,7 +1523,7 @@ function GAME.refreshRev()
         W = SCN.scenes.tower.widgetList.stat
         W.fillColor[1], W.fillColor[2] = W.fillColor[2], W.fillColor[1]
         W.textColor[1], W.textColor[2] = W.textColor[2], W.textColor[1]
-        W = SCN.scenes.tower.widgetList.achv
+        W = SCN.scenes.tower.widgetList.chnl
         W.fillColor[1], W.fillColor[2] = W.fillColor[2], W.fillColor[1]
         W.textColor[1], W.textColor[2] = W.textColor[2], W.textColor[1]
         W = SCN.scenes.tower.widgetList.conf

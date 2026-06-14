@@ -312,7 +312,6 @@ function scene.load()
             TEXTURE.achievement.icons:release()
         end)
     end
-    SetMouseVisible(true)
     if GAME.anyRev ~= colorRev then
         colorRev = GAME.anyRev
         for _, C in next, clr do
@@ -604,11 +603,10 @@ function scene.draw()
     gc_setColor(clr.L)
     FONT.set(50)
     if colorRev then
-        gc_print("ACHIEVEMENTS", 15, 68, 0, 1, -1)
+        gc_print("CHNL / ACHV", 15, 68, 0, 1, -1)
     else
-        gc_print("ACHIEVEMENTS", 15, 0)
+        gc_print("CHNL / ACHV", 15, 0)
     end
-
     -- Badge (wreath) count
     if STAT.maxFloor >= 10 and not whenItsReady and not TestMode then
         gc_replaceTransform(SCR.xOy_ur)
