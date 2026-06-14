@@ -5,10 +5,9 @@ local max, min = math.max, math.min
 local clamp = MATH.clamp
 
 local clr = {
-    D = { COLOR.HEX '1B3B22FF' },
+    D = { COLOR.HEX '19311EFF' },
     L = { COLOR.HEX '4DA667FF' },
     T = { COLOR.HEX '9ED499FF' },
-    T2 = { COLOR.HEX '31583AFF' },
     cbFill = { COLOR.HEX '0B170EFF' },
     cbFrame = { COLOR.HEX '6AA782FF' },
     btn1 = { COLOR.HEX '1F4E2CFF' },
