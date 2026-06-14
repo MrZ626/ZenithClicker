@@ -83,7 +83,7 @@ function RefreshProfile()
     GC.rectangle('fill', 0, 720, 1200, -90)
     -- github link
     FONT.set(50)
-    GC.setColor(scoreColor)
+    GC.setColor(textColor)
     GC.printf("↗  VIEW GITHUB REPO", 0, 640, 1200, 'center')
     -- bottom dark
     GC.setColor(0, 0, 0, .3)
