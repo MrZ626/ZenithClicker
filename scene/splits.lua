@@ -64,22 +64,29 @@ function scene.keyDown(key, isRep)
 end
 
 local gc = love.graphics
-local gc_replaceTransform = gc.replaceTransform
+local gc_replaceTransform, gc_translate = gc.replaceTransform, gc.translate
 local gc_setColor, gc_setLineWidth = gc.setColor, gc.setLineWidth
 local gc_draw, gc_line = gc.draw, gc.line
 local gc_rectangle = gc.rectangle
 local gc_print = gc.print
 local gc_setAlpha = GC.setAlpha
+local w, h = 1000, 720
 function scene.draw()
     DrawBG(26)
 
-    -- Board
+    -- Panel
     gc_replaceTransform(SCR.xOy_m)
+    gc_translate(-w / 2, -h / 2)
     gc_setColor(clr.D)
+    gc_rectangle('fill', 0, 0, w, h)
+    gc_setColor(0, 0, 0, .26)
+    gc_rectangle('fill', 3, 3, w - 6, h - 6)
+    gc_setColor(1, 1, 1, .1)
+    gc_rectangle('fill', 0, 0, w, 3)
+    gc_setColor(1, 1, 1, .04)
+    gc_rectangle('fill', 0, 3, 3, h + 3)
 
-    local w, h = 942, 800
-    GC.mRect('fill', 0, 0, w, h)
-
+    gc_replaceTransform(SCR.xOy_m)
     gc_setLineWidth(2)
     FONT.set(30)
     local textH = SRSplitText1[1]:getHeight()
@@ -87,7 +94,7 @@ function scene.draw()
     local x2 = w / 2 - 150
     local achv = TEXTURE.achievement
     for i = 1, #SpeedrunData do
-        local y = (i - #SpeedrunData / 2 - .5) * 110
+        local y = (i - #SpeedrunData / 2 - .5) * 110 - 20
         gc_setColor(clr.T)
         gc_draw(SRSplitText1[i], x1, y, 0, 1, 1, 0, textH / 2)
         gc_draw(SRSplitText2[i], x2, y, 0, 1, 1, SRSplitText2[i]:getWidth(), textH / 2)
