@@ -62,7 +62,7 @@ function scene.load()
     scroll, scroll1 = 0, 0
     maxScroll = 0
 
-    page, subPage = 0, 'alt'
+    page = 0
     TASK.unlock('text_lastUpdate')
     refreshBtn()
 

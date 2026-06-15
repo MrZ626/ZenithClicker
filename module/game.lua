@@ -1615,7 +1615,7 @@ function GAME.refreshDailyChallengeText()
         else
             str = str .. ("   (r$1 = reversed $1)"):repD(rev)
         end
-        str = str .. "\nTry to get more ZP in one run using this mod combo.\n(Click to select them)"
+        str = str .. "\nTry to get more ZP in one run using this mod combo.\n(Click to apply, or right click to open leaderboard)"
     else
         str = "Oops! Today's mod combo is not available for you...\nComplete more mods to unlock some content."
     end

@@ -1724,9 +1724,14 @@ scene.widgetList = {
         floatFontSize = 30,
         floatCornerR = 26,
         floatText = "NO DATA",
-        onPress = function()
+        onPress = function(k)
             if not DailyAvailable then return end
-            applyCombo(DAILY)
+            if k == 2 then
+                SFX.play('menuhit2')
+                SCN.go('leaderboard', 'none')
+            else
+                applyCombo(DAILY)
+            end
         end,
     },
     WIDGET.new {
