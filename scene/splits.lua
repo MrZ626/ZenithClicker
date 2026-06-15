@@ -30,13 +30,17 @@ function scene.load()
             SRrank[i] = 0
         end
         SRSplitText1[i]:set(SpeedrunData[i].name)
-        local t = STAT.srMilestone[id]
-        if not t then
+        if tonumber(STAT.joinDate:match("%d+") or 0) <= 2025 then
             SRSplitText2[i]:set("N/A")
-        elseif t < 0 then
-            SRSplitText2[i]:set("*" .. STRING.time(-t))
         else
-            SRSplitText2[i]:set(STRING.time(t))
+            local t = STAT.srMilestone[id]
+            if not t then
+                SRSplitText2[i]:set("N/A")
+            elseif t < 0 then
+                SRSplitText2[i]:set("*" .. STRING.time(-t))
+            else
+                SRSplitText2[i]:set(STRING.time(t))
+            end
         end
         if SR[id] then
             SRSplitText3[i]:set(STRING.time(SR[id]))
