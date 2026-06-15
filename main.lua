@@ -637,9 +637,11 @@ CONF = {
     oldHitbox = false,
 }
 SR = {}
+LB = {}
 
 TABLE.update(CONF, FILE.safeLoad('conf.luaon', '-luaon') or NONE)
 TABLE.update(SR, FILE.safeLoad('speedrun.luaon', '-luaon') or NONE)
+TABLE.update(LB, FILE.safeLoad('leaderboard.luaon', '-luaon') or NONE)
 
 -- Create BEST, STAT, ACHV tables,
 -- only called when launching and on resetall
@@ -1389,9 +1391,11 @@ function RefreshDaily()
         STAT.lastDay = os.time()
     end
 
-    for x = 0, 0 do
-        -- for x = 0, 1e99 do
-        math.randomseed(os.date("!%Y%m%d") + x)
+    DailyHistory = {}
+    local now = os.time()
+    for x = -4, 0 do
+        local time = now + x * 86400
+        math.randomseed(os.date("!%Y%m%d", time) + 0)
         for _ = 1, 26 do math.random() end
 
         local modCount = math.ceil(9 - math.log(math.random(11, 42), 1.62)) -- 5 444 3333 2222
@@ -1416,9 +1420,12 @@ function RefreshDaily()
                 DAILY[r2] = 'r' .. DAILY[r2]
             end
         end
-        -- assert(table.concat(DAILY, ' ')~="rEX rDP","Appears after "..x.." days later")
-        LOG('info', "Today's Daily Challenge: " .. table.concat(DAILY, ' '))
+        DailyHistory[-x] = table.concat(TABLE.sort(TABLE.copy(DAILY)))
+        if x == 0 then
+            LOG('info', "Today's Daily Challenge: " .. table.concat(DAILY, ' '))
+        end
     end
+    -- for k, v in next, DailyHistory do print(k, table.concat(v, " ")) end
 
     local isV = os.date('!%d') == '14'
     if VALENTINE ~= isV then
@@ -1799,6 +1806,26 @@ function Daemon_Slow()
                 DAILYCMD = nil
             else
                 MSG('warn', "Daily Challenge submission failed\nRetry with secret code 'resubmit'\ndata received from server: " .. msg, 10 * 1.6)
+                SFX.play('pause_retry', 1, 0, Tone(-5))
+            end
+        end
+        msg = ASYNC.get('fetchLeaderboard')
+        if msg then
+            local suc, res = pcall(JSON.decode, msg)
+            if suc and res then
+                if res.error then
+                    MSG('warn', "Daily Challenge leaderboard fetch failed:\n" .. res.error)
+                elseif res.alt then
+                    LB[res.combo].alt = res.alt
+                    LB[res.combo].time = res.time
+                    LB[res.combo].lastUpd = os.time()
+                    FILE.save(LB, 'leaderboard.luaon', '-luaon')
+                else
+                    MSG('warn', "Daily Challenge leaderboard fetch failed:\nNo Data")
+                    SFX.play('pause_retry', 1, 0, Tone(-5))
+                end
+            else
+                MSG('warn', "Daily Challenge leaderboard fetch failed")
                 SFX.play('pause_retry', 1, 0, Tone(-5))
             end
         end

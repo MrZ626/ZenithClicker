@@ -128,11 +128,11 @@ local buttonContent = {
         GC.mDraw(texture_chn.leaderboard, w / 2, h / 2, 0, w / texture_chn.leaderboard:getWidth())
         if colorRev then gc_setShader() end
         gc_setColor(0, 0, 0, .42)
-        gc_print("LEADERBOARD", 22, 6 + 6, 0, .9)
-        gc_print("VIEW THE DAILY CHALLENGE LEADERBOARD", 26, 62 + 3, 0, .36)
+        gc_print("LEADERBOARDS", 22, 6 + 6, 0, .9)
+        gc_print("VIEW THE DAILY CHALLENGE LEADERBOARDS", 26, 62 + 3, 0, .36)
         gc_setColor(clr.LT)
-        gc_print("LEADERBOARD", 22, 6, 0, .9)
-        gc_print("VIEW THE DAILY CHALLENGE LEADERBOARD", 26, 62, 0, .36)
+        gc_print("LEADERBOARDS", 22, 6, 0, .9)
+        gc_print("VIEW THE DAILY CHALLENGE LEADERBOARDS", 26, 62, 0, .36)
     end,
 }
 function scene.overDraw()
