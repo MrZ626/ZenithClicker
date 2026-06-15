@@ -37,6 +37,12 @@ function scene.keyDown(key, isRep)
     elseif key == '4' then
         SFX.play('menuhit2')
         SCN.go('leaderboard', 'none')
+    elseif key == '5' then
+        SFX.play('menuconfirm')
+        love.system.openURL("https://discord.gg/thqhzSn72j")
+    elseif key == '6' then
+        SFX.play('menuconfirm')
+        love.system.openURL("https://github.com/MrZ626/ZenithClicker")
     end
     ZENITHA._cursor.active = true
     return true
@@ -103,6 +109,8 @@ local buttonContent = {
         if colorRev then gc_setShader(sd) end
         GC.mDraw(texture_chn.records, w / 2, h / 2, 0, w / texture_chn.records:getWidth())
         if colorRev then gc_setShader() end
+        gc_setColor(1, 1, 1, .062)
+        gc_print(STAT.uid, 62, -100, 0, 2.6, 5, 0, 0, -.26)
         gc_setColor(0, 0, 0, .42)
         gc_print("PERSONAL RECORDS", 22, 6 + 6, 0, .9)
         gc_print("VIEW YOUR OWN RECORDS", 26, 62 + 3, 0, .36)
@@ -134,12 +142,36 @@ local buttonContent = {
         gc_print("LEADERBOARDS", 22, 6, 0, .9)
         gc_print("VIEW THE DAILY CHALLENGE LEADERBOARDS", 26, 62, 0, .36)
     end,
+    function(w, h)
+        -- gc_setColor(1, 1, 1)
+        -- if colorRev then gc_setShader(sd) end
+        -- GC.mDraw(texture_chn.leaderboard, w / 2, h / 2, 0, w / texture_chn.leaderboard:getWidth())
+        -- if colorRev then gc_setShader() end
+        gc_setColor(0, 0, 0, .42)
+        gc_print("DISCORD", 22, 6 + 6, 0, .9)
+        gc_print("JOIN OUR DISCORD COMMUNITY", 26, 62 + 3, 0, .36)
+        gc_setColor(clr.LT)
+        gc_print("DISCORD", 22, 6, 0, .9)
+        gc_print("JOIN OUR DISCORD COMMUNITY", 26, 62, 0, .36)
+    end,
+    function(w, h)
+        -- gc_setColor(1, 1, 1)
+        -- if colorRev then gc_setShader(sd) end
+        -- GC.mDraw(texture_chn.leaderboard, w / 2, h / 2, 0, w / texture_chn.leaderboard:getWidth())
+        -- if colorRev then gc_setShader() end
+        gc_setColor(0, 0, 0, .42)
+        gc_print("GITHUB", 22, 6 + 6, 0, .9)
+        gc_print("OPEN THE GITHUB REPOSITORY", 26, 62 + 3, 0, .36)
+        gc_setColor(clr.LT)
+        gc_print("GITHUB", 22, 6, 0, .9)
+        gc_print("OPEN THE GITHUB REPOSITORY", 26, 62, 0, .36)
+    end,
 }
 function scene.overDraw()
     gc_replaceTransform(SCR.xOy)
     gc_setLineWidth(10)
     gc_setColor(1, 0, 0)
-    for i = 1, 4 do
+    for i = 1, #buttonContent do
         local W = scene.widgetList[i]
         gc_push()
         gc_translate(W._x, W._y)
@@ -191,6 +223,20 @@ scene.widgetList = {
         color = clr.button,
         sound_hover = 'menutap',
         onClick = function() love.keypressed('4') end,
+    },
+    WIDGET.new {
+        type = 'button',
+        pos = { .5, .5 }, x = (-btnW - gap) / 4, y = btnY + 3 * btnH, w = (btnW - gap) / 2, h = btnH - gap,
+        color = clr.button,
+        sound_hover = 'menutap',
+        onClick = function() love.keypressed('5') end,
+    },
+    WIDGET.new {
+        type = 'button',
+        pos = { .5, .5 }, x = (btnW + gap) / 4, y = btnY + 3 * btnH, w = (btnW - gap) / 2, h = btnH - gap,
+        color = clr.button,
+        sound_hover = 'menutap',
+        onClick = function() love.keypressed('6') end,
     },
     WIDGET.new {
         name = 'back', type = 'button',

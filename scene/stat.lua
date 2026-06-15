@@ -81,10 +81,10 @@ function RefreshProfile()
     GC.rectangle('fill', 0, 210, 1200, 60)
     -- bottom ribbon
     GC.rectangle('fill', 0, 720, 1200, -90)
-    -- github link
+    -- note
     FONT.set(50)
     GC.setColor(textColor)
-    GC.printf("↗  VIEW GITHUB REPO", 0, 640, 1200, 'center')
+    GC.printf("↗  OPEN CLICKER CHANNEL", 0, 640, 1200, 'center')
     -- bottom dark
     GC.setColor(0, 0, 0, .3)
     GC.rectangle('fill', 0, 720, 1200, -3)
@@ -401,7 +401,7 @@ scene.widgetList = {
         onPress = function()
             if cardShow == 1 then
                 SFX.play('menuconfirm')
-                love.system.openURL("https://github.com/MrZ626/ZenithClicker")
+                SCN.swapTo('chnl', 'none')
             end
         end,
     },

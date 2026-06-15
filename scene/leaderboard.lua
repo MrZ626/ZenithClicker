@@ -82,9 +82,11 @@ function scene.keyDown(key, isRep)
         SCN.back('none')
     elseif tonumber(key) and MATH.between(tonumber(key), 0, 4) then
         switchPage(tonumber(key))
+        SFX.play('menuclick')
     elseif key == 'tab' then
         subPage = subPage == 'alt' and 'time' or 'alt'
         refreshBtn()
+        SFX.play('menuclick')
     end
     ZENITHA._cursor.active = true
     return true
@@ -252,7 +254,10 @@ for i = 0, 4 do
         color = clr.D2,
         sound_hover = 'menutap',
         textColor = clr.T, text = dayText[i],
-        onPress = function() switchPage(i) end,
+        onPress = function()
+            switchPage(i)
+            SFX.play('menuclick')
+        end,
     })
 end
 table.insert(scrollGroup, WIDGET.new {
@@ -264,6 +269,7 @@ table.insert(scrollGroup, WIDGET.new {
     onPress = function()
         subPage = 'alt'
         refreshBtn()
+        SFX.play('menuclick')
     end,
 })
 table.insert(scrollGroup, WIDGET.new {
@@ -275,6 +281,7 @@ table.insert(scrollGroup, WIDGET.new {
     onPress = function()
         subPage = 'time'
         refreshBtn()
+        SFX.play('menuclick')
     end,
 })
 
