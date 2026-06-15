@@ -134,12 +134,8 @@ local function refreshUID()
     TABLE.clear(uidList)
     uidList[0] = { uid = "Active Profile:   " .. STAT.uid, modTime = "just now" }
     for i = 1, 3 do
-        if FILE.exist('save' .. i) then
-            local dat = FILE.load('save' .. i .. "/stat.luaon")
-            uidList[i] = { uid = dat.uid, modTime = timePast(dat.modTime, os.time()) }
-        else
-            uidList[i] = false
-        end
+        local dat = FILE.safeLoad('save' .. i .. "/stat.luaon")
+        uidList[i] = dat and { uid = dat.uid, modTime = timePast(dat.modTime, os.time()) } or false
     end
 end
 
