@@ -21,7 +21,7 @@ RevUnlocked = false
 UsingTouch = MOBILE
 local usingTouch = UsingTouch
 local revHold = {}
-local lastTimeRemain -- For checking if daily challenge should update
+local lastTimeRemain = 1e99 -- For checking if daily challenge should update
 
 ---@type Zenitha.Scene
 local scene = {}
