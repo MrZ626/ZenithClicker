@@ -165,7 +165,17 @@ function scene.draw()
     if L.lastUpd then
         local l = L[subPage]
         gc_push('transform')
-        gc_translate(0, 320)
+        gc_translate(0, 360)
+        gc_setColor(1, 1, 1, .3)
+        setFont(30)
+        local t = os.time() - L.lastUpd
+        if t <= 5 then
+            GC.mStr("Latest!", pw / 2, -53)
+        elseif t < 60 then
+            GC.mStr("Last update: " .. t .. "s ago", pw / 2, -53)
+        else
+            GC.mStr("Last update: " .. (math.floor(t / 60)) .. "m ago", pw / 2, -53)
+        end
         for i = 1, #l do
             local p = l[i]
             gc_setColor(clr.D)
