@@ -84,11 +84,8 @@ function scene.keyDown(key, isRep)
     if key == 'escape' or key == 'f2' then
         SFX.play('menuclick')
         SCN.back('none')
-    elseif key == 'space' then
-        switchPage(0)
-        SFX.play('menuclick')
-    elseif tonumber(key) and MATH.between(tonumber(key), 0, 4) then
-        switchPage(tonumber(key))
+    elseif tonumber(key) and MATH.between(tonumber(key), 1, 5) then
+        switchPage(tonumber(key) - 1)
         SFX.play('menuclick')
     elseif key == 'tab' then
         subPage = subPage == 'alt' and 'time' or 'alt'
