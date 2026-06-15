@@ -489,9 +489,8 @@ function scene.draw()
 
                 -- Progress ring
                 if a.progress > 0 then
-                    gc_stc_reset()
-                    if colorRev then gc_setColor(COLOR.lR) end
                     if a.progress < 1 then
+                        gc_stc_reset()
                         gc_stc_arc('pie', 65, 65,
                             ea + -2.0944,
                             ea + -2.0944 + ka * a.progress,
@@ -501,6 +500,7 @@ function scene.draw()
                             ea + 1.0472 + ka * a.progress,
                             63, 26)
                     end
+                    if colorRev then gc_setColor(COLOR.lR) end
                     gc_mDraw(texture.ring, 65, 65, 0, .42)
                     gc_mDraw(texture.ring, 65, 65, 3.1416, .42)
                     gc_stc_stop()
