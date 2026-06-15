@@ -45,7 +45,7 @@ local function switchPage(p)
         if os.time() - LB[combo].lastUpd >= 26 then
             sendReq(combo)
         end
-    elseif TASK.lock('lb_daily_' .. p, 26) then
+    elseif TASK.lock('lb_daily_' .. p, p == 1 and 26 or 1e99) then
         sendReq(combo)
     end
     page = p
