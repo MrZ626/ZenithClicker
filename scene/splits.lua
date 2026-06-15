@@ -70,7 +70,7 @@ local gc_draw, gc_line = gc.draw, gc.line
 local gc_rectangle = gc.rectangle
 local gc_print = gc.print
 local gc_setAlpha = GC.setAlpha
-local w, h = 1000, 720
+local w, h = 920, 740
 function scene.draw()
     DrawBG(26)
 

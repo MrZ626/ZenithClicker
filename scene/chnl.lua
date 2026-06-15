@@ -149,6 +149,10 @@ function scene.overDraw()
         gc_stc_rect(0, 0, W.w, W.h)
         setFont(50)
         buttonContent[i](W.w, W.h)
+        if W._hoverTime > 0 then
+            gc_setColor(1, 1, 1, W._hoverTime / W._hoverTimeMax * .0626)
+            gc_rectangle('fill', 0, 0, W.w, W.h)
+        end
         gc_stc_stop()
         gc_pop()
     end
