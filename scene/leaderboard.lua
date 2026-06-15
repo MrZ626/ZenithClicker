@@ -12,8 +12,6 @@ local colorRev = false
 local scroll, scroll1, maxScroll
 
 local M = GAME.mod
-local MD = ModData
-local CD = Cards
 
 local scrollGroup = {}
 local page = 0
@@ -82,6 +80,11 @@ function scene.keyDown(key, isRep)
     if key == 'escape' or key == 'f2' then
         SFX.play('menuclick')
         SCN.back('none')
+    elseif tonumber(key) and MATH.between(tonumber(key), 0, 4) then
+        switchPage(tonumber(key))
+    elseif key == 'tab' then
+        subPage = subPage == 'alt' and 'time' or 'alt'
+        refreshBtn()
     end
     ZENITHA._cursor.active = true
     return true
@@ -109,28 +112,16 @@ end
 
 local gc = love.graphics
 local gc_push, gc_pop = gc.push, gc.pop
-local gc_origin, gc_replaceTransform = gc.origin, gc.replaceTransform
-local gc_translate, gc_scale = gc.translate, gc.scale
+local gc_translate, gc_replaceTransform = gc.translate, gc.replaceTransform
 local gc_setColor, gc_setLineWidth = gc.setColor, gc.setLineWidth
-local gc_draw, gc_line = gc.draw, gc.line
 local gc_rectangle, gc_circle = gc.rectangle, gc.circle
 local gc_arc = gc.arc
 local gc_print, gc_printf = gc.print, gc.printf
 local setFont = FONT.set
 local gc_setAlpha = GC.setAlpha
 
-local function drawBtn(x, y, w, h, revQuad)
+local function drawBtn(x, y, w, h)
     gc_rectangle('fill', x, y, w, h)
-    if revQuad then
-        gc_setColor(1, 1, 1)
-        if colorRev then
-            gc_draw(TEXTURE.recRevBG, revQuad, 0, 10)
-        else
-            GC.setShader(SHADER.swapRG)
-            gc_draw(TEXTURE.recRevBG, revQuad, 0, 10)
-            GC.setShader()
-        end
-    end
     gc_setColor(1, 1, 1, .2)
     gc_rectangle('fill', x, y, w, 3)
     gc_rectangle('fill', x, y + 3, 3, h - 3)
@@ -145,6 +136,11 @@ local pw, ph = 1200, 300
 local noW = 160
 local entryH = 100
 local entryGap = 10
+local rankColor = {
+    [1] = { COLOR.HEX 'FFD700FF' },
+    [2] = { COLOR.HEX 'D0D0D0FF' },
+    [3] = { COLOR.HEX 'CD7F32FF' },
+}
 function scene.draw()
     DrawBG(26)
 
@@ -175,21 +171,34 @@ function scene.draw()
             gc_setColor(0, 0, 0, .15)
             gc_rectangle('fill', 0, 0, noW, entryH)
             setFont(70)
-            gc_setColor(COLOR.LG)
-            gc_printf(i, 0, 0, noW - 10, 'right')
+            gc_setColor(rankColor[i] or clr.T)
+            gc_printf(i, 0, 0, noW - 15, 'right')
             gc_setColor(clr.T)
             gc_print(p.uid, noW + 15, 0, 0, .85)
             setFont(50)
-            gc_printf(p.alt .. "M", 0, 0, pw - 15, 'right')
+            if subPage == 'alt' then
+                gc_printf(p.alt .. "M", 0, 0, pw - 15, 'right')
+            else
+                gc_printf(STRING.time(p.time, 2), 0, 0, pw - 15, 'right')
+            end
             setFont(30)
-            if p.time then
-                gc_printf("F10 in " .. p.time .. "s", 0, 55, pw - 15, 'right')
+            gc_setAlpha(.42)
+            if subPage == 'alt' then
+                if p.time then
+                    gc_printf(STRING.time(p.time, 2), 0, 55, pw - 15, 'right')
+                else
+                    gc_printf("-′--.--″", 0, 55, pw - 15, 'right')
+                end
+            else
+                gc_printf(p.alt .. "M", 0, 55, pw - 15, 'right')
             end
             gc_setColor(1, 1, 1, .1)
-            gc_print(p.hid, noW + 18, 65, 0, .8)
+            gc_print(p.hid, noW + 18, 68, 0, .6)
             gc_translate(0, entryH + entryGap)
         end
         maxScroll = math.max((entryH + entryGap) * (#l - 4), 0)
+        scroll = math.min(scroll, maxScroll)
+
         gc_pop()
     else
         gc_setColor(clr.D)
@@ -199,6 +208,7 @@ function scene.draw()
         gc_setLineWidth(26)
         local t = -love.timer.getTime() * 26
         gc_arc('line', 'open', pw / 2, ph + 260, 200, t, t + 2.6)
+        scroll, maxScroll = 0, 0
     end
 end
 
