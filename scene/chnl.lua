@@ -155,7 +155,7 @@ local buttonContent = {
         gc_setColor(0, 0, 0, .42)
         gc_print("DISCORD", 22, 6 + 6, 0, .9)
         gc_print("JOIN OUR DISCORD COMMUNITY", 26, 62 + 3, 0, .36)
-        gc_setColor(clr.LT)
+        gc_setColor(.6, .7, .9)
         gc_print("DISCORD", 22, 6, 0, .9)
         gc_print("JOIN OUR DISCORD COMMUNITY", 26, 62, 0, .36)
     end,
@@ -167,7 +167,7 @@ local buttonContent = {
         gc_setColor(0, 0, 0, .42)
         gc_print("GITHUB", 22, 6 + 6, 0, .9)
         gc_print("OPEN THE GITHUB REPOSITORY", 26, 62 + 3, 0, .36)
-        gc_setColor(clr.LT)
+        gc_setColor(.6, .6, .6)
         gc_print("GITHUB", 22, 6, 0, .9)
         gc_print("OPEN THE GITHUB REPOSITORY", 26, 62, 0, .36)
     end,
@@ -232,14 +232,14 @@ scene.widgetList = {
     WIDGET.new {
         type = 'button',
         pos = { .5, .5 }, x = (-btnW - gap) / 4, y = btnY + 3 * btnH, w = (btnW - gap) / 2, h = btnH - gap,
-        color = clr.button,
+        color = { COLOR.HEX '2A5697FF' },
         sound_hover = 'menutap',
         onClick = function() love.keypressed('5') end,
     },
     WIDGET.new {
         type = 'button',
         pos = { .5, .5 }, x = (btnW + gap) / 4, y = btnY + 3 * btnH, w = (btnW - gap) / 2, h = btnH - gap,
-        color = clr.button,
+        color = { COLOR.HEX '424242FF' },
         sound_hover = 'menutap',
         onClick = function() love.keypressed('6') end,
     },
