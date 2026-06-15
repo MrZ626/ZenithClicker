@@ -21,6 +21,7 @@ RevUnlocked = false
 UsingTouch = MOBILE
 local usingTouch = UsingTouch
 local revHold = {}
+local lastTimeRemain -- For checking if daily challenge should update
 
 ---@type Zenitha.Scene
 local scene = {}
@@ -470,11 +471,11 @@ function scene.update(dt)
 
     if not GAME.playing and TASK.lock('dcTimer', 1) then
         local timeRemain = 86400 - (3600 * os.date("!%H") + 60 * os.date("!%M") + os.date("!%S"))
-        if timeRemain < 0 then
+        if timeRemain > lastTimeRemain then
             RefreshDaily()
             GAME.refreshDailyChallengeText()
-            timeRemain = timeRemain + 86400
         end
+        lastTimeRemain = timeRemain
         TEXTS.dcTimer:set(os.date("!%H:%M:%S", timeRemain))
     end
 end
