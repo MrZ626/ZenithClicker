@@ -1109,7 +1109,15 @@ function GAME.upFloor()
     if GAME.floor >= 10 then
         GAME.f10Time = love.timer.getTime()
         if GAME.gigaspeed then
-            if GAME.time < STAT.minTime then
+            if DailyActived then
+                if roundTime < STAT.dailyFast then
+                    STAT.dailyFast = roundTime
+                    STAT.dailyDate = os.date("%y.%m.%d %H:%M%p")
+                    SaveStat()
+                    DailyNeedSubmit = true
+                end
+            end
+            if roundTime < STAT.minTime then
                 STAT.minTime = roundTime
                 STAT.timeDate = os.date("%y.%m.%d %H:%M%p")
                 SaveStat()
@@ -2479,35 +2487,37 @@ function GAME.finish(reason)
         if DailyActived then
             STAT.dzp = max(STAT.dzp, zpGain)
             STAT.peakDZP = max(STAT.peakDZP, STAT.dzp)
-            STAT.dailyBest = max(STAT.dailyBest, zpGain)
-            if GAME.floor >= 10 and GAME.comboStr:find('r') then
-                if not STAT.dailyMastered then
-                    STAT.dailyMastered = true
-                    STAT.vipListCount = STAT.vipListCount + 1
-                    SubmitAchv('vip_list', STAT.vipListCount)
-                end
-                if GAME.comboStr:count('r') >= 2 then
-                    IssueAchv('its_kinda_rare')
+            if zpGain > STAT.dailyBest then
+                STAT.dailyBest = zpGain
+                DailyNeedSubmit = true
+            end
+            if GAME.floor >= 10 then
+                if GAME.comboStr:find('r') then
+                    if not STAT.dailyMastered then
+                        STAT.dailyMastered = true
+                        STAT.vipListCount = STAT.vipListCount + 1
+                        SubmitAchv('vip_list', STAT.vipListCount)
+                    end
+                    if GAME.comboStr:count('r') >= 2 then
+                        IssueAchv('its_kinda_rare')
+                    end
                 end
             end
-            if GAME.totalQuest >= 20 and STAT.mod == 'vanilla' and not TestMode and SupportCurl then
-                local curl =
-                    SYSTEM == 'Windows' and [[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H "Content-Type: application/json" -d "$1"]] or
-                    [[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H 'Content-Type: application/json' -d '$1']]
-                if curl then
-                    local json = JSON.encode {
-                        hid = STAT.hid,
-                        uid = STAT.uid,
-                        combo = GAME.comboStr,
-                        alt = GAME.roundHeight,
-                        time = GAME.gigaTime and roundUnit(GAME.gigaTime, .001),
-                    }
-                    if SYSTEM == 'Windows' then json = json:gsub('"', [[\"]]) end
-                    DAILYCMD = curl:repD(json)
-                    ASYNC.runCmd('submitDaily', DAILYCMD)
-                    MSG('dark', "Submitting Daily Challenge score...")
-                end
+        end
+        if DailyNeedSubmit then
+            if STAT.mod == 'vanilla' and not TestMode and SupportCurl then
+                DAILYCMD = CurlCMD {
+                    act = 'submit',
+                    hid = STAT.hid,
+                    uid = STAT.uid,
+                    combo = GAME.comboStr,
+                    alt = GAME.roundHeight,
+                    time = GAME.gigaTime and roundUnit(GAME.gigaTime, .001),
+                }
+                ASYNC.runCmd('submitDaily', DAILYCMD)
+                MSG('dark', "Submitting Daily Challenge score...")
             end
+            DailyNeedSubmit = false
         end
 
         -- Update ZP

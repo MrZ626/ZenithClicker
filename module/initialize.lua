@@ -1,4 +1,14 @@
 UPDCMD = "curl -s -X GET https://api.github.com/repos/MrZ626/ZenithClicker/releases/latest"
+function CurlCMD(data)
+    local json = JSON.encode(data)
+    if SYSTEM == 'Windows' then
+        json = json:gsub('"', [[\"]])
+        return ([[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H "Content-Type: application/json" -d "$1"]]):repD(json)
+    else
+        return ([[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H 'Content-Type: application/json' -d '$1']]):repD(json)
+    end
+end
+
 if SYSTEM == "Windows" or SYSTEM == "Linux" then
     SupportCurl = true
 elseif SYSTEM == "Android" then

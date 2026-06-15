@@ -673,6 +673,7 @@ function InitProfile()
         peakZP = 0,
         peakDZP = 0,
         dailyBest = 0,
+        dailyFast = 1e99,
         dailyMastered = false,
         lastDay = 0,
         vipListCount = 0,
@@ -1380,6 +1381,7 @@ function RefreshDaily()
             STAT.zp = MATH.expApproach(STAT.zp, 0, dayPast * .026)
             STAT.dzp = MATH.expApproach(STAT.dzp, 0, dayPast * .0626)
             STAT.dailyBest = 0
+            STAT.dailyFast = 1e99
             STAT.dailyMastered = false
             LOG('info', "ZP: " .. math.floor(oldZP / 1000 + .5) .. "k -> " .. math.floor(STAT.zp / 1000 + .5) .. "k")
             LOG('info', "DZP: " .. math.floor(oldDZP) .. " -> " .. math.floor(STAT.dzp))
@@ -1397,6 +1399,7 @@ function RefreshDaily()
 
         DailyActived = false
         DailyAvailable = false
+        DailyNeedSubmit = false
 
         local freq = { 3, 3, 2, 5, 3, 5, 4, 4, 2 }
         while #DAILY < modCount do
@@ -1783,13 +1786,15 @@ function Daemon_Slow()
             if suc and res then
                 if res.error then
                     MSG('warn', "Daily Challenge submission failed:\n" .. res.error, duration * .626)
-                else
+                elseif next(res) then
                     MSG('check',
                         "Daily Challenge score submitted!\n" ..
                         "Alt #" .. tostring(res.altRank) .. " of " .. tostring(res.altCount) .. ", top: " .. tostring(res.altBest) .. "m\n" ..
                         "SR #" .. tostring(res.timeRank) .. " of " .. tostring(res.timeCount) .. ", top: " .. tostring(res.timeBest) .. "s",
                         duration)
                     SFX.play('pause_continue', 1, 0, Tone(-5))
+                else
+                    MSG('check', "Daily Challenge submission failed:\nNot a better score", duration)
                 end
                 DAILYCMD = nil
             else
