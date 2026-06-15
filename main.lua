@@ -1391,7 +1391,9 @@ function RefreshDaily()
         STAT.lastDay = os.time()
     end
 
+    local function modCardSorter(a, b) return ModData.prio_card[a] < ModData.prio_card[b] end
     DailyHistory = {}
+    DailyHistoryDisp = {}
     local now = os.time()
     for x = -4, 0 do
         local time = now + x * 86400
@@ -1420,10 +1422,11 @@ function RefreshDaily()
                 DAILY[r2] = 'r' .. DAILY[r2]
             end
         end
-        DailyHistory[-x] = table.concat(TABLE.sort(TABLE.copy(DAILY)))
-        if x == 0 then
-            LOG('info', "Today's Daily Challenge: " .. table.concat(DAILY, ' '))
-        end
+
+        local sortedDaily = TABLE.copy(DAILY)
+        DailyHistory[-x] = table.concat(TABLE.sort(sortedDaily))
+        DailyHistoryDisp[-x] = table.concat(TABLE.sort(sortedDaily, modCardSorter), " ")
+        if x == 0 then LOG('info', "Today's Daily Challenge: " .. table.concat(DAILY, ' ')) end
     end
     -- for k, v in next, DailyHistory do print(k, table.concat(v, " ")) end
 

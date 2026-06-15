@@ -10,6 +10,8 @@ local clr = {
 }
 local colorRev = false
 local scroll, scroll1, maxScroll
+local noteText = ""
+local noteText2 = ""
 
 local M = GAME.mod
 
@@ -24,6 +26,7 @@ local function refreshBtn()
     for i = 0, 4 do
         L['day' .. i].fillColor = page == i and clr.D3 or clr.D2
     end
+    TASK.unlock('text_lastUpdate')
 end
 
 local function sendReq(combo)
@@ -60,6 +63,7 @@ function scene.load()
     maxScroll = 0
 
     page, subPage = 0, 'alt'
+    TASK.unlock('text_lastUpdate')
     refreshBtn()
 
     switchPage(0)
@@ -80,6 +84,9 @@ function scene.keyDown(key, isRep)
     if key == 'escape' or key == 'f2' then
         SFX.play('menuclick')
         SCN.back('none')
+    elseif key == 'space' then
+        switchPage(0)
+        SFX.play('menuclick')
     elseif tonumber(key) and MATH.between(tonumber(key), 0, 4) then
         switchPage(tonumber(key))
         SFX.play('menuclick')
@@ -100,6 +107,13 @@ function scene.resize()
     scroll, scroll1 = 0, 0
 end
 
+local noteTextPrefix = {
+    [0] = "Today's combo:",
+    "Yesterday's combo:",
+    "Combo 2 days ago:",
+    "Combo 3 days ago:",
+    "Combo 4 days ago:",
+}
 function scene.update(dt)
     local y0 = scroll1
     if math.abs(y0 - scroll) > .1 then
@@ -108,6 +122,21 @@ function scene.update(dt)
             w._y = w._y + (y0 - scroll1)
         end
         GAME.bgH = math.max(GAME.bgH + (y0 - scroll1) / 355, 0)
+    end
+    if TASK.lock('text_lastUpdate', .1) then
+        local L = LB[DailyHistory[page]]
+        noteText2 = ""
+        if L.lastUpd then
+            local t = os.time() - L.lastUpd
+            if t <= 25 then
+                noteText2 = "(just updated)"
+            elseif t < 60 then
+                noteText2 = "(last update: " .. t .. "s ago)"
+            else
+                noteText2 = "(last update: " .. (math.floor(t / 60)) .. "m ago)"
+            end
+        end
+        noteText = noteTextPrefix[page] .. " " .. DailyHistoryDisp[page]
     end
     GAME.height = GAME.bgH
 end
@@ -168,14 +197,8 @@ function scene.draw()
         gc_translate(0, 360)
         gc_setColor(1, 1, 1, .3)
         setFont(30)
-        local t = os.time() - L.lastUpd
-        if t <= 5 then
-            GC.mStr("Latest!", pw / 2, -53)
-        elseif t < 60 then
-            GC.mStr("Last update: " .. t .. "s ago", pw / 2, -53)
-        else
-            GC.mStr("Last update: " .. (math.floor(t / 60)) .. "m ago", pw / 2, -53)
-        end
+        gc_printf(noteText, 0, -53, pw, 'center')
+        gc_printf(noteText2, 0, -53, pw - 26, 'right')
         for i = 1, #l do
             local p = l[i]
             gc_setColor(clr.D)
