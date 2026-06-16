@@ -1,6 +1,7 @@
 ---@type Zenitha.Scene
 local scene = {}
 local firstClear
+local touchPressing
 
 EndText = GC.newText(FONT.get(70))
 EndText2 = GC.newText(FONT.get(70), "ZENITH CLICKER!")
@@ -171,6 +172,7 @@ do
 end
 
 function scene.load()
+    touchPressing = false
     firstClear = SCN.args[1]
     t = 0
     e = 1
@@ -218,8 +220,12 @@ function scene.keyDown(key, isRep)
     return true
 end
 
+function scene.touchDown() touchPressing = true end
+
+function scene.touchUp() touchPressing = false end
+
 function scene.update(dt)
-    if love.keyboard.isDown('space') and t < 98.72 then
+    if (touchPressing or love.keyboard.isDown('space')) and t < 98.72 then
         dt = dt * 12.6
     end
     if t < 120 then
