@@ -1727,7 +1727,7 @@ scene.widgetList = {
         floatText = "NO DATA",
         onPress = function(k)
             if not DailyAvailable then return end
-            if k == 2 then
+            if k == 2 or kbIsDown('lctrl', 'rctrl') or next(revHold) then
                 SFX.play('menuhit2')
                 SCN.go('leaderboard', 'none')
             else
