@@ -3133,10 +3133,11 @@ function GAME.update(dt)
     -- Life leak
     if GAME.lifeLeak > 0 then
         GAME.fullHealth = GAME.fullHealth - dt * GAME.timerMul * GAME.lifeLeak * (M.DP == 0 and 1 or .5)
-        GAME.life = min(GAME.life, GAME.fullHealth)
-        GAME.life2 = min(GAME.life2, GAME.fullHealth)
-        if GAME.life <= 0 and GAME.life2 <= 0 then
+        if GAME.fullHealth <= 0 then
             GAME.takeDamage(1e99, 'wrong')
+        else
+            GAME.life = min(GAME.life, GAME.fullHealth)
+            GAME.life2 = min(GAME.life2, GAME.fullHealth)
         end
     end
 
