@@ -1919,12 +1919,22 @@ function Daemon_Fast()
             -- BGM time control
             if BgmLooping then
                 if BGM.tell() > BgmLooping[2] then
-                    BGM.set('all', 'seek', BgmLooping[1] + (BGM.tell() - BgmLooping[2]))
+                    local pass = BGM.tell() - BgmLooping[2]
+                    if pass < .26 then
+                        BGM.set('all', 'seek', BgmLooping[1] + pass)
+                    else
+                        BGM.set('all', 'seek', BgmLooping[1])
+                    end
                 end
             end
             if BgmNeedSkip then
                 if BGM.tell() > BgmNeedSkip[1] then
-                    BGM.set('all', 'seek', BgmNeedSkip[2] + (BGM.tell() - BgmNeedSkip[1]))
+                    local pass = BGM.tell() - BgmNeedSkip[1]
+                    if pass < .26 then
+                        BGM.set('all', 'seek', BgmNeedSkip[2] + pass)
+                    else
+                        BGM.set('all', 'seek', BgmNeedSkip[2])
+                    end
                     BgmNeedSkip = false
                 end
             end

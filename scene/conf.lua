@@ -1068,7 +1068,7 @@ pages[3] = {
         fontSize = 30, textColor = clr.LT, text = "+30s",
         onClick = function()
             TASK.removeTask_code(Task_MusicEnd)
-            BGM.set('all', 'seek', math.min(BGM.tell() + 30, BGM.getDuration()))
+            BGM.set('all', 'seek', math.min(BGM.tell() + 30, BGM.getDuration() - .26))
         end,
     },
     WIDGET.new { -- no loop
