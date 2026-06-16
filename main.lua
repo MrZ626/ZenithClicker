@@ -1274,7 +1274,7 @@ function Task_MusicEnd(manual)
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
     elseif BgmPlaying == 'f6' or BgmPlaying == 'f6r' then
         outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 4 * 60 / D.bpm
+        BgmNeedStop = outroStart + 8 * 60 / D.bpm
     elseif BgmPlaying == 'f7' or BgmPlaying == 'f7r' then
         outroStart = D.loop[2]
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
@@ -1286,13 +1286,13 @@ function Task_MusicEnd(manual)
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
     elseif BgmPlaying == 'f10' or BgmPlaying == 'f10r' then
         local t = BgmPlaying == 'f10' and 4.2 or 6.2
-        if BGM.tell() < 28 * 4 * 60 / D.bpm then
+        if BGM.tell() < 56 * 4 * 60 / D.bpm then
             BGM.stop(t)
             TASK.yieldT(t)
-        elseif BGM.tell() < 59 * 4 * 60 / D.bpm then
-            BGM.set('all', 'seek', 59 * 4 * 60 / D.bpm)
-            BgmNeedStop = BGM.tell() + 5 * 60 / D.bpm
-        elseif BGM.tell() < 77.25 * 4 * 60 / D.bpm then
+        elseif BGM.tell() < 118 * 4 * 60 / D.bpm then
+            BGM.set('all', 'seek', 118 * 4 * 60 / D.bpm)
+            BgmNeedStop = BGM.tell() + 10 * 60 / D.bpm
+        elseif BGM.tell() < 154.5 * 4 * 60 / D.bpm then
             BGM.stop(t)
             TASK.yieldT(t)
         else
@@ -1300,12 +1300,12 @@ function Task_MusicEnd(manual)
             BgmNeedStop = outroStart + 8 * 60 / D.bpm
         end
     elseif BgmPlaying == 'fomg' then
-        if BGM.tell() > D.loop[1] then
-            outroStart = D.loop[2]
-            BgmNeedStop = outroStart + 13 * 60 / D.bpm
+        if BGM.tell() < D.loop[1] then
+            outroStart = D.loop[2] + 32 * 60 / D.bpm
+            BgmNeedStop = outroStart + 16 * 60 / D.bpm
         else
-            outroStart = D.loop[2] + 16 * 60 / D.bpm
-            BgmNeedStop = outroStart + 8 * 60 / D.bpm
+            outroStart = D.loop[2]
+            BgmNeedStop = outroStart + 26 * 60 / D.bpm
         end
     elseif BgmPlaying == 'tera' then
         outroStart = D.loop[2] + math.random(0, 3) * 8 * 60 / D.bpm
