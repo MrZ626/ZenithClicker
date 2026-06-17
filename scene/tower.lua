@@ -1728,8 +1728,7 @@ scene.widgetList = {
         onPress = function(k)
             if not Daily.available then return end
             if k == 2 or kbIsDown('lctrl', 'rctrl') or next(revHold) then
-                SFX.play('menuhit2')
-                SCN.go('leaderboard', 'none')
+                TryOpenLeaderboard()
             else
                 applyCombo(DAILY)
             end

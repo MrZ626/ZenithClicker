@@ -35,13 +35,7 @@ function scene.keyDown(key, isRep)
         SFX.play('menuhit2')
         SCN.go('splits', 'none')
     elseif key == '4' then
-        if STAT.maxFloor < 10 then
-            SFX.play('no')
-            MSG('warn', "Reach F10 once to unlock the leaderboards!")
-        else
-            SFX.play('menuhit2')
-            SCN.go('leaderboard', 'none')
-        end
+        TryOpenLeaderboard()
     elseif key == '5' then
         SFX.play('menuconfirm')
         love.system.openURL("https://discord.gg/thqhzSn72j")

@@ -1773,6 +1773,16 @@ function UltraVlCheck(id, auto)
     return true
 end
 
+function TryOpenLeaderboard()
+    if STAT.maxFloor < 10 then
+        SFX.play('no')
+        MSG('warn', "Reach F10 once to unlock the leaderboards!")
+    else
+        SFX.play('menuhit2')
+        SCN.go('leaderboard', 'none')
+    end
+end
+
 DiscordState = {}
 function Daemon_Slow()
     TASK.yieldT(1)
