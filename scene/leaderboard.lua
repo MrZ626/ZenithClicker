@@ -71,7 +71,7 @@ function scene.load()
 
     if Daily.cmd and ASYNC.runCmd('submitDaily', Daily.cmd) then
         MSG('info', "Re-submitting Daily Challenge score...")
-        SFX.play('social_invite')
+        SFX.play('social_online')
     end
 end
 

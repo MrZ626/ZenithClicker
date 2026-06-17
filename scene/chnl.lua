@@ -80,9 +80,11 @@ function scene.update()
                 TEXTS.version:set(SYSTEM .. (CONF.oldHitbox and " T" or " V") .. (require 'version'.verStr))
             elseif code:find('34563456345634563456') then
                 _G['UseAltName']()
-                SFX.play('social_dm')
+                MSG('dark', "Alt strings applied")
+                SFX.play('social_online')
             elseif code:find('3434343434') then
                 MSG('dark', OverDevProgressText)
+                SFX.play('social_online')
             elseif code:find('5555555555') then
                 if not TestMode then
                     if STAT.srActive then
