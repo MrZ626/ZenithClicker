@@ -50,30 +50,36 @@ end
 local lastHover
 local hoverHis = {}
 function scene.update()
-    local sel = WIDGET.sel and TABLE.find(scene.widgetList, WIDGET.sel)
-    if sel and sel ~= lastHover then
-        lastHover = sel
-        if #hoverHis >= 20 then table.remove(hoverHis, 1) end
-        table.insert(hoverHis, sel)
-        local code = table.concat(hoverHis)
-        if code:find('12341234123412341234') then
-            SFX.play('warp')
-            SCN.swapTo('ending', 'warp')
-        elseif code:find('5656565656') then
-            if not TestMode then
-                if STAT.srActive then
-                    STAT.srActive = false
-                    SaveStat()
+    if WIDGET.sel ~= lastHover then
+        lastHover = WIDGET.sel
+        if WIDGET.sel then
+            if #hoverHis >= 20 then table.remove(hoverHis, 1) end
+            table.insert(hoverHis, TABLE.find(scene.widgetList, WIDGET.sel))
+            local code = table.concat(hoverHis)
+            if code:find('12341234123412341234') then
+                SFX.play('warp')
+                SCN.swapTo('ending', 'warp')
+            elseif code:find('3434343434') then
+                MSG('dark', OverDevProgressText)
+            elseif code:find('5555555555') then
+                if not TestMode then
+                    if STAT.srActive then
+                        STAT.srActive = false
+                        SaveStat()
+                    end
+                    TestMode = true
+                    SFX.play('maintenance')
+                else
+                    MSG('info', "You are already in test mode!")
                 end
-                TestMode = true
-                SFX.play('maintenance')
+            elseif code:find('6666666666') then
+                SFX.play('cutin_superlobby', 1, 0, Tone(-2))
+                SCN.go('_console')
             else
-                MSG('info', "You are already in test mode!")
+                return
             end
-        else
-            return
+            TABLE.clear(hoverHis)
         end
-        TABLE.clear(hoverHis)
     end
 end
 

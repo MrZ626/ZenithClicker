@@ -759,29 +759,16 @@ pages[2] = {
             if #data <= 26 then
                 if data == '' then
                     MSG('dark', "No data in clipboard")
-                elseif data == 'cmd' then
-                    SFX.play('cutin_superlobby', 1, 0, Tone(-2))
-                    SCN.go('_console')
                 elseif data == 'old_hitbox' then
                     CONF.oldHitbox = not CONF.oldHitbox
                     MSG('dark', "Force old hitbox: " .. (CONF.oldHitbox and "ON" or "OFF"))
                     SFX.play(CONF.oldHitbox and 'social_online' or 'social_offline')
                     TEXTS.version:set(SYSTEM .. (CONF.oldHitbox and " T" or " V") .. (require 'version'.verStr))
-                elseif data == 'dev' then
-                    MSG('dark', OverDevProgressText)
                 elseif data == 'UseAltName' then
                     UseAltName()
                     SFX.play('social_dm')
                 else
-                    local msg = "Invalid code '" .. data .. "' in clipboard"
-                    if MATH.roll(.26) then
-                        msg = msg .. "\n" .. TABLE.getRandom {
-                            "Try 'cmd'",
-                            "Try 'old_hitbox'",
-                            "Try 'dev'",
-                        }
-                    end
-                    MSG('dark', msg)
+                    MSG('dark', "Invalid data '" .. data .. "' in clipboard")
                     SFX.play('staffwarning')
                     return
                 end
