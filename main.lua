@@ -1777,6 +1777,9 @@ function TryOpenLeaderboard()
     if STAT.maxFloor < 10 then
         SFX.play('no')
         MSG('warn', "Reach F10 once to unlock the leaderboards!")
+    elseif not SupportCurl then
+        SFX.play('no')
+        MSG('warn', "Leaderboard is not supported on this device (no cUrl)")
     else
         SFX.play('menuhit2')
         SCN.go('leaderboard', 'none')
