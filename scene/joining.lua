@@ -44,6 +44,7 @@ function scene.update(dt)
                 STAT.srActive = SCN.args[1] == 'reset'
                 Initialize(true)
                 GAME.clearResultStat()
+                collectgarbage()
             end
             if not initialized then
                 BGM.setMaxSources(42)

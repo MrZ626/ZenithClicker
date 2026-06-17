@@ -681,7 +681,7 @@ function DrawBG(brightness, showRuler)
     -- gc.print(floor(GAME.bgH), 10, 10, 0, 2.6)
 end
 
-local function drawPBline(h, pb, spd, textObj)
+function DrawPBline(h, pb, spd, textObj)
     gc_replaceTransform(SCR.xOy_r)
 
     local obj = textObj or TEXTS.linePB
@@ -707,7 +707,7 @@ function scene.draw()
     local t = love.timer.getTime()
     if GAME.zenithTraveler then
         DrawBG(100, true)
-        drawPBline(STAT.maxHeight, true)
+        DrawPBline(STAT.maxHeight, true)
         return
     else
         DrawBG(CONF.bgBrightness, true)
@@ -735,12 +735,12 @@ function scene.draw()
         end
 
         -- PB line
-        drawPBline(GAME.prevPB, true)
+        DrawPBline(GAME.prevPB, true)
 
         -- KM line
         if GAME.floor >= 10 then
             gc_setColor(1, 1, 1, GAME.uiHide)
-            drawPBline(MATH.roundUnit(GAME.bgH, 1000), false, 6, TEXTS.lineKM)
+            DrawPBline(MATH.roundUnit(GAME.bgH, 1000), false, 6, TEXTS.lineKM)
         end
 
         local panelH = 697 + GAME.uiHide * (420 + GAME.height / 6.2)
