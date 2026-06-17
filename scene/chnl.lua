@@ -55,10 +55,25 @@ function scene.update()
         lastHover = sel
         if #hoverHis >= 20 then table.remove(hoverHis, 1) end
         table.insert(hoverHis, sel)
-        if table.concat(hoverHis) == '12341234123412341234' then
+        local code = table.concat(hoverHis)
+        if code:find('12341234123412341234') then
             SFX.play('warp')
             SCN.swapTo('ending', 'warp')
+        elseif code:find('5656565656') then
+            if not TestMode then
+                if STAT.srActive then
+                    STAT.srActive = false
+                    SaveStat()
+                end
+                TestMode = true
+                SFX.play('maintenance')
+            else
+                MSG('info', "You are already in test mode!")
+            end
+        else
+            return
         end
+        TABLE.clear(hoverHis)
     end
 end
 

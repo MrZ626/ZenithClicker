@@ -767,13 +767,6 @@ pages[2] = {
                     MSG('dark', "Force old hitbox: " .. (CONF.oldHitbox and "ON" or "OFF"))
                     SFX.play(CONF.oldHitbox and 'social_online' or 'social_offline')
                     TEXTS.version:set(SYSTEM .. (CONF.oldHitbox and " T" or " V") .. (require 'version'.verStr))
-                elseif data == 'test' then
-                    if STAT.srActive then
-                        STAT.srActive = false
-                        SaveStat()
-                    end
-                    TestMode = true
-                    SFX.play('maintenance')
                 elseif data == 'dev' then
                     MSG('dark', OverDevProgressText)
                 elseif data == 'UseAltName' then
@@ -785,7 +778,6 @@ pages[2] = {
                         msg = msg .. "\n" .. TABLE.getRandom {
                             "Try 'cmd'",
                             "Try 'old_hitbox'",
-                            "Try 'test'",
                             "Try 'dev'",
                         }
                     end
