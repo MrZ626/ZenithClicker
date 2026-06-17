@@ -1,4 +1,5 @@
 love.window.setIcon(love.image.newImageData('assets/icon.png'))
+love.mouse.setVisible(false)
 
 require 'Zenitha'
 
@@ -21,7 +22,6 @@ local gc_setColor, gc_setLineWidth, gc_setLineJoin = gc.setColor, gc.setLineWidt
 local gc_draw, gc_line = gc.draw, gc.line
 local gc_mRect = GC.mRect
 
-love.mouse.setVisible(false)
 ZENITHA.globalEvent.drawCursor = NULL
 ZENITHA.globalEvent.clickFX = NULL
 function ZENITHA.globalEvent.fileDrop(file)
@@ -63,7 +63,6 @@ local function confUpdate()
     TASK.removeTask_code(task_saveConf)
     TASK.new(task_saveConf)
 end
-
 local KBisDown = love.keyboard.isDown
 function ZENITHA.globalEvent.keyDown(key, isRep)
     if isRep then return end
@@ -141,34 +140,32 @@ end
 
 function ZENITHA.globalEvent.quit() SaveStat() end
 
-do -- Auto mute when unfocused
-    local function task_autoSoundOff()
-        coroutine.yield()
-        while true do
-            local dt = coroutine.yield()
-            local v = math.max(love.audio.getVolume() - dt * 2.6, 0)
-            love.audio.setVolume(v)
-            if v == 0 then return end
-        end
+local function task_autoSoundOff()
+    coroutine.yield()
+    while true do
+        local dt = coroutine.yield()
+        local v = math.max(love.audio.getVolume() - dt * 2.6, 0)
+        love.audio.setVolume(v)
+        if v == 0 then return end
     end
-    local function task_autoSoundOn()
-        coroutine.yield()
-        while true do
-            local dt = coroutine.yield()
-            local v = math.min(love.audio.getVolume() + dt * 2.6, 1)
-            love.audio.setVolume(v)
-            if v == 1 then return end
-        end
+end
+local function task_autoSoundOn()
+    coroutine.yield()
+    while true do
+        local dt = coroutine.yield()
+        local v = math.min(love.audio.getVolume() + dt * 2.6, 1)
+        love.audio.setVolume(v)
+        if v == 1 then return end
     end
-    function ZENITHA.globalEvent.focus(f)
-        if not CONF.autoMute then return end
-        if f then
-            TASK.removeTask_code(task_autoSoundOff)
-            TASK.new(task_autoSoundOn)
-        else
-            TASK.removeTask_code(task_autoSoundOn)
-            TASK.new(task_autoSoundOff)
-        end
+end
+function ZENITHA.globalEvent.focus(f)
+    if not CONF.autoMute then return end
+    if f then
+        TASK.removeTask_code(task_autoSoundOff)
+        TASK.new(task_autoSoundOn)
+    else
+        TASK.removeTask_code(task_autoSoundOn)
+        TASK.new(task_autoSoundOff)
     end
 end
 
@@ -1511,9 +1508,9 @@ InitProfile()
 LoadSave()
 Initialize()
 
-RefreshDaily()
 TABLE.update(TextColor, BaseTextColor)
 TABLE.update(ShadeColor, BaseShadeColor)
+RefreshDaily()
 TEXTS.version:set(SYSTEM .. (CONF.oldHitbox and " T" or " V") .. (require 'version'.verStr))
 GAME.refreshCurrentCombo()
 
