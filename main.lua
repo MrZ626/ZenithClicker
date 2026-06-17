@@ -1363,6 +1363,29 @@ function ReloadTexts()
     if SCN.cur == 'achv' then RefreshAchvList() end
 end
 
+function DailyRequest(act, data)
+    if STAT.mod ~= 'vanilla' or not SupportCurl then return end
+    if act == 'submit' then
+        if TestMode then return end
+        DAILYCMD = CurlCMD {
+            act = 'submit',
+            hid = STAT.hid,
+            uid = STAT.uid,
+            combo = GAME.comboStr,
+            alt = GAME.roundHeight,
+            time = GAME.gigaTime and MATH.roundUnit(GAME.gigaTime, .001),
+        }
+        ASYNC.runCmd('submitDaily', DAILYCMD)
+        MSG('dark', "Submitting Daily Challenge score...")
+    elseif act == 'fetch' then
+        LB[data] = LB[data] or {}
+        ASYNC.runCmd('fetchLeaderboard', CurlCMD {
+            act = 'fetch',
+            combo = data,
+        })
+    end
+end
+
 VALENTINE = false
 VALENTINE_TEXT = "FLOOD THE TOWER SIDE BY SIDE WITH WHAT COULD BE"
 XMAS = false
@@ -1391,9 +1414,12 @@ function RefreshDaily()
         STAT.lastDay = os.time()
     end
 
-    local function modCardSorter(a, b) return ModData.prio_card[a] < ModData.prio_card[b] end
     DailyHistory = {}
     DailyHistoryDisp = {}
+    DailyActived = false
+    DailyAvailable = false
+    DailyNeedSubmit = false
+    local function modCardSorter(a, b) return ModData.prio_card[a] < ModData.prio_card[b] end
     local now = os.time()
     for x = -4, 0 do
         local time = now + x * 86400
@@ -1403,9 +1429,6 @@ function RefreshDaily()
         local modCount = math.ceil(9 - math.log(math.random(11, 42), 1.62)) -- 5 444 3333 2222
         DAILY = {}
 
-        DailyActived = false
-        DailyAvailable = false
-        DailyNeedSubmit = false
 
         local freq = { 3, 3, 2, 5, 3, 5, 4, 4, 2 }
         while #DAILY < modCount do

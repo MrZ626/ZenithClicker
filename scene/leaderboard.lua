@@ -29,24 +29,14 @@ local function refreshBtn()
     TASK.unlock('text_lastUpdate')
 end
 
-local function sendReq(combo)
-    LB[combo] = LB[combo] or {}
-    if STAT.mod == 'vanilla' and SupportCurl then
-        ASYNC.runCmd('fetchLeaderboard', CurlCMD {
-            act = 'fetch',
-            combo = combo,
-        })
-    end
-end
-
 local function switchPage(p)
     local combo = DailyHistory[p]
     if LB[combo] and LB[combo].lastUpd then
         if os.time() - LB[combo].lastUpd >= 26 then
-            sendReq(combo)
+            DailyRequest('fetch', combo)
         end
     elseif TASK.lock('lb_daily_' .. p, p == 1 and 26 or 1e99) then
-        sendReq(combo)
+        DailyRequest('fetch', combo)
     end
     page = p
     refreshBtn()

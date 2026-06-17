@@ -2505,18 +2505,7 @@ function GAME.finish(reason)
             end
         end
         if DailyNeedSubmit then
-            if STAT.mod == 'vanilla' and not TestMode and SupportCurl then
-                DAILYCMD = CurlCMD {
-                    act = 'submit',
-                    hid = STAT.hid,
-                    uid = STAT.uid,
-                    combo = GAME.comboStr,
-                    alt = GAME.roundHeight,
-                    time = GAME.gigaTime and roundUnit(GAME.gigaTime, .001),
-                }
-                ASYNC.runCmd('submitDaily', DAILYCMD)
-                MSG('dark', "Submitting Daily Challenge score...")
-            end
+            DailyRequest('submit')
             DailyNeedSubmit = false
         end
 
@@ -2747,7 +2736,7 @@ function GAME.finish(reason)
         local soat = SubmitAchv('the_spike_of_all_time', GAME.maxSpikeWeak)
         SubmitAchv('the_spike_of_all_time_plus', GAME.maxSpike, soat)
         SubmitAchv('slayer_of_the_tower', GAME.koCount)
-        SubmitAchv('moon_struck', MATH.roundUnit(abs(GAME.roundHeight - 2202.8), .1))
+        SubmitAchv('moon_struck', roundUnit(abs(GAME.roundHeight - 2202.8), .1))
         if GAME.roundHeight >= 6200 then IssueSecret('fomg') end
         SubmitAchv('plonk', GAME.achv_plonkH or GAME.roundHeight)
         SubmitAchv('psychokinesis', GAME.achv_noManualFlipH or GAME.roundHeight)
@@ -3126,7 +3115,7 @@ function GAME.update(dt)
 
         -- KM line text
         if TASK.lock('kmTimer', 1) then
-            TEXTS.lineKM:set(tostring(MATH.roundUnit(GAME.bgH, 1000)))
+            TEXTS.lineKM:set(tostring(roundUnit(GAME.bgH, 1000)))
         end
     end
 
