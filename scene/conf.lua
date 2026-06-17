@@ -767,9 +767,6 @@ pages[2] = {
                     MSG('dark', "Force old hitbox: " .. (CONF.oldHitbox and "ON" or "OFF"))
                     SFX.play(CONF.oldHitbox and 'social_online' or 'social_offline')
                     TEXTS.version:set(SYSTEM .. (CONF.oldHitbox and " T" or " V") .. (require 'version'.verStr))
-                elseif data == 'true_ending' then
-                    SFX.play('warp')
-                    SCN.go('ending', 'warp')
                 elseif data == 'test' then
                     if STAT.srActive then
                         STAT.srActive = false
@@ -779,6 +776,9 @@ pages[2] = {
                     SFX.play('maintenance')
                 elseif data == 'dev' then
                     MSG('dark', OverDevProgressText)
+                elseif data == 'true_ending' then
+                    SFX.play('warp')
+                    SCN.go('ending', 'warp')
                 elseif data == 'UseAltName' then
                     UseAltName()
                     SFX.play('social_dm')
@@ -787,13 +787,9 @@ pages[2] = {
                     if MATH.roll(.26) then
                         msg = msg .. "\n" .. TABLE.getRandom {
                             "Try 'cmd'",
-                            "Try 'cooldown'",
                             "Try 'old_hitbox'",
                             "Try 'test'",
                             "Try 'dev'",
-                            "Try 'repo'",
-                            MATH.coin("Try 'mp'", "Try 'music'"),
-                            "Try 'f" .. STAT.maxFloor .. "'",
                             STAT.clicker and "Try 'true_ending'" or nil,
                         }
                     end
