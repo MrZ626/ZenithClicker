@@ -1390,6 +1390,13 @@ VALENTINE = false
 VALENTINE_TEXT = "FLOOD THE TOWER SIDE BY SIDE WITH WHAT COULD BE"
 XMAS = false
 ZDAY = false
+Daily = {
+    history = {},
+    historyDisp = {},
+    actived = false,
+    available = false,
+    needSubmit = false,
+}
 function RefreshDaily()
     local dateToday = os.date("!*t", os.time())
     local dateLastDay = os.date("!*t", math.max(STAT.lastDay, 946656000)) -- at least 2000/1/1
@@ -1414,11 +1421,9 @@ function RefreshDaily()
         STAT.lastDay = os.time()
     end
 
-    DailyHistory = {}
-    DailyHistoryDisp = {}
-    DailyActived = false
-    DailyAvailable = false
-    DailyNeedSubmit = false
+    Daily.actived = false
+    Daily.available = false
+    Daily.needSubmit = false
     local function modCardSorter(a, b) return ModData.prio_card[a] < ModData.prio_card[b] end
     local now = os.time()
     for x = -4, 0 do
@@ -1447,8 +1452,8 @@ function RefreshDaily()
         end
 
         local sortedDaily = TABLE.copy(DAILY)
-        DailyHistory[-x] = table.concat(TABLE.sort(sortedDaily))
-        DailyHistoryDisp[-x] = table.concat(TABLE.sort(sortedDaily, modCardSorter), " ")
+        Daily.history[-x] = table.concat(TABLE.sort(sortedDaily))
+        Daily.historyDisp[-x] = table.concat(TABLE.sort(sortedDaily, modCardSorter), " ")
         if x == 0 then LOG('info', "Today's Daily Challenge: " .. table.concat(DAILY, ' ')) end
     end
     -- for k, v in next, DailyHistory do print(k, table.concat(v, " ")) end

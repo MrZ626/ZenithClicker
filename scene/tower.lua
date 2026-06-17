@@ -853,7 +853,7 @@ function scene.draw()
         gc_setColor(TextColor)
         gc_mDraw(TEXTS.dcBest, -200, 100, nil, .626)
         gc_mDraw(TEXTS.dcTimer, -200, 152, nil, .626)
-        if DailyActived then
+        if Daily.actived then
             gc_setAlpha(.42 + .1 * sin(t * 6.2))
             gc_mRect('fill', -200, 126, 200, 80, 40)
         end
@@ -1726,7 +1726,7 @@ scene.widgetList = {
         floatCornerR = 26,
         floatText = "NO DATA",
         onPress = function(k)
-            if not DailyAvailable then return end
+            if not Daily.available then return end
             if k == 2 or kbIsDown('lctrl', 'rctrl') or next(revHold) then
                 SFX.play('menuhit2')
                 SCN.go('leaderboard', 'none')

@@ -1109,12 +1109,12 @@ function GAME.upFloor()
     if GAME.floor >= 10 then
         GAME.f10Time = love.timer.getTime()
         if GAME.gigaspeed then
-            if DailyActived then
+            if Daily.actived then
                 if roundTime < STAT.dailyFast then
                     STAT.dailyFast = roundTime
                     STAT.dailyDate = os.date("%y.%m.%d %H:%M%p")
                     SaveStat()
-                    DailyNeedSubmit = true
+                    Daily.needSubmit = true
                 end
             end
             if roundTime < STAT.minTime then
@@ -1277,7 +1277,7 @@ function GAME.refreshRPC()
 
     local stateStr
     if GAME.playing then
-        if DailyActived then
+        if Daily.actived then
             stateStr = GAME.teramusic and "Daily SPEEDRUN: " or GAME.gigaspeed and "Daily speedrun: " or "Daily game: "
         else
             stateStr = GAME.teramusic and "SPEEDRUN: " or GAME.gigaspeed and "Speedrun: " or "In game: "
@@ -1421,7 +1421,7 @@ function GAME.refreshCurrentCombo()
         GAME.comboZP = GAME.getComboZP(hand)
         TEXTS.mpPreview:set(GAME.comboMP .. " MP")
         TEXTS.zpPreview:set(("%.2fx ZP"):format(GAME.comboZP))
-        DailyActived =
+        Daily.actived =
             #GAME.getHand(true) == #DAILY and
             TABLE.equal(TABLE.sort(GAME.getHand(true)), TABLE.sort(TABLE.copy(DAILY)))
 
@@ -1586,22 +1586,22 @@ function GAME.refreshDailyChallengeText()
         ("%.0fm  %.0fZP"):format(STAT.dailyBest / GAME.getComboZP(DAILY), STAT.dailyBest)
         or ""
     )
-    DailyAvailable = true
+    Daily.available = true
     for _, v in next, DAILY do
         if v:find('r') then
             if GAME.completion[v:sub(2)] == 0 then
-                DailyAvailable = false
+                Daily.available = false
                 break
             end
         else
             if Cards[v].lock then
-                DailyAvailable = false
+                Daily.available = false
                 break
             end
         end
     end
     local str
-    if DailyAvailable then
+    if Daily.available then
         local sortedDaily = TABLE.copy(DAILY)
         table.sort(sortedDaily, modCardSorter)
         str = "Today's Combo: " .. table.concat(sortedDaily, " ")
@@ -2481,15 +2481,15 @@ function GAME.finish(reason)
 
         -- ZP of current run
         local zpGain = GAME.roundHeight * GAME.comboZP
-        TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, 0, DailyActived and ", 260%" or ""))
+        TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, 0, Daily.actived and ", 260%" or ""))
 
         -- Daily
-        if DailyActived then
+        if Daily.actived then
             STAT.dzp = max(STAT.dzp, zpGain)
             STAT.peakDZP = max(STAT.peakDZP, STAT.dzp)
             if zpGain > STAT.dailyBest then
                 STAT.dailyBest = zpGain
-                DailyNeedSubmit = true
+                Daily.needSubmit = true
             end
             if GAME.floor >= 10 then
                 if GAME.comboStr:find('r') then
@@ -2504,9 +2504,9 @@ function GAME.finish(reason)
                 end
             end
         end
-        if DailyNeedSubmit then
+        if Daily.needSubmit then
             DailyRequest('submit')
-            DailyNeedSubmit = false
+            Daily.needSubmit = false
         end
 
         -- Update ZP
@@ -2518,13 +2518,13 @@ function GAME.finish(reason)
             oldZP < thres1 and oldZP + zpGain or
             thres1 + (oldZP - thres1) * (9 / 10) + (thres2 - thres1) * (1 / 10)
         )
-        if DailyActived then newZP = MATH.clamp(newZP + (newZP - oldZP) * 1.6, newZP, 50 * zpGain) end
+        if Daily.actived then newZP = MATH.clamp(newZP + (newZP - oldZP) * 1.6, newZP, 50 * zpGain) end
         local zpEarn = newZP - oldZP
         if zpEarn > 0 then
             TASK.new(function()
                 TASK.yieldT(0.626)
                 TWEEN.new(function(t)
-                    TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, zpEarn * t, DailyActived and ", 260%" or ""))
+                    TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, zpEarn * t, Daily.actived and ", 260%" or ""))
                 end):setEase('InOutCubic'):setDuration(2):run()
                 SFX.play('ratingraise', zpEarn ^ .5 / 60)
             end)

@@ -30,7 +30,7 @@ local function refreshBtn()
 end
 
 local function switchPage(p)
-    local combo = DailyHistory[p]
+    local combo = Daily.history[p]
     if LB[combo] and LB[combo].lastUpd then
         if os.time() - LB[combo].lastUpd >= 26 then
             DailyRequest('fetch', combo)
@@ -111,7 +111,7 @@ function scene.update(dt)
         GAME.bgH = math.max(GAME.bgH + (y0 - scroll1) / 355, 0)
     end
     if TASK.lock('text_lastUpdate', .1) then
-        local L = LB[DailyHistory[page]]
+        local L = LB[Daily.history[page]]
         noteText2 = ""
         if L.lastUpd then
             local t = os.time() - L.lastUpd
@@ -123,7 +123,7 @@ function scene.update(dt)
                 noteText2 = "(last update: " .. (math.floor(t / 60)) .. "m ago)"
             end
         end
-        noteText = noteTextPrefix[page] .. " " .. DailyHistoryDisp[page]
+        noteText = noteTextPrefix[page] .. " " .. Daily.historyDisp[page]
     end
     GAME.height = GAME.bgH
 end
@@ -177,7 +177,7 @@ function scene.draw()
     gc_rectangle('fill', 30, 190, pw - 30 * 2, 80, 4)
 
     -- List
-    local L = LB[DailyHistory[page]]
+    local L = LB[Daily.history[page]]
     if L.lastUpd then
         local l = L[subPage]
         gc_push('transform')
