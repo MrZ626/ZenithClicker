@@ -64,14 +64,6 @@ local function MouseOnCard(x, y)
     end
 end
 
-function SetMouseVisible(bool)
-    if CONF.syscursor then
-        love.mouse.setVisible(bool)
-    else
-        CursorHide = not bool
-    end
-end
-
 local function mouseMove(x, y)
     SetMouseVisible(true)
     MX, MY = x, y
