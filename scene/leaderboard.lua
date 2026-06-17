@@ -33,10 +33,10 @@ local function switchPage(p)
     local combo = Daily.history[p]
     if LB[combo] and LB[combo].lastUpd then
         if os.time() - LB[combo].lastUpd >= 26 then
-            DailyRequest('fetch', combo)
+            CurlRequest('fetch', combo)
         end
     elseif TASK.lock('lb_daily_' .. p, p == 1 and 26 or 1e99) then
-        DailyRequest('fetch', combo)
+        CurlRequest('fetch', combo)
     end
     page = p
     refreshBtn()

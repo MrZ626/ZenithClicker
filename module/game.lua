@@ -2505,7 +2505,7 @@ function GAME.finish(reason)
             end
         end
         if Daily.needSubmit then
-            DailyRequest('submit')
+            CurlRequest('submit')
             Daily.needSubmit = false
         end
 

@@ -783,8 +783,8 @@ pages[2] = {
                     UseAltName()
                     SFX.play('social_dm')
                 elseif data == 'resubmit' then
-                    if DAILYCMD then
-                        ASYNC.runCmd('submitDaily', DAILYCMD)
+                    if Daily.cmd then
+                        ASYNC.runCmd('submitDaily', Daily.cmd)
                         MSG('info', "Re-submitting Daily Challenge score...")
                         SFX.play('social_invite')
                     else

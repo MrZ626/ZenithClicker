@@ -1138,16 +1138,6 @@ function UltraVlCheck(id, auto)
     return true
 end
 
-function CurlCMD(data)
-    local json = JSON.encode(data)
-    if SYSTEM == 'Windows' then
-        json = json:gsub('"', [[\"]])
-        return ([[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H "Content-Type: application/json" -d "$1"]]):repD(json)
-    else
-        return ([[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H 'Content-Type: application/json' -d '$1']]):repD(json)
-    end
-end
-
 local curlAvailable = SYSTEM == 'Windows' or SYSTEM == 'Linux' or (function()
     local f = io.popen('curl --version', 'r')
     if not f then return end
@@ -1168,7 +1158,16 @@ function TryOpenLeaderboard()
     end
 end
 
-function DailyRequest(act, data)
+local function genCurlCMD(data)
+    local json = JSON.encode(data)
+    if SYSTEM == 'Windows' then
+        json = json:gsub('"', [[\"]])
+        return ([[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H "Content-Type: application/json" -d "$1"]]):repD(json)
+    else
+        return ([[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H 'Content-Type: application/json' -d '$1']]):repD(json)
+    end
+end
+function CurlRequest(act, data)
     if not curlAvailable or STAT.mod ~= 'vanilla' then return end
     if act == 'submit' then
         if TestMode then return end
@@ -1178,7 +1177,7 @@ function DailyRequest(act, data)
             end
             return
         end
-        DAILYCMD = CurlCMD {
+        Daily.cmd = genCurlCMD {
             act = 'submit',
             hid = STAT.hid,
             uid = STAT.uid,
@@ -1186,14 +1185,16 @@ function DailyRequest(act, data)
             alt = GAME.roundHeight,
             time = GAME.gigaTime and MATH.roundUnit(GAME.gigaTime, .001),
         }
-        ASYNC.runCmd('submitDaily', DAILYCMD)
+        ASYNC.runCmd('submitDaily', Daily.cmd)
         MSG('dark', "Submitting Daily Challenge score...")
     elseif act == 'fetch' then
         LB[data] = LB[data] or {}
-        ASYNC.runCmd('fetchLeaderboard', CurlCMD {
+        ASYNC.runCmd('fetchLeaderboard', genCurlCMD {
             act = 'fetch',
             combo = data,
         })
+    elseif act == 'checkUpdate' then
+        ASYNC.runCmd('checkUpdate', [[curl -s -X GET https://api.github.com/repos/MrZ626/ZenithClicker/releases/latest]])
     end
 end
 
@@ -1257,7 +1258,7 @@ function Daemon_Slow()
                 else
                     MSG('check', "Daily Challenge submission failed:\nNot a better score", duration)
                 end
-                DAILYCMD = nil
+                Daily.cmd = nil
             else
                 MSG('warn', "Daily Challenge submission failed\nRetry with secret code 'resubmit'\ndata received from server: " .. msg, 10 * 1.6)
                 SFX.play('pause_retry', 1, 0, Tone(-5))
@@ -1529,9 +1530,7 @@ else
     }
 end
 
-if curlAvailable then
-    ASYNC.runCmd('checkUpdate', [[curl -s -X GET https://api.github.com/repos/MrZ626/ZenithClicker/releases/latest]])
-end
+CurlRequest('checkUpdate')
 if FILE.exist('avatar') then
     local suc, res = pcall(GC.newImage, 'avatar')
     if suc then AVATAR = res end
