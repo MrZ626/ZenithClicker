@@ -1260,7 +1260,7 @@ function Daemon_Slow()
                 end
                 Daily.cmd = nil
             else
-                MSG('warn', "Daily Challenge submission failed\nRetry with secret code 'resubmit'\ndata received from server: " .. msg, 10 * 1.6)
+                MSG('warn', "Daily Challenge submission failed\nRetry with opening leaderboard page\ndata received from server: " .. msg, 10 * 1.6)
                 SFX.play('pause_retry', 1, 0, Tone(-5))
             end
         end

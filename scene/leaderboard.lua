@@ -57,6 +57,11 @@ function scene.load()
     refreshBtn()
 
     switchPage(0)
+
+    if Daily.cmd and ASYNC.runCmd('submitDaily', Daily.cmd) then
+        MSG('info', "Re-submitting Daily Challenge score...")
+        SFX.play('social_invite')
+    end
 end
 
 function scene.mouseMove(_, _, _, dy)
