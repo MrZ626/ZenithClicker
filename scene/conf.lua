@@ -759,20 +759,10 @@ pages[2] = {
             if #data <= 26 then
                 if data == '' then
                     MSG('dark', "No data in clipboard")
-                elseif data == 'old_hitbox' then
-                    CONF.oldHitbox = not CONF.oldHitbox
-                    MSG('dark', "Force old hitbox: " .. (CONF.oldHitbox and "ON" or "OFF"))
-                    SFX.play(CONF.oldHitbox and 'social_online' or 'social_offline')
-                    TEXTS.version:set(SYSTEM .. (CONF.oldHitbox and " T" or " V") .. (require 'version'.verStr))
-                elseif data == 'UseAltName' then
-                    UseAltName()
-                    SFX.play('social_dm')
                 else
                     MSG('dark', "Invalid data '" .. data .. "' in clipboard")
                     SFX.play('staffwarning')
-                    return
                 end
-                LOG('info', "Secret: " .. data)
                 return
             end
             if TASK.lock('import', 4.2) then

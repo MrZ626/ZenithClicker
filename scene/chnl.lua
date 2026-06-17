@@ -37,11 +37,25 @@ function scene.keyDown(key, isRep)
     elseif key == '4' then
         TryOpenLeaderboard()
     elseif key == '5' then
-        SFX.play('menuconfirm')
-        love.system.openURL("https://discord.gg/thqhzSn72j")
+        if TASK.lock('discord_confirm', 2.6) then
+            SFX.play('menuhit2')
+            MSG('info', "Check discord server in browser?\nPress again to confirm", 2.6)
+        else
+            TASK.unlock('discord_confirm')
+            SFX.play('menuconfirm')
+            love.system.openURL("https://discord.gg/thqhzSn72j")
+        end
+        TASK.unlock('github_confirm')
     elseif key == '6' then
-        SFX.play('menuconfirm')
-        love.system.openURL("https://github.com/MrZ626/ZenithClicker")
+        if TASK.lock('github_confirm', 2.6) then
+            SFX.play('menuhit2')
+            MSG('info', "Open GitHub repo in browser?\nPress again to confirm", 2.6)
+        else
+            TASK.unlock('github_confirm')
+            SFX.play('menuconfirm')
+            love.system.openURL("https://github.com/MrZ626/ZenithClicker")
+        end
+        TASK.unlock('discord_confirm')
     end
     ZENITHA._cursor.active = true
     return true
@@ -59,6 +73,14 @@ function scene.update()
             if code:find('12341234123412341234') then
                 SFX.play('warp')
                 SCN.swapTo('ending', 'warp')
+            elseif code:find('34653465346534653465') then
+                CONF.oldHitbox = not CONF.oldHitbox
+                MSG('dark', "Old hitbox: " .. (CONF.oldHitbox and "ON" or "OFF"))
+                SFX.play(CONF.oldHitbox and 'social_online' or 'social_offline')
+                TEXTS.version:set(SYSTEM .. (CONF.oldHitbox and " T" or " V") .. (require 'version'.verStr))
+            elseif code:find('34563456345634563456') then
+                _G['UseAltName']()
+                SFX.play('social_dm')
             elseif code:find('3434343434') then
                 MSG('dark', OverDevProgressText)
             elseif code:find('5555555555') then
