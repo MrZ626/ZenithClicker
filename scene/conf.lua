@@ -776,9 +776,6 @@ pages[2] = {
                     SFX.play('maintenance')
                 elseif data == 'dev' then
                     MSG('dark', OverDevProgressText)
-                elseif data == 'true_ending' then
-                    SFX.play('warp')
-                    SCN.go('ending', 'warp')
                 elseif data == 'UseAltName' then
                     UseAltName()
                     SFX.play('social_dm')
@@ -790,7 +787,6 @@ pages[2] = {
                             "Try 'old_hitbox'",
                             "Try 'test'",
                             "Try 'dev'",
-                            STAT.clicker and "Try 'true_ending'" or nil,
                         }
                     end
                     MSG('dark', msg)

@@ -47,6 +47,21 @@ function scene.keyDown(key, isRep)
     return true
 end
 
+local lastHover
+local hoverHis = {}
+function scene.update()
+    local sel = WIDGET.sel and TABLE.find(scene.widgetList, WIDGET.sel)
+    if sel and sel ~= lastHover then
+        lastHover = sel
+        if #hoverHis >= 20 then table.remove(hoverHis, 1) end
+        table.insert(hoverHis, sel)
+        if table.concat(hoverHis) == '12341234123412341234' then
+            SFX.play('warp')
+            SCN.swapTo('ending', 'warp')
+        end
+    end
+end
+
 local gc = love.graphics
 local gc_push, gc_pop = gc.push, gc.pop
 local gc_replaceTransform = gc.replaceTransform
