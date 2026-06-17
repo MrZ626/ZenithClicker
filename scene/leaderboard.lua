@@ -16,7 +16,7 @@ local noteText2 = ""
 local M = GAME.mod
 
 local scrollGroup = {}
-local page = 0
+local page = 0 -- 0 = today, 4 = 4 days ago
 local subPage = 'alt'
 
 local function refreshBtn()
@@ -32,8 +32,19 @@ end
 local function switchPage(p)
     local combo = Daily.history[p]
     if LB[combo] and LB[combo].lastUpd then
-        if os.time() - LB[combo].lastUpd >= 26 then
-            CurlRequest('fetch', combo)
+        if p == 0 then
+            if os.time() - LB[combo].lastUpd >= 26 then
+                CurlRequest('fetch', combo)
+            end
+        else
+            local dateToday = os.date("!*t", os.time())
+            local dateLastUpd = os.date("!*t", LB[combo].lastUpd)
+            local time0Today = os.time({ year = dateToday.year, month = dateToday.month, day = dateToday.day })
+            local time0LastUpd = os.time({ year = dateLastUpd.year, month = dateLastUpd.month, day = dateLastUpd.day })
+            local dayPast = MATH.round((time0Today - time0LastUpd) / 86400)
+            if dayPast >= p then
+                CurlRequest('fetch', combo)
+            end
         end
     elseif TASK.lock('lb_daily_' .. p, p == 1 and 26 or 1e99) then
         CurlRequest('fetch', combo)
@@ -124,8 +135,10 @@ function scene.update(dt)
                 noteText2 = "(just updated)"
             elseif t < 60 then
                 noteText2 = "(last update: " .. t .. "s ago)"
-            else
+            elseif t < 3600 then
                 noteText2 = "(last update: " .. (math.floor(t / 60)) .. "m ago)"
+            else
+                noteText2 = "(last update: " .. (math.floor(t / 3600)) .. "h ago)"
             end
         end
         noteText = noteTextPrefix[page] .. " " .. Daily.historyDisp[page]
