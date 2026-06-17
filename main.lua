@@ -1175,6 +1175,12 @@ function DailyRequest(act, data)
     if not curlAvailable or STAT.mod ~= 'vanilla' then return end
     if act == 'submit' then
         if TestMode then return end
+        if STAT.uid:sub(1, 5) == 'ANON-' then
+            if TASK.lock('anon_submit') then
+                MSG('warn', "Anonymous users cannot submit daily challenge scores", 10 * 1.6)
+            end
+            return
+        end
         DAILYCMD = CurlCMD {
             act = 'submit',
             hid = STAT.hid,
