@@ -35,7 +35,7 @@ function ZENITHA.globalEvent.fileDrop(file)
         SFX.play('supporter')
         MSG('dark', "Your avatar was updated!")
     else
-        MSG('dark', "Invalid image file.")
+        MSG('dark', "Invalid image file")
     end
     file:close()
     file:release()

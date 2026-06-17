@@ -231,7 +231,7 @@ function scene.keyDown(key, isRep)
                     CONF.keybind = bindBuffer
                     bindBuffer = nil
                     SaveConf()
-                    MSG('dark', "Keybinding updated.")
+                    MSG('dark', "Keybinding updated")
                     SFX.play('social_notify_major')
                 else
                     SFX.play('irs')
@@ -347,7 +347,7 @@ function scene.draw()
         -- Keybind
         if bindBuffer then
             setFont(30)
-            gc_print("Press key for...", 600, 670, 0, .872)
+            gc_print("Press key for..", 600, 670, 0, .872)
             gc_print(bindHint[#bindBuffer + 1], 600, 700, 0, .872)
         end
     elseif page == 2 then
@@ -657,12 +657,12 @@ pages[2] = {
                 return
             end
             if newName == STAT.uid then
-                MSG('dark', "New name is the same as the old one.")
+                MSG('dark', "New name is the same as the old one")
                 SFX.play('staffwarning')
                 return
             end
             if newName:match('^ANON[-_]') then
-                MSG('dark', "You can’t enter ANON as your new name.")
+                MSG('dark', "You can't enter ANON as your new name")
                 SFX.play('staffwarning')
                 return
             end
@@ -710,7 +710,7 @@ pages[2] = {
                 STAT.aboutme = newText
                 SaveStat()
                 SFX.play('supporter')
-                MSG('dark', "Your About Me text has been updated.")
+                MSG('dark', "Your About Me text has been updated")
                 if SCN.cur == 'stat' then RefreshProfile() end
                 IssueAchv('identity')
                 return
@@ -783,7 +783,7 @@ pages[2] = {
                     UseAltName()
                     SFX.play('social_dm')
                 else
-                    local msg = "Invalid code '" .. data .. "' in clipboard."
+                    local msg = "Invalid code '" .. data .. "' in clipboard"
                     if MATH.roll(.26) then
                         msg = msg .. "\n" .. TABLE.getRandom {
                             "Try 'cmd'",
@@ -845,7 +845,7 @@ pages[2] = {
             end
             Initialize(true)
             if TestMode then
-                MSG('dark', "Progress imported, but won't be saved.")
+                MSG('dark', "Progress imported, but won't be saved")
             else
                 MSG('dark', "Progress imported!")
             end
@@ -869,9 +869,9 @@ pages[2] = {
                 lastClear = false
                 SFX.play('hyperalert')
                 if instaReset then
-                    MSG('warn', "Reset all progress? Press again to confirm.", 2.6)
+                    MSG('warn', "Reset all progress? Press again to confirm", 2.6)
                 else
-                    MSG('info', "Reset all progress? Spam to confirm.", 2.6)
+                    MSG('info', "Reset all progress? Spam to confirm", 2.6)
                 end
                 return
             end
@@ -916,7 +916,7 @@ pages[2] = {
 local function saveSlot(i)
     if TestMode then
         SFX.play('staffwarning')
-        MSG('dark', "You are not a good person.")
+        MSG('dark', "You are not a good person")
         return
     end
     if uidList[i] and STAT.uid ~= uidList[i].uid and not uidList[i].uid:match("^ANON%-") then
@@ -954,7 +954,7 @@ local function loadSlot(i)
 
     if TASK.lock('load_slot' .. i, 2.6) then
         SFX.play('hyperalert')
-        MSG('warn', "Load from slot " .. i .. "? Current save will be overwritten. Press again to confirm.", 4.2)
+        MSG('warn', "Load from slot " .. i .. "? Current save will be overwritten. Press again to confirm", 4.2)
         return
     end
     TASK.unlock('load_slot' .. i)
@@ -973,7 +973,7 @@ local function clearSlot(i)
     end
     if TASK.lock('clear_slot' .. i, 2.6) then
         SFX.play('hyperalert')
-        MSG('warn', "Clear slot " .. i .. "? This action cannot be undone. Press again to confirm.", 4.2)
+        MSG('warn', "Clear slot " .. i .. "? This action cannot be undone. Press again to confirm", 4.2)
         return
     end
     TASK.unlock('clear_slot' .. i)
