@@ -1139,11 +1139,12 @@ function UltraVlCheck(id, auto)
 end
 
 local curlAvailable = SYSTEM == 'Windows' or SYSTEM == 'Linux' or (function()
-    local f = io.popen('curl --version', 'r')
-    if not f then return end
-    local res = f:read('*a')
-    f:close()
-    if res and res:find('^curl') then return true end
+    local suc, f = pcall(io.popen, 'curl --version', 'r')
+    if suc and f then
+        local res = f:read('*a')
+        f:close()
+        if res and res:find('^curl') then return true end
+    end
 end)()
 function TryOpenLeaderboard()
     if not curlAvailable then
