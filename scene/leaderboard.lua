@@ -18,6 +18,7 @@ local M = GAME.mod
 local scrollGroup = {}
 local page = 0 -- 0 = today, 4 = 4 days ago
 local subPage = 'alt'
+local pageStable = {}
 
 local function refreshBtn()
     local L = scene.widgetList
@@ -32,18 +33,22 @@ end
 local function switchPage(p)
     local combo = Daily.history[p]
     if LB[combo] and LB[combo].lastUpd then
-        if p == 0 then
-            if os.time() - LB[combo].lastUpd >= 26 then
-                CurlRequest('fetch', combo)
-            end
-        else
-            local dateToday = os.date("!*t", os.time())
-            local dateLastUpd = os.date("!*t", LB[combo].lastUpd)
-            local time0Today = os.time({ year = dateToday.year, month = dateToday.month, day = dateToday.day })
-            local time0LastUpd = os.time({ year = dateLastUpd.year, month = dateLastUpd.month, day = dateLastUpd.day })
-            local dayPast = MATH.round((time0Today - time0LastUpd) / 86400)
-            if dayPast >= p then
-                CurlRequest('fetch', combo)
+        if not pageStable[p] then
+            if p == 0 then
+                if os.time() - LB[combo].lastUpd >= 26 then
+                    CurlRequest('fetch', combo)
+                end
+            else
+                local dateToday = os.date("!*t", os.time())
+                local dateLastUpd = os.date("!*t", LB[combo].lastUpd)
+                local time0Today = os.time({ year = dateToday.year, month = dateToday.month, day = dateToday.day })
+                local time0LastUpd = os.time({ year = dateLastUpd.year, month = dateLastUpd.month, day = dateLastUpd.day })
+                local dayPast = MATH.round((time0Today - time0LastUpd) / 86400)
+                if dayPast >= p then
+                    CurlRequest('fetch', combo)
+                else
+                    pageStable[p] = true
+                end
             end
         end
     elseif TASK.lock('lb_daily_' .. p, p == 1 and 26 or 1e99) then
@@ -129,10 +134,10 @@ function scene.update(dt)
     if TASK.lock('text_lastUpdate', .1) then
         local L = LB[Daily.history[page]]
         noteText2 = ""
-        if L.lastUpd then
+        if L.lastUpd and not pageStable[page] then
             local t = os.time() - L.lastUpd
             if t <= 25 then
-                noteText2 = "(just updated)"
+                noteText2 = "(up-to-date)"
             elseif t < 60 then
                 noteText2 = "(last update: " .. t .. "s ago)"
             elseif t < 3600 then
