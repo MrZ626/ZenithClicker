@@ -9,8 +9,6 @@ local clr = {
     L = { COLOR.HEX '656565FF' },
 }
 
-DevNoteText = GC.newText(FONT.get(30))
-AboutText = GC.newText(FONT.get(70))
 local lines = {}
 
 local tempY = 0
@@ -19,7 +17,7 @@ local function addText(text, x, y, scale, wraplimit)
     if type(text) == 'string' then text = { COLOR.L, text } end
     scale = scale or 1
     local w = (wraplimit or 900) / scale
-    AboutText:addf(text, w, 'center', x - w / 2 * scale, tempY + y, 0, scale)
+    TEXTS.aboutText:addf(text, w, 'center', x - w / 2 * scale, tempY + y, 0, scale)
 end
 
 local function addSection(y)
@@ -154,7 +152,7 @@ function scene.load()
     else
         text = DevCommentary.noComment
     end
-    DevNoteText:setf(text:repD(STAT.uid), 2000, 'center')
+    TEXTS.devNoteText:setf(text:repD(STAT.uid), 2000, 'center')
 end
 
 function scene.mouseMove(_, _, _, dy)
@@ -217,8 +215,8 @@ function scene.draw()
     end
     if GAME.anyRev then ky = -ky end
     gc_mDraw(icon, -170, 100, 0, kx, ky)
-    gc_draw(AboutText)
-    gc_draw(DevNoteText, 0, 285 - DevNoteText:getHeight() * (.68 / 2), 0, .68, .68, 1000, 0)
+    gc_draw(TEXTS.aboutText)
+    gc_draw(TEXTS.devNoteText, 0, 285 - TEXTS.devNoteText:getHeight() * (.68 / 2), 0, .68, .68, 1000, 0)
 
     gc_setColor(1, 1, 1, .2)
     gc_setLineWidth(0.5)

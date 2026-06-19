@@ -972,20 +972,15 @@ function ApplySettings()
 end
 
 function ReloadTexts()
-    local sep = (TEXTS.mod:getFont():getHeight() + TEXTS.title:getFont():getHeight()) / 2
-    for _, text in next, TEXTS do text:setFont(FONT.get(text:getFont():getHeight() < sep and 30 or 50)) end
-    for _, text in next, CardHintText do text:setFont(FONT.get(text:getFont():getHeight() < sep and 30 or 50)) end
+    local sep35 = (TEXTS.temp30:getFont():getHeight() + TEXTS.title:getFont():getHeight()) / 2
+    local sep57 = (TEXTS.title:getFont():getHeight() + TEXTS.test:getFont():getHeight()) / 2
+    for _, text in next, TEXTS do
+        local h = text:getFont():getHeight()
+        text:setFont(FONT.get(h < sep35 and 30 or h < sep57 and 50 or 70))
+    end
+    for _, text in next, CardHintText do text:setFont(FONT.get(50)) end
     for _, quest in next, GAME.quests do quest.name:setFont(FONT.get(70)) end
-    TEXTS.height:setFont(FONT.get(30))
-    TEXTS.time:setFont(FONT.get(30))
-    TEXTS.gigatime:setFont(FONT.get(50))
-    TEXTS.chain2:setFont(FONT.get(50, 'led'))
     for _, W in next, SCN.scenes[SCN.cur].widgetList do W:reset() end
-    AchvText:setFont(FONT.get(30))
-    AboutText:setFont(FONT.get(70))
-    DevNoteText:setFont(FONT.get(30))
-    EndText:setFont(FONT.get(70))
-    EndText2:setFont(FONT.get(70))
     for _, text in next, SRSplitText1 do text:setFont(FONT.get(50)) end
     for _, text in next, SRSplitText2 do text:setFont(FONT.get(50)) end
     for _, text in next, SRSplitText3 do text:setFont(FONT.get(30)) end

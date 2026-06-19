@@ -11,7 +11,6 @@ local clr = {
 }
 local colorRev = false
 
-AchvText = GC.newText(FONT.get(30))
 local Achievements = Achievements
 local M = GAME.mod
 
@@ -97,9 +96,9 @@ function RefreshAchvList(canShuffle)
                 overDev = selfScore == devScore or A.comp(selfScore, devScore)
                 odCap = odCap + 1
             end
-            AchvText:set(A.desc)
+            TEXTS.temp30:set(A.desc)
             local hidden = A.hide() and not ACHV[A.id]
-            local descWidth = hidden and 26 or AchvText:getWidth()
+            local descWidth = hidden and 26 or TEXTS.temp30:getWidth()
             table.insert(achvList, {
                 id = A.id,
                 name = hidden and "???" or A.name:upper(),

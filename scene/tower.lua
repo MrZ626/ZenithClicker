@@ -1524,7 +1524,7 @@ function scene.overDraw()
         -- Watermark
         gc_replaceTransform(SCR.xOy_u)
         gc_setColor(1, 1, 1, .26)
-        gc_mDraw(TEXTS.test, -260, 260, -.16 + sin(t * 2.6) * .0626, 8.72)
+        gc_mDraw(TEXTS.test, -260, 260, -.16 + sin(t * 2.6) * .0626, 6.26)
 
         -- Show Touch
         gc_replaceTransform(SCR.xOy)

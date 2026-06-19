@@ -325,7 +325,7 @@ function RefreshProfile()
     if TestMode then
         GC.ucs_move(600, 360)
         GC.setColor(1, 1, 1, .26)
-        GC.mDraw(TEXTS.test, 0, 0, -.26, 10)
+        GC.mDraw(TEXTS.test, 0, 0, -.26, 7)
     end
 
     GC.setCanvas()
