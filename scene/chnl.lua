@@ -79,7 +79,7 @@ function scene.update()
                 SFX.play(CONF.oldHitbox and 'social_online' or 'social_offline')
                 TEXTS.version:set(SYSTEM .. (CONF.oldHitbox and " T" or " V") .. (require 'version'.verStr))
             elseif code:find('34563456345634563456') then
-                _G['UseAltName']()
+                UseAltName()
                 MSG('dark', "Alt strings applied")
                 SFX.play('social_online')
             elseif code:find('3434343434') then

@@ -1485,8 +1485,12 @@ end
 
 -- Functions: Secret Content
 
----@diagnostic disable-next-line
-loadstring(love.data.decompress('string', 'deflate', love.data.decode('string', 'base64', [[bdJRa4MwEADgvyKBQgUpHexxDtLkWgMxDhPL+ihTWYfVQfWp+N+X5MqWsT3enbn7crGbh7fpPA5RdW1pP6n60q5jQ3cSNvNnU0/tOh8bXk91cuvmvnf19AavKXmKcqoNlNEzSVTmYlGWcCwY3QkpzMnlc+3yLAPQ4OLD0cUcmBSKGlEolzxKf1hpE5zkvmMuNMuEbVppBVq7glCukAku1MHF1I8oCynvCf6CiZwq5oYuSd18IBnB+0qieG8REpGeeEIg8mw3pFUeJgFNgQgtVsJBoeOuQIMXGMEsYBjnIRQE4+11AwGEAr8gNATL+cNwi/mm+On/UxiQZYl/XjlVlZRROzTRuYvG68a/NVldVg2J05RsH7cPZHpvf/8Y9vMv]])))()
+function UseAltName()
+    TABLE.update(ModData, STRING.unpackTable("H4sIAAAAAAAAA3XPwQ6CMAwG4FchO/MExJjMUaXJKIQNokcT9WBQT54I7y501jCj139d+/2Dujz7no63s8oGpZ3K1CppKmuRdslapaqzHCE5rzdo0R84zguOS3SmQOiq1hE4x09I/FRgLjsoDGPTTJMmWlO/D5aaDHAE+7BZOw8NJ2VQmQLAhZldx0kOZnJqjxVN8Ziq++N5//R4t5AOiwbi/9KLPcjFvZ0uyKea17JVpMEpymAU4cI3646n6z9cyzgLP2QLVQ4UqSKSRxObtq2NWIeYNV8fxxd95CicAAIAAA=="))
+    UseAltName = NULL
+end
+
+if os.date("%d%m") - 1 == 400 then UseAltName() end
 
 UTIL.time("Create util global vars & functions", true)
 --------------------------------------------------------------
