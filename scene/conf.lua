@@ -317,7 +317,10 @@ function scene.update(dt)
     GAME.bgH = MATH.expApproach(GAME.bgH, GAME.height, dt * 1.6)
     StarPS:moveTo(0, -GAME.bgH * 2 * BgScale)
     StarPS:update(dt)
-    if not TASK.getLock('reset_all') then resetall_cnt = 0 end
+    if not TASK.getLock('reset_all') then
+        if resetall_cnt == 16 then IssueAchv('knifes_edge') end
+        resetall_cnt = 0
+    end
     resetall_anim = MATH.expApproach(resetall_anim, resetall_cnt / 16, dt * 12)
 end
 

@@ -333,8 +333,9 @@ TEXTURE = {
             lucky_coincidence = aq(14, 5),
             zenith_traveler = aq(1, 8),
             dark_force = aq(3, 1),
-            return_to_the_light = aq(5, 5),
+            return_to_the_light = aq(1, 2),
             smooth_dismount = aq(4, 1),
+            knifes_edge = aq(5, 5),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
