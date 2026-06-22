@@ -1246,9 +1246,8 @@ function Daemon_Slow()
                     MSG('warn', "Daily Challenge submission failed:\n" .. res.error, duration * .626)
                 elseif next(res) then
                     MSG('check',
-                        "Daily Challenge score submitted!\n" ..
-                        "Alt #" .. tostring(res.altRank) .. " of " .. tostring(res.altCount) .. "\n" ..
-                        "SR #" .. tostring(res.timeRank) .. " of " .. tostring(res.timeCount),
+                        "Score submitted!\n" ..
+                        "Altitude #" .. tostring(res.altRank) .. " of " .. tostring(res.altCount) .. "\nSpeedrun #" .. tostring(res.timeRank) .. " of " .. tostring(res.timeCount),
                         duration)
                     SFX.play('pause_continue', 1, 0, Tone(-5))
                 else
@@ -1256,7 +1255,7 @@ function Daemon_Slow()
                 end
                 Daily.cmd = nil
             else
-                MSG('warn', "Daily Challenge submission failed\nRetry with opening leaderboard page\ndata received from server: " .. msg, 10 * 1.6)
+                MSG('warn', "Daily Challenge submission failed\nRetry with opening leaderboard page\ndata received from server: " .. msg, duration * 1.26)
                 SFX.play('pause_retry', 1, 0, Tone(-5))
             end
         end
