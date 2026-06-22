@@ -1247,8 +1247,8 @@ function Daemon_Slow()
                 elseif next(res) then
                     MSG('check',
                         "Daily Challenge score submitted!\n" ..
-                        "Alt #" .. tostring(res.altRank) .. " of " .. tostring(res.altCount) .. ", top: " .. tostring(res.altBest) .. "m\n" ..
-                        "SR #" .. tostring(res.timeRank) .. " of " .. tostring(res.timeCount) .. ", top: " .. tostring(res.timeBest) .. "s",
+                        "Alt #" .. tostring(res.altRank) .. " of " .. tostring(res.altCount) .. "\n" ..
+                        "SR #" .. tostring(res.timeRank) .. " of " .. tostring(res.timeCount),
                         duration)
                     SFX.play('pause_continue', 1, 0, Tone(-5))
                 else
