@@ -1266,9 +1266,17 @@ function Daemon_Slow()
                 if res.error then
                     MSG('warn', "Daily Challenge leaderboard fetch failed:\n" .. res.error)
                 elseif res.alt then
+                    local t = os.time()
+                    -- Write new data
                     LB[res.combo].alt = res.alt
                     LB[res.combo].time = res.time
-                    LB[res.combo].lastUpd = os.time()
+                    LB[res.combo].lastUpd = t
+                    -- Delete old data
+                    for cmb, L in next, LB do
+                        if t - L.lastUpd > 86400 * 10 then
+                            LB[cmb] = nil
+                        end
+                    end
                     FILE.save(LB, 'leaderboard.luaon', '-luaon')
                 else
                     MSG('warn', "Daily Challenge leaderboard fetch failed:\nNo Data")
