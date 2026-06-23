@@ -360,7 +360,7 @@ d.gameEX = {
     { set = "EX NH GV VL DP", name = "Quadruple Maxout" },
     { set = "EX NH GV DH IN", name = "Readlock" },
     { set = "EX NH GV DH AS", name = "The Kill Screen" },
-    { set = "EX NH GV DH DP", name = "The hanged down pair" },
+    { set = "EX NH GV DH DP", name = "The Hanged Down Pair" },
     { set = "EX NH GV IN AS", name = "Paragon" },
     { set = "EX NH GV IN DP", name = "Golden Anniversary" },
     { set = "EX NH GV AS DP", name = "Panic Button" },
