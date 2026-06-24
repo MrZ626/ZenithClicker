@@ -208,7 +208,7 @@ function RefreshProfile()
     GC.setColor(scoreColor)
     dblMidDraw(t30, bw / 2 + t50:getWidth() / 2 + t30:getWidth() / 2, bh / 2 + 4)
     -- Rank
-    local zRank = STAT.totalTime / 60 + STAT.totalFloor / 9 + STAT.totalGiga / 2 <= 62
+    local zRank = not RankAvailable()
     local rank = MATH.clamp(math.ceil(rating / 1400), 1, 18)
     local rankIcon = TEXTURE.stat.rank[rank]
     GC.setColor(1, 1, 1)

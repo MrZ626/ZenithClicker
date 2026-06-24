@@ -643,6 +643,10 @@ function CalculateCR()
     return MATH.round(cr), cap
 end
 
+function RankAvailable()
+    return STAT.totalTime / 60 + STAT.totalFloor / 9 + STAT.totalGiga / 2 > 62
+end
+
 local msgTime = 0
 local bufferedMsg = {}
 
