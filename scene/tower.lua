@@ -245,6 +245,8 @@ function scene.load()
         applyCombo(PendingComboFromRecord)
         PendingComboFromRecord = nil
     end
+
+    TABLE.clear(revHold)
 end
 
 function scene.unload()
