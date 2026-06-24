@@ -1727,7 +1727,7 @@ scene.widgetList = {
             if k == 2 or kbIsDown('lctrl', 'rctrl') or next(revHold) then
                 TryOpenLeaderboard()
             else
-                applyCombo(DAILY)
+                applyCombo(Daily.combo)
             end
         end,
     },

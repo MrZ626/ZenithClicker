@@ -1422,8 +1422,8 @@ function GAME.refreshCurrentCombo()
         TEXTS.mpPreview:set(GAME.comboMP .. " MP")
         TEXTS.zpPreview:set(("%.2fx ZP"):format(GAME.comboZP))
         Daily.actived =
-            #GAME.getHand(true) == #DAILY and
-            TABLE.equal(TABLE.sort(GAME.getHand(true)), TABLE.sort(TABLE.copy(DAILY)))
+            #GAME.getHand(true) == #Daily.combo and
+            TABLE.equal(TABLE.sort(GAME.getHand(true)), TABLE.sort(TABLE.copy(Daily.combo)))
 
         RefreshHelpText()
     end
@@ -1583,11 +1583,11 @@ end
 function GAME.refreshDailyChallengeText()
     TEXTS.dcBest:set(
         STAT.dailyBest > 0 and
-        ("%.0fm  %.0fZP"):format(STAT.dailyBest / GAME.getComboZP(DAILY), STAT.dailyBest)
+        ("%.0fm  %.0fZP"):format(STAT.dailyBest / GAME.getComboZP(Daily.combo), STAT.dailyBest)
         or ""
     )
     Daily.available = true
-    for _, v in next, DAILY do
+    for _, v in next, Daily.combo do
         if v:find('r') then
             if GAME.completion[v:sub(2)] == 0 then
                 Daily.available = false
@@ -1602,7 +1602,7 @@ function GAME.refreshDailyChallengeText()
     end
     local str
     if Daily.available then
-        local sortedDaily = TABLE.copy(DAILY)
+        local sortedDaily = TABLE.copy(Daily.combo)
         table.sort(sortedDaily, modCardSorter)
         str = "Today's Combo: " .. table.concat(sortedDaily, " ")
         local rev = str:match("r(%S+)")

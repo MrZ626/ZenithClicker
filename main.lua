@@ -1071,29 +1071,32 @@ function RefreshDaily()
         for _ = 1, 26 do math.random() end
 
         local modCount = math.ceil(9 - math.log(math.random(11, 42), 1.62)) -- 5 444 3333 2222
-        DAILY = {}
+        local cmb = {}
 
 
         local freq = { 3, 3, 2, 5, 3, 5, 4, 4, 2 }
-        while #DAILY < modCount do
+        while #cmb < modCount do
             local m = ModData.deck[MATH.randFreq(freq)].id
-            if not TABLE.find(DAILY, m) then table.insert(DAILY, m) end
+            if not TABLE.find(cmb, m) then table.insert(cmb, m) end
         end
-        if MATH.roll(.26 + #DAILY * .1) then
-            if #DAILY >= 3 and MATH.roll(.62) then TABLE.popRandom(DAILY) end
-            local r = math.random(#DAILY)
-            DAILY[r] = 'r' .. DAILY[r]
+        if MATH.roll(.26 + #cmb * .1) then
+            if #cmb >= 3 and MATH.roll(.62) then TABLE.popRandom(cmb) end
+            local r = math.random(#cmb)
+            cmb[r] = 'r' .. cmb[r]
             if MATH.roll(.26) then
-                local r2 = math.random(#DAILY - 1)
+                local r2 = math.random(#cmb - 1)
                 if r2 >= r then r2 = r2 + 1 end
-                DAILY[r2] = 'r' .. DAILY[r2]
+                cmb[r2] = 'r' .. cmb[r2]
             end
         end
 
-        local sortedDaily = TABLE.copy(DAILY)
+        local sortedDaily = TABLE.copy(cmb)
         Daily.history[-x] = table.concat(TABLE.sort(sortedDaily))
         Daily.historyDisp[-x] = table.concat(TABLE.sort(sortedDaily, modCardSorter), " ")
-        if x == 0 then LOG('info', "Today's Daily Challenge: " .. table.concat(DAILY, ' ')) end
+        if x == 0 then
+            Daily.combo = cmb
+            LOG('info', "Today's Daily Challenge: " .. table.concat(Daily.combo, ' '))
+        end
     end
     -- for k, v in next, DailyHistory do print(k, table.concat(v, " ")) end
 
