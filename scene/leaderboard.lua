@@ -19,6 +19,15 @@ local scrollGroup = {}
 local page = 0 -- 0 = today, 4 = 4 days ago
 local subPage = 'alt'
 local pageStable = {}
+local timeStrCache = setmetatable({
+    [false] = "-′--.--″",
+}, {
+    __index = function(t, k)
+        local s = STRING.time(k, 2)
+        t[k] = s
+        return s
+    end
+})
 
 local function refreshBtn()
     local L = scene.widgetList
@@ -211,34 +220,31 @@ function scene.draw()
         gc_printf(noteText2, 0, -53, pw - 26, 'right')
         for i = 1, #l do
             local p = l[i]
+
+            -- Number pannel
             gc_setColor(clr.D)
             drawBtn(0, 0, pw, entryH)
             gc_setColor(0, 0, 0, .15)
             gc_rectangle('fill', 0, 0, noW, entryH)
+
+            -- Number
             setFont(70)
             gc_setColor(rankColor[i] or clr.T)
             gc_printf(i, 0, 0, noW - 15, 'right')
+
+            -- Player info & score
             gc_setColor(clr.T)
             gc_print(p.uid, noW + 15, 0, 0, .85)
             setFont(50)
-            if subPage == 'alt' then
-                gc_printf(p.alt .. "M", 0, 0, pw - 15, 'right')
-            else
-                gc_printf(STRING.time(p.time, 2), 0, 0, pw - 15, 'right')
-            end
-            setFont(30)
-            gc_setAlpha(.42)
-            if subPage == 'alt' then
-                if p.time then
-                    gc_printf(STRING.time(p.time, 2), 0, 55, pw - 15, 'right')
-                else
-                    gc_printf("-′--.--″", 0, 55, pw - 15, 'right')
-                end
-            else
-                gc_printf(p.alt .. "M", 0, 55, pw - 15, 'right')
-            end
+            local s1, s2 = p.alt .. "M", timeStrCache[p.time or false]
+            if subPage == 'time' then s1, s2 = s2, s1 end
+            gc_printf(s1, 0, 0, pw - 15, 'right')
+            setFont(30); gc_setAlpha(.42)
+            gc_printf(s2, 0, 55, pw - 15, 'right')
             gc_setColor(1, 1, 1, .1)
             gc_print(p.hid, noW + 18, 68, 0, .6)
+
+            -- Next position
             gc_translate(0, entryH + entryGap)
         end
         maxScroll = math.max((entryH + entryGap) * (#l - 4), 0)
