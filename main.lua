@@ -990,6 +990,7 @@ function ReloadTexts()
     for _, text in next, SRSplitText3 do text:setFont(FONT.get(30)) end
     if SCN.cur == 'stat' then RefreshProfile() end
     if SCN.cur == 'records' then SCN.scenes.records.load() end
+    if SCN.cur == 'leaderboard' then SCN.scenes.leaderboard.load() end
     if SCN.cur == 'achv' then RefreshAchvList() end
 end
 
