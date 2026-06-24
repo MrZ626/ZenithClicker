@@ -165,7 +165,7 @@ local gc_push, gc_pop = gc.push, gc.pop
 local gc_translate, gc_replaceTransform = gc.translate, gc.replaceTransform
 local gc_setColor, gc_setLineWidth = gc.setColor, gc.setLineWidth
 local gc_rectangle, gc_circle = gc.rectangle, gc.circle
-local gc_arc = gc.arc
+local gc_draw, gc_arc = gc.draw, gc.arc
 local gc_print, gc_printf = gc.print, gc.printf
 local setFont = FONT.set
 local gc_setAlpha = GC.setAlpha
@@ -227,6 +227,11 @@ function scene.draw()
             gc_setColor(0, 0, 0, .15)
             gc_rectangle('fill', 0, 0, noW, entryH)
 
+            -- Rank icon
+            gc_setColor(1, 1, 1)
+            local rank = TEXTURE.stat.rank[p.cr and MATH.clamp(math.ceil(p.cr / 1400), 1, 18) or 0]
+            gc_draw(rank, noW + 10, 10, 0, .62)
+
             -- Number
             setFont(70)
             gc_setColor(rankColor[i] or clr.T)
@@ -234,7 +239,7 @@ function scene.draw()
 
             -- Player info & score
             gc_setColor(clr.T)
-            gc_print(p.uid, noW + 15, 0, 0, .85)
+            gc_print(p.uid, noW + 95, 0, 0, .85)
             setFont(50)
             local s1, s2 = p.alt .. "M", timeStrCache[p.time or false]
             if subPage == 'time' then s1, s2 = s2, s1 end
@@ -242,7 +247,7 @@ function scene.draw()
             setFont(30); gc_setAlpha(.42)
             gc_printf(s2, 0, 55, pw - 15, 'right')
             gc_setColor(1, 1, 1, .1)
-            gc_print(p.hid, noW + 18, 68, 0, .6)
+            gc_print(p.hid, noW + 98, 68, 0, .6)
 
             -- Next position
             gc_translate(0, entryH + entryGap)
