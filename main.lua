@@ -1282,7 +1282,7 @@ function Daemon_Slow()
                     LB[res.combo].lastUpd = t
                     -- Delete old data
                     for cmb, L in next, LB do
-                        if not TABLE.find(Daily.history, cmb) and t - (L.lastUpd or 0) > 86400 * 10 then
+                        if not TABLE.findAll(Daily.history, cmb) and t - (L.lastUpd or 0) > 86400 * 10 then
                             LB[cmb] = nil
                         end
                     end
