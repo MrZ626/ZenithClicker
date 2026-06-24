@@ -53,6 +53,10 @@ function scene.update(dt)
                 SFX.load('garbagewindup_5', 'assets/windup_5.ogg')
                 TASK.new(Daemon_Slow)
                 TASK.new(Daemon_Fast)
+                TASK.new(function()
+                    TASK.yieldT(2.6)
+                    CurlRequest('checkUpdate')
+                end)
                 TEXTS.load:set("GETTING READY TO SPECTATE...")
 
                 ---@diagnostic disable-next-line

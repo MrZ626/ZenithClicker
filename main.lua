@@ -1546,7 +1546,6 @@ else
     }
 end
 
-CurlRequest('checkUpdate')
 if FILE.exist('avatar') then
     local suc, res = pcall(GC.newImage, 'avatar')
     if suc then AVATAR = res end
