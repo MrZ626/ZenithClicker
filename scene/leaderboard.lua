@@ -28,6 +28,13 @@ local timeStrCache = setmetatable({
         return s
     end
 })
+local CRcache = setmetatable({}, {
+    __index = function(t, k)
+        local s = "+" .. (k - 25000)
+        t[k] = s
+        return s
+    end
+})
 
 local function refreshBtn()
     local L = scene.widgetList
@@ -231,6 +238,10 @@ function scene.draw()
             gc_setColor(1, 1, 1)
             local rank = TEXTURE.stat.rank[p.cr and MATH.clamp(math.ceil(p.cr / 1400), 1, 18) or 0]
             gc_draw(rank, noW + 10, 10, 0, .62)
+            if p.cr and p.cr > 25000 then
+                gc_setColor(.96, .9, 1, .62)
+                gc_printf(CRcache[p.cr], noW, 63, 78 / .42, 'right', 0, .42)
+            end
 
             -- Number
             setFont(70)
