@@ -979,8 +979,10 @@ function ReloadTexts()
     local sep35 = (TEXTS.temp30:getFont():getHeight() + TEXTS.title:getFont():getHeight()) / 2
     local sep57 = (TEXTS.title:getFont():getHeight() + TEXTS.test:getFont():getHeight()) / 2
     for _, text in next, TEXTS do
-        local h = text:getFont():getHeight()
-        text:setFont(FONT.get(h < sep35 and 30 or h < sep57 and 50 or 70))
+        local f = text:getFont()
+        local h = f:getHeight()
+        local s = h < sep35 and 30 or h < sep57 and 50 or 70
+        if f ~= FONT._cache['led'][s] then text:setFont(FONT.get(s)) end
     end
     for _, text in next, CardHintText do text:setFont(FONT.get(50)) end
     for _, quest in next, GAME.quests do quest.name:setFont(FONT.get(70)) end
