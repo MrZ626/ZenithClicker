@@ -2,7 +2,7 @@
 
     Welcome to Zenith Clicker, where the goal is to select required Tarot cards and send players to scale the tower.  
     As you keep climbing, more tricky players will come!  
-    Leaderboards aren't available, but how high can you reach?
+    There's a leaderboard for daily challenge, how high can you reach?
 
 > Almost all art and sounds are from [TETR.IO](https://tetr.io), a modern yet familiar online stacker game by osk with amazing graphics and music.
 
