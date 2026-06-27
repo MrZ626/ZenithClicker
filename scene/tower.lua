@@ -1012,20 +1012,21 @@ function scene.overDraw()
                     r, g, b = .626 + r * .26, .626 + g * .26, .626 + b * .26
                 end
 
+                local xText = 255 - 50 * k * bk
+                local x, y = 326, 290
+
                 -- Spike ball
                 gc_setColor(r, g, b, a)
-                gc_blurCircle(-.26, 326, 270, 100 * k)
-                gc_mDraw(TEXTURE.surgeIcon, 326, 270, GAME.time * 2.6, .25 * k * bk)
+                gc_blurCircle(-.26, x, y, 100 * k)
+                gc_mDraw(TEXTURE.surgeIcon, x, y, GAME.time * 2.6, .25 * k * bk)
 
                 -- Spark
                 if not (URM and M.NH == 2) then
                     gc_setColor(.7 + r * .3, .7 + g * .3, .7 + b * .3)
-                    for i = 1, 3 do gc_draw(SparkPS[i], 326, 270, 0, k * .8) end
+                    for i = 1, 3 do gc_draw(SparkPS[i], x, y, 0, k * .8) end
                 end
 
                 -- "B2B x"
-                local xText = 255 - 50 * k * bk
-                local x, y = 326, 268
                 gc_setColor(COLOR.D)
                 gc_draw(TEXTS.b2b, xText, y - 52)
                 gc_setColor(r, g, b)
