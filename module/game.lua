@@ -2871,14 +2871,14 @@ function GAME.finish(reason)
 end
 
 local questStyle = {
-    { k = 1.4, y = 175, a = 1 },
-    { k = 1.1, y = 95,  a = .8 },
-    { k = 0.9, y = 30,  a = .5 },
+    { k = 1.4, y = 190, a = 1.0 },
+    { k = 1.1, y = 110, a = 0.8 },
+    { k = 0.9, y = 045, a = 0.5 },
 }
 local questStyleDP = {
-    { k = 1.4,  y = 175, a = 1 },
-    { k = 1.3,  y = 95,  a = 1 },
-    { k = 0.85, y = 30,  a = .7 },
+    { k = 1.4, y = 193, a = 1.0 },
+    { k = 1.3, y = 110, a = 1.0 },
+    { k = .85, y = 045, a = 0.7 },
 }
 
 local KBisDown = love.keyboard.isDown

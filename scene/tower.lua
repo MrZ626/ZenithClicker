@@ -813,32 +813,32 @@ function scene.draw()
         gc_replaceTransform(SCR.xOy_u)
         gc_translate(0, -224 * GAME.uiHide)
         gc_setColor(1, 1, 1)
-        gc_draw(GAME.resIB, 400, 150, 0, .9)
+        gc_draw(GAME.resIB, 400, 160, 0, .9)
         gc_setColor(COLOR.D)
-        gc_mDraw(TEXTS.endHeight, 0, 135, 0, 1.8)
-        gc_mDraw(TEXTS.zpChange, 220, 95, 0, .626)
+        gc_mDraw(TEXTS.endHeight, 0, 145, 0, 1.8)
+        gc_mDraw(TEXTS.zpChange, 220, 100, 0, .626)
         gc_draw(TEXTS.endResult, -617, 80, 0, .626)
         gc_draw(TEXTS.floorTime, -617, 226 - GAME.uiHide * 150, 0, .38)
         gc_draw(TEXTS.rankTime, -527, 226 - GAME.uiHide * 150, 0, .38)
         gc_setColor(COLOR.L)
-        gc_mDraw(TEXTS.endHeight, 0, 130, 0, 1.8)
+        gc_mDraw(TEXTS.endHeight, 0, 140, 0, 1.8)
         gc_draw(TEXTS.endResult, -616, 78, 0, .626)
         if GAME.gigaspeedEntered and GAME.gigaTime then
             gc_setColor(1, 1, 1, .1)
-            GC.strokeDraw('full', 2.5, TEXTS.endFloor, -TEXTS.endFloor:getWidth() / 2, 201 - TEXTS.endFloor:getHeight() / 2)
+            GC.strokeDraw('full', 2.5, TEXTS.endFloor, -TEXTS.endFloor:getWidth() / 2, 216 - TEXTS.endFloor:getHeight() / 2)
             gc_setColor(1, 1, 1, .2)
-            GC.strokeDraw('full', 1, TEXTS.endFloor, -TEXTS.endFloor:getWidth() / 2, 201 - TEXTS.endFloor:getHeight() / 2)
+            GC.strokeDraw('full', 1, TEXTS.endFloor, -TEXTS.endFloor:getWidth() / 2, 216 - TEXTS.endFloor:getHeight() / 2)
         else
             gc_setColor(COLOR.D)
-            gc_mDraw(TEXTS.endFloor, 0, 204)
+            gc_mDraw(TEXTS.endFloor, 0, 219)
         end
         gc_setColor(COLOR.L)
-        gc_mDraw(TEXTS.endFloor, 0, 201)
+        gc_mDraw(TEXTS.endFloor, 0, 216)
         gc_setColor(COLOR.DL)
         gc_draw(TEXTS.floorTime, -616, 224 - GAME.uiHide * 150, 0, .38)
         gc_draw(TEXTS.rankTime, -526, 224 - GAME.uiHide * 150, 0, .38)
         gc_setColor(COLOR.dL)
-        gc_mDraw(TEXTS.zpChange, 220, 93, 0, .626)
+        gc_mDraw(TEXTS.zpChange, 220, 98, 0, .626)
     end
 
     -- Daily Challenge Button
@@ -884,14 +884,14 @@ function scene.overDraw()
             local w, h = TEXTS.gigatime:getDimensions()
             local gigaFade = clamp((GAME.time - (GAME.gigaspeedEntered or GAME.time) - 120) / 180, 0, 1)
             gc_setColor(GigaSpeed.r, GigaSpeed.g, GigaSpeed.b, .2 * (GigaSpeed.alpha - gigaFade))
-            gc_strokeDraw('full', 3, TEXTS.gigatime, 800, 264, 0, 1.5, 1.2, w * .5, h * .5)
+            gc_strokeDraw('full', 3, TEXTS.gigatime, 800, 277, 0, 1.4, 1.1, w * .5, h * .5)
             if M.DP < 2 then
                 gc_setAlpha(GigaSpeed.alpha)
-                gc_draw(TEXTS.gigatime, 800, 264, 0, 1.5, 1.2, w * .5, h * .5)
+                gc_draw(TEXTS.gigatime, 800, 277, 0, 1.4, 1.1, w * .5, h * .5)
                 if gigaFade > 0 then
                     local l = gigaFade == 1 and .5 or .8
                     gc_setColor(l, l, l, GigaSpeed.alpha * gigaFade)
-                    gc_draw(TEXTS.gigatime, 800, 264, 0, 1.5, 1.2, w * .5, h * .5)
+                    gc_draw(TEXTS.gigatime, 800, 277, 0, 1.4, 1.1, w * .5, h * .5)
                 end
             end
         end
@@ -915,7 +915,7 @@ function scene.overDraw()
         -- Spike counter
         if GAME.spikeCounter >= 8 and GAME.spikeTimer > 0 then
             gc_push('transform')
-            gc_translate(1226, 300)
+            gc_translate(1226, 320)
             local _t = GAME.questTime
             local bk = _t < .12 and 1 + 62 * _t * (.12 - _t) or 1
             gc_scale(min(GAME.spikeCounter / 60, 1) + bk)
@@ -976,7 +976,7 @@ function scene.overDraw()
             -- Quest counter
             if GAME.totalQuest <= 40 then
                 gc_setColor(TextColor)
-                gc.print(GAME.totalQuest, 1210, 230)
+                gc.print(GAME.totalQuest, 1210, 250)
             end
             -- Revive counter
             if GAME.reviveCount > 0 then
@@ -1072,17 +1072,17 @@ function scene.overDraw()
             -- Gravity Timer
             if M.GV > 0 then
                 gc_push('transform')
-                gc_translate(1300, 270)
+                gc_translate(1300, 285)
                 gc_scale(GAME.uiHide)
                 gc_setColor(COLOR.DL)
                 if GAME.gravTimer then
-                    gc_arc('fill', 'pie', 0, 0, 40, -1.5708,
+                    gc_arc('fill', 'pie', 0, 0, 35, -1.5708,
                         -1.5708 + 6.2832 * GAME.gravTimer / GAME.gravDelay)
                 else
-                    gc_circle('fill', 0, 0, 40)
+                    gc_circle('fill', 0, 0, 35)
                 end
                 gc_setColor(COLOR.LD)
-                gc_circle('line', 0, 0, 40)
+                gc_circle('line', 0, 0, 35)
                 if GAME.gravTimer and GAME.gravTimer < 4.2 then
                     setFont(30)
                     gvTimerColor1[4] = clampInterpolate(clamp(GAME.gravDelay, 2.6, 4.2), 0, min(GAME.gravDelay - .626, 2.6), 1, GAME.gravTimer)
@@ -1671,7 +1671,7 @@ scene.widgetList = {
     },
     WIDGET.new {
         name = 'start', type = 'button',
-        pos = { .5, .5 }, y = -170, w = 800, h = 200,
+        pos = { .5, .5 }, y = -160, w = 800, h = 180,
         color = { .35, .12, .05 },
         textColor = TextColor,
         sound_hover = 'menuhover',
