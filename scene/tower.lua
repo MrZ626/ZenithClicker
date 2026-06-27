@@ -1024,36 +1024,39 @@ function scene.overDraw()
                 end
 
                 -- "B2B x"
-                local x = 255 - 50 * k * bk
+                local xText = 255 - 50 * k * bk
+                local x, y = 326, 268
                 gc_setColor(COLOR.D)
-                gc_draw(TEXTS.b2b, x, 216)
+                gc_draw(TEXTS.b2b, xText, y - 52)
                 gc_setColor(r, g, b)
-                gc_draw(TEXTS.b2b, x, 214)
+                gc_draw(TEXTS.b2b, xText, y - 54)
 
-                -- Number
+                -- B2B Counter
                 local chain = TEXTS[M.AS < 2 and 'chain' or 'chain2']
                 if M.AS < 2 then
                     if c >= 8 then
                         gc_setColor(COLOR.L)
-                        gc_strokeDraw('full', k * 2, chain, 326, 268, 0, k * bk, nil,
+                        gc_strokeDraw('full', k * 2, chain, x, y, 0, k * bk, nil,
                             chain:getWidth() / 2, chain:getHeight() / 2)
                         gc_setColor(COLOR.D)
                     end
-                    gc_mDraw(chain, 326, 268, 0, k * bk)
+                    gc_mDraw(chain, x, y, 0, k * bk)
                 else
-                    gc_draw(WoundPS, 326, 266)
+                    gc_draw(WoundPS, x, y - 2)
 
                     if not GAME.fault then
                         gc_setColor(r, g, b, .26 + .1 * math.sin(GAME.time * 4.2))
                         gc_setBlendMode('add')
-                        gc_strokeDraw('full', 3.55 * k, chain, 326, 268, 0, k * bk)
+                        gc_strokeDraw('full', 3.55 * k, chain, x, y, 0, k * bk)
                         gc_setBlendMode('alpha')
                     end
                     gc_setColor(COLOR.L)
-                    gc_draw(chain, 326, 268, 0, k * bk)
+                    gc_draw(chain, x, y, 0, k * bk)
                 end
             elseif GAME.comboStr == 'VLrGV' then
-                GC.mStr(floor(GAME.achv_altFromSurge) .. "m", 326, 240)
+                gc_setColor(TextColor)
+                local x, y = 326, 268
+                GC.mStr(floor(GAME.achv_altFromSurge) .. "m", x, y - 28)
             end
 
             -- Damage Timer
