@@ -7,12 +7,12 @@
 
 AchvMsgStyle = {
     [0] = { id = 'achv_none', bg = COLOR.D, fg = COLOR.LD, fg2 = COLOR.LD },
-    { id = 'achv_bronze',   bg = COLOR.DO,         fg = COLOR.lO, fg2 = COLOR.O },
-    { id = 'achv_silver',   bg = TABLE.new(.26, 3), fg = COLOR.L, fg2 = COLOR.dL },
-    { id = 'achv_gold',     bg = COLOR.DY,         fg = COLOR.lY, fg2 = COLOR.Y },
-    { id = 'achv_platinum', bg = COLOR.DJ,         fg = COLOR.lJ, fg2 = COLOR.J },
-    { id = 'achv_diamond',  bg = COLOR.DP,         fg = COLOR.lP, fg2 = COLOR.lB },
-    { id = 'achv_issued',   bg = COLOR.DM,         fg = COLOR.lM, fg2 = COLOR.lM },
+    { id = 'achv_bronze',   bg = COLOR.DO,          fg = COLOR.lO, fg2 = COLOR.O },
+    { id = 'achv_silver',   bg = TABLE.new(.26, 3), fg = COLOR.L,  fg2 = COLOR.dL },
+    { id = 'achv_gold',     bg = COLOR.DY,          fg = COLOR.lY, fg2 = COLOR.Y },
+    { id = 'achv_platinum', bg = COLOR.DJ,          fg = COLOR.lJ, fg2 = COLOR.J },
+    { id = 'achv_diamond',  bg = COLOR.DP,          fg = COLOR.lP, fg2 = COLOR.lB },
+    { id = 'achv_issued',   bg = COLOR.DM,          fg = COLOR.lM, fg2 = COLOR.lM },
 }
 
 GigaSpeedReq = { [0] = 7, 8, 8, 9, 9, 10, 1e99, 1e99, 1e99, 1e99, 1e99 }
