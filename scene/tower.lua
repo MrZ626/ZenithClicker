@@ -547,7 +547,7 @@ local reviveInfo = {
 }
 local gvTimerColor1 = { 1, .942, .872, 0 }
 local gvTimerColor2 = { 0, 0, 0, 0 }
-local altitudeText = { 0, COLOR.dL, "m" }
+local altitudeText = { "0", COLOR.dL, "m" }
 local windupColor = {
     { COLOR.HEX "F5BE3FFF" },
     { COLOR.HEX "ED7F2EFF" },
