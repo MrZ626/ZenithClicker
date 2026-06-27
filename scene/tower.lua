@@ -521,13 +521,14 @@ local gc_push, gc_pop = gc.push, gc.pop
 local gc_replaceTransform = gc.replaceTransform
 local gc_translate, gc_scale, gc_rotate, gc_shear = gc.translate, gc.scale, gc.rotate, gc.shear
 local gc_setColor, gc_setLineWidth, gc_setBlendMode = gc.setColor, gc.setLineWidth, gc.setBlendMode
-local gc_draw = gc.draw
-local gc_line, gc_rectangle, gc_circle, gc_arc = gc.line, gc.rectangle, gc.circle, gc.arc
+local gc_draw, gc_line, gc_rectangle, gc_circle, gc_arc = gc.draw, gc.line, gc.rectangle, gc.circle, gc.arc
 local gc_mRect, gc_mDraw, gc_mDrawQ, gc_strokeDraw = GC.mRect, GC.mDraw, GC.mDrawQ, GC.strokeDraw
 local gc_setAlpha, gc_ucs_move, gc_ucs_back = GC.setAlpha, GC.ucs_move, GC.ucs_back
 local gc_blurCircle, gc_strokePrint = GC.blurCircle, GC.strokePrint
 local gc_setColorMask = GC.setColorMask
 local setFont = FONT.set
+local stc_reset, stc_setComp, stc_setPen, stc_stop = GC.stc_reset, GC.stc_setComp, GC.stc_setPen, GC.stc_stop
+local stc_rect, stc_mRect, stc_circ = GC.stc_rect, GC.stc_mRect, GC.stc_circ
 
 local TEXTURE = TEXTURE
 local Cards = Cards
@@ -745,7 +746,7 @@ function scene.draw()
             if gigaPower > 0 then
                 gc_replaceTransform(SCR.origin)
                 gc_setColor(GigaSpeed.r, GigaSpeed.g, GigaSpeed.b, .42 * GigaSpeed.alpha * gigaPower)
-                local h1 = SCR.y + 470 * SCR.k
+                local h1 = SCR.y + 478 * SCR.k
                 gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * SCR.w, h1)
                 gc_draw(TEXTURE.transition, SCR.w, 0, 0, -.42 / 128 * SCR.w, h1)
 
@@ -756,6 +757,105 @@ function scene.draw()
         end
 
         gc_replaceTransform(SCR.xOy)
+
+        -- Board
+        do
+            gc_push('transform')
+            local boardRX, boardRY = 790, 232.5
+            gc_translate(800, boardRY + 5 + (GAME.playing and (GAME.boardAnim - 1) * 42 or (1 - GAME.boardAnim) * 1260))
+            if not GAME.playing then gc_rotate((1 - GAME.boardAnim) * .162) end
+            local boxRX, boxRY = boardRX - 13, 110
+            local boxY = -boardRY + boxRY + 13
+            local boxExDY = 154
+            local boxExW, boxExH = 370, 41
+
+            stc_reset()
+            stc_setComp('equal', 0)
+
+            -- Cull quest area
+            stc_mRect(0, boxY, boxRX * 2, boxRY * 2)
+            stc_rect(-boxRX, boxY + boxRY + boxExDY, boxExW, boxExH)
+
+            stc_setPen('replace', 0)
+            -- Bevel quest area corner
+            stc_circ(-boxRX, boxY - boxRY, 16, 4)
+            stc_circ(-boxRX, boxY + boxRY, 16, 4)
+            stc_circ(boxRX, boxY - boxRY, 16, 4)
+            stc_circ(boxRX, boxY + boxRY, 16, 4)
+            -- Damage timer border
+            stc_circ(-boxRX, boxY + boxRY + boxExDY + boxExH, 16, 4)
+            stc_circ(-boxRX + boxExW, boxY + boxRY + boxExDY + boxExH, 16, 4)
+
+            stc_setPen('replace', 1)
+
+            local hpY = 210
+            local hpW = 1540
+            local hpH = 13
+
+            -- Cull HP Bar
+            stc_mRect(0, hpY, hpW * GAME.fullHealth / GAME.startingHealth + 4, hpH + 4)
+
+            -- Cull board corner
+            stc_circ(-boardRX, -boardRY, 22, 4)
+            stc_circ(-boardRX, boardRY, 22, 4)
+            stc_circ(boardRX, -boardRY, 22, 4)
+            stc_circ(boardRX, boardRY, 22, 4)
+
+            -- Draw board
+            gc_setColor(BoardColor[1], BoardColor[2], BoardColor[3], (GAME.playing and GAME.boardAnim or 1) * .6)
+            gc_mRect('fill', 0, 0, boardRX * 2, boardRY * 2)
+            stc_stop()
+            if M.EX > 0 then
+                -- EX deco
+                gc_setColor(1, 0, 0, GAME.boardAnim)
+                gc_draw(TEXTURE.triangle, boardRX, boardRY, 0, -15 / 100, -15 / 100)
+                gc_draw(TEXTURE.triangle, -boardRX, boardRY, 0, 15 / 100, -15 / 100)
+            end
+
+            -- HP Bar
+            local safeHP = GAME.playing and max(GAME.dmgWrong + GAME.dmgWrongExtra, GAME.dmgTime) or 0
+            gc_setColor(GAME.playing and GAME.life > safeHP and COLOR.L or COLOR.R)
+            if M.DP == 0 then
+                gc_mRect('fill', 0, hpY, hpW * GAME.lifeShow / GAME.startingHealth, hpH)
+                if GAME.playing then
+                    -- Indicators
+                    gc_setColor(COLOR.LD)
+                    gc_mRect('fill', 0, hpY - 2, hpW * GAME.dmgTime / GAME.startingHealth, 3)
+                    gc_setColor(.872, 0, 0)
+                    gc_mRect('fill', 0, hpY + 2, hpW * GAME.dmgWrong / GAME.startingHealth, 3)
+                    gc_setColor(1, 0, 0, .626)
+                    gc_mRect('fill', 0, hpY + 2, hpW * (GAME.dmgWrong + GAME.dmgWrongExtra) / GAME.startingHealth, 2)
+                end
+            else
+                local onAlly = GAME.onAlly
+                if onAlly then gc_setAlpha(.42) end
+                gc_rectangle('fill', 0, hpY - hpH / 2, -hpW / 2 * GAME.lifeShow / GAME.startingHealth, hpH)
+                gc_setColor(GAME.playing and GAME.life2 > safeHP and COLOR.L or COLOR.R)
+                if not onAlly then gc_setAlpha(.42) end
+                gc_rectangle('fill', 0, hpY - hpH / 2, hpW / 2 * GAME.lifeShow2 / GAME.startingHealth, hpH)
+            end
+
+            -- Damage Timer
+            if GAME.playing then
+                local w = 364
+                local w1, w2 = w * (GAME.dmgTimer / GAME.dmgDelay), w * (GAME.dmgCycle / GAME.dmgDelay)
+                stc_reset()
+                stc_rect(-774, 157, w, 36)
+                stc_setPen('replace', 0)
+                stc_rect(-410 - w2 - 3, 157, w2 + 3, 7)
+                stc_rect(-410 - w2 - 3, 157, 3, 36)
+                stc_circ(-774, 193, 15, 4)
+                stc_circ(-410, 193, 15, 4)
+                gc_setColor(GAME.dmgTimer > GAME.dmgCycle and COLOR.DL or COLOR.lR)
+                gc_rectangle('fill', -410 - w1, 157, w1, 36)
+                -- GAME.dmgTimerMul
+                stc_stop()
+                gc_setColor(COLOR.lR)
+                gc_rectangle('fill', -410 - w2, 157, w2, 4)
+            end
+
+            gc_pop()
+        end
 
         -- Mod icons
         if GAME.uiHide > 0 then
@@ -929,29 +1029,6 @@ function scene.overDraw()
             gc_setBlendMode('alpha')
             gc_pop()
         end
-
-        -- Health Bar
-        local safeHP = GAME.playing and max(GAME.dmgWrong + GAME.dmgWrongExtra, GAME.dmgTime) or 0
-        if M.DP == 0 then
-            gc_setColor(GAME.playing and GAME.life > safeHP and COLOR.L or COLOR.R)
-            gc_mRect('fill', 800, 440, 1540 * GAME.lifeShow / GAME.startingHealth, 10)
-            if GAME.playing then
-                gc_setColor(COLOR.LD)
-                gc_mRect('fill', 800, 440 - 2, 1540 * GAME.dmgTime / GAME.startingHealth, 3)
-                gc_setColor(.872, 0, 0)
-                gc_mRect('fill', 800, 440 + 2, 1540 * GAME.dmgWrong / GAME.startingHealth, 3)
-                gc_setColor(1, 0, 0, .626)
-                gc_mRect('fill', 800, 440 + 2, 1540 * (GAME.dmgWrong + GAME.dmgWrongExtra) / GAME.startingHealth, 2)
-            end
-        else
-            local onAlly = GAME.onAlly
-            gc_setColor(GAME.playing and GAME.life > safeHP and COLOR.L or COLOR.R)
-            if onAlly then gc_setAlpha(.42) end
-            gc_rectangle('fill', 800, 440 - 5, -1540 / 2 * GAME.lifeShow / GAME.startingHealth, onAlly and 8 * M.DP or 12)
-            gc_setColor(GAME.playing and GAME.life2 > safeHP and COLOR.L or COLOR.R)
-            if not onAlly then gc_setAlpha(.42) end
-            gc_rectangle('fill', 800, 440 - 5, 1540 / 2 * GAME.lifeShow2 / GAME.startingHealth, onAlly and 12 or 8 * M.DP)
-        end
     end
 
     if GAME.playing then
@@ -975,8 +1052,7 @@ function scene.overDraw()
             setFont(30)
             -- Quest counter
             if GAME.totalQuest <= 40 then
-                gc_setColor(TextColor)
-                gc.print(GAME.totalQuest, 1210, 250)
+                gc_strokePrint('corner', 2, COLOR.D, BoardColor, GAME.totalQuest, 1210, 250)
             end
             -- Revive counter
             if GAME.reviveCount > 0 then
@@ -988,6 +1064,8 @@ function scene.overDraw()
                 local _t = GAME.questTime
                 local bk = _t < .12 and 1 + 62 * _t * (.12 - _t) or 1
                 local k = clampInterpolate(6, .7, 26, 2, c)
+                local xText = 255 - 50 * k * bk
+                local x, y = 326, 290
 
                 local r, g, b, a
                 if GAME.fault then
@@ -1005,15 +1083,12 @@ function scene.overDraw()
                         .16
                     )
                     gc_setColor(0, 0, 0)
-                    gc_mDraw(TEXTURE.surgeIcon, 326, 270, GAME.time * 2.6, .25 * k * bk)
+                    gc_mDraw(TEXTURE.surgeIcon, 326, y, GAME.time * 2.6, .25 * k * bk)
                 end
 
                 if URM and M.NH == 2 then
                     r, g, b = .626 + r * .26, .626 + g * .26, .626 + b * .26
                 end
-
-                local xText = 255 - 50 * k * bk
-                local x, y = 326, 290
 
                 -- Spike ball
                 gc_setColor(r, g, b, a)
@@ -1055,20 +1130,9 @@ function scene.overDraw()
                     gc_draw(chain, x, y, 0, k * bk)
                 end
             elseif GAME.comboStr == 'VLrGV' then
-                gc_setColor(TextColor)
-                local x, y = 326, 268
-                GC.mStr(floor(GAME.achv_altFromSurge) .. "m", x, y - 28)
+                local x, y = 326, 290
+                gc_strokePrint('corner', 2, COLOR.D, BoardColor, floor(GAME.achv_altFromSurge) .. "m", x, y - 20, 260, 'center')
             end
-
-            -- Damage Timer
-            local delay = GAME.dmgDelay
-            local w = -360 * min(GAME.dmgTimerMul ^ .5, 1)
-            gc_setColor(GAME.dmgTimer > GAME.dmgCycle and COLOR.DL or COLOR.lR)
-            gc_rectangle('fill', 390, 430, w * (GAME.dmgTimer / delay), -20 - 2 * delay)
-            gc_setLineWidth(3)
-            gc_setColor(COLOR.LD)
-            gc_rectangle('line', 390, 430, w * (GAME.dmgCycle / delay), -20 - 2 * delay)
-            gc_rectangle('line', 390, 430, w, -20 - 2 * delay)
 
             -- Gravity Timer
             if M.GV > 0 then
@@ -1458,7 +1522,7 @@ function scene.overDraw()
         gc_replaceTransform(SCR.xOy_m)
         GC.setColor(1, 1, 1, .26 * GAME.uiHide)
         local w, h = GAME.pieceFstrObj:getDimensions()
-        GC.draw(GAME.pieceFstrObj, 0, -170, 0, min(4.2, 740 / w), nil, w / 2, h * .57)
+        GC.draw(GAME.pieceFstrObj, 0, -160, 0, min(4.2, 740 / w), nil, w / 2, h * .57)
     end
 
     -- Windup animation
@@ -1482,7 +1546,7 @@ function scene.overDraw()
         -- gc_replaceTransform(SCR.xOy_ur)
         -- gc_translate(-10, 80 - GAME.uiHide * 70)
         gc_replaceTransform(SCR.xOy_m)
-        gc_translate(400 - 10, -260)
+        gc_translate(400 - 10, -240)
         gc_scale(.6)
         for i = 1, #GAME.koAnim do
             local k = GAME.koAnim[i]

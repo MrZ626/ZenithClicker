@@ -363,6 +363,7 @@ GigaSpeed = {
     textTimer = false,
     isTera = false,
 }
+BoardColor = { 1, 1, 1 }
 ImpactGlow = {}
 DeckPress = 0
 ThrobAlpha = {
@@ -1416,6 +1417,27 @@ function Daemon_Fast()
         -- Speedrun timer
         STAT.srTimer_life = STAT.srTimer_life + dt
 
+        -- Calculate board color
+        if GAME.playing then
+            local safeHP = GAME.playing and max(GAME.dmgWrong + GAME.dmgWrongExtra, GAME.dmgTime) or 0
+            local r, g, b
+            local patch = GAME.boardColorPatch
+            if GAME.life <= safeHP or M.DP > 0 and GAME.life2 <= safeHP then
+                r, g, b = 1, 0, 0
+            elseif patch.timer > 0 then
+                r, g, b = patch.color[1], patch.color[2], patch.color[3]
+                patch.timer = patch.timer - dt
+            else
+                local _t = MATH.ilLerp(BoardColorData.alt, GAME.height)
+                r = MATH.lLerp(BoardColorData.r, _t) * GAME.boardDim[1]
+                g = MATH.lLerp(BoardColorData.g, _t) * GAME.boardDim[2]
+                b = MATH.lLerp(BoardColorData.b, _t) * GAME.boardDim[3]
+            end
+            BoardColor[1] = MATH.linearApproach(BoardColor[1], r, dt * 2)
+            BoardColor[2] = MATH.linearApproach(BoardColor[2], g, dt * 2)
+            BoardColor[3] = MATH.linearApproach(BoardColor[3], b, dt * 2)
+        end
+
         -- Mouse holding animation
         if not CONF.syscursor then
             pressValue = msIsDown(1, 2) and 1 or expApproach(pressValue, 0, dt * 12)
@@ -1484,6 +1506,7 @@ function Daemon_Fast()
             end
         end
 
+        -- Tera running light
         if GAME.finishTera and GAME.endFloorFstr[1] and TASK.lock('teraScroll', .05) then
             local l = GAME.endFloorFstr
             local lastColor = l[#l - 1]

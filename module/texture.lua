@@ -432,6 +432,11 @@ TEXTURE.transition = GC.initCanvas(128, 1, function()
     end
 end)
 
+TEXTURE.triangle = GC.initCanvas(100, 100, function()
+    GC.setColor(1, 1, 1)
+    GC.polygon('fill', 0, 0, 100, 0, 0, 100)
+end)
+
 TEXTURE.darkCorner = GC.initCanvas(128, 128, function()
     GC.setColor(0, 0, 0)
     GC.blurCircle(.626, 64, 64, 64)

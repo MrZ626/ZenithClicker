@@ -122,6 +122,12 @@ local GAME = {
     revTimer = 0,
     revDeckSkin = false,
     uiHide = 0,
+    boardAnim = 0,
+    boardDim = { 1, 1, 1 },
+    boardColorPatch = {
+        timer = 0,
+        color = COLOR.L,
+    },
     bgX = 0,
     bgXdir = 0,
     bgH = 0,
@@ -523,6 +529,14 @@ end
 
 function GAME.anim_setMenuHide_rev(t)
     GAME.anim_setMenuHide(1 - t)
+end
+
+function GAME.anim_setBoardAnim(t)
+    GAME.boardAnim = t
+end
+
+function GAME.anim_setBoardAnim_rev(t)
+    GAME.anim_setBoardAnim(1 - t)
 end
 
 local floorHeights = {}
@@ -1167,16 +1181,36 @@ function GAME.upFloor()
     GAME.refreshRPC()
 end
 
+function GAME.setFatigueColor(mode)
+    if mode == 'norm' then -- Normal
+        GAME.boardColorPatch.color = { COLOR.HEX "FF00C0" }
+        GAME.boardColorPatch.timer = 5
+    elseif mode == 'end' then -- Last original
+        GAME.boardColorPatch.color = { COLOR.HEX "FF0040" }
+        GAME.boardColorPatch.timer = 15
+    elseif mode == 'pos' then -- rDP Positive
+        GAME.boardColorPatch.color = { COLOR.HEX "FFB000" }
+        GAME.boardColorPatch.timer = 5
+    elseif mode == 'kill' then -- killscreen
+        GAME.boardColorPatch.color = { COLOR.HEX "B00000" }
+        GAME.boardColorPatch.timer = 1e99
+    end
+end
+
 function GAME.nextFatigue()
     local stage = GAME.fatigueSet[GAME.fatigue]
     local e = stage.event
-    for i = 1, #e, 2 do
-        GAME[e[i]] = GAME[e[i]] + e[i + 1]
+    if type(e) == 'function' then
+        e()
+    else
+        for i = 1, #e, 2 do
+            GAME[e[i]] = GAME[e[i]] + e[i + 1]
+        end
     end
     if stage.text then
         TEXT:add {
             text = stage.text,
-            x = 800, y = 265, fontSize = 30, k = 1.5,
+            x = 800, y = 285, fontSize = 30, k = 1.5,
             style = 'score', duration = stage.duration or 5,
             inPoint = .1, outPoint = .26,
             color = stage.color or 'lM',
@@ -1184,7 +1218,7 @@ function GAME.nextFatigue()
         if stage.desc then
             TEXT:add {
                 text = stage.desc,
-                x = 800, y = 300, fontSize = 30,
+                x = 800, y = 320, fontSize = 30,
                 style = 'score', duration = stage.duration or 5,
                 inPoint = .26, outPoint = .1,
                 color = stage.color or 'lM',
@@ -2326,6 +2360,10 @@ function GAME.start()
     TASK.new(task_startSpin)
 
     TWEEN.new(GAME.anim_setMenuHide):setOnFinish(GAME.anim_setMenuHide_finish):setDuration(GAME.slowmo and 2.6 or .26):setUnique('uiHide'):run()
+    TWEEN.new(GAME.anim_setBoardAnim):setEase('OutQuad'):setDuration(GAME.slowmo and 4.2 or .42):setUnique('boardAnim'):run()
+    BoardColor[1], BoardColor[2], BoardColor[3] = BoardColorData.r[1], BoardColorData.g[1], BoardColorData.b[1]
+    GAME.boardColorPatch.timer = 0
+    GAME.boardDim = { 1, 1, 1 }
 
     GAME.achv_plonkH = nil
     GAME.achv_perfectH = nil
@@ -2860,6 +2898,7 @@ function GAME.finish(reason)
     if #GAME.secTime >= 10 and GAME.height < 0 then IssueSecret('universal_gravitation') end
 
     TWEEN.new(GAME.anim_setMenuHide_rev):setDuration(GAME.slowmo and 2.6 or .26):setUnique('uiHide'):run()
+    TWEEN.new(GAME.anim_setBoardAnim_rev):setEase('InQuad'):setDuration(GAME.slowmo and 6.26 or 1.26):setUnique('boardAnim'):run()
     GAME.refreshRPC()
     if reason ~= 'forfeit' then
         TASK.lock('cannotStart', 1)
