@@ -567,7 +567,7 @@ function scene.draw()
                 end
 
                 -- Texts
-                gc_setColor(AchvData[a.rank].fg2)
+                gc_setColor(AchvMsgStyle[a.rank].fg2)
                 gc_print(a.score, 130, 35, 0)
                 gc_setColor(colorRev and COLOR.LR or COLOR.L)
                 gc_print(a.name, 130, 7, 0, .7)

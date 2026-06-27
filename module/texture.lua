@@ -561,8 +561,8 @@ MSG.setSafeY(75)
 MSG.addCategory('dark', COLOR.D, COLOR.L)
 MSG.addCategory('bright', COLOR.L, COLOR.D)
 MSG.addCategory('speedrun', COLOR.LG, COLOR.D)
-for i = 0, 6 do MSG.addCategory(AchvData[i].id, AchvData[i].bg, COLOR.L, TEXTURE.achievement.frame[i]) end
-for i = 1, 6 do MSG.addCategory("wreath_" .. i, AchvData[5].bg, COLOR.L, GC.load { w = 256, { 'draw', TEXTURE.achievement.frame[5] }, { 'draw', TEXTURE.achievement.wreath[i] } }) end
+for i = 0, 6 do MSG.addCategory(AchvMsgStyle[i].id, AchvMsgStyle[i].bg, COLOR.L, TEXTURE.achievement.frame[i]) end
+for i = 1, 6 do MSG.addCategory("wreath_" .. i, AchvMsgStyle[5].bg, COLOR.L, GC.load { w = 256, { 'draw', TEXTURE.achievement.frame[5] }, { 'draw', TEXTURE.achievement.wreath[i] } }) end
 
 TEXTS = { -- Font size should only be 30 50 70 here, to reduce memory usage of fonts
     temp30      = GC.newText(FONT.get(30)),

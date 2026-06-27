@@ -658,7 +658,7 @@ function IssueAchv(id, silent)
 
     if not silent then
         table.insert(bufferedMsg, { 'achv_issued', {
-            AchvData[6].fg, A.name .. "\n",
+            AchvMsgStyle[6].fg, A.name .. "\n",
             COLOR.dL, A.desc .. "\n",
             COLOR.LD, A.quote,
         }, 1 })
@@ -699,8 +699,8 @@ function SubmitAchv(id, score, silent, realSilent)
         local wreath = R1 >= 5 and math.floor(MATH.clampInterpolate(0, 0, .9999, 6, R1 % 1)) or 0
         local scoreText = A.scoreSimp(score) .. (A.scoreFull and "  " .. A.scoreFull(score) or "")
         local oldScoreText = A.scoreSimp(oldScore) .. (A.scoreFull and "  " .. A.scoreFull(oldScore) or "")
-        table.insert(bufferedMsg, { wreath > 0 and 'wreath_' .. wreath or AchvData[rank].id, {
-            AchvData[rank].fg, wreathName[wreath] .. A.name .. "   >>   " .. scoreText,
+        table.insert(bufferedMsg, { wreath > 0 and 'wreath_' .. wreath or AchvMsgStyle[rank].id, {
+            AchvMsgStyle[rank].fg, wreathName[wreath] .. A.name .. "   >>   " .. scoreText,
             COLOR.LD, (ACHV[id] and "    Previous: " .. oldScoreText or "") .. "\n",
             COLOR.dL, A.desc .. "\n", COLOR.LD, A.quote,
         }, rank <= 2 and 1 or rank <= 4 and 2 or 3 })
