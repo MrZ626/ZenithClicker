@@ -297,7 +297,7 @@ UTIL.time("Load & Configure & Customize Zenitha", true)
 --------------------------------------------------------------
 
 CHAR = require 'module/char'
-require 'data/base'
+require 'data/init'
 require 'module/texture'
 
 UTIL.time("Load gamedata & Initialize Textures", true)
