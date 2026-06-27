@@ -762,7 +762,7 @@ function scene.draw()
         do
             gc_push('transform')
             local boardRX, boardRY = 790, 232.5
-            gc_translate(800, boardRY + 5 + (GAME.playing and (GAME.boardAnim - 1) * 42 or (1 - GAME.boardAnim) * 1260))
+            gc_translate(800, boardRY + 5 + (GAME.playing and (GAME.boardAnim - 1) * 620 or (1 - GAME.boardAnim) * 1260))
             if not GAME.playing then gc_rotate((1 - GAME.boardAnim) * .162) end
             local boxRX, boxRY = boardRX - 13, 110
             local boxY = -boardRY + boxRY + 13
@@ -802,12 +802,12 @@ function scene.draw()
             stc_circ(boardRX, boardRY, 22, 4)
 
             -- Draw board
-            gc_setColor(BoardColor[1], BoardColor[2], BoardColor[3], (GAME.playing and GAME.boardAnim or 1) * .6)
+            gc_setColor(BoardColor[1], BoardColor[2], BoardColor[3], CONF.boardBrightness / 100)
             gc_mRect('fill', 0, 0, boardRX * 2, boardRY * 2)
             stc_stop()
             if M.EX > 0 then
                 -- EX deco
-                gc_setColor(1, 0, 0, GAME.boardAnim)
+                gc_setColor(1, 0, 0)
                 gc_draw(TEXTURE.triangle, boardRX, boardRY, 0, -15 / 100, -15 / 100)
                 gc_draw(TEXTURE.triangle, -boardRX, boardRY, 0, 15 / 100, -15 / 100)
             end

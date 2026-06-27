@@ -345,7 +345,8 @@ function scene.draw()
         drawSliderComponents(120, "EFFECT VOLUME", "QUIET (F3)", "LOUD (F3)", CONF.sfx)
         drawSliderComponents(200, "MUSIC VOLUME", "QUIET (F4)", "LOUD (F4)", CONF.bgm)
         drawSliderComponents(430, "CARD  BRIGHTNESS", "DARK (F5)", "BRIGHT (F6)", CONF.cardBrightness)
-        drawSliderComponents(510, "BG  BRIGHTNESS", "DARK (F7)", "BRIGHT (F8)", CONF.bgBrightness)
+        drawSliderComponents(510, "BOARD  BRIGHTNESS", "DARK", "BRIGHT", CONF.boardBrightness)
+        drawSliderComponents(590, "BG  BRIGHTNESS", "DARK (F7)", "BRIGHT (F8)", CONF.bgBrightness)
 
         -- Keybind
         if bindBuffer then
@@ -553,9 +554,18 @@ pages[1] = {
         code = function(value) CONF.cardBrightness = value end,
         sound_drag = 'rotate',
     },
-    WIDGET.new { -- bg brightness
+    WIDGET.new { -- board brightness
         type = 'slider',
         x = baseX + 240 + 85, y = videoY + 140, w = 400,
+        axis = { 0, 70, 10 },
+        frameColor = 'dD', fillColor = clr.D,
+        disp = function() return CONF.boardBrightness end,
+        code = function(value) CONF.boardBrightness = value end,
+        sound_drag = 'rotate',
+    },
+    WIDGET.new { -- bg brightness
+        type = 'slider',
+        x = baseX + 240 + 85, y = videoY + 220, w = 400,
         axis = { 30, 80, 10 },
         frameColor = 'dD', fillColor = clr.D,
         disp = function() return CONF.bgBrightness end,
@@ -567,7 +577,7 @@ pages[1] = {
         fillColor = clr.cbFill,
         frameColor = clr.cbFrame,
         textColor = clr.T, text = "FANCY BACKGROUND  (F9)",
-        x = baseX + 55, y = videoY + 230,
+        x = baseX + 55, y = videoY + 300,
         disp = function() return CONF.bg end,
         code = WIDGET.c_pressKey 'f9',
     },
@@ -576,7 +586,7 @@ pages[1] = {
         fillColor = clr.cbFill,
         frameColor = clr.cbFrame,
         textColor = clr.T, text = "STAR FORCE  (F10)",
-        x = baseX + 55, y = videoY + 300,
+        x = baseX + 55, y = videoY + 360,
         disp = function() return not CONF.syscursor end,
         code = WIDGET.c_pressKey 'f10',
     },
@@ -585,7 +595,7 @@ pages[1] = {
         fillColor = clr.cbFill,
         frameColor = clr.cbFrame,
         textColor = clr.T, text = "FULLSCREEN  (F11)",
-        x = baseX + 55, y = videoY + 370,
+        x = baseX + 55, y = videoY + 420,
         disp = function() return CONF.fullscreen end,
         code = WIDGET.c_pressKey 'f11',
     },

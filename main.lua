@@ -317,6 +317,7 @@ CONF = {
     fullscreen = true,
     syscursor = false,
     cardBrightness = 90,
+    boardBrightness = 40,
     bgBrightness = 40,
     bg = true,
     sfx = 60,
