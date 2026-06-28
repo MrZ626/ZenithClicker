@@ -346,7 +346,7 @@ function scene.draw()
         drawSliderComponents(190, "MUSIC VOLUME", "QUIET (F4)", "LOUD (F4)", CONF.bgm)
         drawSliderComponents(380, "CARD  BRIGHTNESS", "DARK (F5)", "BRIGHT (F6)", CONF.cardBrightness)
         drawSliderComponents(450, "BG  BRIGHTNESS", "DARK (F7)", "BRIGHT (F8)", CONF.bgBrightness)
-        drawSliderComponents(520, "BOARD  BRIGHTNESS", "DARK", "BRIGHT", CONF.boardBrightness)
+        drawSliderComponents(520, "BOARD  OPACITY", "TRANSPARENT", "OPAQUE", CONF.boardOpacity)
         drawSliderComponents(590, "DAMAGE  SHAKINESS", "STIFF", "SHAKY", CONF.damageShakiness)
 
         -- Keybind
@@ -534,7 +534,7 @@ pages[1] = {
         fillColor = clr.cbFill,
         frameColor = clr.cbFrame,
         textColor = clr.T, text = "MUTE ON UNFOCUS",
-        x = baseX + 55, y = baseY + 250,
+        x = baseX + 55, y = baseY + 255,
         disp = function() return CONF.autoMute end,
         code = function() CONF.autoMute = not CONF.autoMute end,
     },
@@ -564,13 +564,13 @@ pages[1] = {
         code = function(value) CONF.bgBrightness = value end,
         sound_drag = 'rotate',
     },
-    WIDGET.new { -- board brightness
+    WIDGET.new { -- board opacity
         type = 'slider',
         x = baseX + 240 + 85, y = videoY + 200, w = 400,
         axis = { 0, 80, 10 },
         frameColor = 'dD', fillColor = clr.D,
-        disp = function() return CONF.boardBrightness end,
-        code = function(value) CONF.boardBrightness = value end,
+        disp = function() return CONF.boardOpacity end,
+        code = function(value) CONF.boardOpacity = value end,
         sound_drag = 'rotate',
     },
     WIDGET.new { -- damage shakiness

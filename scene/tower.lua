@@ -812,10 +812,10 @@ function scene.draw()
 
             -- Draw board
             stc_setComp('equal', 1)
-            gc_setColor(.05, .05, .05, (GAME.playing and GAME.boardAnim ^ 4.2 or 1) * CONF.boardBrightness / 100)
+            gc_setColor(.05, .05, .05, (GAME.playing and GAME.boardAnim ^ 4.2 or 1) * CONF.boardOpacity / 100)
             gc_mRect('fill', 0, 0, boardRX * 2, boardRY * 2)
             stc_setComp('equal', 2)
-            gc_setColor(BoardColor[1], BoardColor[2], BoardColor[3], (GAME.playing and GAME.boardAnim ^ 4.2 or 1) * CONF.boardBrightness / 100)
+            gc_setColor(BoardColor[1], BoardColor[2], BoardColor[3], (GAME.playing and GAME.boardAnim ^ 4.2 or 1) * CONF.boardOpacity / 100)
             gc_mRect('fill', 0, 0, boardRX * 2, boardRY * 2)
             stc_stop()
             if M.EX > 0 then
