@@ -128,6 +128,7 @@ local GAME = {
         timer = 0,
         color = COLOR.L,
     },
+    shakeTimer = 0,
     bgX = 0,
     bgXdir = 0,
     bgH = 0,
@@ -222,6 +223,7 @@ local GAME = {
 }
 
 GAME.playing = false
+GAME.maxQuestCount = 0
 GAME.finishTime = -2600
 GAME.fullHealth = 20
 GAME.startingHealth = 20
@@ -676,7 +678,7 @@ function GAME.genQuest()
         ins(GAME.quests, {
             combo = combo,
             name = GC.newText(FONT.get(70), GAME.getComboName(TABLE.copy(combo), 'ingame')),
-            y = -100,
+            y = -260,
             k = .5,
             a = 0,
         })
@@ -2898,7 +2900,8 @@ function GAME.finish(reason)
     if #GAME.secTime >= 10 and GAME.height < 0 then IssueSecret('universal_gravitation') end
 
     TWEEN.new(GAME.anim_setMenuHide_rev):setDuration(GAME.slowmo and 2.6 or .26):setUnique('uiHide'):run()
-    TWEEN.new(GAME.anim_setBoardAnim_rev):setEase('InQuad'):setDuration(GAME.slowmo and 6.26 or 1.26):setUnique('boardAnim'):run()
+    TWEEN.new(GAME.anim_setBoardAnim_rev):setEase('InQuart'):setDuration(GAME.slowmo and 6.26 or 1.26):setUnique('boardAnim'):run()
+    GAME.shakeTimer = .5
     GAME.refreshRPC()
     if reason ~= 'forfeit' then
         TASK.lock('cannotStart', 1)
@@ -2910,19 +2913,20 @@ function GAME.finish(reason)
 end
 
 local questStyle = {
-    { k = 1.4, y = 190, a = 1.0 },
-    { k = 1.1, y = 110, a = 0.8 },
-    { k = 0.9, y = 045, a = 0.5 },
+    { k = 1.4, y = -48,  a = 1.0 },
+    { k = 1.1, y = -128, a = 0.8 },
+    { k = 0.9, y = -193, a = 0.5 },
 }
 local questStyleDP = {
-    { k = 1.4, y = 193, a = 1.0 },
-    { k = 1.3, y = 110, a = 1.0 },
-    { k = .85, y = 045, a = 0.7 },
+    { k = 1.4, y = -45,  a = 1.0 },
+    { k = 1.3, y = -128, a = 1.0 },
+    { k = .85, y = -193, a = 0.7 },
 }
 
 local KBisDown = love.keyboard.isDown
 function GAME.update(dt)
     GAME.spikeTimer = GAME.spikeTimer - dt
+    GAME.shakeTimer = GAME.shakeTimer - dt
     for i = #GAME.windupAnim, 1, -1 do
         local w = GAME.windupAnim[i]
         w.bumpTime = w.bumpTime - (GAME.slowmo and dt / 2 or dt)

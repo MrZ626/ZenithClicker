@@ -557,7 +557,7 @@ pages[1] = {
     WIDGET.new { -- board brightness
         type = 'slider',
         x = baseX + 240 + 85, y = videoY + 140, w = 400,
-        axis = { 0, 70, 10 },
+        axis = { 0, 80, 10 },
         frameColor = 'dD', fillColor = clr.D,
         disp = function() return CONF.boardBrightness end,
         code = function(value) CONF.boardBrightness = value end,
