@@ -832,6 +832,8 @@ function GAME.takeDamage(dmg, reason, toAlly)
         'bombdetonate', .872
     )
 
+    GAME.shakeTimer = min(dmg / 12, .62)
+
     GAME.achv_totalDmg = GAME.achv_totalDmg + dmg
     if not GAME.achv_perfectH then
         GAME.achv_perfectH = GAME.roundHeight
