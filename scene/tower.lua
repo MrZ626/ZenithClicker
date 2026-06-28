@@ -431,7 +431,7 @@ function scene.update(dt)
     end
     for i = #ImpactGlow, 1, -1 do
         local L = ImpactGlow[i]
-        L.t = L.t - dt
+        L.t = L.t - dt * L.tk
         if L.t <= 0 then
             table.remove(ImpactGlow, i)
         end
@@ -1100,72 +1100,67 @@ function scene.overDraw()
                 local _t = GAME.questTime
                 local bk = _t < .12 and 1 + 62 * _t * (.12 - _t) or 1
                 local k = clampInterpolate(6, .7, 26, 2, c)
-                local x, y = -474, 52
-                local xText = x - 71 - 50 * k * bk
 
-                local r, g, b, a
-                if GAME.fault then
-                    local l = M.AS < 2 and .62 or .42
-                    r, g, b, a = l, l, l, c < 8 and .26 or 1
-                elseif M.AS < 2 then
-                    r, g, b, a = COLOR.HSL(
-                        26 / (c + 22) + 1.3, 1,
-                        icLerp(-260, 420, c),
-                        c < 8 and .26 or 1
-                    )
-                else
-                    r, g, b, a = COLOR.HSV(
-                        clampInterpolate(4, .76, 26, 0.926, c), 1, 1,
-                        .16
-                    )
-                    gc_setColor(0, 0, 0)
-                    gc_mDraw(TEXTURE.surgeIcon, x, y, GAME.time * 2.6, .25 * k * bk)
-                end
+                gc_ucs_move(-474, 52)
+                local xText = -71 - 50 * k * bk
 
-                if URM and M.NH == 2 then
-                    r, g, b = .626 + r * .26, .626 + g * .26, .626 + b * .26
+                local r, g, b, a = GAME.calculateSurgeColor(c)
+                if M.AS == 2 then
+                    gc_setColor(0, 0, 0, GAME.fault and .62 or 1)
+                    gc_mDraw(TEXTURE.surgeIcon, 0, 0, GAME.time * 2.6, .25 * k * bk)
                 end
 
                 -- Spike ball
                 gc_setColor(r, g, b, a)
-                gc_blurCircle(-.26, x, y, 100 * k)
-                gc_mDraw(TEXTURE.surgeIcon, x, y, GAME.time * 2.6, .25 * k * bk)
+                gc_blurCircle(-.26, 0, 0, 100 * k)
+                gc_mDraw(TEXTURE.surgeIcon, 0, 0, GAME.time * 2.6, .25 * k * bk)
 
                 -- Spark
                 if not (URM and M.NH == 2) then
                     gc_setColor(.7 + r * .3, .7 + g * .3, .7 + b * .3)
-                    for i = 1, 3 do gc_draw(SparkPS[i], x, y, 0, k * .8) end
+                    for i = 1, 3 do gc_draw(SparkPS[i], 0, 0, 0, k * .8) end
                 end
 
                 -- "B2B x"
                 gc_setColor(COLOR.D)
-                gc_strokeDraw('full', 1, TEXTS.b2b, xText, y - 54)
+                gc_strokeDraw('full', 1, TEXTS.b2b, xText, -54)
                 gc_setColor(r, g, b)
-                gc_draw(TEXTS.b2b, xText, y - 54)
+                gc_draw(TEXTS.b2b, xText, -54)
 
-                -- B2B Counter
+                -- Particles
+                if M.AS == 2 then
+                    gc_draw(WoundPS, 0, 0 - 2)
+                end
+
+                -- Number
+                if GAME.fault then
+                    gc_push('transform')
+                    gc_rotate(MATH.rand(-.16, .16))
+                    gc_translate(MATH.rand(-4, 4), MATH.rand(-4, 4))
+                end
                 local chain = TEXTS[M.AS < 2 and 'chain' or 'chain2']
                 if M.AS < 2 then
                     if c >= 8 then
                         gc_setColor(COLOR.L)
-                        gc_strokeDraw('full', k * 2, chain, x, y, 0, k * bk, nil, chain:getWidth() / 2, chain:getHeight() / 2)
+                        gc_strokeDraw('full', k * 2, chain, 0, 0, 0, k * bk, nil, chain:getWidth() / 2, chain:getHeight() / 2)
                         gc_setColor(COLOR.D)
                     end
-                    gc_mDraw(chain, x, y, 0, k * bk)
+                    gc_mDraw(chain, 0, 0, 0, k * bk)
                 else
-                    gc_draw(WoundPS, x, y - 2)
-
                     if not GAME.fault then
                         gc_setColor(r, g, b, .26 + .1 * math.sin(GAME.time * 4.2))
                         gc_setBlendMode('add')
-                        gc_strokeDraw('full', 3.55 * k, chain, x, y, 0, k * bk)
+                        gc_strokeDraw('full', 3.55 * k, chain, 0, 0, 0, k * bk)
                         gc_setBlendMode('alpha')
                     end
                     gc_setColor(COLOR.L)
-                    gc_draw(chain, x, y, 0, k * bk)
+                    gc_draw(chain, 0, 0, 0, k * bk)
                 end
+                if GAME.fault then gc_pop() end
+
+                gc_ucs_back()
             elseif GAME.comboStr == 'VLrGV' then
-                local x, y = 326, 290
+                local x, y = -474, 52
                 gc_strokePrint('corner', 2, COLOR.D, BoardColor, floor(GAME.achv_altFromSurge) .. "m", x, y - 20, 260, 'center')
             end
 

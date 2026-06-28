@@ -340,6 +340,7 @@ function Card:revJump()
                     x = self.x,
                     y = self.y,
                     t = 1,
+                    tk = 1,
                 })
                 GAME.revDeckSkin = true
                 GAME.bgXdir = MATH.coin(-1, 1)

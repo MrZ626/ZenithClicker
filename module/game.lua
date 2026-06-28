@@ -547,6 +547,27 @@ function GAME.calculateFloor(h)
     return floor(1 + 9 * MATH.ilLerp(floorHeights, h))
 end
 
+function GAME.calculateSurgeColor(c)
+    local r, g, b, a
+    if M.AS < 2 then
+        r, g, b, a = COLOR.HSL(
+            26 / (c + 22) + 1.3, 1,
+            icLerp(-260, 420, c),
+            c < 8 and .26 or 1
+        )
+    else
+        r, g, b, a = COLOR.HSV(
+            clampInterpolate(4, .76, 26, 0.926, c), 1, 1,
+            .16
+        )
+    end
+
+    if URM and M.NH == 2 then
+        r, g, b = .626 + r * .26, .626 + g * .26, .626 + b * .26
+    end
+    return r, g, b, a
+end
+
 function GAME.task_gigaspeed()
     TWEEN.new(function(t) GigaSpeed.textTimer = 1 - 2 * t end):setEase('Linear'):setDuration(2.6):run()
         :setOnFinish(function() GigaSpeed.textTimer = false end)
@@ -1871,9 +1892,7 @@ function GAME.commit(auto)
                     GAME.chain < 24 and 'b2bcharge_blast_3' or
                     'b2bcharge_blast_4'
                 )
-                if GAME.chain >= 8 then
-                    SFX.play('thunder' .. rnd(6), clampInterpolate(8, .7, 16, 1, GAME.chain))
-                end
+                if GAME.chain >= 8 then SFX.play('thunder' .. rnd(6), clampInterpolate(8, .7, 16, 1, GAME.chain)) end
                 local k = GAME.onAlly and 'life2' or 'life'
                 local oldLife = GAME[k]
                 while GAME.chain > 0 and GAME[k] < GAME.fullHealth do
@@ -1881,9 +1900,17 @@ function GAME.commit(auto)
                     GAME[k] = min(GAME[k] + 1, GAME.fullHealth)
                 end
                 if GAME[k] > oldLife then GAME.incrementPrompt('heal', GAME[k] - oldLife) end
-                if GAME.chain > 0 then
-                    surge = GAME.chain
-                end
+                if GAME.chain > 0 then surge = GAME.chain end
+                local r, g, b = GAME.calculateSurgeColor(GAME.chain)
+                table.insert(ImpactGlow, {
+                    r = r,
+                    g = g,
+                    b = b,
+                    x = 326,
+                    y = 290,
+                    t = clampInterpolate(4, .12, 26, .62, GAME.chain),
+                    tk = .26,
+                })
             end
             GAME.chain = 0
 
