@@ -1172,13 +1172,12 @@ function scene.overDraw()
             -- Revive Task
             local task = GAME.currentTask
             if task then
-                local allyDie = GAME.life2 <= 0
                 gc_push('transform')
 
                 -- Lock
-                gc_translate(allyDie and 350 or -350, 212)
+                gc_translate(GAME.onAlly and -350 or 350, 212)
                 gc_setColor(1, 1, 1)
-                local texture = TEXTURE.revive[M.DP < 2 and 'norm' or allyDie and 'rev_right' or 'rev_left']
+                local texture = TEXTURE.revive[M.DP < 2 and 'norm' or GAME.onAlly and 'rev_left' or 'rev_right']
                 local taskID
                 for i = #GAME.reviveTasks, 1, -1 do
                     gc_mDrawQ(texture, reviveInfo.quad[i], 0, 0, 0, .4)

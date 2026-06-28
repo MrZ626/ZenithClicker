@@ -755,6 +755,7 @@ function GAME.startRevive()
 end
 
 function GAME.incrementPrompt(prompt, value)
+    if not GAME.playing then return end
     local t = GAME.currentTask
     if t and prompt == t.prompt then
         local oldProg = t.progress
@@ -785,6 +786,7 @@ function GAME.incrementPrompt(prompt, value)
 end
 
 function GAME.nixPrompt(prompt)
+    if not GAME.playing then return end
     local t = GAME.currentTask
     if t and prompt == t.prompt then
         if t.progress >= 1 then
@@ -2453,7 +2455,7 @@ function GAME.finish(reason)
     GAME.refreshSectionTime()
     GAME.life, GAME.life2 = 0, 0
     GAME.teramusic = false
-    GAME.currentTask = false
+    -- GAME.currentTask = false
 
     if GAME.totalQuest > 2.6 then
         LOG('info', ("[%s] (%s) F%d %.1fm in %.3fs"):format(reason, table.concat(GAME.getHand(true), ', '), GAME.floor, GAME.roundHeight, GAME.time))
