@@ -701,7 +701,7 @@ end
 local boardRX, boardRY = 790, 232
 local function switchBoardCoord()
     if GAME.shakeTimer > 0 then gc_translate(MATH.rand(-42, 42) * GAME.shakeTimer, MATH.rand(-42, 42) * GAME.shakeTimer) end
-    gc_translate(800, boardRY + 5 + (GAME.playing and (GAME.boardAnim - 1) * 620 or (1 - GAME.boardAnim) * 1260))
+    gc_translate(800, boardRY + 5 + (GAME.playing and (GAME.boardAnim - 1) * 62 or (1 - GAME.boardAnim) * 1260))
     if not GAME.playing then gc_rotate((1 - GAME.boardAnim) * .162) end
 end
 
