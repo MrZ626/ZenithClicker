@@ -883,7 +883,7 @@ function Task_MusicEnd(manual)
         outroStart = D.loop[2]
         BgmNeedStop = outroStart + 10 * 60 / D.bpm
     elseif BgmPlaying == 'f5' or BgmPlaying == 'f5r' then
-        outroStart = D.loop[2]
+        outroStart = D.loop[2] + 32 * 60 / D.bpm
         BgmNeedStop = outroStart + 8 * 60 / D.bpm
     elseif BgmPlaying == 'f6' or BgmPlaying == 'f6r' then
         outroStart = D.loop[2]
