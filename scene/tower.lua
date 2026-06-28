@@ -1144,8 +1144,12 @@ function scene.overDraw()
                         gc_setColor(COLOR.L)
                         gc_strokeDraw('full', k * 2, chain, 0, 0, 0, k * bk, nil, chain:getWidth() / 2, chain:getHeight() / 2)
                         gc_setColor(COLOR.D)
+                        gc_mDraw(chain, 0, 0, 0, k * bk)
+                    else
+                        gc_mDraw(chain, 0, 0, 0, k * bk)
+                        gc_setColor(1, 1, 1, .26)
+                        gc_mDraw(chain, 0, 0, 0, k * bk)
                     end
-                    gc_mDraw(chain, 0, 0, 0, k * bk)
                 else
                     if not GAME.fault then
                         gc_setColor(r, g, b, .26 + .1 * math.sin(GAME.time * 4.2))
