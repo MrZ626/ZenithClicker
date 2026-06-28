@@ -847,6 +847,23 @@ function scene.draw()
                 gc_rectangle('fill', 0, hpY - hpH / 2, hpW / 2 * GAME.lifeShow2 / GAME.startingHealth, hpH)
             end
 
+            -- Achievement state mark
+            if M.DP > 0 then
+                if GAME.comboStr == 'rDP' and not GAME.achv_protectH then
+                    gc_setColor(COLOR.lG)
+                    gc_mRect('fill', 1540 / 2 * 10 / GAME.startingHealth, 210, 4, 20)
+                    gc_mRect('fill', -1540 / 2 * 10 / GAME.startingHealth, 210, 4, 20)
+                end
+                if not GAME.achv_shareModH then
+                    gc_setColor(COLOR.M)
+                    gc_mRect('fill', 0, 205, 10, 10)
+                end
+                if not GAME.achv_noShareModH then
+                    gc_setColor(COLOR.dR)
+                    gc_mRect('fill', 0, 215, 10, 10)
+                end
+            end
+
             -- Damage Timer
             if GAME.playing then
                 local w = 364
@@ -1071,72 +1088,6 @@ function scene.overDraw()
         end
     end
 
-    if GAME.playing and not GAME.invisUI then
-        -- Achievement state mark
-        if M.DP > 0 then
-            if GAME.comboStr == 'rDP' and not GAME.achv_protectH then
-                gc_setColor(COLOR.lG)
-                gc_mRect('fill', 800 + 1540 / 2 * 10 / GAME.startingHealth, 442, 4, 20)
-                gc_mRect('fill', 800 - 1540 / 2 * 10 / GAME.startingHealth, 442, 4, 20)
-            end
-            if not GAME.achv_shareModH then
-                gc_setColor(COLOR.M)
-                gc_mRect('fill', 800, 435, 10, 10)
-            end
-            if not GAME.achv_noShareModH then
-                gc_setColor(COLOR.dR)
-                gc_mRect('fill', 800, 445, 10, 10)
-            end
-        end
-
-        -- Revive Task
-        local task = GAME.currentTask
-        if task then
-            local allyDie = GAME.life2 <= 0
-            gc_push('transform')
-
-            -- Lock
-            gc_translate(allyDie and 1150 or 450, 450)
-            gc_setColor(1, 1, 1)
-            local texture = TEXTURE.revive[M.DP < 2 and 'norm' or allyDie and 'rev_right' or 'rev_left']
-            local taskID
-            for i = #GAME.reviveTasks, 1, -1 do
-                gc_mDrawQ(texture, reviveInfo.quad[i], 0, 0, 0, .4)
-                if GAME.reviveTasks[i] == GAME.currentTask then
-                    taskID = i
-                    break
-                end
-            end
-
-            -- Text
-            gc_rotate(reviveInfo.rotation[taskID])
-            gc_translate(reviveInfo.move[taskID], 0)
-            local txt = task.textObj
-            local w, h = txt:getDimensions()
-            local ky = h < 40 and 1 or .7
-            if task.target == 1 then
-                local kx = min(ky, 310 / w)
-                gc_draw(txt, (310 - w * kx) / 2, h < 40 and -12 or -22, 0, kx, ky)
-            else
-                local kx = min(ky, 240 / w)
-                gc_draw(txt, 0, h < 40 and -12 or -22, 0, kx, ky)
-                -- Progres
-                local w2 = task.progObj:getWidth()
-                gc_draw(task.progObj, 310, -22, 0, min((300 - w * kx) / w2, 1.5), 1.5, w2)
-            end
-
-            -- gc_setColor(0, 1, 0)
-            -- gc_rectangle('line', 0, -25, 310, 63.5)
-            gc_pop()
-
-            -- Short Text & Panel
-            gc_setColor(.3, .1, 0, .62)
-            gc_mRect('fill', 800, 330, GAME.currentTask.shortObj:getWidth() * 1.6 + 50, 75, 20)
-            gc_setColor(1, 1, 1)
-            gc_mDraw(GAME.currentTask.shortObj, 800, 330, 0, 1.6)
-        end
-    end
-
     if GAME.playing or GAME.boardAnim > 0 then
         gc_push('transform')
         switchBoardCoord()
@@ -1216,6 +1167,53 @@ function scene.overDraw()
             gc_strokePrint('corner', 2, COLOR.D, BoardColor, floor(GAME.achv_altFromSurge) .. "m", x, y - 20, 260, 'center')
         end
 
+        -- Revive Task
+        local task = GAME.currentTask
+        if task then
+            local allyDie = GAME.life2 <= 0
+            gc_push('transform')
+
+            -- Lock
+            gc_translate(allyDie and 350 or -350, 212)
+            gc_setColor(1, 1, 1)
+            local texture = TEXTURE.revive[M.DP < 2 and 'norm' or allyDie and 'rev_right' or 'rev_left']
+            local taskID
+            for i = #GAME.reviveTasks, 1, -1 do
+                gc_mDrawQ(texture, reviveInfo.quad[i], 0, 0, 0, .4)
+                if GAME.reviveTasks[i] == GAME.currentTask then
+                    taskID = i
+                    break
+                end
+            end
+
+            -- Text
+            gc_rotate(reviveInfo.rotation[taskID])
+            gc_translate(reviveInfo.move[taskID], 0)
+            local txt = task.textObj
+            local w, h = txt:getDimensions()
+            local ky = h < 40 and 1 or .7
+            if task.target == 1 then
+                local kx = min(ky, 310 / w)
+                gc_draw(txt, (310 - w * kx) / 2, h < 40 and -12 or -22, 0, kx, ky)
+            else
+                local kx = min(ky, 240 / w)
+                gc_draw(txt, 0, h < 40 and -12 or -22, 0, kx, ky)
+                -- Progres
+                local w2 = task.progObj:getWidth()
+                gc_draw(task.progObj, 310, -22, 0, min((300 - w * kx) / w2, 1.5), 1.5, w2)
+            end
+
+            -- gc_setColor(0, 1, 0)
+            -- gc_rectangle('line', 0, -25, 310, 63.5)
+            gc_pop()
+
+            -- Short Text & Panel
+            gc_setColor(.3, .1, 0, .62)
+            gc_mRect('fill', 0, 92, GAME.currentTask.shortObj:getWidth() * 1.6 + 50, 75, 20)
+            gc_setColor(1, 1, 1)
+            gc_mDraw(GAME.currentTask.shortObj, 0, 92, 0, 1.6)
+        end
+
         -- Quests
         for i = 1, GAME.maxQuestCount do
             local Q = GAME.quests[i]
@@ -1238,6 +1236,7 @@ function scene.overDraw()
                 gc_mDraw(text, 0, Q.y, 0, kx, ky)
             end
         end
+
         gc_pop()
     end
 
