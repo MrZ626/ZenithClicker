@@ -766,7 +766,7 @@ function scene.draw()
         gc_replaceTransform(SCR.xOy)
 
         -- Board
-        if GAME.playing or GAME.boardAnim > 0 then
+        if GAME.playing or GAME.boardAnim > 0 and not GAME.invisUI then
             gc_push('transform')
             switchBoardCoord()
 
@@ -1091,127 +1091,130 @@ function scene.overDraw()
     if GAME.playing or GAME.boardAnim > 0 then
         gc_push('transform')
         switchBoardCoord()
-        if GAME.chain >= 4 then
-            -- Chain Counter
-            local c = GAME.chain
-            local _t = GAME.questTime
-            local bk = _t < .12 and 1 + 62 * _t * (.12 - _t) or 1
-            local k = clampInterpolate(6, .7, 26, 2, c)
-            local x, y = -474, 52
-            local xText = x - 71 - 50 * k * bk
 
-            local r, g, b, a
-            if GAME.fault then
-                local l = M.AS < 2 and .62 or .42
-                r, g, b, a = l, l, l, c < 8 and .26 or 1
-            elseif M.AS < 2 then
-                r, g, b, a = COLOR.HSL(
-                    26 / (c + 22) + 1.3, 1,
-                    icLerp(-260, 420, c),
-                    c < 8 and .26 or 1
-                )
-            else
-                r, g, b, a = COLOR.HSV(
-                    clampInterpolate(4, .76, 26, 0.926, c), 1, 1,
-                    .16
-                )
-                gc_setColor(0, 0, 0)
+        if not GAME.invisUI then
+            if GAME.chain >= 4 then
+                -- Chain Counter
+                local c = GAME.chain
+                local _t = GAME.questTime
+                local bk = _t < .12 and 1 + 62 * _t * (.12 - _t) or 1
+                local k = clampInterpolate(6, .7, 26, 2, c)
+                local x, y = -474, 52
+                local xText = x - 71 - 50 * k * bk
+
+                local r, g, b, a
+                if GAME.fault then
+                    local l = M.AS < 2 and .62 or .42
+                    r, g, b, a = l, l, l, c < 8 and .26 or 1
+                elseif M.AS < 2 then
+                    r, g, b, a = COLOR.HSL(
+                        26 / (c + 22) + 1.3, 1,
+                        icLerp(-260, 420, c),
+                        c < 8 and .26 or 1
+                    )
+                else
+                    r, g, b, a = COLOR.HSV(
+                        clampInterpolate(4, .76, 26, 0.926, c), 1, 1,
+                        .16
+                    )
+                    gc_setColor(0, 0, 0)
+                    gc_mDraw(TEXTURE.surgeIcon, x, y, GAME.time * 2.6, .25 * k * bk)
+                end
+
+                if URM and M.NH == 2 then
+                    r, g, b = .626 + r * .26, .626 + g * .26, .626 + b * .26
+                end
+
+                -- Spike ball
+                gc_setColor(r, g, b, a)
+                gc_blurCircle(-.26, x, y, 100 * k)
                 gc_mDraw(TEXTURE.surgeIcon, x, y, GAME.time * 2.6, .25 * k * bk)
-            end
 
-            if URM and M.NH == 2 then
-                r, g, b = .626 + r * .26, .626 + g * .26, .626 + b * .26
-            end
+                -- Spark
+                if not (URM and M.NH == 2) then
+                    gc_setColor(.7 + r * .3, .7 + g * .3, .7 + b * .3)
+                    for i = 1, 3 do gc_draw(SparkPS[i], x, y, 0, k * .8) end
+                end
 
-            -- Spike ball
-            gc_setColor(r, g, b, a)
-            gc_blurCircle(-.26, x, y, 100 * k)
-            gc_mDraw(TEXTURE.surgeIcon, x, y, GAME.time * 2.6, .25 * k * bk)
+                -- "B2B x"
+                gc_setColor(COLOR.D)
+                gc_strokeDraw('full', 1, TEXTS.b2b, xText, y - 54)
+                gc_setColor(r, g, b)
+                gc_draw(TEXTS.b2b, xText, y - 54)
 
-            -- Spark
-            if not (URM and M.NH == 2) then
-                gc_setColor(.7 + r * .3, .7 + g * .3, .7 + b * .3)
-                for i = 1, 3 do gc_draw(SparkPS[i], x, y, 0, k * .8) end
-            end
+                -- B2B Counter
+                local chain = TEXTS[M.AS < 2 and 'chain' or 'chain2']
+                if M.AS < 2 then
+                    if c >= 8 then
+                        gc_setColor(COLOR.L)
+                        gc_strokeDraw('full', k * 2, chain, x, y, 0, k * bk, nil,
+                            chain:getWidth() / 2, chain:getHeight() / 2)
+                        gc_setColor(COLOR.D)
+                    end
+                    gc_mDraw(chain, x, y, 0, k * bk)
+                else
+                    gc_draw(WoundPS, x, y - 2)
 
-            -- "B2B x"
-            gc_setColor(COLOR.D)
-            gc_strokeDraw('full', 1, TEXTS.b2b, xText, y - 54)
-            gc_setColor(r, g, b)
-            gc_draw(TEXTS.b2b, xText, y - 54)
-
-            -- B2B Counter
-            local chain = TEXTS[M.AS < 2 and 'chain' or 'chain2']
-            if M.AS < 2 then
-                if c >= 8 then
+                    if not GAME.fault then
+                        gc_setColor(r, g, b, .26 + .1 * math.sin(GAME.time * 4.2))
+                        gc_setBlendMode('add')
+                        gc_strokeDraw('full', 3.55 * k, chain, x, y, 0, k * bk)
+                        gc_setBlendMode('alpha')
+                    end
                     gc_setColor(COLOR.L)
-                    gc_strokeDraw('full', k * 2, chain, x, y, 0, k * bk, nil,
-                        chain:getWidth() / 2, chain:getHeight() / 2)
-                    gc_setColor(COLOR.D)
+                    gc_draw(chain, x, y, 0, k * bk)
                 end
-                gc_mDraw(chain, x, y, 0, k * bk)
-            else
-                gc_draw(WoundPS, x, y - 2)
-
-                if not GAME.fault then
-                    gc_setColor(r, g, b, .26 + .1 * math.sin(GAME.time * 4.2))
-                    gc_setBlendMode('add')
-                    gc_strokeDraw('full', 3.55 * k, chain, x, y, 0, k * bk)
-                    gc_setBlendMode('alpha')
-                end
-                gc_setColor(COLOR.L)
-                gc_draw(chain, x, y, 0, k * bk)
-            end
-        elseif GAME.comboStr == 'VLrGV' then
-            local x, y = 326, 290
-            gc_strokePrint('corner', 2, COLOR.D, BoardColor, floor(GAME.achv_altFromSurge) .. "m", x, y - 20, 260, 'center')
-        end
-
-        -- Revive Task
-        local task = GAME.currentTask
-        if task then
-            local allyDie = GAME.life2 <= 0
-            gc_push('transform')
-
-            -- Lock
-            gc_translate(allyDie and 350 or -350, 212)
-            gc_setColor(1, 1, 1)
-            local texture = TEXTURE.revive[M.DP < 2 and 'norm' or allyDie and 'rev_right' or 'rev_left']
-            local taskID
-            for i = #GAME.reviveTasks, 1, -1 do
-                gc_mDrawQ(texture, reviveInfo.quad[i], 0, 0, 0, .4)
-                if GAME.reviveTasks[i] == GAME.currentTask then
-                    taskID = i
-                    break
-                end
+            elseif GAME.comboStr == 'VLrGV' then
+                local x, y = 326, 290
+                gc_strokePrint('corner', 2, COLOR.D, BoardColor, floor(GAME.achv_altFromSurge) .. "m", x, y - 20, 260, 'center')
             end
 
-            -- Text
-            gc_rotate(reviveInfo.rotation[taskID])
-            gc_translate(reviveInfo.move[taskID], 0)
-            local txt = task.textObj
-            local w, h = txt:getDimensions()
-            local ky = h < 40 and 1 or .7
-            if task.target == 1 then
-                local kx = min(ky, 310 / w)
-                gc_draw(txt, (310 - w * kx) / 2, h < 40 and -12 or -22, 0, kx, ky)
-            else
-                local kx = min(ky, 240 / w)
-                gc_draw(txt, 0, h < 40 and -12 or -22, 0, kx, ky)
-                -- Progres
-                local w2 = task.progObj:getWidth()
-                gc_draw(task.progObj, 310, -22, 0, min((300 - w * kx) / w2, 1.5), 1.5, w2)
+            -- Revive Task
+            local task = GAME.currentTask
+            if task then
+                local allyDie = GAME.life2 <= 0
+                gc_push('transform')
+
+                -- Lock
+                gc_translate(allyDie and 350 or -350, 212)
+                gc_setColor(1, 1, 1)
+                local texture = TEXTURE.revive[M.DP < 2 and 'norm' or allyDie and 'rev_right' or 'rev_left']
+                local taskID
+                for i = #GAME.reviveTasks, 1, -1 do
+                    gc_mDrawQ(texture, reviveInfo.quad[i], 0, 0, 0, .4)
+                    if GAME.reviveTasks[i] == GAME.currentTask then
+                        taskID = i
+                        break
+                    end
+                end
+
+                -- Text
+                gc_rotate(reviveInfo.rotation[taskID])
+                gc_translate(reviveInfo.move[taskID], 0)
+                local txt = task.textObj
+                local w, h = txt:getDimensions()
+                local ky = h < 40 and 1 or .7
+                if task.target == 1 then
+                    local kx = min(ky, 310 / w)
+                    gc_draw(txt, (310 - w * kx) / 2, h < 40 and -12 or -22, 0, kx, ky)
+                else
+                    local kx = min(ky, 240 / w)
+                    gc_draw(txt, 0, h < 40 and -12 or -22, 0, kx, ky)
+                    -- Progres
+                    local w2 = task.progObj:getWidth()
+                    gc_draw(task.progObj, 310, -22, 0, min((300 - w * kx) / w2, 1.5), 1.5, w2)
+                end
+
+                -- gc_setColor(0, 1, 0)
+                -- gc_rectangle('line', 0, -25, 310, 63.5)
+                gc_pop()
+
+                -- Short Text & Panel
+                gc_setColor(.3, .1, 0, .62)
+                gc_mRect('fill', 0, 92, GAME.currentTask.shortObj:getWidth() * 1.6 + 50, 75, 20)
+                gc_setColor(1, 1, 1)
+                gc_mDraw(GAME.currentTask.shortObj, 0, 92, 0, 1.6)
             end
-
-            -- gc_setColor(0, 1, 0)
-            -- gc_rectangle('line', 0, -25, 310, 63.5)
-            gc_pop()
-
-            -- Short Text & Panel
-            gc_setColor(.3, .1, 0, .62)
-            gc_mRect('fill', 0, 92, GAME.currentTask.shortObj:getWidth() * 1.6 + 50, 75, 20)
-            gc_setColor(1, 1, 1)
-            gc_mDraw(GAME.currentTask.shortObj, 0, 92, 0, 1.6)
         end
 
         -- Quests
