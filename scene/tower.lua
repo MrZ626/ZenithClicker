@@ -830,22 +830,21 @@ function scene.draw()
             gc_setColor(GAME.playing and GAME.life > safeHP and COLOR.L or COLOR.R)
             if M.DP == 0 then
                 gc_mRect('fill', 0, hpY, hpW * GAME.lifeShow / GAME.startingHealth, hpH)
-                if GAME.playing then
-                    -- Indicators
-                    gc_setColor(COLOR.LD)
-                    gc_mRect('fill', 0, hpY - 2, hpW * GAME.dmgTime / GAME.startingHealth, 3)
-                    gc_setColor(.872, 0, 0)
-                    gc_mRect('fill', 0, hpY + 2, hpW * GAME.dmgWrong / GAME.startingHealth, 3)
-                    gc_setColor(1, 0, 0, .626)
-                    gc_mRect('fill', 0, hpY + 2, hpW * (GAME.dmgWrong + GAME.dmgWrongExtra) / GAME.startingHealth, 2)
-                end
+
+                gc_setColor(COLOR.LD); gc_mRect('fill', 0, hpY - 2, hpW * GAME.dmgTime / GAME.startingHealth, 3)
+                gc_setColor(.872, 0, 0); gc_mRect('fill', 0, hpY + 2, hpW * GAME.dmgWrong / GAME.startingHealth, 3)
+                gc_setColor(1, 0, 0, .626); gc_mRect('fill', 0, hpY + 2, hpW * (GAME.dmgWrong + GAME.dmgWrongExtra) / GAME.startingHealth, 2)
             else
-                local onAlly = GAME.onAlly
-                if onAlly then gc_setAlpha(.42) end
+                if GAME.onAlly then gc_setAlpha(.42) end
                 gc_rectangle('fill', 0, hpY - hpH / 2, -hpW / 2 * GAME.lifeShow / GAME.startingHealth, hpH)
                 gc_setColor(GAME.playing and GAME.life2 > safeHP and COLOR.L or COLOR.R)
-                if not onAlly then gc_setAlpha(.42) end
+                if not GAME.onAlly then gc_setAlpha(.42) end
                 gc_rectangle('fill', 0, hpY - hpH / 2, hpW / 2 * GAME.lifeShow2 / GAME.startingHealth, hpH)
+
+                local k = GAME.onAlly and .5 or -.5
+                gc_setColor(COLOR.LD); gc_rectangle('fill', 0, hpY - 2 - 1.5, k * hpW * GAME.dmgTime / GAME.startingHealth, 3)
+                gc_setColor(.872, 0, 0); gc_rectangle('fill', 0, hpY + 2 - 1.5, k * hpW * GAME.dmgWrong / GAME.startingHealth, 3)
+                gc_setColor(1, 0, 0, .626); gc_rectangle('fill', 0, hpY + 2 - 1, k * hpW * (GAME.dmgWrong + GAME.dmgWrongExtra) / GAME.startingHealth, 2)
             end
 
             -- Achievement state mark
