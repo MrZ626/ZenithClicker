@@ -862,6 +862,7 @@ function GAME.takeDamage(dmg, reason, toAlly)
             GAME.startRevive()
             GAME.dmgWrongExtra = 0 -- Being tolerant!
         else
+            GAME.shakeTimer = .62
             GAME.finish(reason)
         end
     else
@@ -2905,7 +2906,6 @@ function GAME.finish(reason)
 
     TWEEN.new(GAME.anim_setMenuHide_rev):setDuration(GAME.slowmo and 2.6 or .26):setUnique('uiHide'):run()
     TWEEN.new(GAME.anim_setBoardAnim_rev):setEase('InQuart'):setDuration(GAME.slowmo and 6.26 or 1.26):setUnique('boardAnim'):run()
-    GAME.shakeTimer = .5
     GAME.refreshRPC()
     if reason ~= 'forfeit' then
         TASK.lock('cannotStart', 1)
