@@ -1148,8 +1148,7 @@ function scene.overDraw()
                 if M.AS < 2 then
                     if c >= 8 then
                         gc_setColor(COLOR.L)
-                        gc_strokeDraw('full', k * 2, chain, x, y, 0, k * bk, nil,
-                            chain:getWidth() / 2, chain:getHeight() / 2)
+                        gc_strokeDraw('full', k * 2, chain, x, y, 0, k * bk, nil, chain:getWidth() / 2, chain:getHeight() / 2)
                         gc_setColor(COLOR.D)
                     end
                     gc_mDraw(chain, x, y, 0, k * bk)

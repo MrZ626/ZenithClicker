@@ -974,17 +974,17 @@ function GAME.showFloorText(f, name, duration)
     if GAME.invisUI then return end
     TEXT:add {
         text = "Floor",
-        x = 160, y = 290, k = 1.6, fontSize = 30,
+        x = 160, y = 305, k = 1, fontSize = 50,
         color = 'LY', duration = duration,
     }
     TEXT:add {
         text = tostring(f),
-        x = 240, y = 280, k = 2.6, fontSize = 30,
+        x = 240, y = 295, k = 1.1, fontSize = 70,
         color = 'LY', duration = duration, align = 'left',
     }
     TEXT:add {
         text = name,
-        x = 200, y = 350, k = 1.2, fontSize = 30,
+        x = 200, y = 360, k = 1, fontSize = 30,
         color = 'LY', duration = duration,
     }
 end
