@@ -1279,11 +1279,11 @@ function Daemon_Slow()
             if suc and res then
                 if res.error then
                     MSG('warn', "Daily Challenge leaderboard fetch failed:\n" .. res.error)
-                elseif res.alt then
+                else
                     local t = os.time()
                     -- Write new data
-                    LB[res.combo].alt = res.alt
-                    LB[res.combo].time = res.time
+                    LB[res.combo].alt = res.alt or {}
+                    LB[res.combo].time = res.time or {}
                     LB[res.combo].lastUpd = t
                     -- Delete old data
                     for cmb, L in next, LB do
@@ -1292,9 +1292,6 @@ function Daemon_Slow()
                         end
                     end
                     FILE.save(LB, 'leaderboard.luaon', '-luaon')
-                else
-                    MSG('warn', "Daily Challenge leaderboard fetch failed:\nNo Data")
-                    SFX.play('pause_retry', 1, 0, Tone(-5))
                 end
             else
                 MSG('warn', "Daily Challenge leaderboard fetch failed")

@@ -217,7 +217,22 @@ function scene.draw()
 
     -- List
     local L = LB[Daily.history[page]]
-    if L.lastUpd then
+    if not L.lastUpd then
+        -- Loading
+        gc_setColor(clr.D)
+        gc_setLineWidth(62)
+        gc_circle('line', pw / 2, ph + 260, 200)
+        gc_setColor(clr.L)
+        gc_setLineWidth(26)
+        local t = -love.timer.getTime() * 26
+        gc_arc('line', 'open', pw / 2, ph + 260, 200, t, t + 2.6)
+        scroll, maxScroll = 0, 0
+    elseif not L[subPage][1] then
+        -- No data
+        setFont(70)
+        GC.strokePrint('full', 4, clr.D, clr.L, "NO SUBMISSION YET", pw / 2, ph + 162, 2600, 'center')
+    else
+        -- Data
         local l = L[subPage]
         gc_push('transform')
         gc_translate(0, 360)
@@ -267,15 +282,6 @@ function scene.draw()
         scroll = math.min(scroll, maxScroll)
 
         gc_pop()
-    else
-        gc_setColor(clr.D)
-        gc_setLineWidth(62)
-        gc_circle('line', pw / 2, ph + 260, 200)
-        gc_setColor(clr.L)
-        gc_setLineWidth(26)
-        local t = -love.timer.getTime() * 26
-        gc_arc('line', 'open', pw / 2, ph + 260, 200, t, t + 2.6)
-        scroll, maxScroll = 0, 0
     end
 end
 
