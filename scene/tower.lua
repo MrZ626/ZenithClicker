@@ -1123,19 +1123,24 @@ function scene.overDraw()
                 -- "B2B x"
                 gc_setColor(COLOR.D)
                 gc_strokeDraw('full', 1, TEXTS.b2b, xText, -54)
-                gc_setColor(r, g, b)
+                if GAME.fault then
+                    gc_setColor(t % .12 < .06 and COLOR.lR or COLOR.LR)
+                else
+                    gc_setColor(r, g, b)
+                end
                 gc_draw(TEXTS.b2b, xText, -54)
 
                 -- Particles
                 if M.AS == 2 then
+                    gc_setColor(r, g, b)
                     gc_draw(WoundPS, 0, 0 - 2)
                 end
 
                 -- Number
                 if GAME.fault then
                     gc_push('transform')
-                    gc_rotate(MATH.rand(-.16, .16))
-                    gc_translate(MATH.rand(-4, 4), MATH.rand(-4, 4))
+                    gc_rotate(MATH.rand(-.2, .2))
+                    gc_translate(MATH.rand(-5, 5), MATH.rand(-5, 5))
                 end
                 local chain = TEXTS[M.AS < 2 and 'chain' or 'chain2']
                 if M.AS < 2 then
