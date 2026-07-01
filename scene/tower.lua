@@ -884,9 +884,10 @@ function scene.draw()
             end
 
             -- Damage Timer
-            if GAME.playing then
+            do
                 local w = 364
-                local w1, w2 = w * (GAME.dmgTimer / GAME.dmgDelay), w * (GAME.dmgCycle / GAME.dmgDelay)
+                local _w = w / GAME.dmgDelay * GAME.dmgTimerMul
+                local w1, w2, w3 = _w * GAME.dmgTimer, _w * GAME.dmgCycle, max(w * (1 - GAME.dmgTimerMul), 0)
                 stc_reset()
                 stc_rect(-774, 157, w, 36)
                 stc_setPen('replace', 0)
@@ -894,12 +895,20 @@ function scene.draw()
                 stc_rect(-410 - w2 - 3, 157, 3, 36)
                 stc_circ(-774, 193, 15, 4)
                 stc_circ(-410, 193, 15, 4)
+                if GAME.dmgTimerMul < 1 then
+                    gc_setColor(1, 0, 1, .62 * (1 - MusicBeat))
+                    gc_rectangle('fill', -410 - w, 157, w3, 36)
+                end
                 gc_setColor(GAME.dmgTimer > GAME.dmgCycle and COLOR.DL or COLOR.lR)
                 gc_rectangle('fill', -410 - w1, 157, w1, 36)
-                -- GAME.dmgTimerMul
                 stc_stop()
                 gc_setColor(COLOR.lR)
                 gc_rectangle('fill', -410 - w2, 157, w2, 4)
+
+                -- Damage Timer number
+                setFont(30)
+                gc_strokePrint('full', 1, COLOR.D, BoardColor, GAME.dmgDelay, -777 + w3, 140, nil, nil, nil, .4)
+                gc_strokePrint('full', 1, COLOR.D, BoardColor, GAME.dmgCycle, -410 - w2, 140, nil, nil, nil, .4)
             end
 
             -- Gravity Timer
@@ -920,7 +929,6 @@ function scene.draw()
                 gc_ucs_back()
             end
 
-            setFont(30)
             -- Quest counter
             if GAME.totalQuest <= 40 then
                 gc_strokePrint('full', 1, COLOR.D, BoardColor, GAME.totalQuest, 410, 12)
