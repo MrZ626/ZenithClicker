@@ -764,7 +764,26 @@ function scene.draw()
             end
         end
 
+        -- Card Panel
         gc_replaceTransform(SCR.xOy)
+        gc_translate(0, DeckPress)
+        gc_setColor(ShadeColor)
+        gc_draw(TEXTURE.transition, 800 - 1586 / 2, panelH - 303, 1.5708, 6.26, 1586, 0, 1)
+        if GAME.revDeckSkin then
+            gc_setColor(1, 1, 1, GAME.revTimer)
+            gc_mDraw(TEXTURE.panel.glass_a, 800, panelH)
+            gc_mDraw(TEXTURE.panel.glass_b, 800, panelH)
+            gc_setColor(1, 1, 1, ThrobAlpha.bg1)
+            gc_mDraw(TEXTURE.panel.throb_a, 800, panelH)
+            gc_setColor(1, 1, 1, ThrobAlpha.bg2)
+            gc_mDraw(TEXTURE.panel.throb_b, 800, panelH)
+        end
+        gc_setColor(ShadeColor)
+        gc_draw(TEXTURE.transition, 800 - 1586 / 2, panelH - 303, 1.5708, 12.6, -3, 0, 1)
+        gc_draw(TEXTURE.transition, 800 + 1586 / 2, panelH - 303, 1.5708, 12.6, 3, 0, 1)
+        gc_setColor(TextColor)
+        gc_setAlpha(.626)
+        gc_mRect('fill', 800, panelH - 303, 1586 + 6, -3)
 
         -- Board
         if GAME.playing or GAME.boardAnim > 0 and not GAME.invisUI then
@@ -931,27 +950,6 @@ function scene.draw()
                 gc_draw(GAME.modIB, 1490, y, M.AS * .026 * sin(t), 1)
             end
         end
-
-        -- Card Panel
-        gc_replaceTransform(SCR.xOy)
-        gc_translate(0, DeckPress)
-        gc_setColor(ShadeColor)
-        gc_draw(TEXTURE.transition, 800 - 1586 / 2, panelH - 303, 1.5708, 6.26, 1586, 0, 1)
-        if GAME.revDeckSkin then
-            gc_setColor(1, 1, 1, GAME.revTimer)
-            gc_mDraw(TEXTURE.panel.glass_a, 800, panelH)
-            gc_mDraw(TEXTURE.panel.glass_b, 800, panelH)
-            gc_setColor(1, 1, 1, ThrobAlpha.bg1)
-            gc_mDraw(TEXTURE.panel.throb_a, 800, panelH)
-            gc_setColor(1, 1, 1, ThrobAlpha.bg2)
-            gc_mDraw(TEXTURE.panel.throb_b, 800, panelH)
-        end
-        gc_setColor(ShadeColor)
-        gc_draw(TEXTURE.transition, 800 - 1586 / 2, panelH - 303, 1.5708, 12.6, -3, 0, 1)
-        gc_draw(TEXTURE.transition, 800 + 1586 / 2, panelH - 303, 1.5708, 12.6, 3, 0, 1)
-        gc_setColor(TextColor)
-        gc_setAlpha(.626)
-        gc_mRect('fill', 800, panelH - 303, 1586 + 6, -3)
 
         -- MP & ZP Preview
         if not GAME.playing and STAT.maxFloor >= 10 then
