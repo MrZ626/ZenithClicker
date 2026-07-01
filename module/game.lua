@@ -1907,7 +1907,7 @@ function GAME.commit(auto)
                     x = 326,
                     y = 290,
                     t = clampInterpolate(4, .12, 26, .62, GAME.chain),
-                    tk = .26,
+                    tk = GAME.slowmo and .06 or .26,
                 })
             end
             GAME.chain = 0
