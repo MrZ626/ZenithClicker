@@ -1088,8 +1088,131 @@ function scene.overDraw()
         end
     end
 
+    -- Debug
+    -- setFont(30) gc_setColor(1, 1, 1)
+    -- for i = 1, #Cards do
+    --     gc.print(Cards[i].ty, Cards[i].x, Cards[i].y-260)
+    -- end
+
+    -- bottom in-game UI
+    if GAME.uiHide > 0 and not GAME.invisUI then
+        local h = 100 - GAME.uiHide * 100
+        gc_ucs_move(0, h)
+
+        -- Thruster (XP bar)
+        local rank = GAME.rank
+        gc_setColor(rankColor[rank - 1] or COLOR.dL)
+        if GAME.DPlock then gc_setAlpha(.26) end
+        gc_setLineWidth(26 / (GAME.leakSpeed + 2))
+        gc_mRect('line', 800, 965, 420 + 6, 26)
+        gc_rectangle('fill', 800 - 35, 985, 70, 6)
+        for i = 1, min(rank - 1, 6) do
+            gc_rectangle('fill', 800 + 15 + 28 * i, 985, 22, 6)
+            gc_rectangle('fill', 800 - 15 - 28 * i, 985, -22, 6)
+        end
+        if rank >= 8 then
+            for i = 0, min(rank - 8, 3) do
+                gc_rectangle('fill', 800 - 220 + 45 * i, 945, 35, -10)
+                gc_rectangle('fill', 800 + 220 - 45 * i, 945, -35, -10)
+            end
+            if rank >= 12 then
+                for i = 0, rank - 12 do
+                    gc_rectangle('fill', 800 + 222 + 15 * i, 955, 10, 32)
+                    gc_rectangle('fill', 800 - 222 - 15 * i, 955, -10, 32)
+                end
+            end
+        end
+        if GAME.rankupLast then
+            if GAME.xpLockLevel < GAME.xpLockLevelMax and not (URM and M.NH == 2) then
+                gc_mRect('fill', 800 - 105, 965, 2, 26 - 4)
+                gc_mRect('fill', 800 + 105, 965, 2, 26 - 4)
+            end
+        else
+            gc_mRect('fill', 800, 965, 420, 1)
+        end
+        gc_setColor(rankColor[rank] or COLOR.L)
+        if GAME.xpLockTimer > 0 then
+            gc_setAlpha((sin(6200 / (GAME.xpLockTimer + 4.2) ^ 3) * .26 + .74) * (GAME.DPlock and .26 or 1))
+        elseif GAME.DPlock then
+            gc_setAlpha(.26)
+        end
+        gc_mRect('fill', 800, 965, 420 * GAME.xp / (4 * rank), 3 * min(GAME.xpLockLevel, 5))
+
+        -- Height & Time
+        altitudeText[1] = ("%.1f"):format(GAME.roundHeight)
+        TEXTS.height:set(altitudeText)
+        TEXTS.time:set(STRING.time_simp(GAME.time))
+        gc_setColor(COLOR.D)
+        local wid, hgt = TEXTS.height:getDimensions()
+        gc_strokeDraw('full', 1, TEXTS.height, 800, 978, 0, 1, 1, wid / 2, hgt / 2)
+        wid, hgt = TEXTS.time:getDimensions()
+        gc_strokeDraw('full', 2, TEXTS.time, 375, 978, 0, 1, 1, wid / 2, hgt / 2)
+        wid, hgt = TEXTS.rank:getDimensions()
+        gc_strokeDraw('full', 1, TEXTS.rank, 1027, 990, 0, .626, .626, wid / 2, hgt / 2)
+
+        gc_setColor(GAME.timerMul, .99, .99)
+        gc_mDraw(TEXTS.time, 375, 978)
+        gc_setColor(COLOR.L)
+        gc_mDraw(TEXTS.rank, 1027, 990, 0, .626)
+        if GAME.DPlock then
+            gc_setColor(GAME.time % .9 > .45 and COLOR.R or COLOR.D)
+        end
+        gc_mDraw(TEXTS.height, 800, 978)
+
+        if GAME.attackMul < 1 then
+            setFont(30)
+            gc_setColor(1, 0, 0, t % .52 < .26 and .872 or .42)
+            gc.print("x" .. GAME.attackMul, 1024, 926, 0, .7)
+        end
+
+        gc_ucs_back()
+    end
+
+    -- Rev trigger for touchscreen
+    if usingTouch and not GAME.playing and RevUnlocked then
+        gc_replaceTransform(SCR.xOy_dl)
+        if URM then
+            gc_setColor(COLOR.C)
+            gc_setAlpha(next(revHold) and .872 or .62)
+        else
+            gc_setColor(COLOR.S)
+            gc_setAlpha(next(revHold) and .42 or .26)
+        end
+        gc_draw(TEXTURE.transition, -200 * GAME.uiHide, -40, 0, 200 / 128, -560)
+    end
+
+    -- Cards
+    gc_replaceTransform(SCR.xOy)
+    gc_setColor(1, 1, 1)
+    if FloatOnCard then
+        for i = #Cards, 1, -1 do
+            if i ~= FloatOnCard then Cards[i]:draw() end
+        end
+        Cards[FloatOnCard]:draw()
+    else
+        for i = #Cards, 1, -1 do Cards[i]:draw() end
+    end
+
+    -- AS keyboard hint
+    if M.AS > 0 and M.EX == 0 then
+        local texts = CardHintText
+        for i = 1, #Cards do
+            local obj = texts[i]
+            local x, y = Cards[i].x + 90, Cards[i].y + 155
+            local k = min(60 / obj:getWidth(), 1)
+            gc_setColor(ShadeColor)
+            gc_strokeDraw(
+                'full', 3 * k, obj, x, y, 0, k, k,
+                obj:getWidth() / 2, obj:getHeight() / 2
+            )
+            gc_setColor(COLOR.lR)
+            gc_mDraw(obj, x, y, 0, k)
+        end
+    end
+
+    -- Board
     if GAME.playing or GAME.boardAnim > 0 then
-        gc_push('transform')
+        gc_replaceTransform(SCR.xOy)
         switchBoardCoord()
 
         if not GAME.invisUI then
@@ -1241,134 +1364,9 @@ function scene.overDraw()
                 gc_mDraw(text, 0, Q.y, 0, kx, ky)
             end
         end
-
-        gc_pop()
-    end
-
-
-    -- Debug
-    -- setFont(30) gc_setColor(1, 1, 1)
-    -- for i = 1, #Cards do
-    --     gc.print(Cards[i].ty, Cards[i].x, Cards[i].y-260)
-    -- end
-
-    -- bottom in-game UI
-    if GAME.uiHide > 0 and not GAME.invisUI then
-        local h = 100 - GAME.uiHide * 100
-        gc_ucs_move(0, h)
-
-        -- Thruster (XP bar)
-        local rank = GAME.rank
-        gc_setColor(rankColor[rank - 1] or COLOR.dL)
-        if GAME.DPlock then gc_setAlpha(.26) end
-        gc_setLineWidth(26 / (GAME.leakSpeed + 2))
-        gc_mRect('line', 800, 965, 420 + 6, 26)
-        gc_rectangle('fill', 800 - 35, 985, 70, 6)
-        for i = 1, min(rank - 1, 6) do
-            gc_rectangle('fill', 800 + 15 + 28 * i, 985, 22, 6)
-            gc_rectangle('fill', 800 - 15 - 28 * i, 985, -22, 6)
-        end
-        if rank >= 8 then
-            for i = 0, min(rank - 8, 3) do
-                gc_rectangle('fill', 800 - 220 + 45 * i, 945, 35, -10)
-                gc_rectangle('fill', 800 + 220 - 45 * i, 945, -35, -10)
-            end
-            if rank >= 12 then
-                for i = 0, rank - 12 do
-                    gc_rectangle('fill', 800 + 222 + 15 * i, 955, 10, 32)
-                    gc_rectangle('fill', 800 - 222 - 15 * i, 955, -10, 32)
-                end
-            end
-        end
-        if GAME.rankupLast then
-            if GAME.xpLockLevel < GAME.xpLockLevelMax and not (URM and M.NH == 2) then
-                gc_mRect('fill', 800 - 105, 965, 2, 26 - 4)
-                gc_mRect('fill', 800 + 105, 965, 2, 26 - 4)
-            end
-        else
-            gc_mRect('fill', 800, 965, 420, 1)
-        end
-        gc_setColor(rankColor[rank] or COLOR.L)
-        if GAME.xpLockTimer > 0 then
-            gc_setAlpha((sin(6200 / (GAME.xpLockTimer + 4.2) ^ 3) * .26 + .74) * (GAME.DPlock and .26 or 1))
-        elseif GAME.DPlock then
-            gc_setAlpha(.26)
-        end
-        gc_mRect('fill', 800, 965, 420 * GAME.xp / (4 * rank), 3 * min(GAME.xpLockLevel, 5))
-
-        -- Height & Time
-        altitudeText[1] = ("%.1f"):format(GAME.roundHeight)
-        TEXTS.height:set(altitudeText)
-        TEXTS.time:set(STRING.time_simp(GAME.time))
-        gc_setColor(COLOR.D)
-        local wid, hgt = TEXTS.height:getDimensions()
-        gc_strokeDraw('full', 1, TEXTS.height, 800, 978, 0, 1, 1, wid / 2, hgt / 2)
-        wid, hgt = TEXTS.time:getDimensions()
-        gc_strokeDraw('full', 2, TEXTS.time, 375, 978, 0, 1, 1, wid / 2, hgt / 2)
-        wid, hgt = TEXTS.rank:getDimensions()
-        gc_strokeDraw('full', 1, TEXTS.rank, 1027, 990, 0, .626, .626, wid / 2, hgt / 2)
-
-        gc_setColor(GAME.timerMul, .99, .99)
-        gc_mDraw(TEXTS.time, 375, 978)
-        gc_setColor(COLOR.L)
-        gc_mDraw(TEXTS.rank, 1027, 990, 0, .626)
-        if GAME.DPlock then
-            gc_setColor(GAME.time % .9 > .45 and COLOR.R or COLOR.D)
-        end
-        gc_mDraw(TEXTS.height, 800, 978)
-
-        if GAME.attackMul < 1 then
-            setFont(30)
-            gc_setColor(1, 0, 0, t % .52 < .26 and .872 or .42)
-            gc.print("x" .. GAME.attackMul, 1024, 926, 0, .7)
-        end
-
-        gc_ucs_back()
-    end
-
-    -- Rev trigger for touchscreen
-    if usingTouch and not GAME.playing and RevUnlocked then
-        gc_replaceTransform(SCR.xOy_dl)
-        if URM then
-            gc_setColor(COLOR.C)
-            gc_setAlpha(next(revHold) and .872 or .62)
-        else
-            gc_setColor(COLOR.S)
-            gc_setAlpha(next(revHold) and .42 or .26)
-        end
-        gc_draw(TEXTURE.transition, -200 * GAME.uiHide, -40, 0, 200 / 128, -560)
-    end
-
-    -- Cards
-    gc_replaceTransform(SCR.xOy)
-    gc_setColor(1, 1, 1)
-    if FloatOnCard then
-        for i = #Cards, 1, -1 do
-            if i ~= FloatOnCard then Cards[i]:draw() end
-        end
-        Cards[FloatOnCard]:draw()
-    else
-        for i = #Cards, 1, -1 do Cards[i]:draw() end
     end
 
     if not GAME.invisUI then
-        -- Allspin keyboard hint
-        if M.AS > 0 and M.EX == 0 then
-            local texts = CardHintText
-            for i = 1, #Cards do
-                local obj = texts[i]
-                local x, y = Cards[i].x + 90, Cards[i].y + 155
-                local k = min(60 / obj:getWidth(), 1)
-                gc_setColor(ShadeColor)
-                gc_strokeDraw(
-                    'full', 3 * k, obj, x, y, 0, k, k,
-                    obj:getWidth() / 2, obj:getHeight() / 2
-                )
-                gc_setColor(COLOR.lR)
-                gc_mDraw(obj, x, y, 0, k)
-            end
-        end
-
         -- Section time
         if GAME.uiHide > 0 then
             gc_replaceTransform(SCR.xOy_dr)
