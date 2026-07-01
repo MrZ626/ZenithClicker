@@ -1557,7 +1557,7 @@ function scene.overDraw()
         -- gc_replaceTransform(SCR.xOy_ur)
         -- gc_translate(-10, 80 - GAME.uiHide * 70)
         gc_replaceTransform(SCR.xOy_m)
-        gc_translate(400 - 10, -240)
+        gc_translate(400 - 10, -240 + DeckPress)
         gc_scale(.6)
         for i = 1, #GAME.koAnim do
             local k = GAME.koAnim[i]
