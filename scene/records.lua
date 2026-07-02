@@ -322,6 +322,7 @@ function scene.mouseClick(x, y, k)
         ---@class PendingCombo
         PendingComboFromRecord = TABLE.copy(recList[y]._list)
         PendingComboFromRecord.ultra = not not recList[y]._ultra
+        TABLE.delete(SCN.stack, 'chnl')
     end
 end
 
