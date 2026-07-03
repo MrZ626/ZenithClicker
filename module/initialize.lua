@@ -192,7 +192,16 @@ local upgradeFunc = {
     [196] = function()
         for k in next, CONF do STAT[k] = nil end
         return 197
-    end
+    end,
+    [197] = function()
+        if (SR.star_9 or 1e99) < 60 then SR.star_9 = nil end
+        if (SR.star_18 or 1e99) < 200 then SR.star_18 = nil end
+        if (SR.clicker or 1e99) < 260 then SR.clicker = nil end
+        if (SR.mod_up or 1e99) < 200 then SR.mod_up = nil end
+        if (SR.mod_rev or 1e99) < 260 then SR.mod_rev = nil end
+        if (SR.rank_ss or 1e99) < 260 then SR.rank_ss = nil end
+        return 198
+    end,
 }
 
 function Initialize(save)
