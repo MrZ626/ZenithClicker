@@ -570,7 +570,8 @@ function DrawBG(brightness, showRuler)
     gc_replaceTransform(SCR.origin)
     if GAME.bgH > -50 then
         local bgFloor = GAME.calculateFloor(GAME.bgH)
-        if CONF.bg and not GAME.invisUI then
+        local imgBG = CONF.bg and not GAME.invisUI
+        if imgBG then
             if bgFloor < 10 then
                 gc_setColor(1, 1, 1)
                 local bottom = Floors[bgFloor - 1].top
@@ -645,14 +646,17 @@ function DrawBG(brightness, showRuler)
                     gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
                 end
             end
-        else
+        end
+        local alpha_dH = icLerp(62, 260, abs(GAME.bgH - GAME.height)) ^ .5
+        local alpha = max(imgBG and 0 or 1, alpha_dH)
+        if alpha > 0 then
             local top = Floors[bgFloor].top
             local t = icLerp(1, 10, bgFloor + clampInterpolate(top - 50, 0, top, 1, GAME.bgH))
-            gc_setColor(
-                lLerp(floorColors[1], t),
-                lLerp(floorColors[2], t),
-                lLerp(floorColors[3], t)
-            )
+            local r, g, b =
+                lLerp(floorColors[1], t) * lerp(1, .42, alpha_dH),
+                lLerp(floorColors[2], t) * lerp(1, .42, alpha_dH),
+                lLerp(floorColors[3], t) * lerp(1, .42, alpha_dH)
+            gc_setColor(r, g, b, alpha)
             gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
         end
     end
