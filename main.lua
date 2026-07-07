@@ -1307,7 +1307,7 @@ function Daemon_Fast()
     local max = math.max
     local hsv = COLOR.HSV
     local yield = coroutine.yield
-    local msIsDown = love.mouse.isDown
+    local MSisDown = love.mouse.isDown
     local expApproach = MATH.expApproach
     local deckSize = #ModData.deck
 
@@ -1439,7 +1439,7 @@ function Daemon_Fast()
 
         -- Mouse holding animation
         if not CONF.syscursor then
-            pressValue = msIsDown(1, 2) and 1 or expApproach(pressValue, 0, dt * 12)
+            pressValue = MSisDown(1, 2) and 1 or expApproach(pressValue, 0, dt * 12)
         end
 
         -- Achievement saving

@@ -56,7 +56,7 @@ function Card:mouseOn(x, y)
 end
 
 local completion = GAME.completion
-local KBIsDown = love.keyboard.isDown
+local KBisDown = love.keyboard.isDown
 local function tween_deckPress(t) DeckPress = 26 * (1 - t) end
 local function tween_expertOn(t) GAME.exTimer = M.EX > 0 and t or (1 - t) end
 local function task_refreshBGM()
@@ -171,7 +171,7 @@ function Card:setActive(auto, key)
         end
     else
         TASK.unlock('cannotStart')
-        revOn = self.active and (key == 2 or KBIsDown('lctrl', 'lalt', 'rctrl', 'ralt'))
+        revOn = self.active and (key == 2 or KBisDown('lctrl', 'lalt', 'rctrl', 'ralt'))
         if revOn and completion[self.id] == 0 then
             revOn = false
             noSpin = true

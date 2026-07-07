@@ -1,11 +1,9 @@
 local next = next
 local max, min = math.max, math.min
 local sin, cos = math.sin, math.cos
-local floor, ceil, abs = math.floor, math.ceil, math.abs
-
-local distance, clamp = MATH.distance, MATH.clamp
-local interpolate, clampInterpolate = MATH.interpolate, MATH.clampInterpolate
-local lerp, iLerp, cLerp, icLerp, lLerp = MATH.lerp, MATH.iLerp, MATH.cLerp, MATH.icLerp, MATH.lLerp
+local clamp, interpolate, clampInterpolate = MATH.clamp, MATH.interpolate, MATH.clampInterpolate
+local lerp, icLerp, lLerp = MATH.lerp, MATH.icLerp, MATH.lLerp
+local KBisDown, MSisDown = love.keyboard.isDown, love.mouse.isDown
 
 local GAME = GAME
 local M = GAME.mod
@@ -39,26 +37,30 @@ local function switchVisitor(bool)
     end
 end
 
-local function MouseOnCard(x, y)
-    if FloatOnCard and Cards[FloatOnCard]:mouseOn(x, y) then
-        return FloatOnCard
-    end
-    if FloatOnCard and not usingTouch or CONF.oldHitbox then
-        local cid, dist = 0, 1e99
-        for i = 1, #Cards do
-            if Cards[i]:mouseOn(x, y) then
-                local dist2 = distance(x, y, Cards[i].x, Cards[i].y)
-                if dist2 < dist then
-                    dist = dist2
-                    cid = i
+local MouseOnCard
+do
+    local distance = MATH.distance
+    function MouseOnCard(x, y)
+        if FloatOnCard and Cards[FloatOnCard]:mouseOn(x, y) then
+            return FloatOnCard
+        end
+        if FloatOnCard and not usingTouch or CONF.oldHitbox then
+            local cid, dist = 0, 1e99
+            for i = 1, #Cards do
+                if Cards[i]:mouseOn(x, y) then
+                    local dist2 = distance(x, y, Cards[i].x, Cards[i].y)
+                    if dist2 < dist then
+                        dist = dist2
+                        cid = i
+                    end
                 end
             end
-        end
-        if cid > 0 then return cid end
-    else
-        for i = 1, #Cards do
-            if Cards[i]:mouseOn(x, y) then
-                return i
+            if cid > 0 then return cid end
+        else
+            for i = 1, #Cards do
+                if Cards[i]:mouseOn(x, y) then
+                    return i
+                end
             end
         end
     end
@@ -270,17 +272,15 @@ function scene.mouseMove(x, y, _, dy)
     end
 end
 
-local msIsDown = love.mouse.isDown
-local kbIsDown = love.keyboard.isDown
 local function getBtnPressed()
     local btnPressed = 0
-    if msIsDown(1) then btnPressed = btnPressed + 1 end
-    if msIsDown(2) then btnPressed = btnPressed + 1 end
-    if msIsDown(4) then btnPressed = btnPressed + 1 end
-    if msIsDown(5) then btnPressed = btnPressed + 1 end
-    if msIsDown(6) then btnPressed = btnPressed + 1 end
-    if kbIsDown(CONF.keybind[21]) then btnPressed = btnPressed + 1 end
-    if kbIsDown(CONF.keybind[22]) then btnPressed = btnPressed + 1 end
+    if MSisDown(1) then btnPressed = btnPressed + 1 end
+    if MSisDown(2) then btnPressed = btnPressed + 1 end
+    if MSisDown(4) then btnPressed = btnPressed + 1 end
+    if MSisDown(5) then btnPressed = btnPressed + 1 end
+    if MSisDown(6) then btnPressed = btnPressed + 1 end
+    if KBisDown(CONF.keybind[21]) then btnPressed = btnPressed + 1 end
+    if KBisDown(CONF.keybind[22]) then btnPressed = btnPressed + 1 end
     return btnPressed
 end
 
@@ -298,7 +298,7 @@ function scene.mouseDown(x, y, k)
     HoldingButtons['mouse' .. k] = true
     GAME.nixPrompt('keep_no_mouse')
 
-    if getBtnPressed() > 1 + (URM and M.VL == 2 and 0 or floor(M.VL / 2)) then return true end
+    if getBtnPressed() > 1 + (URM and M.VL == 2 and 0 or math.floor(M.VL / 2)) then return true end
     if M.EX == 0 then
         SFX.play('move')
         mouseTrigger(x, y, k)
@@ -315,7 +315,7 @@ function scene.mouseUp(x, y, k)
     GAME.nixPrompt('keep_no_mouse')
     if k == 3 then return end
 
-    if getBtnPressed() > (URM and M.VL == 2 and 0 or floor(M.VL / 2)) then return end
+    if getBtnPressed() > (URM and M.VL == 2 and 0 or math.floor(M.VL / 2)) then return end
     if M.EX > 0 then
         mouseTrigger(x, y, k)
     end
@@ -373,7 +373,6 @@ end
 -- scene.mouseDown=scene.touchDown
 -- scene.mouseUp=scene.touchUp
 
-local KBisDown = love.keyboard.isDown
 function scene.keyDown(key)
     HoldingButtons[key] = true
     if GAME.zenithTraveler then
@@ -405,16 +404,15 @@ function scene.keyUp(key)
     end
 end
 
-local KBIsDown, MSIsDown = love.keyboard.isDown, love.mouse.isDown
 local expApproach = MATH.expApproach
 function scene.update(dt)
     if dt > .26 then dt = .26 end
-    if kbIsDown('left', 'right', 'up', 'down') then
-        local spd = ZENITHA._cursor.speed * dt * (kbIsDown('lctrl', 'rctrl') and .6 or 1)
-        if kbIsDown('left') then MX = MX - spd end
-        if kbIsDown('right') then MX = MX + spd end
-        if kbIsDown('up') then MY = MY - spd end
-        if kbIsDown('down') then MY = MY + spd end
+    if KBisDown('left', 'right', 'up', 'down') then
+        local spd = ZENITHA._cursor.speed * dt * (KBisDown('lctrl', 'rctrl') and .6 or 1)
+        if KBisDown('left') then MX = MX - spd end
+        if KBisDown('right') then MX = MX + spd end
+        if KBisDown('up') then MY = MY - spd end
+        if KBisDown('down') then MY = MY + spd end
         ZENITHA.setCursorPos(MX, MY)
     end
     if GAME.nightcore then dt = dt * 2.6 end
@@ -447,7 +445,7 @@ function scene.update(dt)
     for i = 1, #Cards do
         Cards[i]:update(GAME.slowmo and dt / 6.26 or dt)
     end
-    if GAME.playing and (KBIsDown('escape') or MSIsDown(3)) then
+    if GAME.playing and (KBisDown('escape') or MSisDown(3)) then
         GAME.forfeitTimer = GAME.forfeitTimer +
             (GAME.slowmo and dt / 6.26 or dt) * clampInterpolate(12, 2.6, 26, 1, min(GAME.totalQuest, GAME.time))
         if TASK.lock('forfeit_sfx', .0872) then
@@ -516,16 +514,15 @@ local f10colors = TABLE.transpose {
     { .8, 0,  1 },  -- 2393.75 m
     { .0, .0, 1 },  -- 2500 m
 }
-local gc = love.graphics
-local gc_push, gc_pop = gc.push, gc.pop
-local gc_replaceTransform = gc.replaceTransform
-local gc_translate, gc_scale, gc_rotate, gc_shear = gc.translate, gc.scale, gc.rotate, gc.shear
-local gc_setColor, gc_setLineWidth, gc_setBlendMode = gc.setColor, gc.setLineWidth, gc.setBlendMode
-local gc_draw, gc_line, gc_rectangle, gc_circle, gc_arc = gc.draw, gc.line, gc.rectangle, gc.circle, gc.arc
-local gc_mRect, gc_mDraw, gc_mDrawQ, gc_strokeDraw = GC.mRect, GC.mDraw, GC.mDrawQ, GC.strokeDraw
+local GC = GC
+local gc_push, gc_pop = GC.push, GC.pop
+local gc_replaceTransform = GC.replaceTransform
+local gc_translate = GC.translate
+local gc_setColor, gc_setLineWidth, gc_setBlendMode = GC.setColor, GC.setLineWidth, GC.setBlendMode
+local gc_draw, gc_line, gc_rectangle, gc_circle, gc_arc = GC.draw, GC.line, GC.rectangle, GC.circle, GC.arc
+local gc_mRect, gc_mDraw, gc_mDrawQ = GC.mRect, GC.mDraw, GC.mDrawQ
 local gc_setAlpha, gc_ucs_move, gc_ucs_back = GC.setAlpha, GC.ucs_move, GC.ucs_back
-local gc_blurCircle, gc_strokePrint = GC.blurCircle, GC.strokePrint
-local gc_setColorMask = GC.setColorMask
+local gc_strokePrint, gc_strokeDraw = GC.strokePrint, GC.strokeDraw
 local setFont = FONT.set
 local stc_reset, stc_setComp, stc_setPen, stc_stop = GC.stc_reset, GC.stc_setComp, GC.stc_setPen, GC.stc_stop
 local stc_rect, stc_mRect, stc_circ = GC.stc_rect, GC.stc_mRect, GC.stc_circ
@@ -602,7 +599,7 @@ function DrawBG(brightness, showRuler)
                     end
 
                     -- Bottom
-                    local t = iLerp(1650, 2500, GAME.bgH)
+                    local t = MATH.iLerp(1650, 2500, GAME.bgH)
                     gc_setColor(
                         lLerp(f10colors[1], t),
                         lLerp(f10colors[2], t),
@@ -647,7 +644,7 @@ function DrawBG(brightness, showRuler)
                 end
             end
         end
-        local alpha_dH = icLerp(62, 260, abs(GAME.bgH - GAME.height)) ^ .5
+        local alpha_dH = icLerp(62, 260, math.abs(GAME.bgH - GAME.height)) ^ .5
         local alpha = max(imgBG and 0 or 1, alpha_dH)
         if alpha > 0 then
             local top = Floors[bgFloor].top
@@ -677,7 +674,7 @@ function DrawBG(brightness, showRuler)
 
     -- Display altitude (Debug)
     -- gc_setColor(1, 1, 1)
-    -- gc.print(floor(GAME.bgH), 10, 10, 0, 2.6)
+    -- gc.print(math.floor(GAME.bgH), 10, 10, 0, 2.6)
 end
 
 function DrawPBline(h, pb, spd, textObj)
@@ -707,7 +704,7 @@ local function switchBoardCoord()
     local k = 42 * GAME.shakeTimer * CONF.damageShakiness / 100
     if GAME.shakeTimer > 0 then gc_translate(MATH.rand(-1, 1) * k, MATH.rand(-1, 1) * k) end
     gc_translate(800, boardRY + 5 + (GAME.playing and (GAME.boardAnim - 1) * 62 or (1 - GAME.boardAnim) * 1260))
-    if not GAME.playing then gc_rotate((1 - GAME.boardAnim) * .162) end
+    if not GAME.playing then GC.rotate((1 - GAME.boardAnim) * .162) end
 end
 
 function scene.draw()
@@ -736,7 +733,7 @@ function scene.draw()
             end
             gc_setColor(1, 1, 1, GAME.uiHide *
                 clamp((GAME.rank - 2) / 6, .26, 1) * .26 *
-                cLerp(.62, 1, abs(dh * 26))
+                MATH.cLerp(.62, 1, math.abs(dh * 26))
             )
             gc_draw(WindBatch)
         end
@@ -951,13 +948,13 @@ function scene.draw()
             local y = 330 + (GAME.height - GAME.bgH) * (M.VL + 1)
             if GAME.anyRev then
                 local r = (M.AS + 1) * .026
-                gc_setColorMask(false, false, true, true)
+                GC.setColorMask(false, false, true, true)
                 gc_draw(GAME.modIB, 1490 + 2.0 * sin(t * 1.5), y + .5 * 2.0 * sin(t * 2.5), r * sin(t * 0.5), 1)
-                gc_setColorMask(false, true, false, true)
+                GC.setColorMask(false, true, false, true)
                 gc_draw(GAME.modIB, 1490 + 2.6 * sin(t * 1.6), y + .5 * 2.6 * sin(t * 2.6), r * sin(t * 0.6), 1)
-                gc_setColorMask(true, false, false, true)
+                GC.setColorMask(true, false, false, true)
                 gc_draw(GAME.modIB, 1490 + 2.6 * sin(t * 1.7), y + .5 * 2.6 * sin(t * 2.7), r * sin(t * 0.7), 1)
-                gc_setColorMask()
+                GC.setColorMask()
             else
                 gc_draw(GAME.modIB, 1490, y, M.AS * .026 * sin(t), 1)
             end
@@ -966,7 +963,7 @@ function scene.draw()
         -- MP & ZP Preview
         if not GAME.playing and STAT.maxFloor >= 10 then
             gc_setColor(TextColor)
-            gc_setAlpha(.12 + abs(math.log(GAME.comboZP)) * 2)
+            gc_setAlpha(.12 + math.abs(math.log(GAME.comboZP)) * 2)
             gc_draw(TEXTS.zpPreview, 1370, 275, 0, 1, 1, TEXTS.zpPreview:getWidth())
             if GAME.comboMP >= 6 then
                 gc_setAlpha(clampInterpolate(5, 0, 8, 1, GAME.comboMP))
@@ -1041,7 +1038,7 @@ function scene.overDraw()
             for i = 1, #ImpactGlow do
                 local L = ImpactGlow[i]
                 gc_setColor(L.r, L.g, L.b, L.t)
-                gc_blurCircle(0, L.x, L.y, 120 * (L.t + 1.6) ^ 2)
+                GC.blurCircle(0, L.x, L.y, 120 * (L.t + 1.6) ^ 2)
             end
             gc_setBlendMode('alpha')
         end
@@ -1085,7 +1082,7 @@ function scene.overDraw()
             gc_translate(1226, 320)
             local _t = GAME.questTime
             local bk = _t < .12 and 1 + 62 * _t * (.12 - _t) or 1
-            gc_scale(min(GAME.spikeCounter / 60, 1) + bk)
+            GC.scale(min(GAME.spikeCounter / 60, 1) + bk)
             local ox, oy = TEXTS.spike:getWidth() / 2, TEXTS.spike:getHeight() / 2
             gc_setColor(1, 1, 1, GAME.spikeTimer * .62)
             gc_strokeDraw('full', 2, TEXTS.spike, 0, 0, 0, 1, 1, ox, oy)
@@ -1172,7 +1169,7 @@ function scene.overDraw()
         if GAME.attackMul < 1 then
             setFont(30)
             gc_setColor(1, 0, 0, t % .52 < .26 and .872 or .42)
-            gc.print("x" .. GAME.attackMul, 1024, 926, 0, .7)
+            GC.print("x" .. GAME.attackMul, 1024, 926, 0, .7)
         end
 
         gc_ucs_back()
@@ -1244,7 +1241,7 @@ function scene.overDraw()
 
                 -- Spike ball
                 gc_setColor(r, g, b, a)
-                gc_blurCircle(-.26, 0, 0, 100 * k)
+                GC.blurCircle(-.26, 0, 0, 100 * k)
                 gc_mDraw(TEXTURE.surgeIcon, 0, 0, GAME.time * 2.6, .25 * k * bk)
 
                 -- Spark
@@ -1272,7 +1269,7 @@ function scene.overDraw()
                 -- Number
                 if GAME.fault then
                     gc_push('transform')
-                    gc_rotate(MATH.rand(-.2, .2))
+                    GC.rotate(MATH.rand(-.2, .2))
                     gc_translate(MATH.rand(-5, 5), MATH.rand(-5, 5))
                 end
                 local chain = TEXTS[M.AS < 2 and 'chain' or 'chain2']
@@ -1302,7 +1299,7 @@ function scene.overDraw()
                 gc_ucs_back()
             elseif GAME.comboStr == 'VLrGV' then
                 local x, y = -474, 52
-                gc_strokePrint('corner', 2, COLOR.D, BoardColor, floor(GAME.achv_altFromSurge) .. "m", x, y - 20, 260, 'center')
+                gc_strokePrint('corner', 2, COLOR.D, BoardColor, math.floor(GAME.achv_altFromSurge) .. "m", x, y - 20, 260, 'center')
             end
 
             -- Revive Task
@@ -1324,7 +1321,7 @@ function scene.overDraw()
                 end
 
                 -- Text
-                gc_rotate(reviveInfo.rotation[taskID])
+                GC.rotate(reviveInfo.rotation[taskID])
                 gc_translate(reviveInfo.move[taskID], 0)
                 local txt = task.textObj
                 local w, h = txt:getDimensions()
@@ -1452,8 +1449,8 @@ function scene.overDraw()
                 setFont(70)
                 gc_push('transform')
                 gc_translate(0, -118)
-                gc_scale(1 + sin(t / 2.6) * .026)
-                gc_shear(sin(t) * .26, cos(t * 1.2) * .026)
+                GC.scale(1 + sin(t / 2.6) * .026)
+                GC.shear(sin(t) * .26, cos(t * 1.2) * .026)
                 gc_strokePrint('full', 6, COLOR.DW, nil, text, 130, -35 + 4, 2600, 'center', 0, .9, 1)
                 gc_strokePrint('full', 4, COLOR.dW, nil, text, 130, -35 + 2, 2600, 'center', 0, .9, 1)
                 gc_strokePrint(
@@ -1504,7 +1501,7 @@ function scene.overDraw()
     -- TimeMul
     if GAME.nightcore or GAME.slowmo then
         gc_replaceTransform(SCR.xOy_m)
-        gc_rotate(-1.5708)
+        GC.rotate(-1.5708)
         gc_setLineWidth(42)
         local a
         if GAME.nightcore then
@@ -1561,7 +1558,7 @@ function scene.overDraw()
         gc_setColor(1, 1, 1, r / (42 * .5 ^ 4.2))
         gc_mDraw(TEXTURE.windup, w.x, w.y, r, k)
         gc_setColor(1, 1, 1, w.alpha)
-        gc_mDraw(TEXTURE.windupText[ceil(w.lv / 2)], w.x, w.y, 0, k)
+        gc_mDraw(TEXTURE.windupText[math.ceil(w.lv / 2)], w.x, w.y, 0, k)
     end
 
     -- Kill animation
@@ -1570,7 +1567,7 @@ function scene.overDraw()
         -- gc_translate(-10, 80 - GAME.uiHide * 70)
         gc_replaceTransform(SCR.xOy_m)
         gc_translate(400 - 10, -240 + DeckPress)
-        gc_scale(.6)
+        GC.scale(.6)
         for i = 1, #GAME.koAnim do
             local k = GAME.koAnim[i]
             local w1, w2 = k.id1:getWidth() + 20, k.id2:getWidth() + 20
@@ -1815,7 +1812,7 @@ scene.widgetList = {
         floatText = "NO DATA",
         onPress = function(k)
             if not Daily.available then return end
-            if k == 2 or kbIsDown('lctrl', 'rctrl') or next(revHold) then
+            if k == 2 or KBisDown('lctrl', 'rctrl') or next(revHold) then
                 TryOpenLeaderboard()
             else
                 applyCombo(Daily.combo)
@@ -1841,7 +1838,7 @@ scene.widgetList = {
                     end
                 end
             else
-                if k == 2 or kbIsDown('lctrl', 'rctrl') or next(revHold) then
+                if k == 2 or KBisDown('lctrl', 'rctrl') or next(revHold) then
                     switchVisitor(true)
                 end
             end
@@ -1859,7 +1856,7 @@ scene.widgetList = {
         floatText = "", -- Dynamic text
         onPress = function(k)
             if STAT.maxFloor < 10 then return SFX.play('no') end
-            if k == 2 or kbIsDown('lctrl', 'rctrl') or next(revHold) then
+            if k == 2 or KBisDown('lctrl', 'rctrl') or next(revHold) then
                 if RevUnlocked then
                     URM = not URM
                     SFX.play(URM and 'exchange' or 'undo')
