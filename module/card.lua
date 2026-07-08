@@ -126,51 +126,8 @@ function Card:setActive(auto, key)
 
     self.active = not self.active
     local noSpin, revOn
-    if GAME.playing then
-        if not auto then
-            self.touchCount = self.touchCount + 1
-            GAME.totalFlip = GAME.totalFlip + 1
-            if not GAME.achv_noManualFlipH then
-                GAME.achv_noManualFlipH = GAME.roundHeight
-                if GAME.totalQuest >= 3 then SFX.play('btb_break') end
-            end
-            if self.touchCount == 1 then
-                if (self.required or self.required2) and not GAME.hardMode then
-                    GAME.addXP(M.VL == 1 and 2 or 1)
-                end
-            elseif not GAME.fault and not self.burn then
-                GAME.fault = true
-            end
-            if M.DP > 0 and self.id == 'DP' and self.active and not (URM and M.DP == 2) then
-                if GAME.swapControl() then
-                    SFX.play('party_ready', .8)
-                end
-            end
-            if M.GV > 0 and not GAME.gravTimer then
-                GAME.gravTimer = GAME.gravDelay
-            end
-            if M.AS > 0 then
-                if self.burn then
-                    self.burn = false
-                    TASK.removeTask_code(GAME.task_cancelAll)
-                    local p = TABLE.find(CD, self) or 0
-                    local l = { -3, -2, -1, 1, 2, 3 }
-                    CD[(p + table.remove(l, rnd(4, 6)) - 1) % #CD + 1]:setActive(true)
-                    CD[(p + table.remove(l, rnd(1, 3)) - 1) % #CD + 1]:setActive(true)
-                    GAME.achv_escapeBurnt = true
-                    if M.AS == 2 then
-                        CD[(p + table.remove(l, rnd(3, 4)) - 1) % #CD + 1]:setActive(true)
-                        CD[(p + table.remove(l, rnd(1, 2)) - 1) % #CD + 1]:setActive(true)
-                        if GAME.floor < 10 and GAME.gigaspeed then GAME.achv_felMagicBurnt = true end
-                        if URM then return GAME.takeDamage(1e99, 'wrong') end
-                    end
-                    SFX.play('wound')
-                else
-                    self.burn = M.AS == 1 and 3 + GAME.floor / 2 or 1e99
-                end
-            end
-        end
-    else
+    if not GAME.playing then
+        -- not in-game, update various global states
         TASK.unlock('cannotStart')
         revOn = self.active and (key == 2 or KBisDown('lctrl', 'lalt', 'rctrl', 'ralt'))
         if revOn and completion[self.id] == 0 then
@@ -186,13 +143,7 @@ function Card:setActive(auto, key)
         end
         local wasRev = M[self.id] == 2
         M[self.id] = self.active and (revOn and 2 or 1) or 0
-        -- if revOn then -- Limit only one Rev mod can be selected
-        --     for _, C in ipairs(Cards) do
-        --         if C.active and C ~= self then
-        --             C:setActive(true)
-        --         end
-        --     end
-        -- end
+        -- if revOn then for _, C in ipairs(CD) do if C.active and C ~= self then C:setActive(true) end end end -- Unique rev mod limit
         self.upright = not (self.active and revOn)
         if revOn or wasRev then GAME.refreshRev() end
         TASK.removeTask_code(task_refreshBGM)
@@ -209,6 +160,49 @@ function Card:setActive(auto, key)
         GAME.hardMode = M.EX > 0 or GAME.anyRev and not URM
         GAME.refreshPBText()
         GAME.refreshRPC()
+    elseif not auto then
+        -- in-game manual flip, triggering effects
+        self.touchCount = self.touchCount + 1
+        GAME.totalFlip = GAME.totalFlip + 1
+        if not GAME.achv_noManualFlipH then
+            GAME.achv_noManualFlipH = GAME.roundHeight
+            if GAME.totalQuest >= 3 then SFX.play('btb_break') end
+        end
+        if self.touchCount == 1 then
+            if (self.required or self.required2) and not GAME.hardMode then
+                GAME.addXP(M.VL == 1 and 2 or 1)
+            end
+        elseif not GAME.fault and not self.burn then
+            GAME.fault = true
+        end
+        if M.DP > 0 and self.id == 'DP' and self.active and not (URM and M.DP == 2) then
+            if GAME.swapControl() then
+                SFX.play('party_ready', .8)
+            end
+        end
+        if M.GV > 0 and not GAME.gravTimer then
+            GAME.gravTimer = GAME.gravDelay
+        end
+        if M.AS > 0 then
+            if self.burn then
+                self.burn = false
+                TASK.removeTask_code(GAME.task_cancelAll)
+                local p = TABLE.find(CD, self) or 0
+                local l = { -3, -2, -1, 1, 2, 3 }
+                CD[(p + table.remove(l, rnd(4, 6)) - 1) % #CD + 1]:setActive(true)
+                CD[(p + table.remove(l, rnd(1, 3)) - 1) % #CD + 1]:setActive(true)
+                GAME.achv_escapeBurnt = true
+                if M.AS == 2 then
+                    CD[(p + table.remove(l, rnd(3, 4)) - 1) % #CD + 1]:setActive(true)
+                    CD[(p + table.remove(l, rnd(1, 2)) - 1) % #CD + 1]:setActive(true)
+                    if GAME.floor < 10 and GAME.gigaspeed then GAME.achv_felMagicBurnt = true end
+                    if URM then return GAME.takeDamage(1e99, 'wrong') end
+                end
+                SFX.play('wound')
+            else
+                self.burn = M.AS == 1 and 3 + GAME.floor / 2 or 1e99
+            end
+        end
     end
     GAME.refreshCurrentCombo()
     GAME.refreshLayout()
