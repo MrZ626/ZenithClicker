@@ -2215,6 +2215,7 @@ function GAME.commit(auto)
     end
 end
 
+-- The animation of all cards spinning & inactivating
 local function task_startSpin()
     for _, C in ipairs(CD) do
         C.tempOrder = C.initOrder
@@ -2238,34 +2239,34 @@ local function task_startSpin()
     end
 end
 function GAME.start()
+    -- Interrupt if game just finishes (non-forfeit)
     if TASK.getLock('cannotStart') then
         SFX.play('garbagerise')
         return
     end
+
+    -- uVL interrupt
     if URM and M.VL == 2 and not UltraVlCheck('start') then return end
-    TASK.removeTask_code(Task_MusicEnd)
 
-    GAME.omega = false
-    GAME.negFloor = 1
-    GAME.negEvent = 1
-    GAME.timerMul = 1
-    GAME.isUltraRun = GAME.anyUltra
-    GAME.attackMul = GAME.isUltraRun and .62 or 1
-    GAME.xpLockLevelMax = URM and M.NH == 2 and 1 or 5
-    GAME.leakSpeed = ((M.EX > 0 or M.DP == 2) and 5 or 3) + (GAME.fastLeak and 8 or 0)
-    GAME.invincible = false
-
-    TASK.unlock('sure_quit')
-    TASK.unlock('sure_forfeit')
+    -- UI things
     SCN.scenes.tower.widgetList.help:setVisible(false)
     SCN.scenes.tower.widgetList.help2:setVisible(false)
     SCN.scenes.tower.widgetList.daily:setVisible(false)
+    TASK.unlock('sure_quit')
+    TASK.unlock('sure_forfeit')
     MSG.clear()
 
+    -- Stop BGM outro
+    TASK.removeTask_code(Task_MusicEnd)
+
+    -- Game start SFX
     SFX.play('menuconfirm', .8)
     SFX.play((M.DP > 0 or VALENTINE and not GAME.anyRev) and 'zenith_start_duo' or 'zenith_start', 1, 0, Tone(0))
 
+    -- Setup game state
     GAME.playing = true
+    GAME.isUltraRun = GAME.anyUltra
+    GAME.attackMul = GAME.isUltraRun and .62 or 1
 
     -- Statistics
     GAME.refreshPieceFstr()
@@ -2283,6 +2284,7 @@ function GAME.start()
 
     -- Time
     GAME.time = 0
+    GAME.timerMul = 1
     GAME.gigaTime = false
     GAME.questTime = 0
     GAME.floorTime = 0
@@ -2293,12 +2295,17 @@ function GAME.start()
     GAME.rank = 1
     TEXTS.rank:set("R-1")
     GAME.xp = 0
-    GAME.rankupLast = false
+    GAME.xpLockLevelMax = URM and M.NH == 2 and 1 or 5
     GAME.xpLockLevel = GAME.xpLockLevelMax
     GAME.xpLockTimer = 0
+    GAME.rankupLast = false
+    GAME.leakSpeed = ((M.EX > 0 or M.DP == 2) and 5 or 3) + (GAME.fastLeak and 8 or 0)
 
     -- Floor
     GAME.floor = 0
+    GAME.omega = false
+    GAME.negFloor = 1
+    GAME.negEvent = 1
     GAME.height = 0
     GAME.heightBuffer = 0
     GAME.fatigueSet = Fatigue[M.EX == 2 and 'rEX' or M.DP == 2 and 'rDP' or 'normal']
@@ -2319,12 +2326,13 @@ function GAME.start()
     GAME.dmgDelay = 15
     GAME.dmgCycle = 5
     GAME.lifeLeak = 0
+    GAME.dmgTimer = GAME.dmgDelay
 
     -- Player
     GAME.fullHealth = M.DP > 0 and 15 or 20
     GAME.startingHealth = GAME.fullHealth
     GAME.life = GAME.fullHealth
-    GAME.dmgTimer = GAME.dmgDelay
+    GAME.invincible = false
     GAME.chain = 0
     GAME.gigaspeed = false
     GAME.gigaspeedEntered = false
@@ -2349,7 +2357,7 @@ function GAME.start()
     GAME.koCount = 0
     GAME.koCharge = 0
 
-    -- rDP
+    -- Ally (DP & rDP)
     GAME.onAlly = false
     GAME.life2 = GAME.fullHealth
     GAME.rankLimit = 26000
@@ -2365,9 +2373,24 @@ function GAME.start()
         GAME.rankLimit = 8 + 4 * M.EX
         GAME.dmgHeal = 3
     end
-
     GAME.refreshLifeState()
 
+    -- Bump floor from 0 to 1 & initialize some variables related to floor
+    GAME.upFloor()
+
+    -- Generate quests
+    TABLE.clear(GAME.quests)
+    GAME.genQuest()
+
+    -- Start a new starting animation
+    TASK.removeTask_code(task_startSpin)
+    TASK.new(task_startSpin)
+
+    -- Start UI animation
+    TWEEN.new(GAME.anim_setMenuHide):setOnFinish(GAME.anim_setMenuHide_finish):setDuration(GAME.slowmo and 2.6 or .26):setUnique('uiHide'):run()
+    TWEEN.new(GAME.anim_setBoardAnim):setEase('OutQuad'):setDuration(GAME.slowmo and 4.2 or .42):setUnique('boardAnim'):run()
+
+    -- Refresh UI things
     GAME.refreshModIcon()
     TABLE.clear(ComboColor)
     for k, v in next, M do
@@ -2382,21 +2405,11 @@ function GAME.start()
         ins(ComboColor, TABLE.copy(ComboColor[1]))
         TABLE.transpose(ComboColor)
     end
-
-    GAME.upFloor()
-
-    TABLE.clear(GAME.quests)
-    GAME.genQuest()
-
-    TASK.removeTask_code(task_startSpin)
-    TASK.new(task_startSpin)
-
-    TWEEN.new(GAME.anim_setMenuHide):setOnFinish(GAME.anim_setMenuHide_finish):setDuration(GAME.slowmo and 2.6 or .26):setUnique('uiHide'):run()
-    TWEEN.new(GAME.anim_setBoardAnim):setEase('OutQuad'):setDuration(GAME.slowmo and 4.2 or .42):setUnique('boardAnim'):run()
     BoardColor[1], BoardColor[2], BoardColor[3] = BoardColorData.r[1], BoardColorData.g[1], BoardColorData.b[1]
     GAME.boardColorPatch.timer = 0
     GAME.boardDim = { 1, 1, 1 }
 
+    -- Reset achievement flags
     GAME.achv_plonkH = nil
     GAME.achv_perfectH = nil
     GAME.achv_demoteH = nil
@@ -2440,12 +2453,23 @@ end
 
 ---@param reason 'forfeit' | 'wrong' | 'time' | 'reset'
 function GAME.finish(reason)
+    -- UI things
     SCN.scenes.tower.widgetList.help:setVisible(not GAME.zenithTraveler)
     SCN.scenes.tower.widgetList.help2:setVisible(not GAME.zenithTraveler)
     SCN.scenes.tower.widgetList.daily:setVisible(not GAME.zenithTraveler)
     TABLE.clear(HoldingButtons)
     MSG.clear()
 
+    -- Reset tasks
+    TASK.removeTask_code(GAME.task_cancelAll) -- Stop RESET/SPIN
+    TASK.removeTask_code(task_startSpin)      -- Stop starting animation
+    TASK.new(Task_MusicEnd)                   -- Start BGM outro
+
+    -- Player being KO-ed & Invalidate buffered KOs
+    GAME.awardKO(GAME.time > MATH.rand(6, 12) and GAME.getRandomUID() or STAT.uid, STAT.uid, false, false)
+    for _, k in next, GAME.koBuffer do k.valid = false end
+
+    -- Gameover SFX
     SFX.play(
         reason == 'forfeit' and 'detonated' or
         reason == 'wrong' and 'topout' or
@@ -2453,11 +2477,9 @@ function GAME.finish(reason)
         'shatter', .8
     )
 
-    GAME.awardKO(GAME.time > MATH.rand(6, 12) and GAME.getRandomUID() or STAT.uid, STAT.uid, false, false)
-
-    TASK.removeTask_code(GAME.task_cancelAll)
+    -- Reset card states
+    FloatOnCard = nil
     GAME.sortCards()
-
     for _, C in ipairs(CD) do
         if (M[C.id] > 0) ~= C.active then C:setActive(true) end
         if not C.active and not C.upright then C.upright = true end
@@ -2468,18 +2490,18 @@ function GAME.finish(reason)
         C.burn = false
         C.charge = 0
     end
-    FloatOnCard = nil
     GAME.refreshLayout()
 
+    -- Shutdown game state
     GAME.playing = false
-    for _, k in next, GAME.koBuffer do k.valid = false end
     if M.DH == 2 then GAME.finishTime = love.timer.getTime() end
     ins(GAME.secTime, GAME.floorTime)
     GAME.refreshSectionTime()
     GAME.life, GAME.life2 = 0, 0
     GAME.teramusic = false
-    -- GAME.currentTask = false
+    GAME.stopTeraspeed('fin')
 
+    -- Update & Submit everything
     if GAME.totalQuest > 2.6 then
         LOG('info', ("[%s] (%s) F%d %.1fm in %.3fs"):format(reason, table.concat(GAME.getHand(true), ', '), GAME.floor, GAME.roundHeight, GAME.time))
 
@@ -2896,22 +2918,15 @@ function GAME.finish(reason)
         SubmitAchv('zenith_explorer_plus', GAME.roundHeight)
         SubmitAchv('supercharged_plus', GAME.achv_maxChain)
         if GAME.fullHealth <= 5 then IssueSecret('cardiac_arrest') end
+        if #GAME.secTime >= 10 and GAME.height < 0 then IssueSecret('universal_gravitation') end
         SaveStat()
+        ReleaseAchvBuffer()
     else
         GAME.clearResultStat()
     end
-    ReleaseAchvBuffer()
+    GAME.setGigaspeedAnim(false) -- This process resets some variables that are used in the previous process, so this has to be executed later
 
-    GAME.setGigaspeedAnim(false)
-    GAME.stopTeraspeed('fin')
-    TASK.removeTask_code(task_startSpin)
-    GAME.refreshLockState()
-    GAME.refreshCurrentCombo()
-    GAME.refreshPBText()
-    TASK.unlock('dcTimer')
-    GAME.refreshDailyChallengeText()
-    GAME.prevPB = max(GAME.prevPB, GAME.height)
-
+    -- Reset piece effects after basement run
     if URM and GAME.height < -10 then
         GAME.pieceEffectID = 0
         GAME.nightcore = false
@@ -2922,17 +2937,24 @@ function GAME.finish(reason)
         GAME.invisCard = false
         GAME.closeCard = false
     end
-    if #GAME.secTime >= 10 and GAME.height < 0 then IssueSecret('universal_gravitation') end
 
+    -- Refresh UI
     TWEEN.new(GAME.anim_setMenuHide_rev):setDuration(GAME.slowmo and 2.6 or .26):setUnique('uiHide'):run()
     TWEEN.new(GAME.anim_setBoardAnim_rev):setEase('InQuart'):setDuration(GAME.slowmo and 6.26 or 1.26):setUnique('boardAnim'):run()
+    GAME.refreshLockState()
+    GAME.refreshCurrentCombo()
+    GAME.refreshPBText()
+    TASK.unlock('dcTimer') -- Allow daily challenge refresh immediately
+    GAME.refreshDailyChallengeText()
+    GAME.prevPB = max(GAME.prevPB, GAME.height)
     GAME.refreshRPC()
+
+    -- Lock some actions for a while
     if reason ~= 'forfeit' then
         TASK.lock('cannotStart', 1)
         TASK.lock('cannotFlip', .626)
     end
-    TASK.removeTask_code(Task_MusicEnd)
-    TASK.new(Task_MusicEnd)
+
     collectgarbage()
 end
 
