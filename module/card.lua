@@ -64,11 +64,14 @@ local function task_refreshBGM()
     RefreshBGM()
 end
 function Card:setActive(auto, key)
+    -- NH interrupt
     if TASK.getLock('cannotFlip') or GAME.playing and M.NH == 1 and not auto and self.active then
         self:flick()
         SFX.play('no')
         return
     end
+
+    -- VL interrupt
     if M.VL == 1 then
         if not self.active and not auto then
             self.charge = self.charge + 1
@@ -138,13 +141,11 @@ function Card:setActive(auto, key)
             elseif not GAME.fault and not self.burn then
                 GAME.fault = true
             end
-        end
-        if M.DP > 0 and not auto and self.id == 'DP' and self.active and not (URM and M.DP == 2) then
-            if GAME.swapControl() then
-                SFX.play('party_ready', .8)
+            if M.DP > 0 and self.id == 'DP' and self.active and not (URM and M.DP == 2) then
+                if GAME.swapControl() then
+                    SFX.play('party_ready', .8)
+                end
             end
-        end
-        if not auto then
             if M.GV > 0 and not GAME.gravTimer then
                 GAME.gravTimer = GAME.gravDelay
             end

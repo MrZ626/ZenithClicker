@@ -2456,12 +2456,10 @@ function GAME.finish(reason)
     GAME.awardKO(GAME.time > MATH.rand(6, 12) and GAME.getRandomUID() or STAT.uid, STAT.uid, false, false)
 
     TASK.removeTask_code(GAME.task_cancelAll)
-
     GAME.sortCards()
+
     for _, C in ipairs(CD) do
-        if (M[C.id] > 0) ~= C.active then
-            C:setActive(true)
-        end
+        if (M[C.id] > 0) ~= C.active then C:setActive(true) end
         if not C.active and not C.upright then C.upright = true end
         C.touchCount = 0
         -- C.required = false
@@ -2473,11 +2471,8 @@ function GAME.finish(reason)
     FloatOnCard = nil
     GAME.refreshLayout()
 
-    for _, k in next, GAME.koBuffer do
-        k.valid = false
-    end
-
     GAME.playing = false
+    for _, k in next, GAME.koBuffer do k.valid = false end
     if M.DH == 2 then GAME.finishTime = love.timer.getTime() end
     ins(GAME.secTime, GAME.floorTime)
     GAME.refreshSectionTime()
