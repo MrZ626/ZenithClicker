@@ -273,14 +273,10 @@ You gain ZP after a run, with `ZP = altitude * multiplier`, which `multiplier` i
 Total ZP is soft-capped by your skill:
 
 ```lua
-local oldZP = STAT.zp
-local thres1 = zpGain * 16
-local thres2 = zpGain * 26
-local newZP = max(
-    oldZP, -- Won't drop
-    oldZP < thres1 and oldZP + zpGain or -- Gain full before 1st threshold
-    thres1 + (oldZP - thres1) * (9 / 10) + (thres2 - thres1) * (1 / 10) -- Slower from 1st threshold, slower and slower when getting close to the hard-cap (2nd threshold)
-)
+local newZP = STAT.zp +
+    zpGain *                           -- base ZP gain
+    icLerp(26, 16, STAT.zp / zpGain) * -- soft cap: slow down after 16x, stop at 26x
+    (Daily.actived and 2.6 or 1)       -- gain 2.6x on daily challenge
 ```
 
 Total ZP decays ~2.6%/d. `ZP*= e^(-0.026)`

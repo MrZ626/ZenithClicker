@@ -2597,16 +2597,11 @@ function GAME.finish(reason)
         end
 
         -- Update ZP
-        local oldZP = STAT.zp
-        local thres1 = zpGain * 16
-        local thres2 = zpGain * 26
-        local newZP = max(
-            oldZP, -- won't drop
-            oldZP < thres1 and oldZP + zpGain or
-            thres1 + (oldZP - thres1) * (9 / 10) + (thres2 - thres1) * (1 / 10)
-        )
-        if Daily.actived then newZP = MATH.clamp(newZP + (newZP - oldZP) * 1.6, newZP, 50 * zpGain) end
-        local zpEarn = newZP - oldZP
+        local newZP = STAT.zp +
+            zpGain *                           -- base ZP gain
+            icLerp(26, 16, STAT.zp / zpGain) * -- soft cap: slow down after 16x, stop at 26x
+            (Daily.actived and 2.6 or 1)       -- gain 2.6x on daily challenge
+        local zpEarn = newZP - STAT.zp
         if zpEarn > 0 then
             TASK.new(function()
                 TASK.yieldT(0.626)
