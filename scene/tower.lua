@@ -1865,8 +1865,8 @@ scene.widgetList = {
                     SFX.play('no')
                 end
             else
-                GAME.pieceEffectID = GAME.pieceEffectID % #PieceData + 1
-                if GAME.pieceEffectID < #PieceData then
+                GAME.pieceEffectID = (GAME.pieceEffectID + (KBisDown('lshift', 'rshift') and -1 or 1)) % #PieceData
+                if GAME.pieceEffectID > 0 then
                     local piece = ('zsjltoi'):sub(GAME.pieceEffectID, GAME.pieceEffectID)
                     SFX.play(piece, 1, 0, Tone(6))
                 else
