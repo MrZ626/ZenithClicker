@@ -238,6 +238,7 @@ function scene.update(dt)
                     TASK.yieldT(.1)
                     BGM.setVol(CONF.bgm / 100 * i / 100)
                 end
+                BGM.stop(0)
                 TASK.yieldT(2.6)
                 SFX.play('victory')
             end)
@@ -250,6 +251,7 @@ function scene.update(dt)
         StarPS:moveTo(0, -GAME.bgH * 2 * BgScale)
         StarPS:update(dt)
     end
+    GAME.height = GAME.bgH
 end
 
 function scene.draw()
