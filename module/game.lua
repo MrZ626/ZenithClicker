@@ -1685,7 +1685,7 @@ end
 
 function GAME.refreshPieceFstr()
     TABLE.clear(GAME.pieceFstr)
-    for i = 1, #PieceData - 1 do
+    for i = 1, #PieceData do
         if GAME[PieceData[i].id] then TABLE.append(GAME.pieceFstr, PieceData[i].piece) end
     end
     GAME.pieceFstrObj:set(GAME.pieceFstr)
@@ -2658,7 +2658,7 @@ function GAME.finish(reason)
         end
 
         local resStr = {}
-        for i = 1, #PieceData - 1 do
+        for i = 1, #PieceData do
             if GAME[PieceData[i].id] then TABLE.append(resStr, PieceData[i].text) end
         end
         if #resStr > 0 then ins(resStr, " ") end

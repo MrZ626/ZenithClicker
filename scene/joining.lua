@@ -33,7 +33,7 @@ function scene.update(dt)
                         Cards[k]:setActive(true)
                     end
                 end
-                for i = 1, #PieceData - 1 do
+                for i = 1, #PieceData do
                     GAME[PieceData[i].id] = false
                 end
                 InitProfile()
