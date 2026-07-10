@@ -2568,7 +2568,7 @@ function GAME.finish(reason)
 
         -- ZP of current run
         local zpGain = GAME.roundHeight * GAME.comboZP
-        TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, 0, Daily.actived and ", 2.6x" or ""))
+        TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, 0, Daily.actived and ", 260%" or ""))
 
         -- Daily
         if Daily.actived then
@@ -2606,7 +2606,7 @@ function GAME.finish(reason)
             TASK.new(function()
                 TASK.yieldT(0.626)
                 TWEEN.new(function(t)
-                    TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, zpEarn * t, Daily.actived and ", 2.6x" or ""))
+                    TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, zpEarn * t, Daily.actived and ", 260%" or ""))
                 end):setEase('InOutCubic'):setDuration(2):run()
                 SFX.play('ratingraise', zpEarn ^ .5 / 60)
             end)
