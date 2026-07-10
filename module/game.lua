@@ -2568,7 +2568,8 @@ function GAME.finish(reason)
 
         -- ZP of current run
         local zpGain = GAME.roundHeight * GAME.comboZP
-        TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, 0, Daily.actived and ", 260%" or ""))
+        local str = Daily.actived and "%.0f ZP  (+%.0f, 260%)" or "%.0f ZP  (+%.0f)"
+        TEXTS.zpChange:set(str:format(zpGain, 0))
 
         -- Daily
         if Daily.actived then
@@ -2601,14 +2602,15 @@ function GAME.finish(reason)
             zpGain *                           -- base ZP gain
             icLerp(26, 16, STAT.zp / zpGain) * -- soft cap: slow down after 16x, stop at 26x
             (Daily.actived and 2.6 or 1)       -- gain 2.6x on daily challenge
-        local zpEarn = newZP - STAT.zp
-        if zpEarn > 0 then
+        local zpAdd = newZP - STAT.zp
+        if zpAdd > 0 then
             TASK.new(function()
                 TASK.yieldT(0.626)
                 TWEEN.new(function(t)
-                    TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, zpEarn * t, Daily.actived and ", 260%" or ""))
+                    local str = Daily.actived and "%.0f ZP  (+%.0f, 260%)" or "%.0f ZP  (+%.0f)"
+                    TEXTS.zpChange:set(str:format(zpGain, zpAdd * t))
                 end):setEase('InOutCubic'):setDuration(2):run()
-                SFX.play('ratingraise', zpEarn ^ .5 / 60)
+                SFX.play('ratingraise', zpAdd ^ .5 / 60)
             end)
         end
 
