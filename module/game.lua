@@ -2494,7 +2494,7 @@ function GAME.finish(reason)
 
     -- Shutdown game state
     GAME.playing = false
-    if M.DH == 2 then GAME.finishTime = love.timer.getTime() end
+    if M.DH == 2 or URM and M.IN == 2 then GAME.finishTime = love.timer.getTime() end
     ins(GAME.secTime, GAME.floorTime)
     GAME.refreshSectionTime()
     GAME.life, GAME.life2 = 0, 0
