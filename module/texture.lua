@@ -462,7 +462,7 @@ TEXTURE.windup = GC.initCanvas(128, 128, function()
     local l = {}
     for i = 0, 15 do
         local a = i / 16 * MATH.tau
-        local d = i % 2 == 0 and 58 or 45
+        local d = i % 2 == 0 and 54.9 or 42
         local dx, dy = d * math.cos(a), d * math.sin(a)
         table.insert(l, 64 + dx)
         table.insert(l, 64 + dy)
@@ -471,38 +471,18 @@ TEXTURE.windup = GC.initCanvas(128, 128, function()
     GC.polygon('line', l)
 end)
 do
-    local w = 13
-    local d1 = 20
-    local d2 = 16
-    TEXTURE.windupText = {
-        GC.initCanvas(128, 128, function()
+    local len = 60
+    local w = { 12, 12, 12, 11, 9 }
+    local d = { 0, 20, 16, 14, 12 }
+    TEXTURE.windupText = {}
+    for i = 1, 5 do
+        TEXTURE.windupText[i] = GC.initCanvas(128, 128, function()
             GC.clear(1, 1, 1, 0)
-            GC.rectangle('fill', 64 - w / 2, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2, 64 + 31, w, -w)
-        end),
-        GC.initCanvas(128, 128, function()
-            GC.clear(1, 1, 1, 0)
-            GC.rectangle('fill', 64 - w / 2 - d1 / 2, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - d1 / 2, 64 + 31, w, -w)
-            GC.rectangle('fill', 64 - w / 2 + d1 / 2, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + d1 / 2, 64 + 31, w, -w)
-        end),
-        GC.initCanvas(128, 128, function()
-            GC.clear(1, 1, 1, 0)
-            GC.rectangle('fill', 64 - w / 2 - d2, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - d2, 64 + 31, w, -w)
-            GC.rectangle('fill', 64 - w / 2 + 00, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + 00, 64 + 31, w, -w)
-            GC.rectangle('fill', 64 - w / 2 + d2, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + d2, 64 + 31, w, -w)
-        end),
-        GC.initCanvas(128, 128, function()
-            local w = w - 2
-            GC.clear(1, 1, 1, 0)
-            FONT.set(70, '_mono')
-            GC.rectangle('fill', 64 - w / 2 - 19, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - 19, 64 + 31, w, -w)
-            GC.print("?", 53, 5, 0, 1.1, 1.26) -- Not very fitting, but this is not used
-        end),
-        GC.initCanvas(128, 128, function()
-            GC.clear(1, 1, 1, 0)
-            FONT.set(70, '_mono')
-            GC.print("?", 39, 6, 0, 1.26) -- Not very fitting, but this is not used
-        end),
-    }
+            for x = -(i - 1) / 2, (i - 1) / 2 do
+                GC.rectangle('fill', 64 - w[i] / 2 + x * d[i], 64 - len / 2, w[i], len - w[i] * 1.6); GC.rectangle('fill', 64 - w[i] / 2 + x * d[i], 64 + len / 2, w[i], -w[i])
+            end
+        end)
+    end
 end
 
 TEXTURE.recRevBG = GC.initCanvas(1586, 606, function()
