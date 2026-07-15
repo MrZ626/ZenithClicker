@@ -1418,10 +1418,12 @@ function Daemon_Fast()
 
         -- Calculate board color
         if GAME.playing then
-            local safeHP = GAME.playing and max(GAME.dmgWrong + GAME.dmgWrongExtra, GAME.dmgTime) or 0
             local r, g, b
             local patch = GAME.boardColorPatch
-            if GAME.life <= safeHP or M.DP > 0 and GAME.life2 <= safeHP then
+            local hp2 = GAME[GAME.getLifeKey(true)]
+            local allyInDanger = GAME.playing and M.DP > 0 and hp2 > 0 and hp2 <= max(GAME.dmgWrong + GAME.dmgWrongExtra, GAME.dmgTime)
+
+            if GAME.lifeState == 'danger' or allyInDanger then
                 r, g, b = 1, 0, 0
             elseif patch.timer > 0 then
                 r, g, b = patch.color[1], patch.color[2], patch.color[3]
