@@ -1225,15 +1225,15 @@ function scene.overDraw()
         if not GAME.invisUI then
             if GAME.chain >= 4 then
                 -- Chain Counter
-                local c = GAME.chain
+                local chain = GAME.chain
                 local _t = GAME.questTime
                 local bk = _t < .12 and 1 + 62 * _t * (.12 - _t) or 1
-                local k = clampInterpolate(6, .7, 26, 2, c)
+                local k = clampInterpolate(6, .7, 26, 2, chain)
 
                 gc_ucs_move(-474, 52)
                 local xText = -71 - 50 * k * bk
 
-                local r, g, b, a = GAME.calculateSurgeColor(c)
+                local r, g, b, a = GAME.calculateSurgeColor(chain)
                 if M.AS == 2 then
                     gc_setColor(0, 0, 0, GAME.fault and .62 or 1)
                     gc_mDraw(TEXTURE.surgeIcon, 0, 0, GAME.time * 2.6, .25 * k * bk)
@@ -1269,30 +1269,31 @@ function scene.overDraw()
                 -- Number
                 if GAME.fault then
                     gc_push('transform')
-                    GC.rotate(MATH.rand(-.2, .2))
-                    gc_translate(MATH.rand(-5, 5), MATH.rand(-5, 5))
+                    local strength = min(chain / 62, 1)
+                    GC.rotate((math.random() - .5) * .4 * strength)
+                    gc_translate(MATH.rand(-5, 5) * strength, MATH.rand(-5, 5) * strength)
                 end
-                local chain = TEXTS[M.AS < 2 and 'chain' or 'chain2']
+                local chainText = TEXTS[M.AS < 2 and 'chain' or 'chain2']
                 if M.AS < 2 then
-                    if c >= 8 then
+                    if chain >= 8 then
                         gc_setColor(COLOR.L)
-                        gc_strokeDraw('full', k * 2, chain, 0, 0, 0, k * bk, nil, chain:getWidth() / 2, chain:getHeight() / 2)
+                        gc_strokeDraw('full', k * 2, chainText, 0, 0, 0, k * bk, nil, chainText:getWidth() / 2, chainText:getHeight() / 2)
                         gc_setColor(COLOR.D)
-                        gc_mDraw(chain, 0, 0, 0, k * bk)
+                        gc_mDraw(chainText, 0, 0, 0, k * bk)
                     else
-                        gc_mDraw(chain, 0, 0, 0, k * bk)
+                        gc_mDraw(chainText, 0, 0, 0, k * bk)
                         gc_setColor(1, 1, 1, .26)
-                        gc_mDraw(chain, 0, 0, 0, k * bk)
+                        gc_mDraw(chainText, 0, 0, 0, k * bk)
                     end
                 else
                     if not GAME.fault then
                         gc_setColor(r, g, b, .26 + .1 * math.sin(GAME.time * 4.2))
                         gc_setBlendMode('add')
-                        gc_strokeDraw('full', 3.55 * k, chain, 0, 0, 0, k * bk)
+                        gc_strokeDraw('full', 3.55 * k, chainText, 0, 0, 0, k * bk)
                         gc_setBlendMode('alpha')
                     end
                     gc_setColor(COLOR.L)
-                    gc_draw(chain, 0, 0, 0, k * bk)
+                    gc_draw(chainText, 0, 0, 0, k * bk)
                 end
                 if GAME.fault then gc_pop() end
 
