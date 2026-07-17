@@ -569,7 +569,7 @@ function scene.draw()
                 -- Texts
                 gc_setColor(AchvMsgStyle[a.rank].fg2)
                 gc_print(a.score, 130, 35, 0)
-                gc_setColor(colorRev and COLOR.LR or COLOR.L)
+                gc_setColor(colorRev and COLOR.lW or COLOR.L)
                 gc_print(a.name, 130, 7, 0, .7)
                 if a.descWidth < 1050 then
                     gc_print(a.desc, 130, 77, 0, min(400 / a.descWidth, .4), .4)

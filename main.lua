@@ -2,6 +2,43 @@ love.window.setIcon(love.image.newImageData('assets/icon.png'))
 love.mouse.setVisible(false)
 
 require 'Zenitha'
+local oldColorKeys = {
+    'DR', 'dR', 'R', 'lR', 'LR',
+    'DF', 'dF', 'F', 'lF', 'LF',
+    'DO', 'dO', 'O', 'lO', 'LO',
+    'DY', 'dY', 'Y', 'lY', 'LY',
+    'DA', 'dA', 'A', 'lA', 'LA',
+    'DK', 'dK', 'K', 'lK', 'LK',
+    'DG', 'dG', 'G', 'lG', 'LG',
+    'DJ', 'dJ', 'J', 'lJ', 'LJ',
+    'DC', 'dC', 'C', 'lC', 'LC',
+    'DI', 'dI', 'I', 'lI', 'LI',
+    'DS', 'dS', 'S', 'lS', 'LS',
+    'DB', 'dB', 'B', 'lB', 'LB',
+    'DP', 'dP', 'P', 'lP', 'LP',
+    'DV', 'dV', 'V', 'lV', 'LV',
+    'DM', 'dM', 'M', 'lM', 'LM',
+    'DW', 'dW', 'W', 'lW', 'LW',
+}
+local newColorKeys = {
+    'd4RS', 'd1RS', 'l2RS', 'l4RS', 'l6RS',
+    'd4RyS', 'd1RyS', 'l2RyS', 'l4RyS', 'l6RyS',
+    'd4YrrS', 'd1YrrS', 'l2YrrS', 'l4YrrS', 'l6YrrS',
+    'd4YS', 'd1YS', 'l2YS', 'l4YS', 'l6YSS',
+    'd4YggS', 'd1YggS', 'l2YggS', 'l4YggS', 'l6Yggs',
+    'd4GyS', 'd1GyS', 'l2GyS', 'l4GyS', 'l6Gys',
+    'd4GcS', 'd1GcS', 'l2GcS', 'l4GcS', 'l6Gc',
+    'd4CggS', 'd1CggS', 'l2CggS', 'l4CggS', 'l6CggS',
+    'd4CS', 'd1CS', 'l2CS', 'l4CS', 'l6CS',
+    'd4CbbS', 'd1CbbS', 'l2CbbS', 'l4CbbS', 'l6CbbS',
+    'd4BcS', 'd1BcS', 'l2BcS', 'l4BcS', 'l6BcS',
+    'd4BmS', 'd1BmS', 'l2BmS', 'l4BmS', 'l6BmS',
+    'd4MbbS', 'd1MbbS', 'l2MbbS', 'l4MbbS', 'l6MbbS',
+    'd4MS', 'd1MS', 'l2MS', 'l4MS', 'l6MS',
+    'd4MrrS', 'd1MrrS', 'l2MrrS', 'l4MrrS', 'l6MrrS',
+    'd4RmS', 'd1RmS', 'l2RmS', 'l4RmS', 'l6RmS',
+}
+for i = 1, #oldColorKeys do COLOR[oldColorKeys[i]] = CLR[newColorKeys[i]] end
 
 ZENITHA.setMainLoopSpeed(240)
 ZENITHA.setRenderRate(50)
@@ -1000,13 +1037,13 @@ function ReloadTexts()
 end
 
 local normalHelp = {
-    COLOR.LL, "Welcome to ", COLOR.LF, "Zenith Clicker", COLOR.LL, "! Choose the required tarot cards and send players to scale the tower.\n",
+    COLOR.LL, "Welcome to ", COLOR.lF, "Zenith Clicker", COLOR.LL, "! Choose the required tarot cards and send players to scale the tower.\n",
     "The higher you go in the tower, the more tricky players you'll encounter!\n",
     "There's a leaderboard for daily challenge, how high can you reach?\n",
     "[DYNAMIC TEXT]",
 }
 local ultraHelp = {
-    COLOR.LL, "Welcome to ", COLOR.LR, "Zenith Clicker: ", COLOR.R, "Ultra Reverse", COLOR.LL, ". Activate a reversed mod to start ", COLOR.lR, "suffering.\n",
+    COLOR.LL, "Welcome to ", COLOR.lR, "Zenith Clicker: ", COLOR.R, "Ultra Reverse", COLOR.LL, ". Activate a reversed mod to start ", COLOR.lR, "suffering.\n",
     COLOR.LL, "The higher you go in the tower, the more likely you are to ", COLOR.R, "die.\n",
     COLOR.LL, "There are no more achievements, and ", COLOR.lR, "you are not expected to go very high up.\n",
     COLOR.R, "Give Up: ", COLOR.LL, "ESC    ", COLOR.R, "Forfeit: ", COLOR.LL, "ESC    ", COLOR.R, "Quit: ", COLOR.LL, "ESC"

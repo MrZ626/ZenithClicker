@@ -603,7 +603,7 @@ function Card:draw()
                 else
                     gc_setColor(
                         GAME.time % .16 < .08 and
-                        (faceUp and COLOR.LF or COLOR.lF) or
+                        (faceUp and COLOR.lR or COLOR.R) or
                         (faceUp and COLOR.lY or COLOR.Y)
                     )
                 end
