@@ -5,7 +5,7 @@ local touchPressing
 
 ---@param align? 'left' | 'center' | 'right'
 local function addText(text, x, y, scale, align, wraplimit)
-    if type(text) == 'string' then text = { COLOR.L, text } end
+    if type(text) == 'string' then text = { CLR.L, text } end
     scale = scale or 1
     align = align or 'center'
     local w = (wraplimit or 900) / scale
@@ -277,7 +277,7 @@ function scene.draw()
         for i = 0, 11 do
             GC.mDraw(TEXTS.EndText2, 2 * math.cos(i * MATH.tau / 11), 2 * math.sin(i * MATH.tau / 11), 0, 1.626)
         end
-        GC.setColor(COLOR.L)
+        GC.setColor(CLR.L)
         GC.mDraw(TEXTS.EndText2, 0, 0, 0, 1.626)
     end
 end

@@ -545,7 +545,7 @@ local reviveInfo = {
 }
 local gvTimerColor1 = { 1, .942, .872, 0 }
 local gvTimerColor2 = { 0, 0, 0, 0 }
-local altitudeText = { "0", COLOR.dL, "m" }
+local altitudeText = { "0", CLR.dL, "m" }
 local windupColor = {
     { CLR.HEX "F5BE3FFF" },
     { CLR.HEX "ED7F2EFF" },
@@ -691,7 +691,7 @@ function DrawPBline(h, pb, spd, textObj)
         local over = clampInterpolate(-6, 0, 10, 1, GAME.bgH - h)
         gc_setColor(1, .8 + over * .2, over * 1, 1 - over * .626)
     else
-        gc_setColor(COLOR.lD)
+        gc_setColor(CLR.lD)
     end
     gc_draw(obj, 0, y, 0, 1.26, 1.26, ox, oy)
 
@@ -847,22 +847,22 @@ function scene.draw()
 
             -- HP Bar
             local safeHP = GAME.playing and max(GAME.dmgWrong + GAME.dmgWrongExtra, GAME.dmgTime) or 0
-            gc_setColor(GAME.playing and GAME.life > safeHP and COLOR.L or COLOR.R)
+            gc_setColor(GAME.playing and GAME.life > safeHP and CLR.L or COLOR.R)
             if M.DP == 0 then
                 gc_mRect('fill', 0, hpY, hpW * GAME.lifeShow / GAME.startingHealth, hpH)
 
-                gc_setColor(COLOR.LD); gc_mRect('fill', 0, hpY - 2, hpW * GAME.dmgTime / GAME.startingHealth, 3)
+                gc_setColor(CLR.LD); gc_mRect('fill', 0, hpY - 2, hpW * GAME.dmgTime / GAME.startingHealth, 3)
                 gc_setColor(.872, 0, 0); gc_mRect('fill', 0, hpY + 2, hpW * GAME.dmgWrong / GAME.startingHealth, 3)
                 gc_setColor(1, 0, 0, .626); gc_mRect('fill', 0, hpY + 2, hpW * (GAME.dmgWrong + GAME.dmgWrongExtra) / GAME.startingHealth, 2)
             else
                 if GAME.onAlly then gc_setAlpha(.42) end
                 gc_rectangle('fill', 0, hpY - hpH / 2, -hpW / 2 * GAME.lifeShow / GAME.startingHealth, hpH)
-                gc_setColor(GAME.playing and GAME.life2 > safeHP and COLOR.L or COLOR.R)
+                gc_setColor(GAME.playing and GAME.life2 > safeHP and CLR.L or COLOR.R)
                 if not GAME.onAlly then gc_setAlpha(.42) end
                 gc_rectangle('fill', 0, hpY - hpH / 2, hpW / 2 * GAME.lifeShow2 / GAME.startingHealth, hpH)
 
                 local k = GAME.onAlly and .5 or -.5
-                gc_setColor(COLOR.LD); gc_rectangle('fill', 0, hpY - 2 - 1.5, k * hpW * GAME.dmgTime / GAME.startingHealth, 3)
+                gc_setColor(CLR.LD); gc_rectangle('fill', 0, hpY - 2 - 1.5, k * hpW * GAME.dmgTime / GAME.startingHealth, 3)
                 gc_setColor(.872, 0, 0); gc_rectangle('fill', 0, hpY + 2 - 1.5, k * hpW * GAME.dmgWrong / GAME.startingHealth, 3)
                 gc_setColor(1, 0, 0, .626); gc_rectangle('fill', 0, hpY + 2 - 1, k * hpW * (GAME.dmgWrong + GAME.dmgWrongExtra) / GAME.startingHealth, 2)
             end
@@ -900,7 +900,7 @@ function scene.draw()
                     gc_setColor(1, 0, 1, .62 * (1 - MusicBeat))
                     gc_rectangle('fill', -410 - w, 157, w3, 36)
                 end
-                gc_setColor(GAME.dmgTimer > GAME.dmgCycle and COLOR.DL or COLOR.lR)
+                gc_setColor(GAME.dmgTimer > GAME.dmgCycle and CLR.DL or COLOR.lR)
                 gc_rectangle('fill', -410 - w1, 157, w1, 36)
                 stc_stop()
                 gc_setColor(COLOR.lR)
@@ -908,14 +908,14 @@ function scene.draw()
 
                 -- Damage Timer number
                 setFont(30)
-                gc_strokePrint('full', 1, COLOR.D, BoardColor, GAME.dmgDelay, -777 + w3, 140, nil, nil, nil, .4)
-                gc_strokePrint('full', 1, COLOR.D, BoardColor, GAME.dmgCycle, -410 - w2, 140, nil, nil, nil, .4)
+                gc_strokePrint('full', 1, CLR.D, BoardColor, GAME.dmgDelay, -777 + w3, 140, nil, nil, nil, .4)
+                gc_strokePrint('full', 1, CLR.D, BoardColor, GAME.dmgCycle, -410 - w2, 140, nil, nil, nil, .4)
             end
 
             -- Gravity Timer
             if M.GV > 0 then
                 gc_ucs_move(500, 47)
-                gc_setColor(COLOR.DL)
+                gc_setColor(CLR.DL)
                 if not GAME.gravTimer then
                     gc_circle('fill', 0, 0, 35)
                 else
@@ -932,11 +932,11 @@ function scene.draw()
 
             -- Quest counter
             if GAME.totalQuest <= 40 then
-                gc_strokePrint('full', 1, COLOR.D, BoardColor, GAME.totalQuest, 410, 12)
+                gc_strokePrint('full', 1, CLR.D, BoardColor, GAME.totalQuest, 410, 12)
             end
             -- Revive counter
             if GAME.reviveCount > 0 then
-                gc_strokePrint('full', 1, COLOR.D, COLOR.lR, GAME.reviveCount, 800, 440, 260, 'center')
+                gc_strokePrint('full', 1, CLR.D, COLOR.lR, GAME.reviveCount, 800, 440, 260, 'center')
             end
 
             gc_pop()
@@ -978,13 +978,13 @@ function scene.draw()
         gc_translate(0, -224 * GAME.uiHide)
         gc_setColor(1, 1, 1)
         gc_draw(GAME.resIB, 400, 160, 0, .9)
-        gc_setColor(COLOR.D)
+        gc_setColor(CLR.D)
         gc_mDraw(TEXTS.endHeight, 0, 145, 0, 1.8)
         gc_mDraw(TEXTS.zpChange, 220, 100, 0, .626)
         gc_draw(TEXTS.endResult, -617, 80, 0, .626)
         gc_draw(TEXTS.floorTime, -617, 226 - GAME.uiHide * 150, 0, .38)
         gc_draw(TEXTS.rankTime, -527, 226 - GAME.uiHide * 150, 0, .38)
-        gc_setColor(COLOR.L)
+        gc_setColor(CLR.L)
         gc_mDraw(TEXTS.endHeight, 0, 140, 0, 1.8)
         gc_draw(TEXTS.endResult, -616, 78, 0, .626)
         if GAME.gigaspeedEntered and GAME.gigaTime then
@@ -993,15 +993,15 @@ function scene.draw()
             gc_setColor(1, 1, 1, .2)
             GC.strokeDraw('full', 1, TEXTS.endFloor, -TEXTS.endFloor:getWidth() / 2, 216 - TEXTS.endFloor:getHeight() / 2)
         else
-            gc_setColor(COLOR.D)
+            gc_setColor(CLR.D)
             gc_mDraw(TEXTS.endFloor, 0, 219)
         end
-        gc_setColor(COLOR.L)
+        gc_setColor(CLR.L)
         gc_mDraw(TEXTS.endFloor, 0, 216)
-        gc_setColor(COLOR.DL)
+        gc_setColor(CLR.DL)
         gc_draw(TEXTS.floorTime, -616, 224 - GAME.uiHide * 150, 0, .38)
         gc_draw(TEXTS.rankTime, -526, 224 - GAME.uiHide * 150, 0, .38)
-        gc_setColor(COLOR.dL)
+        gc_setColor(CLR.dL)
         gc_mDraw(TEXTS.zpChange, 220, 98, 0, .626)
     end
 
@@ -1108,7 +1108,7 @@ function scene.overDraw()
 
         -- Thruster (XP bar)
         local rank = GAME.rank
-        gc_setColor(rankColor[rank - 1] or COLOR.dL)
+        gc_setColor(rankColor[rank - 1] or CLR.dL)
         if GAME.DPlock then gc_setAlpha(.26) end
         gc_setLineWidth(26 / (GAME.leakSpeed + 2))
         gc_mRect('line', 800, 965, 420 + 6, 26)
@@ -1137,7 +1137,7 @@ function scene.overDraw()
         else
             gc_mRect('fill', 800, 965, 420, 1)
         end
-        gc_setColor(rankColor[rank] or COLOR.L)
+        gc_setColor(rankColor[rank] or CLR.L)
         if GAME.xpLockTimer > 0 then
             gc_setAlpha((sin(6200 / (GAME.xpLockTimer + 4.2) ^ 3) * .26 + .74) * (GAME.DPlock and .26 or 1))
         elseif GAME.DPlock then
@@ -1149,7 +1149,7 @@ function scene.overDraw()
         altitudeText[1] = ("%.1f"):format(GAME.roundHeight)
         TEXTS.height:set(altitudeText)
         TEXTS.time:set(STRING.time_simp(GAME.time))
-        gc_setColor(COLOR.D)
+        gc_setColor(CLR.D)
         local wid, hgt = TEXTS.height:getDimensions()
         gc_strokeDraw('full', 1, TEXTS.height, 800, 978, 0, 1, 1, wid / 2, hgt / 2)
         wid, hgt = TEXTS.time:getDimensions()
@@ -1159,10 +1159,10 @@ function scene.overDraw()
 
         gc_setColor(GAME.timerMul, .99, .99)
         gc_mDraw(TEXTS.time, 375, 978)
-        gc_setColor(COLOR.L)
+        gc_setColor(CLR.L)
         gc_mDraw(TEXTS.rank, 1027, 990, 0, .626)
         if GAME.DPlock then
-            gc_setColor(GAME.time % .9 > .45 and COLOR.R or COLOR.D)
+            gc_setColor(GAME.time % .9 > .45 and COLOR.R or CLR.D)
         end
         gc_mDraw(TEXTS.height, 800, 978)
 
@@ -1251,7 +1251,7 @@ function scene.overDraw()
                 end
 
                 -- "B2B x"
-                gc_setColor(COLOR.D)
+                gc_setColor(CLR.D)
                 gc_strokeDraw('full', 1, TEXTS.b2b, xText, -54)
                 if GAME.fault then
                     gc_setColor(t % .12 < .06 and COLOR.lR or COLOR.LR)
@@ -1276,9 +1276,9 @@ function scene.overDraw()
                 local chainText = TEXTS[M.AS < 2 and 'chain' or 'chain2']
                 if M.AS < 2 then
                     if chain >= 8 then
-                        gc_setColor(COLOR.L)
+                        gc_setColor(CLR.L)
                         gc_strokeDraw('full', k * 2, chainText, 0, 0, 0, k * bk, nil, chainText:getWidth() / 2, chainText:getHeight() / 2)
-                        gc_setColor(COLOR.D)
+                        gc_setColor(CLR.D)
                         gc_mDraw(chainText, 0, 0, 0, k * bk)
                     else
                         gc_mDraw(chainText, 0, 0, 0, k * bk)
@@ -1292,7 +1292,7 @@ function scene.overDraw()
                         gc_strokeDraw('full', 3.55 * k, chainText, 0, 0, 0, k * bk)
                         gc_setBlendMode('alpha')
                     end
-                    gc_setColor(COLOR.L)
+                    gc_setColor(CLR.L)
                     gc_draw(chainText, 0, 0, 0, k * bk)
                 end
                 if GAME.fault then gc_pop() end
@@ -1300,7 +1300,7 @@ function scene.overDraw()
                 gc_ucs_back()
             elseif GAME.comboStr == 'VLrGV' then
                 local x, y = -474, 52
-                gc_strokePrint('corner', 2, COLOR.D, BoardColor, math.floor(GAME.achv_altFromSurge) .. "m", x, y - 20, 260, 'center')
+                gc_strokePrint('corner', 2, CLR.D, BoardColor, math.floor(GAME.achv_altFromSurge) .. "m", x, y - 20, 260, 'center')
             end
 
             -- Revive Task
@@ -1455,13 +1455,13 @@ function scene.overDraw()
                 gc_strokePrint('full', 6, COLOR.DW, nil, text, 130, -35 + 4, 2600, 'center', 0, .9, 1)
                 gc_strokePrint('full', 4, COLOR.dW, nil, text, 130, -35 + 2, 2600, 'center', 0, .9, 1)
                 gc_strokePrint(
-                    'full', 2, COLOR.W, URM and COLOR.D or COLOR.L,
+                    'full', 2, COLOR.W, URM and CLR.D or CLR.L,
                     text, 130, -35, 2600, 'center', 0, .9, 1
                 )
                 gc_pop()
                 setFont(30)
                 gc_strokePrint(
-                    'full', 2, COLOR.dW, URM and COLOR.D or COLOR.W,
+                    'full', 2, COLOR.dW, URM and CLR.D or COLOR.W,
                     (URM and MD.ultraDesc or MD.revDesc)[infoID], 260, -68, 2600, 'center', 0, .8, 1
                 )
             else

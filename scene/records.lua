@@ -646,9 +646,9 @@ widgetSet.mod = {}
 for i = 1, #CD do
     table.insert(widgetSet.mod, WIDGET.new {
         type = 'checkBox',
-        fillColor = { COLOR.lerp(MD.color[cardIDs[i]], COLOR.DD, .8) },
-        frameColor = { COLOR.lerp(MD.color[cardIDs[i]], COLOR.DD, .26) },
-        textColor = { COLOR.lerp(MD.textColor[cardIDs[i]], COLOR.LL, .26) },
+        fillColor = { COLOR.lerp(MD.color[cardIDs[i]], CLR.K, .8) },
+        frameColor = { COLOR.lerp(MD.color[cardIDs[i]], CLR.K, .26) },
+        textColor = { COLOR.lerp(MD.textColor[cardIDs[i]], CLR.W, .26) },
         text = cardIDs[i], sound_off = false, sound_on = false,
         x = baseX - 60 + 100 * i, y = baseY + 100,
         disp = function() return set.sel[i] > 0 end,

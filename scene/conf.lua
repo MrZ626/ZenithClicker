@@ -631,7 +631,7 @@ pages[1] = {
                             "Reset: " .. CONF.keybind[20] .. "\n" ..
                             "Click L/R: " .. CONF.keybind[21] .. ", " .. CONF.keybind[22] .. "\n",
                             COLOR.F, "PRESS AGAIN TO REBIND\n",
-                            COLOR.LD, "(F1-F12 ` Tab Ctrl Alt are not allowed)"
+                            CLR.LD, "(F1-F12 ` Tab Ctrl Alt are not allowed)"
                         },
                         12
                     )

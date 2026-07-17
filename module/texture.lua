@@ -502,7 +502,7 @@ StarPS:setParticleLifetime(2.6)
 StarPS:setRotation(0, 6.26)
 StarPS:setEmissionRate(12)
 ---@diagnostic disable-next-line
-StarPS:setColors(COLOR.LX, COLOR.L, COLOR.L, COLOR.L, COLOR.L, COLOR.L, COLOR.L, COLOR.LX)
+StarPS:setColors(COLOR.LX, CLR.L, CLR.L, CLR.L, CLR.L, CLR.L, CLR.L, COLOR.LX)
 
 WoundPS = GC.newParticleSystem(GC.load { w = 16, h = 16,
     { 'clear', 1, 1, 1 },
@@ -514,7 +514,7 @@ WoundPS:setParticleLifetime(2.6, 6.2)
 WoundPS:setSpread(6.28)
 WoundPS:setSpeed(26, 42)
 ---@diagnostic disable-next-line
-WoundPS:setColors(COLOR.LX, COLOR.L, COLOR.L, COLOR.L, COLOR.L, COLOR.L, COLOR.L, COLOR.LX)
+WoundPS:setColors(COLOR.LX, CLR.L, CLR.L, CLR.L, CLR.L, CLR.L, CLR.L, COLOR.LX)
 
 
 SparkPS = {}
@@ -523,7 +523,7 @@ for i = 1, 3 do
     ps:setParticleLifetime(.26, .62)
     ps:setEmissionArea('ellipse', 62, 62, 0)
     ---@diagnostic disable-next-line
-    ps:setColors(COLOR.L, COLOR.LX)
+    ps:setColors(CLR.L, COLOR.LX)
     SparkPS[i] = ps
 end
 
@@ -543,11 +543,11 @@ BG.add('black', { draw = function() GC.clear(0, 0, 0) end })
 BG.set('black')
 
 MSG.setSafeY(75)
-MSG.addCategory('dark', COLOR.D, COLOR.L)
-MSG.addCategory('bright', COLOR.L, COLOR.D)
-MSG.addCategory('speedrun', COLOR.lG, COLOR.D)
-for i = 0, 6 do MSG.addCategory(AchvMsgStyle[i].id, AchvMsgStyle[i].bg, COLOR.L, TEXTURE.achievement.frame[i]) end
-for i = 1, 6 do MSG.addCategory("wreath_" .. i, AchvMsgStyle[5].bg, COLOR.L, GC.load { w = 256, { 'draw', TEXTURE.achievement.frame[5] }, { 'draw', TEXTURE.achievement.wreath[i] } }) end
+MSG.addCategory('dark', CLR.D, CLR.L)
+MSG.addCategory('bright', CLR.L, CLR.D)
+MSG.addCategory('speedrun', COLOR.lG, CLR.D)
+for i = 0, 6 do MSG.addCategory(AchvMsgStyle[i].id, AchvMsgStyle[i].bg, CLR.L, TEXTURE.achievement.frame[i]) end
+for i = 1, 6 do MSG.addCategory("wreath_" .. i, AchvMsgStyle[5].bg, CLR.L, GC.load { w = 256, { 'draw', TEXTURE.achievement.frame[5] }, { 'draw', TEXTURE.achievement.wreath[i] } }) end
 
 TEXTS = { -- Font size should only be 30 50 70 here, to reduce memory usage of fonts
     temp30      = GC.newText(FONT.get(30)),

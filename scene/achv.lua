@@ -70,9 +70,9 @@ function RefreshAchvList(canShuffle)
             if TestMode or not ACHV[A.id] then
                 score = "---"
             elseif not A.scoreFull then
-                score = { COLOR.LL, A.scoreSimp(ACHV[A.id]) }
+                score = { CLR.W, A.scoreSimp(ACHV[A.id]) }
             else
-                score = { COLOR.LL, A.scoreSimp(ACHV[A.id]), COLOR.DL, "   " .. A.scoreFull(ACHV[A.id]) }
+                score = { CLR.W, A.scoreSimp(ACHV[A.id]), CLR.DL, "   " .. A.scoreFull(ACHV[A.id]) }
             end
             if A.type == 'issued' then
                 rank = not TestMode and ACHV[A.id] and 6 or 0
@@ -404,9 +404,9 @@ function scene.draw()
         gc_setColor(clr.D)
         gc_setAlpha(.626)
         gc_rectangle('fill', 400, 360, 680, 220)
-        gc_setColor(COLOR.DL)
+        gc_setColor(CLR.DL)
         gc_print("Zenith Clicker Achievement System When?", 420, 380)
-        gc_setColor(COLOR.D)
+        gc_setColor(CLR.D)
         gc_rectangle('fill', 480, 435, 560, 50)
         gc_setColor(COLOR.lS)
         gc_polygon('fill',
@@ -417,9 +417,9 @@ function scene.draw()
             420 + 102, 435 + 25,
             -25 + 420 + 102, 435
         )
-        gc_setColor(COLOR.D)
+        gc_setColor(CLR.D)
         gc_print("MrZ", 444, 440)
-        gc_setColor(COLOR.lD)
+        gc_setColor(CLR.lD)
         gc_print("at 2025/3/18 (Tue)", 535, 440)
         gc_setColor(COLOR.lS)
         gc_print("When it's ready.", 482, 515)
@@ -535,7 +535,7 @@ function scene.draw()
                 end
 
                 -- Credit
-                gc_setColor(colorRev and COLOR.dR or COLOR.LD)
+                gc_setColor(colorRev and COLOR.dR or CLR.LD)
                 gc_printf(A.credit, 65, 113, 130 / .37, 'center', 0, .37, .37, 65 / .37)
 
                 -- Tags
@@ -569,14 +569,14 @@ function scene.draw()
                 -- Texts
                 gc_setColor(AchvMsgStyle[a.rank].fg2)
                 gc_print(a.score, 130, 35, 0)
-                gc_setColor(colorRev and COLOR.lW or COLOR.L)
+                gc_setColor(colorRev and COLOR.lW or CLR.L)
                 gc_print(a.name, 130, 7, 0, .7)
                 if a.descWidth < 1050 then
                     gc_print(a.desc, 130, 77, 0, min(400 / a.descWidth, .4), .4)
                 else
                     gc_printf(a.desc, 130, 73, 1050, 'left', 0, .4)
                 end
-                gc_setColor(colorRev and COLOR.dR or COLOR.LD)
+                gc_setColor(colorRev and COLOR.dR or CLR.LD)
                 gc_print(A.quote, 130, a.descWidth <= 1050 and 98 or 103, 0, .42)
 
                 -- Hidden covering

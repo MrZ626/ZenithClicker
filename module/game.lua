@@ -126,7 +126,7 @@ local GAME = {
     boardDim = { 1, 1, 1 },
     boardColorPatch = {
         timer = 0,
-        color = COLOR.L,
+        color = CLR.L,
     },
     shakeTimer = 0,
     bgX = 0,
@@ -342,7 +342,7 @@ function GAME.getComboName(list, mode)
             if comboText then
                 fstr = comboText:atomize()
                 for i = #fstr, 1, -1 do
-                    ins(fstr, i, i % #fstr <= 1 and COLOR.dL or COLOR.random(5))
+                    ins(fstr, i, i % #fstr <= 1 and CLR.dL or COLOR.random(5))
                 end
                 return fstr
             end
@@ -996,17 +996,17 @@ function GAME.showFloorText(f, name, duration)
     TEXT:add {
         text = "Floor",
         x = 160, y = 305, k = 1, fontSize = 50,
-        color = 'LY', duration = duration,
+        color = CLR.l6YSS, duration = duration,
     }
     TEXT:add {
         text = tostring(f),
         x = 240, y = 295, k = 1.1, fontSize = 70,
-        color = 'LY', duration = duration, align = 'left',
+        color = CLR.l6YSS, duration = duration, align = 'left',
     }
     TEXT:add {
         text = name,
         x = 200, y = 360, k = 1, fontSize = 30,
-        color = 'LY', duration = duration,
+        color = CLR.l6YSS, duration = duration,
     }
 end
 
@@ -2636,7 +2636,7 @@ function GAME.finish(reason)
                 else
                     t = (GAME.anyUltra and "U-" or GAME.anyRev and "R-" or "") .. (#hand == 1 and "MOD" or "COMBO") .. " MASTERED"
                     size = 2.26
-                    color = 'lC'
+                    color = CLR.l6CS
                     duration = 6.2
                 end
                 TEXT:add {
@@ -2651,7 +2651,7 @@ function GAME.finish(reason)
                     text = "PERSONAL BEST",
                     x = 800, y = 226, k = 2.6, fontSize = 70,
                     style = 'beat', inPoint = .26, outPoint = .62,
-                    color = 'lY', duration = 6.2,
+                    color = CLR.l5YSS, duration = 6.2,
                 }
                 SFX.play('personalbest', 1, 0, Tone(-.1))
             end
@@ -2664,7 +2664,7 @@ function GAME.finish(reason)
             if GAME[PieceData[i].id] then TABLE.append(resStr, PieceData[i].text) end
         end
         if #resStr > 0 then ins(resStr, " ") end
-        TEXTS.endHeight:set(TABLE.append(resStr, { COLOR.LL, ("%.1fm"):format(GAME.roundHeight) }))
+        TEXTS.endHeight:set(TABLE.append(resStr, { CLR.W, ("%.1fm"):format(GAME.roundHeight) }))
         local endFloorStr
         if GAME.roundHeight >= 0 then
             if GAME.floor >= 10 and GAME.omega then
@@ -2702,18 +2702,18 @@ function GAME.finish(reason)
 
         local g = GAME
         TEXTS.endResult:set({
-            COLOR.L, ("Time  %s"):format(STRING.time_simp(g.time)),
-            COLOR.LD, g.gigaTime and ("  (F10 at %s)\n"):format(STRING.time_simp(g.gigaTime)) or "\n",
-            COLOR.L, ("Flip  %d"):format(g.totalFlip),
-            COLOR.LD, ("  (%.2f/s)\n"):format(g.totalFlip / g.time),
-            COLOR.L, ("Quest  %d"):format(g.totalQuest),
-            COLOR.LD, ("  (%.2f/s  %.1f%% Perf)\n"):format(g.totalQuest / g.time, g.totalPerfect / g.totalQuest * 100),
-            COLOR.L, ("Speed  %.1fm/s"):format(roundUnit(g.height / g.time, .1)),
-            COLOR.LD, ("  (max rank %d)\n"):format(g.peakRank),
-            COLOR.L, ("Attack  %d"):format(g.totalAttack),
-            COLOR.LD, ("  (%.1fapm %dsurge %dKOs)\n"):format(g.totalAttack / g.time * 60, g.totalSurge, g.koCount),
-            COLOR.L, ("Bonus  " .. (g.heightBonus >= 2600 and "%.0fm" or "%.1fm")):format(g.heightBonus),
-            COLOR.LD, abs(g.height) <= 2.6 and "" or ("  (%.1f%%  %.1fm/quest)"):format(g.heightBonus / g.height * 100, g.heightBonus / g.totalQuest),
+            CLR.L, ("Time  %s"):format(STRING.time_simp(g.time)),
+            CLR.LD, g.gigaTime and ("  (F10 at %s)\n"):format(STRING.time_simp(g.gigaTime)) or "\n",
+            CLR.L, ("Flip  %d"):format(g.totalFlip),
+            CLR.LD, ("  (%.2f/s)\n"):format(g.totalFlip / g.time),
+            CLR.L, ("Quest  %d"):format(g.totalQuest),
+            CLR.LD, ("  (%.2f/s  %.1f%% Perf)\n"):format(g.totalQuest / g.time, g.totalPerfect / g.totalQuest * 100),
+            CLR.L, ("Speed  %.1fm/s"):format(roundUnit(g.height / g.time, .1)),
+            CLR.LD, ("  (max rank %d)\n"):format(g.peakRank),
+            CLR.L, ("Attack  %d"):format(g.totalAttack),
+            CLR.LD, ("  (%.1fapm %dsurge %dKOs)\n"):format(g.totalAttack / g.time * 60, g.totalSurge, g.koCount),
+            CLR.L, ("Bonus  " .. (g.heightBonus >= 2600 and "%.0fm" or "%.1fm")):format(g.heightBonus),
+            CLR.LD, abs(g.height) <= 2.6 and "" or ("  (%.1f%%  %.1fm/quest)"):format(g.heightBonus / g.height * 100, g.heightBonus / g.totalQuest),
         })
 
         local maxCSP = {}

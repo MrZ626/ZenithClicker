@@ -14,7 +14,7 @@ local lines = {}
 local tempY = 0
 
 local function addText(text, x, y, scale, wraplimit)
-    if type(text) == 'string' then text = { COLOR.L, text } end
+    if type(text) == 'string' then text = { CLR.L, text } end
     scale = scale or 1
     local w = (wraplimit or 900) / scale
     TEXTS.aboutText:addf(text, w, 'center', x - w / 2 * scale, tempY + y, 0, scale)
@@ -26,8 +26,8 @@ local function addSection(y)
 end
 
 for d = .5, 2.5, .5 do
-    addText({ COLOR.LD, "ZENITH" }, 40 + d, 20 + d)
-    addText({ COLOR.LD, "CLICKER" }, 80 + d, 95 + d)
+    addText({ CLR.LD, "ZENITH" }, 40 + d, 20 + d)
+    addText({ CLR.LD, "CLICKER" }, 80 + d, 95 + d)
 end
 addText("ZENITH", 40, 20)
 addText("CLICKER", 80, 95)
@@ -42,8 +42,8 @@ addText({ COLOR.O, "THE TEAM" }, 0, 20, .3)
 
 local function addMajorCredit(x, y, color, name, role, desc)
     addText({ color, name }, x, y, .5)
-    addText({ COLOR.LD, role }, x, y + 40, .26)
-    if desc then addText({ COLOR.LD, desc }, x, y + 60, .2) end
+    addText({ CLR.LD, role }, x, y + 40, .26)
+    if desc then addText({ CLR.LD, desc }, x, y + 60, .2) end
 end
 
 addMajorCredit(0000, 060, { CLR.HEX '80CCFF' }, "MRZ", "FOUNDER & LEAD PRODUCER", "Programming, Game Design, General Development")
@@ -66,25 +66,25 @@ addSection(1010)
 
 addText({ COLOR.O, "ART BY" }, 0, 20, .3)
 
-addMajorCredit(-390, 62, COLOR.L, "LARGEONIONS", "FLOORS 1-5")
-addMajorCredit(-130, 62, COLOR.L, "S. ZHANG", "FLOORS 6-8")
-addMajorCredit(0130, 62, COLOR.L, "LAUREN SHENG", "FLOORS 9-10")
-addMajorCredit(0390, 62, COLOR.L, "RICMAN", "ORIGINAL CARD ART")
+addMajorCredit(-390, 62, CLR.L, "LARGEONIONS", "FLOORS 1-5")
+addMajorCredit(-130, 62, CLR.L, "S. ZHANG", "FLOORS 6-8")
+addMajorCredit(0130, 62, CLR.L, "LAUREN SHENG", "FLOORS 9-10")
+addMajorCredit(0390, 62, CLR.L, "RICMAN", "ORIGINAL CARD ART")
 
 addSection(1160)
 
 addText({
     COLOR.O, "FONTS BY ",
-    COLOR.L, "ADRIAN FRUTIGER (D-DIN-PRO) ",
+    CLR.L, "ADRIAN FRUTIGER (D-DIN-PRO) ",
     COLOR.O, "& ",
-    COLOR.L, "MOONIAK (ABHAYALIBRE)"
+    CLR.L, "MOONIAK (ABHAYALIBRE)"
 }, 0, 20, .32)
 
 addText({
     COLOR.O, "SOME ACHV ICONS BY ",
-    COLOR.L, "LORC, DELAPOUITE, QUOTING ",
+    CLR.L, "LORC, DELAPOUITE, QUOTING ",
     COLOR.O, "FROM ",
-    COLOR.L, "GAME-ICONS.NET"
+    CLR.L, "GAME-ICONS.NET"
 }, 0, 60, .32)
 
 addSection(1270)

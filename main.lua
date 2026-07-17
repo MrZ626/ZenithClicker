@@ -2,43 +2,24 @@ love.window.setIcon(love.image.newImageData('assets/icon.png'))
 love.mouse.setVisible(false)
 
 require 'Zenitha'
-local oldColorKeys = {
-    'DR', 'dR', 'R', 'lR', 'LR',
-    'DF', 'dF', 'F', 'lF', 'LF',
-    'DO', 'dO', 'O', 'lO', 'LO',
-    'DY', 'dY', 'Y', 'lY', 'LY',
-    'DA', 'dA', 'A', 'lA', 'LA',
-    'DK', 'dK', 'K', 'lK', 'LK',
-    'DG', 'dG', 'G', 'lG', 'LG',
-    'DJ', 'dJ', 'J', 'lJ', 'LJ',
-    'DC', 'dC', 'C', 'lC', 'LC',
-    'DI', 'dI', 'I', 'lI', 'LI',
-    'DS', 'dS', 'S', 'lS', 'LS',
-    'DB', 'dB', 'B', 'lB', 'LB',
-    'DP', 'dP', 'P', 'lP', 'LP',
-    'DV', 'dV', 'V', 'lV', 'LV',
-    'DM', 'dM', 'M', 'lM', 'LM',
-    'DW', 'dW', 'W', 'lW', 'LW',
-}
-local newColorKeys = {
-    'd4RS', 'd1RS', 'l2RS', 'l4RS', 'l6RS',
-    'd4RyS', 'd1RyS', 'l2RyS', 'l4RyS', 'l6RyS',
-    'd4YrrS', 'd1YrrS', 'l2YrrS', 'l4YrrS', 'l6YrrS',
-    'd4YS', 'd1YS', 'l2YS', 'l4YS', 'l6YSS',
-    'd4YggS', 'd1YggS', 'l2YggS', 'l4YggS', 'l6Yggs',
-    'd4GyS', 'd1GyS', 'l2GyS', 'l4GyS', 'l6Gys',
-    'd4GcS', 'd1GcS', 'l2GcS', 'l4GcS', 'l6Gc',
-    'd4CggS', 'd1CggS', 'l2CggS', 'l4CggS', 'l6CggS',
-    'd4CS', 'd1CS', 'l2CS', 'l4CS', 'l6CS',
-    'd4CbbS', 'd1CbbS', 'l2CbbS', 'l4CbbS', 'l6CbbS',
-    'd4BcS', 'd1BcS', 'l2BcS', 'l4BcS', 'l6BcS',
-    'd4BmS', 'd1BmS', 'l2BmS', 'l4BmS', 'l6BmS',
-    'd4MbbS', 'd1MbbS', 'l2MbbS', 'l4MbbS', 'l6MbbS',
-    'd4MS', 'd1MS', 'l2MS', 'l4MS', 'l6MS',
-    'd4MrrS', 'd1MrrS', 'l2MrrS', 'l4MrrS', 'l6MrrS',
-    'd4RmS', 'd1RmS', 'l2RmS', 'l4RmS', 'l6RmS',
-}
-for i = 1, #oldColorKeys do COLOR[oldColorKeys[i]] = CLR[newColorKeys[i]] end
+for k, v in next, {
+    DR = 'd4RS', dR = 'd1RS', R = 'l2RS', lR = 'l4RS', LR = 'l5RS',
+    DF = 'd4RyS', dF = 'd1RyS', F = 'l2RyS', lF = 'l4RyS', LF = 'l5RyS',
+    DO = 'd4YrrS', dO = 'd1YrrS', O = 'l2YrrS', lO = 'l4YrrS', LO = 'l5YrrS',
+    DY = 'd4YS', dY = 'd1YS', Y = 'l2YS', lY = 'l4YS', LY = 'l5YSS',
+    DA = 'd4YggS', dA = 'd1YggS', A = 'l2YggS', lA = 'l4YggS', LA = 'l5Yggs',
+    DK = 'd4GyS', dK = 'd1GyS', K = 'l2GyS', lK = 'l4GyS', LK = 'l5Gys',
+    DG = 'd4GcS', dG = 'd1GcS', G = 'l2GcS', lG = 'l4GcS', LG = 'l5Gc',
+    DJ = 'd4CggS', dJ = 'd1CggS', J = 'l2CggS', lJ = 'l4CggS', LJ = 'l5CggS',
+    DC = 'd4CS', dC = 'd1CS', C = 'l2CS', lC = 'l4CS', LC = 'l5CS',
+    DI = 'd4CbbS', dI = 'd1CbbS', I = 'l2CbbS', lI = 'l4CbbS', LI = 'l5CbbS',
+    DS = 'd4BcS', dS = 'd1BcS', S = 'l2BcS', lS = 'l4BcS', LS = 'l5BcS',
+    DB = 'd4BmS', dB = 'd1BmS', B = 'l2BmS', lB = 'l4BmS', LB = 'l5BmS',
+    DP = 'd4MbbS', dP = 'd1MbbS', P = 'l2MbbS', lP = 'l4MbbS', LP = 'l5MbbS',
+    DV = 'd4MS', dV = 'd1MS', V = 'l2MS', lV = 'l4MS', LV = 'l5MS',
+    DM = 'd4MrrS', dM = 'd1MrrS', M = 'l2MrrS', lM = 'l4MrrS', LM = 'l5MrrS',
+    DW = 'd4RmS', dW = 'd1RmS', W = 'l2RmS', lW = 'l4RmS', LW = 'l5RmS',
+} do COLOR[k] = CLR[v] end
 
 ZENITHA.setMainLoopSpeed(240)
 ZENITHA.setRenderRate(50)
@@ -206,7 +187,7 @@ function ZENITHA.globalEvent.focus(f)
     end
 end
 
-for i = 1, 4 do SCN.scenes._console.widgetList[i].textColor = COLOR.D end
+for i = 1, 4 do SCN.scenes._console.widgetList[i].textColor = CLR.D end
 
 WIDGET.setDefaultOption {
     checkBox = {
@@ -699,8 +680,8 @@ function IssueAchv(id, silent)
     if not silent then
         table.insert(bufferedMsg, { 'achv_issued', {
             AchvMsgStyle[6].fg, A.name .. "\n",
-            COLOR.dL, A.desc .. "\n",
-            COLOR.LD, A.quote,
+            CLR.dL, A.desc .. "\n",
+            CLR.LD, A.quote,
         }, 1 })
         if not GAME.playing then
             ReleaseAchvBuffer()
@@ -741,8 +722,8 @@ function SubmitAchv(id, score, silent, realSilent)
         local oldScoreText = A.scoreSimp(oldScore) .. (A.scoreFull and "  " .. A.scoreFull(oldScore) or "")
         table.insert(bufferedMsg, { wreath > 0 and 'wreath_' .. wreath or AchvMsgStyle[rank].id, {
             AchvMsgStyle[rank].fg, wreathName[wreath] .. A.name .. "   >>   " .. scoreText,
-            COLOR.LD, (ACHV[id] and "    Previous: " .. oldScoreText or "") .. "\n",
-            COLOR.dL, A.desc .. "\n", COLOR.LD, A.quote,
+            CLR.LD, (ACHV[id] and "    Previous: " .. oldScoreText or "") .. "\n",
+            CLR.dL, A.desc .. "\n", CLR.LD, A.quote,
         }, rank <= 2 and 1 or rank <= 4 and 2 or 3 })
         if not GAME.playing then
             ReleaseAchvBuffer()
@@ -1037,16 +1018,16 @@ function ReloadTexts()
 end
 
 local normalHelp = {
-    COLOR.LL, "Welcome to ", COLOR.lF, "Zenith Clicker", COLOR.LL, "! Choose the required tarot cards and send players to scale the tower.\n",
+    CLR.W, "Welcome to ", COLOR.lF, "Zenith Clicker", CLR.W, "! Choose the required tarot cards and send players to scale the tower.\n",
     "The higher you go in the tower, the more tricky players you'll encounter!\n",
     "There's a leaderboard for daily challenge, how high can you reach?\n",
     "[DYNAMIC TEXT]",
 }
 local ultraHelp = {
-    COLOR.LL, "Welcome to ", COLOR.lR, "Zenith Clicker: ", COLOR.R, "Ultra Reverse", COLOR.LL, ". Activate a reversed mod to start ", COLOR.lR, "suffering.\n",
-    COLOR.LL, "The higher you go in the tower, the more likely you are to ", COLOR.R, "die.\n",
-    COLOR.LL, "There are no more achievements, and ", COLOR.lR, "you are not expected to go very high up.\n",
-    COLOR.R, "Give Up: ", COLOR.LL, "ESC    ", COLOR.R, "Forfeit: ", COLOR.LL, "ESC    ", COLOR.R, "Quit: ", COLOR.LL, "ESC"
+    CLR.W, "Welcome to ", COLOR.lR, "Zenith Clicker: ", COLOR.R, "Ultra Reverse", CLR.W, ". Activate a reversed mod to start ", COLOR.lR, "suffering.\n",
+    CLR.W, "The higher you go in the tower, the more likely you are to ", COLOR.R, "die.\n",
+    CLR.W, "There are no more achievements, and ", COLOR.lR, "you are not expected to go very high up.\n",
+    COLOR.R, "Give Up: ", CLR.W, "ESC    ", COLOR.R, "Forfeit: ", CLR.W, "ESC    ", COLOR.R, "Quit: ", CLR.W, "ESC"
 }
 function RefreshHelpText()
     local s = SCN.scenes.tower.widgetList

@@ -6,13 +6,13 @@
 ---------------------------------------------------------------------
 
 AchvMsgStyle = {
-    [0] = { id = 'achv_none', bg = COLOR.D, fg = COLOR.LD, fg2 = COLOR.LD },
-    { id = 'achv_bronze',   bg = COLOR.DO,          fg = COLOR.lO, fg2 = COLOR.O },
-    { id = 'achv_silver',   bg = TABLE.new(.26, 3), fg = COLOR.L,  fg2 = COLOR.dL },
-    { id = 'achv_gold',     bg = COLOR.DY,          fg = COLOR.lY, fg2 = COLOR.Y },
-    { id = 'achv_platinum', bg = COLOR.DJ,          fg = COLOR.lJ, fg2 = COLOR.J },
-    { id = 'achv_diamond',  bg = COLOR.DP,          fg = COLOR.lP, fg2 = COLOR.lB },
-    { id = 'achv_issued',   bg = COLOR.DM,          fg = COLOR.lM, fg2 = COLOR.lM },
+    [0] = { id = 'achv_none', bg = CLR.D, fg = CLR.LD, fg2 = CLR.LD },
+    { id = 'achv_bronze',   bg = COLOR.DO, fg = COLOR.lO, fg2 = COLOR.O },
+    { id = 'achv_silver',   bg = CLR.d4,   fg = CLR.L,    fg2 = CLR.dL },
+    { id = 'achv_gold',     bg = COLOR.DY, fg = COLOR.lY, fg2 = COLOR.Y },
+    { id = 'achv_platinum', bg = COLOR.DJ, fg = COLOR.lJ, fg2 = COLOR.J },
+    { id = 'achv_diamond',  bg = COLOR.DP, fg = COLOR.lP, fg2 = COLOR.lB },
+    { id = 'achv_issued',   bg = COLOR.DM, fg = COLOR.lM, fg2 = COLOR.lM },
 }
 
 GigaSpeedReq = { [0] = 7, 8, 8, 9, 9, 10, 1e99, 1e99, 1e99, 1e99, 1e99 }
@@ -24,7 +24,7 @@ GravityTimer = {
 }
 
 PieceData = {
-    [0] = { id = 'allclear', text = { COLOR.LL, "-" }, piece = { COLOR.LL, CHAR.brik.O1 }, popup = { COLOR.LL, "All Clear" } },
+    [0] = { id = 'allclear', text = { CLR.W, "-" }, piece = { CLR.W, CHAR.brik.O1 }, popup = { CLR.W, "All Clear" } },
     { id = 'nightcore', text = { COLOR.lR, "Z" }, piece = { COLOR.lR, CHAR.brik.Z }, popup = { COLOR.lR, "Z - Nightcore" } },
     { id = 'slowmo',    text = { COLOR.lG, "S" }, piece = { COLOR.lG, CHAR.brik.S }, popup = { COLOR.lG, "S - Sloooooow-mo" } },
     { id = 'glassCard', text = { COLOR.lB, "J" }, piece = { COLOR.lB, CHAR.brik.J }, popup = { COLOR.lB, "J - Glass Card" } },
