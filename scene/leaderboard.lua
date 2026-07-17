@@ -2,11 +2,11 @@
 local scene = {}
 
 local clr = {
-    D = { COLOR.HEX '19311EFF' },
-    D2 = { COLOR.HEX '295131FF' },
-    D3 = { COLOR.HEX '1A251CFF' },
-    L = { COLOR.HEX '4DA667FF' },
-    T = { COLOR.HEX '6FAC82FF' },
+    D = { CLR.HEX '19311EFF' },
+    D2 = { CLR.HEX '295131FF' },
+    D3 = { CLR.HEX '1A251CFF' },
+    L = { CLR.HEX '4DA667FF' },
+    T = { CLR.HEX '6FAC82FF' },
 }
 local colorRev = false
 local scroll, scroll1, maxScroll
@@ -194,9 +194,9 @@ local noW = 160
 local entryH = 100
 local entryGap = 10
 local rankColor = {
-    [1] = { COLOR.HEX 'FFD700FF' },
-    [2] = { COLOR.HEX 'D0D0D0FF' },
-    [3] = { COLOR.HEX 'CD7F32FF' },
+    [1] = { CLR.HEX 'FFD700FF' },
+    [2] = { CLR.HEX 'D0D0D0FF' },
+    [3] = { CLR.HEX 'CD7F32FF' },
 }
 function scene.draw()
     DrawBG(26)

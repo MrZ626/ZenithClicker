@@ -5,8 +5,8 @@ local scroll, scroll1 = 0, 0
 local maxScroll = 620
 
 local clr = {
-    D = { COLOR.HEX '1F1F1FFF' },
-    L = { COLOR.HEX '656565FF' },
+    D = { CLR.HEX '1F1F1FFF' },
+    L = { CLR.HEX '656565FF' },
 }
 
 local lines = {}
@@ -46,21 +46,21 @@ local function addMajorCredit(x, y, color, name, role, desc)
     if desc then addText({ COLOR.LD, desc }, x, y + 60, .2) end
 end
 
-addMajorCredit(0000, 060, { COLOR.HEX '80CCFF' }, "MRZ", "FOUNDER & LEAD PRODUCER", "Programming, Game Design, General Development")
-addMajorCredit(-160, 160, { COLOR.HEX 'B966E3' }, "PETRTECH", "MUSIC", "F10 Music")
-addMajorCredit(0160, 160, { COLOR.HEX '9DBCFF' }, "RONEZKJ15", "MUSIC", "Extra Music")
-addMajorCredit(-320, 260, { COLOR.HEX 'DDFF80' }, "DJ  ASRIEL", "GRAPHICS", "Background Reconstruction & Game Icon")
-addMajorCredit(0000, 260, { COLOR.HEX '77DD66' }, "CREEPERCRAFTYT", "GRAPHICS", "Mod Icons")
-addMajorCredit(0320, 260, { COLOR.HEX '5792FF' }, "ZYRIXIA", "GRAPHICS", "Rank Icons")
-addMajorCredit(-320, 360, { COLOR.HEX 'DD99FF' }, "OSK", "FOUNDER & LEAD PRODUCER", "of the Original Game: TETR.IO")
-addMajorCredit(0000, 360, { COLOR.HEX 'FF99CC' }, "DOKTOROCELOT", "AUDIO & MUSIC", "of both TETR.IO and Zenith Clicker")
-addMajorCredit(0320, 360, { COLOR.HEX '3A66DD' }, "GARBO", "GAME & WORLD DESIGN", "of the Original Game: TETR.IO")
-addMajorCredit(-320, 460, { COLOR.HEX 'F880F0' }, "FLOWERLING", "TEXT REVISION")
-addMajorCredit(0000, 460, { COLOR.HEX 'B7A0FF' }, "FMICHAEL", "EXTRA TEXTS & WORLD DESIGN")
-addMajorCredit(0320, 460, { COLOR.HEX 'FFE590' }, "MATTMAYUGA", "TEXT REVISION")
-addMajorCredit(-320, 560, { COLOR.HEX '8BD6C3' }, "OBSIDIAN", "EXTRA TEXTS")
-addMajorCredit(0000, 560, { COLOR.HEX 'FF82F0' }, "SPRITZY SHEEP", "WORLD DESIGN")
-addMajorCredit(0320, 560, { COLOR.HEX 'E9C6FF' }, "FCSPLAYZ", "EXTRA TEXTS")
+addMajorCredit(0000, 060, { CLR.HEX '80CCFF' }, "MRZ", "FOUNDER & LEAD PRODUCER", "Programming, Game Design, General Development")
+addMajorCredit(-160, 160, { CLR.HEX 'B966E3' }, "PETRTECH", "MUSIC", "F10 Music")
+addMajorCredit(0160, 160, { CLR.HEX '9DBCFF' }, "RONEZKJ15", "MUSIC", "Extra Music")
+addMajorCredit(-320, 260, { CLR.HEX 'DDFF80' }, "DJ  ASRIEL", "GRAPHICS", "Background Reconstruction & Game Icon")
+addMajorCredit(0000, 260, { CLR.HEX '77DD66' }, "CREEPERCRAFTYT", "GRAPHICS", "Mod Icons")
+addMajorCredit(0320, 260, { CLR.HEX '5792FF' }, "ZYRIXIA", "GRAPHICS", "Rank Icons")
+addMajorCredit(-320, 360, { CLR.HEX 'DD99FF' }, "OSK", "FOUNDER & LEAD PRODUCER", "of the Original Game: TETR.IO")
+addMajorCredit(0000, 360, { CLR.HEX 'FF99CC' }, "DOKTOROCELOT", "AUDIO & MUSIC", "of both TETR.IO and Zenith Clicker")
+addMajorCredit(0320, 360, { CLR.HEX '3A66DD' }, "GARBO", "GAME & WORLD DESIGN", "of the Original Game: TETR.IO")
+addMajorCredit(-320, 460, { CLR.HEX 'F880F0' }, "FLOWERLING", "TEXT REVISION")
+addMajorCredit(0000, 460, { CLR.HEX 'B7A0FF' }, "FMICHAEL", "EXTRA TEXTS & WORLD DESIGN")
+addMajorCredit(0320, 460, { CLR.HEX 'FFE590' }, "MATTMAYUGA", "TEXT REVISION")
+addMajorCredit(-320, 560, { CLR.HEX '8BD6C3' }, "OBSIDIAN", "EXTRA TEXTS")
+addMajorCredit(0000, 560, { CLR.HEX 'FF82F0' }, "SPRITZY SHEEP", "WORLD DESIGN")
+addMajorCredit(0320, 560, { CLR.HEX 'E9C6FF' }, "FCSPLAYZ", "EXTRA TEXTS")
 
 addSection(1010)
 

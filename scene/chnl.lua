@@ -2,11 +2,11 @@
 local scene = {}
 
 local clr = {
-    D = { COLOR.HEX '19311EFF' },
-    L = { COLOR.HEX '4DA667FF' },
-    T = { COLOR.HEX '6FAC82FF' },
-    LT = { COLOR.HEX '98CBA8FF' },
-    button = { COLOR.HEX '1F4E2C' },
+    D = { CLR.HEX '19311EFF' },
+    L = { CLR.HEX '4DA667FF' },
+    T = { CLR.HEX '6FAC82FF' },
+    LT = { CLR.HEX '98CBA8FF' },
+    button = { CLR.HEX '1F4E2C' },
 }
 local colorRev = false
 
@@ -286,14 +286,14 @@ scene.widgetList = {
     WIDGET.new {
         type = 'button',
         pos = { .5, .5 }, x = (-btnW - gap) / 4, y = btnY + 3 * btnH, w = (btnW - gap) / 2, h = btnH - gap,
-        color = { COLOR.HEX '2A5697FF' },
+        color = { CLR.HEX '2A5697FF' },
         sound_hover = 'menutap',
         onClick = function() love.keypressed('5') end,
     },
     WIDGET.new {
         type = 'button',
         pos = { .5, .5 }, x = (btnW + gap) / 4, y = btnY + 3 * btnH, w = (btnW - gap) / 2, h = btnH - gap,
-        color = { COLOR.HEX '424242FF' },
+        color = { CLR.HEX '424242FF' },
         sound_hover = 'menutap',
         onClick = function() love.keypressed('6') end,
     },

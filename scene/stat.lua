@@ -9,9 +9,9 @@ local floor = math.floor
 
 local baseColor = { .12, .26, .14 }
 local areaColor = { .12, .23, .12 }
-local titleColor = { COLOR.HEX("16582D") }
-local textColor = { COLOR.HEX("54B06D") }
-local scoreColor = { COLOR.HEX("B0FFC0") }
+local titleColor = { CLR.HEX("16582D") }
+local textColor = { CLR.HEX("54B06D") }
+local scoreColor = { CLR.HEX("B0FFC0") }
 local setup = { stencil = true, card }
 
 local sawMap = {

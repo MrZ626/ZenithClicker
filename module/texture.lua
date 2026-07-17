@@ -379,14 +379,14 @@ TEXTURE = TABLE.linkSource({}, TEXTURE, function(path)
             GC.draw(TEXTURE[lockType], 0, 0)
             local t = GC.newText(FONT.get(70, 'sans'), char)
             if lockType == 'lockfull' then
-                GC.setColor(COLOR.HEX "646483FF")
+                GC.setColor(CLR.HEX "646483FF")
                 for i = 0, 25 do
                     local angle = i / 26 * MATH.tau
                     local dx, dy = math.cos(angle) * 2, math.sin(angle) * 2
                     GC.mDraw(t, w * .51 + dx, h * .526 + dy, 0, 2)
                 end
             else
-                GC.setColor(COLOR.HEX "544F65FF")
+                GC.setColor(CLR.HEX "544F65FF")
                 for i = 0, 25 do
                     local angle = i / 26 * MATH.tau
                     local dx, dy = math.cos(angle) * 1.6, math.sin(angle) * 1.6

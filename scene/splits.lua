@@ -7,10 +7,10 @@ SRSplitText2 = {} ---@type love.Text[]
 SRSplitText3 = {} ---@type love.Text[]
 
 local clr = {
-    D = { COLOR.HEX '19311EFF' },
-    L = { COLOR.HEX '4DA667FF' },
-    T = { COLOR.HEX '6FAC82FF' },
-    LT = { COLOR.HEX '98CBA8FF' },
+    D = { CLR.HEX '19311EFF' },
+    L = { CLR.HEX '4DA667FF' },
+    T = { CLR.HEX '6FAC82FF' },
+    LT = { CLR.HEX '98CBA8FF' },
 }
 local colorRev = false
 

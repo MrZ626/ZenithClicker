@@ -492,16 +492,16 @@ local rankColor = {
     { 1,  .7, 1 },
 }
 local floorColors = TABLE.transpose {
-    { COLOR.HEX '792B12' }, -- F1
-    { COLOR.HEX '98773E' }, -- F2
-    { COLOR.HEX '56320C' }, -- F3
-    { COLOR.HEX '993019' }, -- F4
-    { COLOR.HEX '818A8A' }, -- F5
-    { COLOR.HEX 'C86A3C' }, -- F6
-    { COLOR.HEX '196FA3' }, -- F7
-    { COLOR.HEX '9B212D' }, -- F8
-    { COLOR.HEX '0B5D38' }, -- F9
-    { COLOR.HEX '130031' }, -- F10
+    { CLR.HEX '792B12' }, -- F1
+    { CLR.HEX '98773E' }, -- F2
+    { CLR.HEX '56320C' }, -- F3
+    { CLR.HEX '993019' }, -- F4
+    { CLR.HEX '818A8A' }, -- F5
+    { CLR.HEX 'C86A3C' }, -- F6
+    { CLR.HEX '196FA3' }, -- F7
+    { CLR.HEX '9B212D' }, -- F8
+    { CLR.HEX '0B5D38' }, -- F9
+    { CLR.HEX '130031' }, -- F10
 }
 local f10colors = TABLE.transpose {
     { .9, .3, .9 }, -- 1650 m
@@ -547,20 +547,20 @@ local gvTimerColor1 = { 1, .942, .872, 0 }
 local gvTimerColor2 = { 0, 0, 0, 0 }
 local altitudeText = { "0", COLOR.dL, "m" }
 local windupColor = {
-    { COLOR.HEX "F5BE3FFF" },
-    { COLOR.HEX "ED7F2EFF" },
-    { COLOR.HEX "E74322FF" },
-    { COLOR.HEX "E63676FF" },
-    { COLOR.HEX "E83AD5FF" },
-    { COLOR.HEX "9E2DF6FF" },
-    { COLOR.HEX "002FF5FF" },
-    { COLOR.HEX "4295F8FF" },
-    { COLOR.HEX "79FA52FF" },
-    { COLOR.HEX "C6FC4FFF" },
+    { CLR.HEX "F5BE3FFF" },
+    { CLR.HEX "ED7F2EFF" },
+    { CLR.HEX "E74322FF" },
+    { CLR.HEX "E63676FF" },
+    { CLR.HEX "E83AD5FF" },
+    { CLR.HEX "9E2DF6FF" },
+    { CLR.HEX "002FF5FF" },
+    { CLR.HEX "4295F8FF" },
+    { CLR.HEX "79FA52FF" },
+    { CLR.HEX "C6FC4FFF" },
 }
 local koMsgColor = {
-    kill = { COLOR.HEX "FFB300FF" },
-    death = { COLOR.HEX "910000FF" },
+    kill = { CLR.HEX "FFB300FF" },
+    death = { CLR.HEX "910000FF" },
 }
 
 function DrawBG(brightness, showRuler)
@@ -1718,8 +1718,8 @@ scene.widgetList = {
     WIDGET.new {
         name = 'stat', type = 'button',
         pos = { 0, 0 }, x = 60, y = 230, w = 160, h = 60,
-        color = { COLOR.HEX '1F4E2C' },
-        textColor = { COLOR.HEX '73E284' },
+        color = { CLR.HEX '1F4E2C' },
+        textColor = { CLR.HEX '73E284' },
         sound_hover = 'menutap',
         fontSize = 30, text = "    STAT",
         onPress = function() love.keypressed('`') end,
@@ -1728,8 +1728,8 @@ scene.widgetList = {
     WIDGET.new {
         name = 'chnl', type = 'button',
         pos = { 0, 0 }, x = 60, y = 320, w = 160, h = 60,
-        color = { COLOR.HEX '1F4E2C' },
-        textColor = { COLOR.HEX '73E284' },
+        color = { CLR.HEX '1F4E2C' },
+        textColor = { CLR.HEX '73E284' },
         sound_hover = 'menutap',
         fontSize = 30, text = "    CHNL",
         onPress = function() love.keypressed('tab') end,
@@ -1738,8 +1738,8 @@ scene.widgetList = {
     WIDGET.new {
         name = 'conf', type = 'button',
         pos = { 1, 0 }, x = -60, y = 230, w = 160, h = 60,
-        color = { COLOR.HEX '253355' },
-        textColor = { COLOR.HEX '869EFF' },
+        color = { CLR.HEX '253355' },
+        textColor = { CLR.HEX '869EFF' },
         sound_hover = 'menutap',
         fontSize = 30, text = "CONF   ",
         onPress = function() love.keypressed('f1') end,
@@ -1748,8 +1748,8 @@ scene.widgetList = {
     WIDGET.new {
         name = 'about', type = 'button',
         pos = { 1, 0 }, x = -60, y = 320, w = 160, h = 60,
-        color = { COLOR.HEX '383838' },
-        textColor = { COLOR.HEX '909090' },
+        color = { CLR.HEX '383838' },
+        textColor = { CLR.HEX '909090' },
         sound_hover = 'menutap',
         fontSize = 30, text = "ABOUT ",
         onPress = function() love.keypressed('f2') end,
