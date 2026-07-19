@@ -1007,17 +1007,17 @@ function GAME.showFloorText(f, name, duration)
     TEXT:add {
         text = "Floor",
         x = 160, y = 305, k = 1, fontSize = 50,
-        color = CLR.l6YSS, duration = duration,
+        color = CLR.l5YSS, duration = duration,
     }
     TEXT:add {
         text = tostring(f),
         x = 240, y = 295, k = 1.1, fontSize = 70,
-        color = CLR.l6YSS, duration = duration, align = 'left',
+        color = CLR.l5YSS, duration = duration, align = 'left',
     }
     TEXT:add {
         text = name,
         x = 200, y = 360, k = 1, fontSize = 30,
-        color = CLR.l6YSS, duration = duration,
+        color = CLR.l5YSS, duration = duration,
     }
 end
 
@@ -2647,7 +2647,7 @@ function GAME.finish(reason)
                 else
                     t = (GAME.anyUltra and "U-" or GAME.anyRev and "R-" or "") .. (#hand == 1 and "MOD" or "COMBO") .. " MASTERED"
                     size = 2.26
-                    color = CLR.l4CbS
+                    color = CLR.l5CbS
                     duration = 6.2
                 end
                 TEXT:add {
