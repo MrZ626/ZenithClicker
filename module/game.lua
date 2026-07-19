@@ -369,10 +369,9 @@ function GAME.getComboName(list, mode)
                 ins(fstr, i, { MATH.rand(.872, 1), MATH.rand(.872, 1), MATH.rand(.872, 1) })
             end
             if M.IN == 0 then
-                local colors = {}
-                for i = 1, #list do ins(colors, MD.color[list[i]]) end
-                if #colors == 1 then
+                if #list == 1 then
                     -- Single color
+                    local colors = { MD.color[list[1]] }
                     for i = 1, #fstr, 2 do
                         local org = fstr[i]
                         org[1] = expApproach(org[1], colors[1][1], .5)
@@ -381,7 +380,19 @@ function GAME.getComboName(list, mode)
                     end
                 else
                     -- Multiple colors
-                    colors = TABLE.transposeNew(TABLE.shuffle(colors))
+                    local colors = TABLE.copy(list)
+                    for _ = 1, 12 do
+                        TABLE.shuffle(colors)
+                        local confusingPair
+                        for i = 1, #colors - 1 do
+                            if MD.colorEqClass[colors[i]] == MD.colorEqClass[colors[i + 1]] then
+                                confusingPair = true
+                            end
+                        end
+                        if not confusingPair then break end
+                    end
+                    for i = 1, #list do colors[i] = MD.color[colors[i]] end
+                    colors = TABLE.transposeNew(colors)
                     local colorCnt = #colors[1]
                     local keep = clamp(#fstr / colorCnt * .05, .2, .6)
                     for i = 1, #fstr, 2 do
