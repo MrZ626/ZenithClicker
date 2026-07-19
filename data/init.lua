@@ -6,13 +6,13 @@
 ---------------------------------------------------------------------
 
 AchvMsgStyle = {
-    [0] = { id = 'achv_none', bg = CLR.D, fg = CLR.LD, fg2 = CLR.LD },
-    { id = 'achv_bronze',   bg = COLOR.DO, fg = COLOR.lO, fg2 = COLOR.O },
-    { id = 'achv_silver',   bg = CLR.d4,   fg = CLR.L,    fg2 = CLR.dL },
-    { id = 'achv_gold',     bg = COLOR.DY, fg = COLOR.lY, fg2 = COLOR.Y },
-    { id = 'achv_platinum', bg = COLOR.DJ, fg = COLOR.lJ, fg2 = COLOR.J },
-    { id = 'achv_diamond',  bg = COLOR.DP, fg = COLOR.lP, fg2 = COLOR.lB },
-    { id = 'achv_issued',   bg = COLOR.DM, fg = COLOR.lM, fg2 = COLOR.lM },
+    [0] = { id = 'achv_none', bg = CLR.D, fg = CLR.LD },
+    { id = 'achv_bronze',   bg = COLOR.DO, fg = COLOR.lO },
+    { id = 'achv_silver',   bg = CLR.d4,   fg = CLR.dL },
+    { id = 'achv_gold',     bg = COLOR.DY, fg = COLOR.lY },
+    { id = 'achv_platinum', bg = COLOR.DJ, fg = COLOR.lJ },
+    { id = 'achv_diamond',  bg = COLOR.DP, fg = COLOR.lP },
+    { id = 'achv_issued',   bg = COLOR.DM, fg = COLOR.lM },
 }
 
 GigaSpeedReq = { [0] = 7, 8, 8, 9, 9, 10, 1e99, 1e99, 1e99, 1e99, 1e99 }
