@@ -1269,7 +1269,7 @@ function scene.overDraw()
                 -- Number
                 if GAME.fault then
                     gc_push('transform')
-                    local strength = min(chain / 62, 1)
+                    local strength = min(chain / 42, 1)
                     GC.rotate((math.random() - .5) * .4 * strength)
                     gc_translate(MATH.rand(-5, 5) * strength, MATH.rand(-5, 5) * strength)
                 end
