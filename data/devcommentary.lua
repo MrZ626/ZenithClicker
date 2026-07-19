@@ -327,6 +327,7 @@ return {
     ['rEX rNH rVL'] = STRING.trimIndent [[
         Hardcore Beginning, F1 speedrunning combo.
         The last combo getting added in this category! Now all 9 floors have their own speedrunning combo.
+        Wait you F10'd this??? This is not easy, Congrats!
     ]],
     ['EX VL rIN rDP'] = STRING.trimIndent [[
         Love Hotel, F2 speedrunning combo.
