@@ -385,7 +385,7 @@ function GAME.getComboName(list, mode)
                         TABLE.shuffle(colors)
                         local confusingPair
                         for i = 1, #colors - 1 do
-                            if MD.colorEqClass[colors[i]] == MD.colorEqClass[colors[i + 1]] then
+                            if abs(MD.colorEq[colors[i]] - MD.colorEq[colors[i + 1]]) <= 5 then
                                 confusingPair = true
                             end
                         end
