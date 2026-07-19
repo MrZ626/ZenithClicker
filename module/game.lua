@@ -2647,7 +2647,7 @@ function GAME.finish(reason)
                 else
                     t = (GAME.anyUltra and "U-" or GAME.anyRev and "R-" or "") .. (#hand == 1 and "MOD" or "COMBO") .. " MASTERED"
                     size = 2.26
-                    color = CLR.l6CS
+                    color = CLR.l4CbS
                     duration = 6.2
                 end
                 TEXT:add {
