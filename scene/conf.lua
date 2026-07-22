@@ -1118,7 +1118,7 @@ albumBtn {
     fontSize = 50,
     text = "FΩR",
     onClick = function() GAME.height = PlayBGM('fomgr') or 6200 end,
-    visibleFunc = function() return page == 3 and GetClickerLv() >= 3 end,
+    visibleFunc = function() return page == 3 and STAT.clicker and GetClickerLv() >= 3 end,
 }
 
 local function newTabBtn(text, y, key)
