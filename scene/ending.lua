@@ -63,11 +63,11 @@ addText("MattMayuga & Flowerling", 26, h, .42, 'left')
 
 h = h + 90
 addText("Musics", -26, h, .42, 'right')
-addText("Dr Ocelot", 26, h, .42, 'left')
+addText("Dr Ocelot & petrtech", 26, h, .42, 'left')
 
 h = h + 90
 addText("Extra Music", -26, h, .42, 'right')
-addText("petrtech & Ronezkj15", 26, h, .42, 'left')
+addText("Ronezkj15 & MrshimJSK", 26, h, .42, 'left')
 
 h = h + 90
 addText("World Design", -26, h, .42, 'right')

@@ -25,7 +25,6 @@ return {
     f8 = 'assets/music/f8.ogg',
     f9 = 'assets/music/f9.ogg',
     f10 = 'assets/music/f10.ogg',
-    tera = 'assets/music/tera.ogg',
 
     f2r = 'assets/music/f2-rev.ogg',
     f3r = 'assets/music/f3-rev.ogg',
@@ -36,8 +35,11 @@ return {
     f8r = 'assets/music/f8-rev.ogg',
     f9r = 'assets/music/f9-rev.ogg',
     f10r = 'assets/music/f10-rev.ogg',
-    terar = 'assets/music/tera-rev.ogg',
 
+    tera = 'assets/music/tera.ogg',
+    terar = 'assets/music/tera-rev.ogg',
     fomg = 'assets/music/fomg.ogg',
     fomgr = 'assets/music/fomg-rev.ogg',
+
+    b6 = 'assets/music/b6.ogg',
 }

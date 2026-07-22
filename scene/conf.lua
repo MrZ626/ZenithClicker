@@ -37,7 +37,6 @@ local songList = {
     f8 = "Dr Ocelot - Chrono Flux",
     f9 = "Dr Ocelot - Broken Record",
     f10 = "petrtech - Deified Validation",
-    tera = "Dr Ocelot - Schnellfeuer BULLET",
 
     f0r = "Dr Ocelot - Awaiting Judgement",
     f1r = "Dr Ocelot - Desecrated Ruins",
@@ -50,10 +49,13 @@ local songList = {
     f8r = "Dr Ocelot - Futile Ambition",
     f9r = "Dr Ocelot - Mere Sacrifices",
     f10r = "petrtech - Pseudo-Apotheosis",
-    terar = "Dr Ocelot - Kugelhagel OVERDRIVE",
 
+    tera = "Dr Ocelot - Schnellfeuer BULLET",
+    terar = "Dr Ocelot - Kugelhagel OVERDRIVE",
     fomg = "Ronezkj15 - Strained Endurance",
     fomgr = "Ronezkj15 - Malevolent Blasphemy",
+    b6 = "MrshimJSK - F6 Rejected Demo Remix", -- TODO
+
     f0_EX = "Dr Ocelot - Watchful Eye (EX)",
     f0r_EX = "Dr Ocelot - Awaiting Judgement (EX)",
     f1_EX = "Dr Ocelot - Infernal Registration",
@@ -87,6 +89,7 @@ local bgmColors = {
     terar = { CLR.HEX 'C0C0C0' },
     fomg = { CLR.HEX '004C89' },
     fomgr = { CLR.HEX '2519A8' },
+    b6 = { CLR.HEX '6E5D4AFF' },
 }
 local bgmHeight = {
     [0] = Floors[0].top,
@@ -1119,6 +1122,14 @@ albumBtn {
     text = "FΩR",
     onClick = function() GAME.height = PlayBGM('fomgr') or 6200 end,
     visibleFunc = function() return page == 3 and STAT.clicker and GetClickerLv() >= 3 end,
+}
+albumBtn {
+    x = baseX + 840, y = baseY + 770, w = 80,
+    color = bgmColors.b6,
+    fontSize = 30,
+    text = "B6?",
+    onClick = function() GAME.height = PlayBGM('b6') or -bgmHeight[6] end,
+    visibleFunc = function() return page == 3 and STAT.clicker end,
 }
 
 local function newTabBtn(text, y, key)

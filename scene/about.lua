@@ -47,8 +47,9 @@ local function addMajorCredit(x, y, color, name, role, desc)
 end
 
 addMajorCredit(0000, 060, { CLR.HEX '80CCFF' }, "MRZ", "FOUNDER & LEAD PRODUCER", "Programming, Game Design, General Development")
-addMajorCredit(-160, 160, { CLR.HEX 'B966E3' }, "PETRTECH", "MUSIC", "F10 Music")
-addMajorCredit(0160, 160, { CLR.HEX '9DBCFF' }, "RONEZKJ15", "MUSIC", "Extra Music")
+addMajorCredit(-320, 160, { CLR.HEX '9DBCFF' }, "RONEZKJ15", "MUSIC", "Extra Music")
+addMajorCredit(0000, 160, { CLR.HEX 'B966E3' }, "PETRTECH", "MUSIC", "F10 Music")
+addMajorCredit(0320, 160, { CLR.HEX '7BE89EFF' }, "MRSHIMJSK", "MUSIC", "Extra Music")
 addMajorCredit(-320, 260, { CLR.HEX 'DDFF80' }, "DJ  ASRIEL", "GRAPHICS", "Background Reconstruction & Game Icon")
 addMajorCredit(0000, 260, { CLR.HEX '77DD66' }, "CREEPERCRAFTYT", "GRAPHICS", "Mod Icons")
 addMajorCredit(0320, 260, { CLR.HEX '5792FF' }, "ZYRIXIA", "GRAPHICS", "Rank Icons")
@@ -110,6 +111,7 @@ addText({
         "LORC",
         "MATTMAYUGA",
         "MOONIAK",
+        "MRSHIMJSK",
         "MRZ",
         "OBSIDIAN",
         "OSK",
