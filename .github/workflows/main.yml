@@ -291,6 +291,8 @@ jobs:
 
   build-windows:
     runs-on: windows-2022
+    permissions:
+      contents: write
     needs: [get-info, build-core, auto-test]
     env:
       OUTPUT_FOLDER: ./build
