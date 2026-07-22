@@ -290,7 +290,7 @@ jobs:
           target_branch: gh-pages
 
   build-windows:
-    runs-on: windows-latest
+    runs-on: windows-2022
     needs: [get-info, build-core, auto-test]
     env:
       OUTPUT_FOLDER: ./build
