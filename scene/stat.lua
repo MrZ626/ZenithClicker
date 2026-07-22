@@ -155,13 +155,7 @@ function RefreshProfile()
     if STAT.clicker then
         GC.setColor(1, 1, 1)
         GC.mDraw(TEXTURE.stat.clicker, 970, 182, 0, .626)
-        local clickerLV = 0
-        if STAT.totalTime >= 3600 * 26 then clickerLV = clickerLV + 1 end
-        if STAT.maxHeight >= 10000 and STAT.minTime <= 42 then clickerLV = clickerLV + 1 end
-        if MATH.sumAll(GAME.completion) == 2 * #ModData.deck then clickerLV = clickerLV + 1 end
-        if rating >= 25000 then clickerLV = clickerLV + 1 end
-        if rating == cap then clickerLV = clickerLV + 1 end
-        for i = 0, clickerLV - 1 do
+        for i = 0, GetClickerLv(rating, cap) - 1 do
             GC.mDraw(TEXTURE.stat.clicker_star, 879 - i * 34, 182, 0, .626)
         end
     end

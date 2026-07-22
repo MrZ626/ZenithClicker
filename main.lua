@@ -668,6 +668,17 @@ function RankAvailable()
     return STAT.totalTime / 60 + STAT.totalFloor / 9 + STAT.totalGiga / 2 > 62
 end
 
+function GetClickerLv(rating, cap)
+    if not rating then rating, cap = CalculateCR() end
+    local lv = 0
+    if STAT.totalTime >= 3600 * 26 then lv = lv + 1 end
+    if STAT.maxHeight >= 10000 and STAT.minTime <= 42 then lv = lv + 1 end
+    if MATH.sumAll(GAME.completion) == 2 * #ModData.deck then lv = lv + 1 end
+    if rating >= 25000 then lv = lv + 1 end
+    if rating == cap then lv = lv + 1 end
+    return lv
+end
+
 local msgTime = 0
 local bufferedMsg = {}
 
