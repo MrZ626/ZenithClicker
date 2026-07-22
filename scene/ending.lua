@@ -185,7 +185,7 @@ function scene.load()
         SFX.setVol(CONF.sfx / 100)
     end
     TASK.removeTask_code(Task_MusicEnd)
-    PlayBGM('fomg', true)
+    PlayBGM('fomgr', true)
     CONF.bgm = math.max(CONF.bgm, math.min(CONF.sfx, 20))
     BGM.setVol(CONF.bgm / 100)
 end

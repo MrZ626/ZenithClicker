@@ -438,6 +438,7 @@ BgmData = {
     f10   = { meta = '4|4  196 BPM  C Major & C Minor ', bar = 4, bpm = 196, toneFix = 0.0, bpmData = { 49, 19.592, 98 }, loop = { 213.673, 311.632 } },
     f10r  = { meta = '4|4  196 BPM  C Major & C Minor ', bar = 4, bpm = 196, toneFix = 0.0, bpmData = { 49, 19.592, 98 }, loop = { 213.673, 311.632 } },
     fomg  = { meta = '4|4  180 & 200 BPM  Bb Minor    ', bar = 4, bpm = 200, toneFix = 3.0, bpmData = { 90, 10.667, 180, 25.333, 200 }, loop = { 38.4 - 11.862, 144 - 11.862 } },
+    fomgr = { meta = '4|4  184 BPM  B Minor & C Minor ', bar = 4, bpm = 184, toneFix = -1., loop = { 60 / 184 * 76, 60 / 184 * 632 } },
     tera  = { meta = '4|4  240 BPM  C# Minor          ', bar = 4, bpm = 240, toneFix = 1.0, loop = { 76, 140 }, introLen = 2, teleport = { -1, 20 } }, -- 4 endings at 140/142/144/146
     terar = { meta = '4|4  240 BPM  C# Minor          ', bar = 4, bpm = 240, toneFix = 1.0, loop = { 84 - 15.565, 172 - 15.565 }, teleport = { 0, 18 - 15.565 } },
 }
@@ -815,7 +816,6 @@ function PlayBGM(name, force)
     local last = BgmPlaying
 
     if GAME.playing and RevMusicMode() then name = name .. 'r' end
-    if name == 'fomgr' then name = 'fomg' end
     if name == 'f0r' then
         BgmPlaying = 'f0'
     elseif name == 'f1r' then -- Note: 'f1ex' is only a track name, not musicID
@@ -941,6 +941,12 @@ function Task_MusicEnd(manual)
             outroStart = D.loop[2]
             BgmNeedStop = outroStart + 8 * 60 / D.bpm
         end
+    elseif BgmPlaying == 'tera' then
+        outroStart = D.loop[2] + math.random(0, 3) * 8 * 60 / D.bpm
+        BgmNeedStop = outroStart + 8 * 60 / D.bpm
+    elseif BgmPlaying == 'terar' then
+        outroStart = D.loop[2] + 96 * 60 / D.bpm
+        BgmNeedStop = outroStart + 30 * 60 / D.bpm
     elseif BgmPlaying == 'fomg' then
         if BGM.tell() < D.loop[1] then
             outroStart = D.loop[2] + 32 * 60 / D.bpm
@@ -949,12 +955,14 @@ function Task_MusicEnd(manual)
             outroStart = D.loop[2]
             BgmNeedStop = outroStart + 26 * 60 / D.bpm
         end
-    elseif BgmPlaying == 'tera' then
-        outroStart = D.loop[2] + math.random(0, 3) * 8 * 60 / D.bpm
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'terar' then
-        outroStart = D.loop[2] + 96 * 60 / D.bpm
-        BgmNeedStop = outroStart + 30 * 60 / D.bpm
+    elseif BgmPlaying == 'fomgr' then
+        if BGM.tell() < D.loop[1] then
+            outroStart = D.loop[2] + 32 * 60 / D.bpm
+            BgmNeedStop = outroStart + 16 * 60 / D.bpm
+        else
+            outroStart = D.loop[2]
+            BgmNeedStop = outroStart + 26 * 60 / D.bpm
+        end
     else
         BgmNeedStop = BGM.tell() + 4 * 60 / D.bpm
     end

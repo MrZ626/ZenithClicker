@@ -39,4 +39,5 @@ return {
     terar = 'assets/music/tera-rev.ogg',
 
     fomg = 'assets/music/fomg.ogg',
+    fomgr = 'assets/music/fomg-rev.ogg',
 }
