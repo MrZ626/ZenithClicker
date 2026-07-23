@@ -439,7 +439,7 @@ BgmData = {
     f10r  = { meta = '4|4  196 BPM  C Major & C Minor ', bar = 4, bpm = 196, toneFix = 0.0, bpmData = { 49, 19.592, 98 }, loop = { 213.673, 311.632 } },
     tera  = { meta = '4|4  240 BPM  C# Minor          ', bar = 4, bpm = 240, toneFix = 1.0, loop = { 76, 140 }, introLen = 2, teleport = { -1, 20 } }, -- 4 endings at 140/142/144/146
     terar = { meta = '4|4  240 BPM  C# Minor          ', bar = 4, bpm = 240, toneFix = 1.0, loop = { 84 - 15.565, 172 - 15.565 }, teleport = { 0, 18 - 15.565 } },
-    fomg  = { meta = '4|4  180 & 200 BPM  Bb Minor    ', bar = 4, bpm = 200, toneFix = 3.0, bpmData = { 90, 10.667, 180, 25.333, 200 }, loop = { 38.4 - 11.862, 144 - 11.862 } },
+    fomg  = { meta = '4|4  180 & 200 BPM  Bb Minor    ', bar = 4, bpm = 200, toneFix = -2., bpmData = { 90, 10.667, 180, 25.333, 200 }, loop = { 38.4 - 11.862, 144 - 11.862 } },
     fomgr = { meta = '4|4  184 BPM  B Minor & C Minor ', bar = 4, bpm = 184, toneFix = -1., loop = { 60 / 184 * 76, 60 / 184 * 632 } },
     b6    = { meta = '4|4  120 BPM  G Minor           ', bar = 4, bpm = 120, toneFix = 0.0, loop = { 16, 224 } },
 }
