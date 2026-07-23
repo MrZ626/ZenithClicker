@@ -54,7 +54,7 @@ local songList = {
     terar = "Dr Ocelot - Kugelhagel OVERDRIVE",
     fomg = "Ronezkj15 - Strained Endurance",
     fomgr = "Ronezkj15 - Malevolent Blasphemy",
-    b6 = "MrshimJSK - F6 Rejected Demo Remix", -- TODO
+    b6 = "MrshimJSK - Peripeteia",
 
     f0_EX = "Dr Ocelot - Watchful Eye (EX)",
     f0r_EX = "Dr Ocelot - Awaiting Judgement (EX)",
