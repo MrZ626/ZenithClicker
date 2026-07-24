@@ -2278,6 +2278,8 @@ local function task_startSpin()
     end
     if M.MS == 1 then
         GAME.weakShuffleCards(0)
+    elseif URM and M.MS == 2 then
+        TABLE.shuffle(CD)
     elseif M.MS == 2 then
         GAME.shuffleCards(2.6)
     end
