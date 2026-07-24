@@ -1758,6 +1758,7 @@ function GAME.task_cancelAll(instant)
     end
 end
 
+local uMS_CDsnapshot = {}
 function GAME.commit(auto)
     if #GAME.quests == 0 then return end
 
@@ -2137,7 +2138,26 @@ function GAME.commit(auto)
         if M.MS == 2 then
             local lastPos = GAME.lastFlip and TABLE.find(CD, CD[GAME.lastFlip]) or -26
             if URM then
-                GAME.readyShuffle(max(GAME.floor, GAME.negFloor) * 2.6, true)
+                for i = 1, #CD do uMS_CDsnapshot[i] = CD[i] end
+                local cnt = 6 + 2 * max(GAME.floor, GAME.negFloor)
+                local lastSwap
+                while true do
+                    local r
+                    repeat r = rnd(#CD - 1) until r ~= lastPos and r ~= lastPos - 1 and r ~= lastSwap
+                    CD[r], CD[r + 1] = CD[r + 1], CD[r]
+                    lastSwap = r
+                    if cnt <= 0 then
+                        local noMoveCnt = 0
+                        for i = 1, #uMS_CDsnapshot do
+                            if uMS_CDsnapshot[i] == CD[i] then
+                                noMoveCnt = noMoveCnt + 1
+                            end
+                        end
+                        if noMoveCnt <= 2 then break end
+                    else
+                        cnt = cnt - 1
+                    end
+                end
             else
                 local w = max(GAME.floor, GAME.negFloor) <= 8 and 2 or 3
                 local r
