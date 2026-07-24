@@ -2141,7 +2141,8 @@ function GAME.commit(auto)
             if URM then
                 for i = 1, #CD do uMS_CDsnapshot[i] = CD[i] end
                 local f = max(GAME.floor, GAME.negFloor)
-                local messiness_expected = 6 + 1.6 * f
+                local messiness_expected = 3 + 2 * f
+                local maxUnmoved = UltraMessinessMaxUnmoved[f]
                 local cnt = 0
                 repeat
                     if lastPos > 1 + 1 then
@@ -2164,7 +2165,7 @@ function GAME.commit(auto)
                             unmoveCnt = unmoveCnt + 1
                         end
                     end
-                    if unmoveCnt <= 3 then
+                    if unmoveCnt <= maxUnmoved then
                         local totalDist = 0
                         for i = 1, #CD do
                             totalDist = totalDist + abs(i - TABLE.find(CD, uMS_CDsnapshot[i]))
