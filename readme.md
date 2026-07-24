@@ -205,8 +205,7 @@ Ultra mods are considered as reversed mods on score, achievements, etc.
 
 ### ENTROPY （`uMS`）
 
-- Swap two cards at least `6+2*Floor` times, until all cards are not in their original positions!
-- But last flipped card is still guaranteed not to be swapped.
+- Shuffle all cards at each side of the last flipped card instead of only two cards!
 
 ### COLLAPSING GALAXY （`uGV`）
 
