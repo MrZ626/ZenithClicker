@@ -1758,6 +1758,7 @@ function GAME.task_cancelAll(instant)
     end
 end
 
+local uMS_temp = {}
 local uMS_CDsnapshot = {}
 function GAME.commit(auto)
     if #GAME.quests == 0 then return end
@@ -2139,25 +2140,38 @@ function GAME.commit(auto)
             local lastPos = GAME.lastFlip and TABLE.find(CD, CD[GAME.lastFlip]) or -26
             if URM then
                 for i = 1, #CD do uMS_CDsnapshot[i] = CD[i] end
-                local cnt = 6 + 2 * max(GAME.floor, GAME.negFloor)
-                local lastSwap
-                while true do
-                    local r
-                    repeat r = rnd(#CD - 1) until r ~= lastPos and r ~= lastPos - 1 and r ~= lastSwap
-                    CD[r], CD[r + 1] = CD[r + 1], CD[r]
-                    lastSwap = r
-                    if cnt <= 0 then
-                        local noMoveCnt = 0
-                        for i = 1, #uMS_CDsnapshot do
-                            if uMS_CDsnapshot[i] == CD[i] then
-                                noMoveCnt = noMoveCnt + 1
-                            end
-                        end
-                        if noMoveCnt <= 2 then break end
-                    else
-                        cnt = cnt - 1
+                local f = max(GAME.floor, GAME.negFloor)
+                local messiness_expected = 6 + 1.6 * f
+                local cnt = 0
+                repeat
+                    if lastPos > 1 + 1 then
+                        TABLE.clear(uMS_temp)
+                        for i = 1, lastPos - 1 do uMS_temp[i] = CD[i] end
+                        TABLE.shuffle(uMS_temp)
+                        for i = 1, #uMS_temp do CD[i] = uMS_temp[i] end
                     end
-                end
+                    if lastPos < #CD - 1 then
+                        TABLE.clear(uMS_temp)
+                        for i = lastPos + 1, #CD do uMS_temp[i - lastPos] = CD[i] end
+                        TABLE.shuffle(uMS_temp)
+                        for i = lastPos + 1, #CD do CD[i] = uMS_temp[i - lastPos] end
+                    end
+
+                    cnt = cnt + 1
+                    local unmoveCnt = 0
+                    for i = 1, #uMS_CDsnapshot do
+                        if uMS_CDsnapshot[i] == CD[i] then
+                            unmoveCnt = unmoveCnt + 1
+                        end
+                    end
+                    if unmoveCnt <= 3 then
+                        local totalDist = 0
+                        for i = 1, #CD do
+                            totalDist = totalDist + abs(i - TABLE.find(CD, uMS_CDsnapshot[i]))
+                        end
+                        if abs(totalDist - messiness_expected) <= 5 + cnt / 26 then break end
+                    end
+                until cnt >= 126
             else
                 local w = max(GAME.floor, GAME.negFloor) <= 8 and 2 or 3
                 local r
