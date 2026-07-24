@@ -18,7 +18,7 @@ function scene.update(dt)
     elseif t1 > 0 then
         t1 = t1 - dt
         if t1 <= 0 then
-            if SCN.args[1] then
+            if SCN.args[1] == 'reset' or SCN.args[1] == 'load' then
                 GAME.bgH, GAME.height = 0, 0
                 GAME.prevPB = -2600
                 GAME.finishTera = false
@@ -45,6 +45,8 @@ function scene.update(dt)
                 Initialize(true)
                 GAME.clearResultStat()
                 collectgarbage()
+            elseif SCN.args[1] ~= nil then
+                MSG('error', "Invalid launching argument: " .. tostring(SCN.args[1]) .. "\nPlease report to the dev!", 26)
             end
             if not initialized then
                 BGM.setMaxSources(42)
