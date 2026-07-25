@@ -142,7 +142,9 @@ local upgradeFunc = {
         return 188
     end,
     [188] = function()
-        STAT.hid = STAT.hid:sub(1, 12) .. math.random(26000, 42000) .. math.random(42000, 62000)
+        if not (tonumber(STAT.hid) and #STAT.hid == 22) then
+            STAT.hid = STAT.hid:sub(1, 12) .. math.random(26000, 42000) .. math.random(42000, 62000)
+        end
         return 189
     end,
     [189] = function()
