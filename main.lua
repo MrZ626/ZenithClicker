@@ -577,15 +577,15 @@ end
 
 function LoadSave()
     -- Fill BEST, STAT, ACHV tables with actual save data, only called after InitProfile()
-    local stat = FILE.safeLoad('stat.luaon', '-luaon')
-    if stat then
+    if FILE.exist('stat.luaon') then
+        local stat = FILE.load('stat.luaon', '-luaon')
         TABLE.update(STAT, stat)
         if not STAT.srTimer_game then
             STAT.srTimer_game, STAT.srTimer_life = STAT.totalTime, MATH.roundUnit(STAT.totalTime * 1.26, .001)
         end
     end
-    TABLE.update(BEST, FILE.safeLoad('best.luaon', '-luaon') or NONE)
-    TABLE.update(ACHV, FILE.safeLoad('achv.luaon', '-luaon') or NONE)
+    if FILE.exist('best.luaon') then TABLE.update(BEST, FILE.load('best.luaon', '-luaon')) end
+    if FILE.exist('achv.luaon') then TABLE.update(ACHV, FILE.load('achv.luaon', '-luaon')) end
 end
 
 -- Functions: Game Progress
