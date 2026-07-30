@@ -2281,6 +2281,7 @@ local function task_startSpin()
         GAME.weakShuffleCards(0)
     elseif URM and M.MS == 2 then
         TABLE.shuffle(CD)
+        GAME.refreshLayout()
     elseif M.MS == 2 then
         GAME.shuffleCards(2.6)
     end
