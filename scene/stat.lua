@@ -13,6 +13,14 @@ local titleColor = { CLR.HEX("16582D") }
 local textColor = { CLR.HEX("54B06D") }
 local scoreColor = { CLR.HEX("B0FFC0") }
 local setup = { stencil = true, card }
+local clickerStarHue = {
+    r = 0 / 6,
+    y = 1 / 6 - .06,
+    g = 2 / 6 - .08,
+    c = 3 / 6 - .02,
+    b = 4 / 6 - .1,
+    m = 5 / 6 - .1,
+}
 
 local sawMap = {
     { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 },
@@ -155,9 +163,14 @@ function RefreshProfile()
     if STAT.clicker then
         GC.setColor(1, 1, 1)
         GC.mDraw(TEXTURE.stat.clicker, 970, 182, 0, .626)
-        for i = 0, GetClickerLv(rating, cap) - 1 do
+        local clickerLV = GetClickerStar(rating, cap)
+        for i = 0, #clickerLV - 1 do
+            local clr = clickerLV:sub(i + 1, i + 1)
+            SHADER.hueShift:send('hueShift', clickerStarHue[clr])
+            GC.setShader(SHADER.hueShift)
             GC.mDraw(TEXTURE.stat.clicker_star, 879 - i * 34, 182, 0, .626)
         end
+        GC.setShader()
     end
 
     -- Introduction

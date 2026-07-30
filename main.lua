@@ -590,6 +590,24 @@ end
 
 -- Functions: Game Progress
 
+---@return boolean
+function AchvCompAllPlat()
+    for i = 1, #Achievements do
+        local A = Achievements[i]
+        if A.id and A.type == 'competitive' and (not ACHV[A.id] or A.rank(ACHV[A.id]) < 4) then return false end
+    end
+    return true
+end
+
+---@return boolean
+function AchvAllDimd()
+    for i = 1, #Achievements do
+        local A = Achievements[i]
+        if A.id and (not ACHV[A.id] or A.type ~= 'issued' and A.rank(ACHV[A.id]) < 5) then return false end
+    end
+    return true
+end
+
 local function norm(x, k) return 1 + (x - 1) / (k * x + 1) end
 function CalculateCR()
     local deck = ModData.deck
@@ -670,14 +688,44 @@ function RankAvailable()
     return STAT.totalTime / 60 + STAT.totalFloor / 9 + STAT.totalGiga / 2 > 62
 end
 
-function GetClickerLv(rating, cap)
+---@return string starColors
+function GetClickerStar(rating, cap)
     if not rating then rating, cap = CalculateCR() end
-    local lv = 0
-    if STAT.totalTime >= 3600 * 26 then lv = lv + 1 end
-    if STAT.maxHeight >= 10000 and STAT.minTime <= 42 then lv = lv + 1 end
-    if MATH.sumAll(GAME.completion) == 2 * #ModData.deck then lv = lv + 1 end
-    if rating >= 25000 then lv = lv + 1 end
-    if rating == cap then lv = lv + 1 end
+    local lv = ''
+
+    local FO, rSR, uF10, uSR = 0, 0, 0, 0
+    for i = 1, #ModData.deck do
+        local id = ModData.deck[i].id
+        if BEST.highScore[id] >= 6200 then FO = FO + 1 end
+        if BEST.highScore['ur' .. id] >= Floors[9].top then uF10 = uF10 + 1 end
+        if BEST.speedrun['r' .. id] < 1e99 then rSR = rSR + 1 end
+        if BEST.speedrun['ur' .. id] < 1e99 then uSR = uSR + 1 end
+    end
+
+    -- Total time, All stars
+    if STAT.totalTime >= 3600 * 26 then lv = lv .. 'r' end
+    if MATH.sumAll(GAME.completion) == 2 * #ModData.deck then lv = lv .. 'r' end
+
+    -- Max height, Fastest speed
+    if STAT.maxHeight >= 10000 then lv = lv .. 'y' end
+    if STAT.minTime <= 42 then lv = lv .. 'y' end
+
+    -- Achievements
+    if AchvCompAllPlat() then lv = lv .. 'g' end
+    if AchvAllDimd() then lv = lv .. 'g' end
+
+    -- Upright FΩ, Reversed SR
+    if FO == #ModData.deck then lv = lv .. 'c' end
+    if rSR == #ModData.deck then lv = lv .. 'c' end
+
+    -- Ultra F10, Ultra SR
+    if uF10 == #ModData.deck then lv = lv .. 'b' end
+    if uSR == #ModData.deck then lv = lv .. 'b' end
+
+    -- Clicker Rating
+    if rating >= 25000 then lv = lv .. 'm' end
+    if rating == cap then lv = lv .. 'm' end
+
     return lv
 end
 
