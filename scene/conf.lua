@@ -1168,6 +1168,7 @@ for i = 1, #pages do
         end
     end
 end
+for _, W in next, tab do W.sound_hover = 'menutap' end
 
 scene.widgetList = {}
 for i = 1, #pages do TABLE.append(scene.widgetList, pages[i]) end
