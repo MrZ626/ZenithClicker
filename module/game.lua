@@ -1903,9 +1903,9 @@ function GAME.commit(auto)
                 end
                 SFX.play('clearline')
                 SFX.play(
-                    GAME.chain < 8 and 'b2bcharge_blast_1' or
-                    GAME.chain < 12 and 'b2bcharge_blast_2' or
-                    GAME.chain < 24 and 'b2bcharge_blast_3' or
+                    GAME.chain < 7 and 'b2bcharge_blast_1' or
+                    GAME.chain < 11 and 'b2bcharge_blast_2' or
+                    GAME.chain < 23 and 'b2bcharge_blast_3' or
                     'b2bcharge_blast_4'
                 )
                 if GAME.chain >= 8 then SFX.play('thunder' .. rnd(6), clampInterpolate(8, .7, 16, 1, GAME.chain)) end
