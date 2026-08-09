@@ -936,7 +936,7 @@ function scene.draw()
             end
             -- Revive counter
             if GAME.reviveCount > 0 then
-                gc_strokePrint('full', 1, CLR.D, COLOR.lR, GAME.reviveCount, 800, 440, 260, 'center')
+                gc_strokePrint('full', 1, CLR.D, COLOR.lR, GAME.reviveCount, 0, 212, 260, 'center')
             end
 
             gc_pop()
