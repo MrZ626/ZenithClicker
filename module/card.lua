@@ -301,7 +301,11 @@ end
 
 function Card:revJump()
     local h = 355
-    if URM and self.id == 'EX' then h = h * 1.626 end
+    if self.id == 'EX' then
+        h = h * (URM and 1.626 or 1.26)
+    elseif self.id == 'GV' then
+        h = h * (URM and .42 or .62)
+    end
     TWEEN.tag_kill('shake_' .. self.id)
     TWEEN.new(function(t)
         t = t * (t - 1) * 4
