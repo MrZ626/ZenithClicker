@@ -1456,15 +1456,15 @@ function Daemon_Fast()
                 if skipNextShuffle then
                     if M.MS == 0 then
                         if MSactive then
-                            for i = 1, deckSize do Cards[i].visY = 0 end
+                            for i = 1, deckSize do Cards[i].dy_ms = 0 end
                             GAME.refreshLayout()
                         end
                         MSactive = false
                     else
                         if URM and M.MS == 2 then
-                            for i = 1, deckSize do Cards[i].visY = math.random(-42, 42) end
+                            for i = 1, deckSize do Cards[i].dy_ms = math.random(-42, 42) end
                         else
-                            for i = 1, deckSize do Cards[i].visY = M.MS * math.random(-4, 4) end
+                            for i = 1, deckSize do Cards[i].dy_ms = M.MS * math.random(-4, 4) end
                         end
                         MSactive = true
                         GAME.refreshLayout()
@@ -1650,7 +1650,7 @@ TEXTS.version:set(SYSTEM .. (CONF.oldHitbox and " T" or " V") .. (require 'versi
 GAME.refreshCurrentCombo()
 
 GAME.refreshLayout()
-for i, C in ipairs(Cards) do C.x, C.y = C.tx, C.ty + 260 + 26 * 1.6 ^ i end
+for i, C in ipairs(Cards) do C.x1, C.y1 = C.x, C.y + 260 + 26 * 1.6 ^ i end
 
 if SYSTEM == 'Web' then
     _G[('DiscordRPC')] = { update = NULL, setEnable = NULL }

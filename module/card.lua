@@ -27,18 +27,17 @@ function Card.new(d)
         upright = true,
 
         -- Posiition & Size
-        tx = 0,
-        ty = 0,
+        x = 0,
+        y = 0,
         size = .62,
 
         -- Display-only values
-        x = 0,     -- X position
-        y = 0,     -- Y position
+        x1 = 0,    -- X position
+        y1 = 0,    -- Y position
         kx = 1,    -- size on X-axis
         ky = 1,    -- size on Y-axis
         r = 0,     -- rotation
-        visY = 0,  -- extra delta Y for MS animation
-        visY1 = 0, -- animation of visY
+        dy_ms = 0, -- extra delta Y for MS animation
         float = 0, -- mouse floating animation, 0-1
 
         touchCount = 0,
@@ -53,8 +52,8 @@ end
 
 function Card:mouseOn(x, y)
     return
-        abs(x - self.tx) <= self.size * (480 / 2) and
-        abs(y - self.ty) <= self.size * (660 / 2)
+        abs(x - self.x) <= self.size * (480 / 2) and
+        abs(y - self.y) <= self.size * (660 / 2)
 end
 
 local completion = GAME.completion
@@ -218,7 +217,7 @@ function Card:setActive(auto, key)
         local postfix = revOn and '_reverse' or ''
         SFX.play(
             GAME.glassCard and 'harddrop' or 'card_select' .. postfix, 1, 0,
-            key and clampInterpolate(-200, -4.2, 200, 4.2, self.y - MY) or MATH.rand(-2.6, 2.6)
+            key and clampInterpolate(-200, -4.2, 200, 4.2, self.y1 - MY) or MATH.rand(-2.6, 2.6)
         )
         local toneName = 'card_tone_' .. ModData.name[self.id]
         local toneVol = GAME.playing and .8 + GAME.floor * .02 - (GAME.gigaspeed and .26 or 0) or 1
@@ -297,7 +296,7 @@ local bounceEase = { 'linear', 'inQuad' }
 function Card:bounce(height, duration)
     TWEEN.tag_kill('shake_' .. self.id)
     TWEEN.new(function(t)
-        self.y = self.ty + t * (t - 1) * height
+        self.y1 = self.y + t * (t - 1) * height
     end):setUnique('bounce_' .. self.id):setEase(bounceEase):setDuration(duration):run()
 end
 
@@ -311,7 +310,7 @@ function Card:revJump()
     TWEEN.tag_kill('shake_' .. self.id)
     TWEEN.new(function(t)
         t = t * (t - 1) * 4
-        self.y = self.ty + t * h
+        self.y1 = self.y + t * h
         self.size = .62 - .355 * t
     end):setUnique('revJump_' .. self.id):setEase(bounceEase):setDuration(.62 * (h / 355) ^ .5):run()
         :setOnFinish(function()
@@ -338,8 +337,8 @@ function Card:revJump()
                     r = (color[1] - .26) * .8,
                     g = (color[2] - .26) * .8,
                     b = (color[3] - .26) * .8,
-                    x = self.x,
-                    y = self.y,
+                    x = self.x1,
+                    y = self.y1,
                     t = 1,
                     tk = GAME.slowmo and .26 or 1,
                 })
@@ -401,9 +400,8 @@ local activeFrame2 = GC.newImage('assets/card/outline2.png')
 local frame2W, frame2H = activeFrame2:getWidth() / 2, activeFrame2:getHeight() / 2
 
 function Card:update(dt)
-    self.x = expApproach(self.x, self.tx, dt * 16)
-    self.y = expApproach(self.y, self.ty, dt * 16)
-    self.visY1 = expApproach(self.visY1, self.visY, dt * 26)
+    self.x1 = expApproach(self.x1, self.x, dt * 16)
+    self.y1 = expApproach(self.y1, self.y + self.dy_ms, dt * 16)
     self.float = expApproach(self.float, CD[FloatOnCard] == self and 1 or 0, dt * 12)
     if self.burn then
         self.burn = self.burn - dt
@@ -471,7 +469,7 @@ function Card:draw()
     end
 
     gc_push('transform')
-    gc_translate(self.x, self.y + self.visY1)
+    gc_translate(self.x1, self.y1)
     gc_rotate(self.r)
     if not playing and not self.upright then gc_rotate(3.1416) end
     gc_scale(abs(self.size * self.kx), self.size * self.ky)
@@ -480,7 +478,7 @@ function Card:draw()
         -- EX scale
         if M.EX > 0 and love.mouse.isDown(1, 2) then gc_scale(.9) end
         -- Fake 3D
-        local dx, dy = (MX - self.x) / (240 * self.size), (MY - self.y) / (330 * self.size)
+        local dx, dy = (MX - self.x1) / (240 * self.size), (MY - self.y1) / (330 * self.size)
         local d = (abs(dx) - abs(dy)) * .026
         gc_scale(min(1, 1 - d), min(1, 1 + d))
         local D = -sign(dx * dy) * abs(dx * dy) ^ .626 * .026
@@ -504,7 +502,7 @@ function Card:draw()
                         a2 = .6 + .4 * self.float
                     end
                 else
-                    r1, g1, b1 = .4 + .1 * sin(GAME.time * 42 - self.x * .0026), 0, 0
+                    r1, g1, b1 = .4 + .1 * sin(GAME.time * 42 - self.x1 * .0026), 0, 0
                     a1 = 1
                 end
             else
@@ -515,7 +513,7 @@ function Card:draw()
                         if M.IN == 0 then
                             if GAME.hardMode then qt = qt - 1.5 end
                             a1 = clampInterpolate(1, 0, 2, .4, qt) +
-                                clampInterpolate(1.2, 0, 2.6, .2, qt) * sin(qt * 26 - self.x * .0026)
+                                clampInterpolate(1.2, 0, 2.6, .2, qt) * sin(qt * 26 - self.x1 * .0026)
                         elseif M.IN == 1 then
                             if GAME.hardMode then qt = qt * .626 end
                             a1 = -.1 + .4 * sin(3.1416 + qt * 3)

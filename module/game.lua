@@ -1516,20 +1516,20 @@ function GAME.refreshLayout()
         for i = 1, #CD do
             local C = CD[i]
             if i < FloatOnCard then
-                C.tx = MATH.interpolate(1, baseL, FloatOnCard - 1, selX - dodge, i)
-                if C.tx ~= C.tx then C.tx = baseL end -- NaN check
+                C.x = MATH.interpolate(1, baseL, FloatOnCard - 1, selX - dodge, i)
+                if C.x ~= C.x then C.x = baseL end -- NaN check
             elseif i > FloatOnCard then
-                C.tx = MATH.interpolate(#CD, baseR, FloatOnCard + 1, selX + dodge, i)
-                if C.tx ~= C.tx then C.tx = baseR end -- NaN check
+                C.x = MATH.interpolate(#CD, baseR, FloatOnCard + 1, selX + dodge, i)
+                if C.x ~= C.x then C.x = baseR end -- NaN check
             else
-                C.tx = selX
+                C.x = selX
             end
-            C.ty = baseY - ((C.active and 45 or 0) + (i == FloatOnCard and 55 or 0))
+            C.y = baseY - ((C.active and 45 or 0) + (i == FloatOnCard and 55 or 0))
         end
     else
         for i, C in ipairs(CD) do
-            C.tx = 800 + (i - 5) * baseDist
-            C.ty = baseY - ((C.active and 45 or 0) + (i == FloatOnCard and 55 or 0))
+            C.x = 800 + (i - 5) * baseDist
+            C.y = baseY - ((C.active and 45 or 0) + (i == FloatOnCard and 55 or 0))
         end
     end
 end
