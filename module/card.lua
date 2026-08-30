@@ -26,18 +26,20 @@ function Card.new(d)
         front = true,
         upright = true,
 
-        x = 0,
-        y = 0,
-        kx = 1,
-        ky = 1,
-        size = .62,
-        r = 0,
+        -- Posiition & Size
         tx = 0,
         ty = 0,
-        visY = 0,
-        visY1 = 0,
+        size = .62,
 
-        float = 0,
+        -- Display-only values
+        x = 0,     -- X position
+        y = 0,     -- Y position
+        kx = 1,    -- size on X-axis
+        ky = 1,    -- size on Y-axis
+        r = 0,     -- rotation
+        visY = 0,  -- extra delta Y for MS animation
+        visY1 = 0, -- animation of visY
+        float = 0, -- mouse floating animation, 0-1
 
         touchCount = 0,
         burn = false,
