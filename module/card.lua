@@ -51,8 +51,8 @@ end
 
 function Card:mouseOn(x, y)
     return
-        abs(x - self.tx) <= self.size * 240 and
-        abs(y - self.ty) <= self.size * 330
+        abs(x - self.tx) <= self.size * (480 / 2) and
+        abs(y - self.ty) <= self.size * (660 / 2)
 end
 
 local completion = GAME.completion

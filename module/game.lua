@@ -1517,10 +1517,10 @@ function GAME.refreshLayout()
             local C = CD[i]
             if i < FloatOnCard then
                 C.tx = MATH.interpolate(1, baseL, FloatOnCard - 1, selX - dodge, i)
-                if C.tx ~= C.tx then C.tx = baseL end
+                if C.tx ~= C.tx then C.tx = baseL end -- NaN check
             elseif i > FloatOnCard then
                 C.tx = MATH.interpolate(#CD, baseR, FloatOnCard + 1, selX + dodge, i)
-                if C.tx ~= C.tx then C.tx = baseR end
+                if C.tx ~= C.tx then C.tx = baseR end -- NaN check
             else
                 C.tx = selX
             end

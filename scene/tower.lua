@@ -1095,12 +1095,6 @@ function scene.overDraw()
         end
     end
 
-    -- Debug
-    -- setFont(30) gc_setColor(1, 1, 1)
-    -- for i = 1, #Cards do
-    --     gc.print(Cards[i].ty, Cards[i].x, Cards[i].y-260)
-    -- end
-
     -- bottom in-game UI
     if GAME.uiHide > 0 and not GAME.invisUI then
         local h = 100 - GAME.uiHide * 100
@@ -1199,6 +1193,13 @@ function scene.overDraw()
     else
         for i = #Cards, 1, -1 do Cards[i]:draw() end
     end
+
+    -- Debug
+    -- setFont(30); gc_setLineWidth(1); gc_setColor(1, 1, 1)
+    -- for i = 1, #Cards do
+    --     local c = Cards[i]
+    --     GC.mRect('line', c.tx, c.ty, 240 * 2 * c.size, 330 * 2 * c.size)
+    -- end
 
     -- AS keyboard hint
     if M.AS > 0 and M.EX == 0 then
