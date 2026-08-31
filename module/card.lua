@@ -152,7 +152,6 @@ function Card:setActive(auto, key)
         TASK.new(task_refreshBGM)
         if wasRev and not revOn then
             self:revCancel()
-            self:spin()
         end
         if self.id == 'EX' then
             TWEEN.new(tween_expertOn):setDuration(M.EX > 0 and .26 or .1):run()
@@ -347,9 +346,11 @@ function Card:revJump()
                 end
             end
         end)
+    local rot = self.id == 'AS' and 3 * 3.1416 or 3.1416
+    local ease = self.id == 'GV' and 'OutQuart' or 'OutBack'
     TWEEN.new(function(t)
-        self.r_2d_rev = t * 3.1416
-    end):setUnique('spin2D_' .. self.id):setEase('OutQuart'):setDuration(GAME.slowmo and 2.6 or .52):run()
+        self.r_2d_rev = t * rot
+    end):setUnique('spin2D_' .. self.id):setEase(ease):setDuration(GAME.slowmo and 2.6 or .52):run()
 end
 
 function Card:revCancel()
@@ -743,7 +744,7 @@ function Card:draw()
         meshVertices[i][1], meshVertices[i][2] = focal * x / (z + focal), focal * y / (z + focal)
     end
     tempMesh:setVertices(meshVertices)
-    gc_draw(tempMesh, self.x1, self.y1, self.r_2d_rev + self.r_2d_shake, self.size)
+    gc_draw(tempMesh, self.x1, self.y1, playing and self.r_2d_shake or self.r_2d_rev + self.r_2d_shake, self.size)
 end
 
 return Card
