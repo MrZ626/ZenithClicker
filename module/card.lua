@@ -255,7 +255,7 @@ function Card:flip()
     local s, e = self.r_3d_in, self.front and 0 or 3.1416
     TWEEN.new(function(t)
         self.r_3d_in = lerp(s, e, t)
-    end):setUnique('flip_' .. self.id):setEase('OutQuad'):setDuration(.26):run()
+    end):setUnique('flip_' .. self.id):setEase('OutQuad'):setDuration(GAME.slowmo and 1 or .26):run()
 end
 
 function Card:spin()
@@ -264,7 +264,7 @@ function Card:spin()
     local rot = (M.AS + 1) * 6.2832
     TWEEN.new(function(t)
         self.r_3d = t * rot
-    end):setUnique('spin_' .. self.id):setEase(ease):setDuration(M.IN == 2 and .62 or .42):run()
+    end):setUnique('spin_' .. self.id):setEase(ease):setDuration(M.IN == 2 and (GAME.slowmo and 2.6 or .62) or (GAME.slowmo and 1.62 or .42)):run()
         :setOnKill(function()
             self.r_3d = re
         end)
@@ -274,7 +274,7 @@ local bounceEase = { 'linear', 'inQuad' }
 function Card:bounce(height, duration)
     TWEEN.new(function(t)
         self.y1 = self.y + t * (t - 1) * height
-    end):setUnique('bounce_' .. self.id):setEase(bounceEase):setDuration(duration):run()
+    end):setUnique('bounce_' .. self.id):setEase(bounceEase):setDuration(GAME.slowmo and 2.6 * duration or duration):run()
 end
 
 function Card:revJump()
@@ -288,11 +288,11 @@ function Card:revJump()
         t = t * (t - 1) * 4
         self.y1 = self.y + t * h
         self.size = .62 - .355 * t
-    end):setUnique('revJump_' .. self.id):setEase(bounceEase):setDuration(.62 * (h / 355) ^ .5):run()
+    end):setUnique('revJump_' .. self.id):setEase(bounceEase):setDuration((GAME.slowmo and 2.6 or .62) * (h / 355) ^ .5):run()
         :setOnFinish(function()
             local currentState = M[self.id]
             if currentState == 2 then
-                TWEEN.new(tween_deckPress):setUnique('DeckPress'):setEase('OutQuad'):setDuration(.42):run()
+                TWEEN.new(tween_deckPress):setUnique('DeckPress'):setEase('OutQuad'):setDuration(GAME.slowmo and 1.62 or .42):run()
                 if self.id ~= 'NH' then
                     for _, C in ipairs(CD) do
                         if C ~= self then
@@ -349,13 +349,13 @@ function Card:revJump()
         end)
     TWEEN.new(function(t)
         self.r_2d_rev = t * 3.1416
-    end):setUnique('spin2D_' .. self.id):setEase('OutQuart'):setDuration(.52):run()
+    end):setUnique('spin2D_' .. self.id):setEase('OutQuart'):setDuration(GAME.slowmo and 2.6 or .52):run()
 end
 
 function Card:revCancel()
     TWEEN.new(function(t)
         self.r_2d_rev = (1 - t) * 3.1416
-    end):setUnique('spin2D_' .. self.id):setEase('OutQuart'):setDuration(.26):run()
+    end):setUnique('spin2D_' .. self.id):setEase('OutQuart'):setDuration(GAME.slowmo and 1 or .26):run()
 end
 
 function Card:shake()
@@ -363,13 +363,13 @@ function Card:shake()
     local s, e = self.r_2d_shake, 0
     TWEEN.new(function(t)
         self.r_2d_shake = lerp(s, e, t)
-    end):setUnique('shake_' .. self.id):setEase('OutBack'):setDuration(.2):run()
+    end):setUnique('shake_' .. self.id):setEase('OutBack'):setDuration(GAME.slowmo and 1 or .2):run()
 end
 
 function Card:flick()
     TWEEN.new(function(t)
         self.size = lerp(.56, .62, t)
-    end):setUnique('flick_' .. self.id):setEase('OutBack'):setDuration(.26):run()
+    end):setUnique('flick_' .. self.id):setEase('OutBack'):setDuration(GAME.slowmo and 1 or .26):run()
 end
 
 local activeFrame = GC.newImage('assets/card/outline1.png')
