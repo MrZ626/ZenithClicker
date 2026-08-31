@@ -362,7 +362,7 @@ function scene.draw()
         drawSliderComponents(220, "BG  BRIGHTNESS", "DARK (F7)", "BRIGHT (F8)", CONF.bgBrightness)
         drawSliderComponents(300, "BOARD  OPACITY", "TRANSPARENT", "OPAQUE", CONF.boardOpacity)
         drawSliderComponents(380, "DAMAGE  SHAKINESS", "STIFF", "SHAKY", CONF.damageShakiness)
-        drawSliderComponents(460, "CARD  3D  ROT.  FOCAL", "CLOSE", "FAR", CONF.rot3D_focal)
+        drawSliderComponents(460, "CARD  3D  ROT.  FOCAL", "FAR", "CLOSE", CONF.rot3D_focal)
         drawSliderComponents(540, "CARD  3D  ROT.  TILT", "PLAIN", "TILT", CONF.rot3D_tilt)
     elseif page == 3 then
         if resetall_anim > .1 then
@@ -1171,8 +1171,8 @@ end
 
 -- Tabs
 local tab = {
-    newTabBtn("GEN   ", 140 + 90 * 0, '1'),
-    newTabBtn("VID   ", 140 + 90 * 1, '2'),
+    newTabBtn("GENRL  ", 140 + 90 * 0, '1'),
+    newTabBtn("VIDEO  ", 140 + 90 * 1, '2'),
     newTabBtn("USER   ", 140 + 90 * 2, '3'),
     newTabBtn("ALB   ", 140 + 90 * 3, '4'),
     WIDGET.new {

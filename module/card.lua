@@ -738,7 +738,7 @@ function Card:draw()
 
     gc_pop()
 
-    local f = 600 + 20 * CONF.rot3D_focal
+    local f = 2600 - 20 * CONF.rot3D_focal
     local t = CONF.rot3D_tilt * .0042
     for i = 1, #meshVerticePosTemplate do
         local x, y, z = meshVerticePosTemplate[i][1], meshVerticePosTemplate[i][2], 0
