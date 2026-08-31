@@ -639,12 +639,16 @@ function Card:draw()
 
         -- Outline (draw)
         if a1 then
+            gc_setBlendMode('alpha', 'premultiplied')
             gc_setColor(r1, g1, b1, a1)
-            gc_draw(activeFrame, 0, 0, 0, 1, 1, frame1W, frame1H)
+            gc_draw(activeFrame, -frame1W, -frame1H)
+            gc_setBlendMode('alpha')
         end
         if a2 then
+            gc_setBlendMode('alpha', 'premultiplied')
             gc_setColor(r2, g2, b2, a2)
-            gc_draw(activeFrame2, 0, 0, 0, 1, 1, frame2W, frame2H)
+            gc_draw(activeFrame2, -frame2W, -frame2H)
+            gc_setBlendMode('alpha')
         end
 
         -- Menu UI
