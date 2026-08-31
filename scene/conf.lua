@@ -2,11 +2,12 @@
 local scene = {}
 
 
--- 1. Video & Audio
--- 2. User
--- 3. Album
+-- 1. General
+-- 2. Video
+-- 3. User
+-- 4. Album
 local page = 1
-local maxPage = 3
+local maxPage = 4
 local uidList = {} ---@type ({uid: string, modTime?: string} | false)[]
 
 local anonUser
@@ -255,7 +256,7 @@ function scene.keyDown(key, isRep)
                 SFX.play('menuclick')
                 refreshWidgets()
             end
-        elseif page == 3 then
+        elseif page == 4 then
             if key == 'left' then
                 TASK.removeTask_code(Task_MusicEnd)
                 BGM.set('all', 'seek', math.max(BGM.tell() - (KBisDown('lctrl', 'rctrl') and 26 or 5), 0))
@@ -314,7 +315,7 @@ function scene.update(dt)
         refreshSongInfo()
         playing = SongNamePlaying
     end
-    if page == 3 and (BgmPlaying == 'tera' or BgmPlaying == 'terar') then
+    if page == 4 and (BgmPlaying == 'tera' or BgmPlaying == 'terar') then
         GAME.height = GAME.height + dt * (BgmPlaying == 'tera' and 20 or 42) * (GAME.height >= 1650 and .2 or 1)
         if GAME.height >= 1726 then GAME.bgH, GAME.height = -30, -30 end
         dt = dt * 2.6
@@ -347,13 +348,8 @@ function scene.draw()
     local t = love.timer.getTime()
     if page == 1 then
         -- Sliders
-        drawSliderComponents(120, "EFFECT VOLUME", "QUIET (F3)", "LOUD (F3)", CONF.sfx)
-        drawSliderComponents(190, "MUSIC VOLUME", "QUIET (F4)", "LOUD (F4)", CONF.bgm)
-        drawSliderComponents(380, "CARD  BRIGHTNESS", "DARK (F5)", "BRIGHT (F6)", CONF.cardBrightness)
-        drawSliderComponents(450, "BG  BRIGHTNESS", "DARK (F7)", "BRIGHT (F8)", CONF.bgBrightness)
-        drawSliderComponents(520, "BOARD  OPACITY", "TRANSPARENT", "OPAQUE", CONF.boardOpacity)
-        drawSliderComponents(590, "DAMAGE  SHAKINESS", "STIFF", "SHAKY", CONF.damageShakiness)
-
+        drawSliderComponents(140, "EFFECT VOLUME", "QUIET (F3)", "LOUD (F3)", CONF.sfx)
+        drawSliderComponents(220, "MUSIC VOLUME", "QUIET (F4)", "LOUD (F4)", CONF.bgm)
         -- Keybind
         if bindBuffer then
             setFont(30)
@@ -361,6 +357,14 @@ function scene.draw()
             gc_print(bindHint[#bindBuffer + 1], 600, 700, 0, .872)
         end
     elseif page == 2 then
+        -- Sliders
+        drawSliderComponents(140, "CARD  BRIGHTNESS", "DARK (F5)", "BRIGHT (F6)", CONF.cardBrightness)
+        drawSliderComponents(220, "BG  BRIGHTNESS", "DARK (F7)", "BRIGHT (F8)", CONF.bgBrightness)
+        drawSliderComponents(300, "BOARD  OPACITY", "TRANSPARENT", "OPAQUE", CONF.boardOpacity)
+        drawSliderComponents(380, "DAMAGE  SHAKINESS", "STIFF", "SHAKY", CONF.damageShakiness)
+        drawSliderComponents(460, "CARD  3D  ROT.  FOCAL", "CLOSE", "FAR", CONF.rot3D_focal)
+        drawSliderComponents(540, "CARD  3D  ROT.  TILT", "PLAIN", "TILT", CONF.rot3D_tilt)
+    elseif page == 3 then
         if resetall_anim > .1 then
             local t2 = MATH.iLerp(.1, 1, resetall_anim)
             gc_setColor(1, 1, 1, t2 * .42)
@@ -396,7 +400,7 @@ function scene.draw()
                 gc_mStr("[empty]", 140, y - 20)
             end
         end
-    elseif page == 3 then
+    elseif page == 4 then
         -- Music player
         local len = 800
 
@@ -501,18 +505,18 @@ end
 -- widget lists of each page, will be registered to scene.widgetList at the end
 local pages = {}
 
-local videoY = baseY + 310
 pages[1] = {
+    -- General
     WIDGET.new { -- title
         type = 'text', alignX = 'left',
-        text = "AUDIO",
+        text = "GENERAL",
         color = clr.T,
         fontSize = 50,
         x = baseX + 30, y = baseY + 50,
     },
     WIDGET.new { -- sfx
         type = 'slider',
-        x = baseX + 240 + 85, y = baseY + 110, w = 400,
+        x = baseX + 240 + 85, y = baseY + 140, w = 400,
         axis = { 0, 100, 10 },
         frameColor = 'dD', fillColor = clr.D,
         disp = function() return CONF.sfx end,
@@ -524,7 +528,7 @@ pages[1] = {
     },
     WIDGET.new { -- bgm
         type = 'slider',
-        x = baseX + 240 + 85, y = baseY + 180, w = 400,
+        x = baseX + 240 + 85, y = baseY + 220, w = 400,
         axis = { 0, 100, 10 },
         frameColor = 'dD', fillColor = clr.D,
         disp = function() return CONF.bgm end,
@@ -539,83 +543,42 @@ pages[1] = {
         fillColor = clr.cbFill,
         frameColor = clr.cbFrame,
         textColor = clr.T, text = "MUTE ON UNFOCUS",
-        x = baseX + 55, y = baseY + 255,
+        x = baseX + 55, y = baseY + 290,
         disp = function() return CONF.autoMute end,
         code = function() CONF.autoMute = not CONF.autoMute end,
-    },
-    -- Video
-    WIDGET.new { -- title
-        type = 'text', alignX = 'left',
-        text = "VIDEO",
-        color = clr.T,
-        fontSize = 50,
-        x = baseX + 30, y = videoY + 0,
-    },
-    WIDGET.new { -- card brightness
-        type = 'slider',
-        x = baseX + 240 + 85, y = videoY + 60, w = 400,
-        axis = { 80, 100, 5 },
-        frameColor = 'dD', fillColor = clr.D,
-        disp = function() return CONF.cardBrightness end,
-        code = function(value) CONF.cardBrightness = value end,
-        sound_drag = 'rotate',
-    },
-    WIDGET.new { -- bg brightness
-        type = 'slider',
-        x = baseX + 240 + 85, y = videoY + 130, w = 400,
-        axis = { 30, 80, 10 },
-        frameColor = 'dD', fillColor = clr.D,
-        disp = function() return CONF.bgBrightness end,
-        code = function(value) CONF.bgBrightness = value end,
-        sound_drag = 'rotate',
-    },
-    WIDGET.new { -- board opacity
-        type = 'slider',
-        x = baseX + 240 + 85, y = videoY + 200, w = 400,
-        axis = { 0, 80, 10 },
-        frameColor = 'dD', fillColor = clr.D,
-        disp = function() return CONF.boardOpacity end,
-        code = function(value) CONF.boardOpacity = value end,
-        sound_drag = 'rotate',
-    },
-    WIDGET.new { -- damage shakiness
-        type = 'slider',
-        x = baseX + 240 + 85, y = videoY + 270, w = 400,
-        axis = { 0, 100, 10 },
-        frameColor = 'dD', fillColor = clr.D,
-        disp = function() return CONF.damageShakiness end,
-        code = function(value) CONF.damageShakiness = value end,
-        sound_drag = 'rotate',
     },
     WIDGET.new { -- fancy
         type = 'checkBox',
         fillColor = clr.cbFill,
         frameColor = clr.cbFrame,
-        textColor = clr.T, text = "FANCY BACKGROUND  (F9)",
-        x = baseX + 55, y = videoY + 350,
+        textColor = clr.T, text = "FANCY BACKGROUND",
+        x = baseX + 55, y = baseY + 360,
         disp = function() return CONF.bg end,
-        code = WIDGET.c_pressKey 'f9',
+        code = function() CONF.bg = not CONF.bg end,
     },
     WIDGET.new { -- star
         type = 'checkBox',
         fillColor = clr.cbFill,
         frameColor = clr.cbFrame,
-        textColor = clr.T, text = "STAR FORCE  (F10)",
-        x = baseX + 55, y = videoY + 410,
+        textColor = clr.T, text = "STAR FORCE",
+        x = baseX + 55, y = baseY + 430,
         disp = function() return not CONF.syscursor end,
-        code = WIDGET.c_pressKey 'f10',
+        code = function()
+            CONF.syscursor = not CONF.syscursor
+            SetMouseVisible(true)
+            ApplySettings()
+        end,
     },
     WIDGET.new { -- fullscreen
         type = 'checkBox',
         fillColor = clr.cbFill,
         frameColor = clr.cbFrame,
         textColor = clr.T, text = "FULLSCREEN  (F11)",
-        x = baseX + 55, y = videoY + 470,
+        x = baseX + 55, y = baseY + 500,
         disp = function() return CONF.fullscreen end,
         code = WIDGET.c_pressKey 'f11',
     },
-    -- Keybind
-    WIDGET.new {
+    WIDGET.new { -- keybind
         type = 'button',
         x = baseX + 730, y = baseY + 770, w = 260, h = 50,
         color = clr.L,
@@ -650,8 +613,72 @@ pages[1] = {
     },
 }
 
-local profY = baseY + 220
 pages[2] = {
+    WIDGET.new { -- title
+        type = 'text', alignX = 'left',
+        text = "VIDEO",
+        color = clr.T,
+        fontSize = 50,
+        x = baseX + 30, y = baseY + 50,
+    },
+    WIDGET.new { -- card brightness
+        type = 'slider',
+        x = baseX + 240 + 85, y = baseY + 140, w = 400,
+        axis = { 80, 100, 5 },
+        frameColor = 'dD', fillColor = clr.D,
+        disp = function() return CONF.cardBrightness end,
+        code = function(value) CONF.cardBrightness = value end,
+        sound_drag = 'rotate',
+    },
+    WIDGET.new { -- bg brightness
+        type = 'slider',
+        x = baseX + 240 + 85, y = baseY + 220, w = 400,
+        axis = { 30, 80, 10 },
+        frameColor = 'dD', fillColor = clr.D,
+        disp = function() return CONF.bgBrightness end,
+        code = function(value) CONF.bgBrightness = value end,
+        sound_drag = 'rotate',
+    },
+    WIDGET.new { -- board opacity
+        type = 'slider',
+        x = baseX + 240 + 85, y = baseY + 300, w = 400,
+        axis = { 0, 80, 10 },
+        frameColor = 'dD', fillColor = clr.D,
+        disp = function() return CONF.boardOpacity end,
+        code = function(value) CONF.boardOpacity = value end,
+        sound_drag = 'rotate',
+    },
+    WIDGET.new { -- damage shakiness
+        type = 'slider',
+        x = baseX + 240 + 85, y = baseY + 380, w = 400,
+        axis = { 0, 100, 10 },
+        frameColor = 'dD', fillColor = clr.D,
+        disp = function() return CONF.damageShakiness end,
+        code = function(value) CONF.damageShakiness = value end,
+        sound_drag = 'rotate',
+    },
+    WIDGET.new { -- 3D rotation focal
+        type = 'slider',
+        x = baseX + 240 + 85, y = baseY + 460, w = 400,
+        axis = { 0, 100, 10 },
+        frameColor = 'dD', fillColor = clr.D,
+        disp = function() return CONF.rot3D_focal end,
+        code = function(value) CONF.rot3D_focal = value end,
+        sound_drag = 'rotate',
+    },
+    WIDGET.new { -- 3D rotation tilt
+        type = 'slider',
+        x = baseX + 240 + 85, y = baseY + 540, w = 400,
+        axis = { 0, 100, 10 },
+        frameColor = 'dD', fillColor = clr.D,
+        disp = function() return CONF.rot3D_tilt end,
+        code = function(value) CONF.rot3D_tilt = value end,
+        sound_drag = 'rotate',
+    },
+}
+
+local profY = baseY + 220
+pages[3] = {
     WIDGET.new { -- title
         type = 'text', alignX = 'left',
         text = "ACCOUNT",
@@ -978,7 +1005,7 @@ end
 local slBtnTextColor = { 0, 0, 0, .62 }
 for i = 1, 3 do
     local y = profY + 330 + (i - 1) * 90
-    TABLE.append(pages[2], {
+    TABLE.append(pages[3], {
         WIDGET.new {
             name = 'save' .. i, type = 'button',
             x = baseX + 355, y = y, w = 160, h = 50,
@@ -990,20 +1017,20 @@ for i = 1, 3 do
             x = baseX + 555, y = y, w = 160, h = 50,
             fontSize = 30, color = 'lY', textColor = slBtnTextColor, text = "LOAD",
             onClick = function() loadSlot(i) end,
-            visibleFunc = function() return page == 2 and uidList[i] end,
+            visibleFunc = function() return page == 3 and uidList[i] end,
         },
         WIDGET.new {
             name = 'clear' .. i, type = 'button',
             x = baseX + 755, y = y, w = 160, h = 50,
             fontSize = 30, color = 'lR', textColor = slBtnTextColor, text = "CLEAR",
             onClick = function() clearSlot(i) end,
-            visibleFunc = function() return page == 2 and uidList[i] end,
+            visibleFunc = function() return page == 3 and uidList[i] end,
         },
     })
 end
 
 local albumY = baseY + 250
-pages[3] = {
+pages[4] = {
     WIDGET.new { -- title
         type = 'text', alignX = 'left',
         text = "ALBUM",
@@ -1062,7 +1089,7 @@ pages[3] = {
     },
 }
 local function albumBtn(param)
-    table.insert(pages[3], WIDGET.new(TABLE.update({
+    table.insert(pages[4], WIDGET.new(TABLE.update({
         type = 'button',
         w = 65,
         fontSize = 30,
@@ -1079,7 +1106,7 @@ for i = 0, 10 do
             PlayBGM('f' .. i)
         end,
         visibleFunc = function()
-            return page == 3 and STAT.maxFloor >= i
+            return page == 4 and STAT.maxFloor >= i
         end,
     }
     albumBtn {
@@ -1090,7 +1117,7 @@ for i = 0, 10 do
             GAME.height = (bgmHeight[i] + bgmHeight[i + 1]) / 2
             PlayBGM('f' .. i .. 'r')
         end,
-        visibleFunc = function() return page == 3 and STAT.maxFloor >= 10 and TABLE.countAll(GAME.completion, 2) > 0 end,
+        visibleFunc = function() return page == 4 and STAT.maxFloor >= 10 and TABLE.countAll(GAME.completion, 2) > 0 end,
     }
 end
 albumBtn {
@@ -1098,14 +1125,14 @@ albumBtn {
     color = bgmColors.tera,
     text = "TERA",
     onClick = function() PlayBGM('tera') end,
-    visibleFunc = function() return page == 3 and ACHV.blazing_speed end,
+    visibleFunc = function() return page == 4 and ACHV.blazing_speed end,
 }
 albumBtn {
     x = baseX + 450 + 140, y = baseY + 610, w = 120,
     color = bgmColors.terar,
     text = "TERAR",
     onClick = function() PlayBGM('terar') end,
-    visibleFunc = function() return page == 3 and ACHV.blazing_speed and BEST.highScore.rEX >= Floors[9].top end,
+    visibleFunc = function() return page == 4 and ACHV.blazing_speed and BEST.highScore.rEX >= Floors[9].top end,
 }
 albumBtn {
     x = baseX + 450, y = baseY + 610, w = 120,
@@ -1113,7 +1140,7 @@ albumBtn {
     fontSize = 50,
     text = "FΩ",
     onClick = function() GAME.height = PlayBGM('fomg') or 6200 end,
-    visibleFunc = function() return page == 3 and STAT.maxHeight >= 6200 end,
+    visibleFunc = function() return page == 4 and STAT.maxHeight >= 6200 end,
 }
 albumBtn {
     x = baseX + 450, y = baseY + 610 + 140, w = 120,
@@ -1121,7 +1148,7 @@ albumBtn {
     fontSize = 50,
     text = "FΩR",
     onClick = function() GAME.height = PlayBGM('fomgr') or 6200 end,
-    visibleFunc = function() return page == 3 and STAT.clicker and #GetClickerStar() >= 6 end,
+    visibleFunc = function() return page == 4 and STAT.clicker and #GetClickerStar() >= 6 end,
 }
 albumBtn {
     x = baseX + 840, y = baseY + 770, w = 80,
@@ -1129,7 +1156,7 @@ albumBtn {
     fontSize = 30,
     text = "6?",
     onClick = function() GAME.height = PlayBGM('b6') or -bgmHeight[6] end,
-    visibleFunc = function() return page == 3 and STAT.clicker end,
+    visibleFunc = function() return page == 4 and STAT.clicker end,
 }
 
 local function newTabBtn(text, y, key)
@@ -1144,9 +1171,10 @@ end
 
 -- Tabs
 local tab = {
-    newTabBtn("CONF   ", 140 + 90 * 0, '1'),
-    newTabBtn("USER   ", 140 + 90 * 1, '2'),
-    newTabBtn("ALB   ", 140 + 90 * 2, '3'),
+    newTabBtn("GEN   ", 140 + 90 * 0, '1'),
+    newTabBtn("VID   ", 140 + 90 * 1, '2'),
+    newTabBtn("USER   ", 140 + 90 * 2, '3'),
+    newTabBtn("ALB   ", 140 + 90 * 3, '4'),
     WIDGET.new {
         type = 'button',
         pos = { 0, 0 }, x = 60, y = 140, w = 160, h = 60,

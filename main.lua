@@ -96,16 +96,6 @@ function ZENITHA.globalEvent.keyDown(key, isRep)
         love.window.setFullscreen(CONF.fullscreen)
         confUpdate()
         MSG('dark', "Fullscreen: " .. (CONF.fullscreen and "ON" or "OFF"), 1)
-    elseif key == 'f10' then
-        CONF.syscursor = not CONF.syscursor
-        SetMouseVisible(true)
-        ApplySettings()
-        confUpdate()
-        MSG('dark', "Star Force: " .. (CONF.syscursor and "OFF" or "ON"), 1)
-    elseif key == 'f9' then
-        if not GAME.zenithTraveler then CONF.bg = not CONF.bg end
-        confUpdate()
-        MSG('dark', "BG: " .. (CONF.bg and "ON" or "OFF"), 1)
     elseif key == 'f8' then
         if CONF.bgBrightness < 80 then
             CONF.bgBrightness = MATH.clamp(CONF.bgBrightness + 10, 30, 80)
@@ -338,6 +328,8 @@ CONF = {
     bgBrightness = 40,
     boardOpacity = 50,
     damageShakiness = 50,
+    rot3D_focal = 50,
+    rot3D_tilt = 50,
     bg = true,
     sfx = 60,
     bgm = 100,

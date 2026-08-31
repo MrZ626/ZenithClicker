@@ -433,9 +433,8 @@ local burnColor = {
     AS1 = COLOR.R,
     AS2 = COLOR.lY,
 }
--- local canvasW, canvasH = 768, 1024
 local canvasW, canvasH = 600, 800
-local focal = 1600
+
 local meshVertices = {}
 for y = 0, 1, .125 do
     for x = 0, 1, .125 do
@@ -738,19 +737,21 @@ function Card:draw()
 
     gc_pop()
 
+    local f = 600 + 20 * CONF.rot3D_focal
+    local t = CONF.rot3D_tilt * .0042
     for i = 1, #meshVerticePosTemplate do
         local x, y, z = meshVerticePosTemplate[i][1], meshVerticePosTemplate[i][2], 0
 
         -- Real 3D rotation
         -- rotate around X
-        local tilt = sin(self.r_3d) * .26
+        local tilt = sin(self.r_3d) * t
         local c, s = cos(tilt), sin(tilt)
         y, z = y * c - z * s, y * s + z * c
         -- rotate around Y
         c, s = cos(rot3D), sin(rot3D)
         x, z = x * c - z * s, x * s + z * c
 
-        meshVertices[i][1], meshVertices[i][2] = focal * x / (z + focal), focal * y / (z + focal)
+        meshVertices[i][1], meshVertices[i][2] = x / (z / f + 1), y / (z / f + 1)
     end
     tempMesh:setVertices(meshVertices)
     gc_draw(tempMesh, self.x1, self.y1, playing and self.r_2d_shake or self.r_2d_rev + self.r_2d_shake, self.size)
@@ -758,4 +759,4 @@ end
 
 return Card
 
--- local dx, dy = (MX - self.x1) / (240 * self.size), (MY - self.y1) / (330 * self.size)
+-- TODO: local dx, dy = (MX - self.x1) / (240 * self.size), (MY - self.y1) / (330 * self.size)
