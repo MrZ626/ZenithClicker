@@ -261,8 +261,9 @@ end
 function Card:spin()
     local re = (GAME.playing or self.upright) and 0 or 3.1416
     local ease = M.IN == 1 and 'OutInQuart' or 'OutQuart'
+    local rot = (M.AS + 1) * 6.2832
     TWEEN.new(function(t)
-        self.r_3d = t * 6.2832
+        self.r_3d = t * rot
     end):setUnique('spin_' .. self.id):setEase(ease):setDuration(M.IN == 2 and .62 or .42):run()
         :setOnKill(function()
             self.r_3d = re
@@ -433,7 +434,7 @@ local burnColor = {
 }
 -- local canvasW, canvasH = 768, 1024
 local canvasW, canvasH = 600, 800
-local fov = 1600
+local focal = 1600
 local meshVertices = {}
 for y = 0, 1, .125 do
     for x = 0, 1, .125 do
@@ -730,12 +731,16 @@ function Card:draw()
     for i = 1, #meshVerticePosTemplate do
         local x, y, z = meshVerticePosTemplate[i][1], meshVerticePosTemplate[i][2], 0
 
-        -- TODO: real 3D rotation
-        -- 1. rotate arund Y-axis (vertical axis)
-        local c, s = cos(rot3D), sin(rot3D)
+        -- Real 3D rotation
+        -- rotate around X
+        local tilt = sin(self.r_3d) * .26
+        local c, s = cos(tilt), sin(tilt)
+        y, z = y * c - z * s, y * s + z * c
+        -- rotate around Y
+        c, s = cos(rot3D), sin(rot3D)
         x, z = x * c - z * s, x * s + z * c
 
-        meshVertices[i][1], meshVertices[i][2] = fov * x / (z + fov), fov * y / (z + fov)
+        meshVertices[i][1], meshVertices[i][2] = focal * x / (z + focal), focal * y / (z + focal)
     end
     tempMesh:setVertices(meshVertices)
     gc_draw(tempMesh, self.x1, self.y1, self.r_2d_rev + self.r_2d_shake, self.size)
