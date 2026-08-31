@@ -430,8 +430,8 @@ end)
 
 local burnColor = {
     uAS = { 1, .42, .26 },
-    AS1 = { COLOR.lF },
-    AS2 = { COLOR.Y },
+    AS1 = COLOR.R,
+    AS2 = COLOR.lY,
 }
 -- local canvasW, canvasH = 768, 1024
 local canvasW, canvasH = 600, 800
@@ -472,7 +472,12 @@ do
     tempMesh:setVertexMap(unpack(vMap))
 end
 tempMesh:setTexture(tempCanvas)
-
+local glassCardText = setmetatable({}, {
+    __index = function(t, k)
+        t[k] = GC.newText(FONT.get(50), k)
+        return t[k]
+    end
+})
 function Card:draw()
     local texture = TEXTURE[self.id]
     local playing = GAME.playing
@@ -590,13 +595,13 @@ function Card:draw()
 
         FONT.set(50)
         if faceUp then
-            GC.scale(2.6)
-            GC.mStr(self.id, 0, -42)
-            GC.scale(1 / 2.6)
+            gc_scale(2.6)
+            gc_mDraw(glassCardText[self.id])
+            gc_scale(1 / 2.6)
         else
-            GC.scale(2)
-            GC.mStr("TETR.IO", 0, -42)
-            GC.scale(1 / 2)
+            gc_scale(2)
+            gc_mDraw(glassCardText["TETR.IO"])
+            gc_scale(1 / 2)
         end
 
         gc_setColor(1, 1, 1, .62)
@@ -638,16 +643,16 @@ function Card:draw()
         end
 
         -- Outline (draw)
-        if a1 then
+        if a1 or a2 then
             gc_setBlendMode('alpha', 'premultiplied')
-            gc_setColor(r1, g1, b1, a1)
-            gc_draw(activeFrame, -frame1W, -frame1H)
-            gc_setBlendMode('alpha')
-        end
-        if a2 then
-            gc_setBlendMode('alpha', 'premultiplied')
-            gc_setColor(r2, g2, b2, a2)
-            gc_draw(activeFrame2, -frame2W, -frame2H)
+            if a1 then
+                gc_setColor(r1, g1, b1, a1)
+                gc_draw(activeFrame, -frame1W, -frame1H)
+            end
+            if a2 then
+                gc_setColor(r2, g2, b2, a2)
+                gc_draw(activeFrame2, -frame2W, -frame2H)
+            end
             gc_setBlendMode('alpha')
         end
 
