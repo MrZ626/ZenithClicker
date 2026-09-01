@@ -671,7 +671,7 @@ function Card:draw()
 
         -- Menu UI
         if not playing then
-            gc_push('transform')
+            gc_push()
 
             -- Rev Throb
             if not self.upright and GAME.revDeckSkin and faceUp then

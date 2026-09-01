@@ -234,7 +234,7 @@ function scene.draw()
     else
         -- Data
         local l = L[subPage]
-        gc_push('transform')
+        gc_push()
         gc_translate(0, 360)
         gc_setColor(1, 1, 1, .3)
         setFont(30)

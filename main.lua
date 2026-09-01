@@ -195,7 +195,7 @@ WIDGET.setDefaultOption {
 }
 
 function WIDGET._prototype.button:draw()
-    gc_push('transform')
+    gc_push()
     gc_translate(self._x, self._y + (SCN.cur == 'tower' and self.pos[1] == .5 and DeckPress or 0))
 
     if self._pressTime > 0 then
@@ -231,7 +231,7 @@ function WIDGET._prototype.button:draw()
 end
 
 function WIDGET._prototype.checkBox:draw()
-    gc_push('transform')
+    gc_push()
     gc_translate(self._x, self._y)
     local w = self.w
 

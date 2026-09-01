@@ -789,7 +789,7 @@ function scene.draw()
 
         -- Board
         if GAME.playing or GAME.boardAnim > 0 and not GAME.invisUI then
-            gc_push('transform')
+            gc_push()
             switchBoardCoord()
 
             local boxRX, boxRY = boardRX - 13, 110
@@ -1079,7 +1079,7 @@ function scene.overDraw()
 
         -- Spike counter
         if GAME.spikeCounter >= 8 and GAME.spikeTimer > 0 then
-            gc_push('transform')
+            gc_push()
             gc_translate(1226, 320)
             local _t = GAME.questTime
             local bk = _t < .12 and 1 + 62 * _t * (.12 - _t) or 1
@@ -1279,7 +1279,7 @@ function scene.overDraw()
 
                 -- Number
                 if GAME.fault then
-                    gc_push('transform')
+                    gc_push()
                     local strength = min(chain / 42, 1)
                     GC.rotate((math.random() - .5) * .4 * strength)
                     gc_translate(MATH.rand(-5, 5) * strength, MATH.rand(-5, 5) * strength)
@@ -1317,7 +1317,7 @@ function scene.overDraw()
             -- Revive Task
             local task = GAME.currentTask
             if task then
-                gc_push('transform')
+                gc_push()
 
                 -- Lock
                 gc_translate(GAME.onAlly and -350 or 350, 212)
@@ -1459,7 +1459,7 @@ function scene.overDraw()
             if GAME.anyRev and M[infoID] == 2 then
                 local text = URM and MD.ultraName[infoID] or MD.revName[infoID]
                 setFont(70)
-                gc_push('transform')
+                gc_push()
                 gc_translate(0, -118)
                 GC.scale(1 + sin(t / 2.6) * .026)
                 GC.shear(sin(t) * .26, cos(t * 1.2) * .026)
