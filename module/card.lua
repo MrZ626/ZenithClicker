@@ -478,6 +478,19 @@ local glassCardText = setmetatable({}, {
         return t[k]
     end
 })
+local function rotate_point_around_axis(x, y, z, ax, ay, az, theta)
+    local len = (ax * ax + ay * ay + az * az) ^ .5
+    local kx, ky, kz = ax / len, ay / len, az / len
+    local cos_t, sin_t = cos(theta), sin(theta)
+    local dot = kx * x + ky * y + kz * z
+
+    -- Rodrigues' rotation formula
+    return
+        x * cos_t + (ky * z - kz * y) * sin_t + kx * dot * (1 - cos_t),
+        y * cos_t + (kz * x - kx * z) * sin_t + ky * dot * (1 - cos_t),
+        z * cos_t + (kx * y - ky * x) * sin_t + kz * dot * (1 - cos_t)
+end
+
 function Card:draw()
     local texture = TEXTURE[self.id]
     local playing = GAME.playing
@@ -740,6 +753,8 @@ function Card:draw()
 
     local f = 2600 - 20 * CONF.rot3D_focal
     local t = CONF.rot3D_tilt * .0042
+    local t2 = CONF.rot3D_tilt * 20
+    local float = FloatOnCard == self.initOrder
     for i = 1, #meshVerticePosTemplate do
         local x, y, z = meshVerticePosTemplate[i][1], meshVerticePosTemplate[i][2], 0
 
@@ -752,6 +767,23 @@ function Card:draw()
         c, s = cos(rot3D), sin(rot3D)
         x, z = x * c - z * s, x * s + z * c
 
+        if float and t2 > 0 then
+            -- float tilting
+            local dx, dy, dz = MX - self.x, MY - self.y, 0 -- Cursor vector
+            local dist = (dx * dx + dy * dy) ^ .5
+            if dist > 1 then
+                local nx, ny, nz = 0, 0, 1 -- Normal vector
+                x, y, z = rotate_point_around_axis(
+                    x, y, z,
+                    -dy, dx, 0, -- simplified cross product
+                    -- ny * dz - nz * dy,
+                    -- nz * dx - nx * dz,
+                    -- nx * dy - ny * dx,
+                    -dist / t2
+                )
+            end
+        end
+
         meshVertices[i][1], meshVertices[i][2] = x / (z / f + 1), y / (z / f + 1)
     end
     tempMesh:setVertices(meshVertices)
@@ -759,5 +791,3 @@ function Card:draw()
 end
 
 return Card
-
--- TODO: local dx, dy = (MX - self.x1) / (240 * self.size), (MY - self.y1) / (330 * self.size)
