@@ -334,6 +334,7 @@ CONF = {
     bgBrightness = 40,
     boardOpacity = 50,
     damageShakiness = 50,
+    rot3D = SYSTEM ~= 'Android',
     rot3D_focal = 50,
     rot3D_tilt = 50,
 

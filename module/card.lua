@@ -398,7 +398,7 @@ end
 
 local gc_setCanvas, gc_clear = GC.setCanvas, GC.clear
 local gc_push, gc_pop = GC.push, GC.pop
-local gc_origin, gc_translate = GC.origin, GC.translate
+local gc_origin, gc_translate, gc_scale, gc_rotate = GC.origin, GC.translate, GC.scale, GC.rotate
 local gc_setColor, gc_setAlpha = GC.setColor, GC.setAlpha
 local gc_setShader, gc_setLineWidth = GC.setShader, GC.setLineWidth
 local gc_draw, gc_polygon, gc_mDraw = GC.draw, GC.polygon, GC.mDraw
@@ -492,6 +492,7 @@ local function rotate_point_around_axis(x, y, z, ax, ay, az, theta)
 end
 
 function Card:draw()
+    local _3D = CONF.rot3D
     local playing = GAME.playing
     local img, img2
     local rot3D = self.r_3d + self.r_3d_in
@@ -586,53 +587,62 @@ function Card:draw()
     end
 
     -- Calculate 3D mesh
-    local f = 2600 - 20 * CONF.rot3D_focal
-    local t = CONF.rot3D_tilt * .0042
-    local t2 = CONF.rot3D_tilt * 20
-    local float = self == CD[FloatOnCard]
-    for i = 1, #meshVerticePosTemplate do
-        local x, y, z = meshVerticePosTemplate[i][1], meshVerticePosTemplate[i][2], 0
+    if _3D then
+        local f = 2600 - 20 * CONF.rot3D_focal
+        local t1 = CONF.rot3D_tilt * .0042
+        local t2 = CONF.rot3D_tilt * 20
+        local float = self == CD[FloatOnCard]
+        for i = 1, #meshVerticePosTemplate do
+            local x, y, z = meshVerticePosTemplate[i][1], meshVerticePosTemplate[i][2], 0
 
-        -- Real 3D rotation
-        -- rotate around X
-        local tilt = sin(self.r_3d) * t
-        local c, s = cos(tilt), sin(tilt)
-        y, z = y * c - z * s, y * s + z * c
-        -- rotate around Y
-        c, s = cos(rot3D), sin(rot3D)
-        x, z = x * c - z * s, x * s + z * c
+            -- Real 3D rotation
+            -- rotate around X
+            local tilt = sin(self.r_3d) * t1
+            local c, s = cos(tilt), sin(tilt)
+            y, z = y * c - z * s, y * s + z * c
+            -- rotate around Y
+            c, s = cos(rot3D), sin(rot3D)
+            x, z = x * c - z * s, x * s + z * c
 
-        if float and t2 > 0 then
-            -- float tilting
-            local dx, dy = MX - self.x, MY - self.y -- Cursor vector
-            -- local dx, dy, dz = MX - self.x, MY - self.y, 0 -- Cursor vector
-            local dist = (dx * dx + dy * dy) ^ .5
-            if dist > 1 then
-                -- local nx, ny, nz = 0, 0, 1 -- Normal vector
-                x, y, z = rotate_point_around_axis(
-                    x, y, z,
-                    -dy, dx, 0, -- simplified cross product
-                    -- ny * dz - nz * dy,
-                    -- nz * dx - nx * dz,
-                    -- nx * dy - ny * dx,
-                    -dist / t2
-                )
+            if float and t2 > 0 then
+                -- float tilting
+                local dx, dy = MX - self.x, MY - self.y -- Cursor vector
+                -- local dx, dy, dz = MX - self.x, MY - self.y, 0 -- Cursor vector
+                local dist = (dx * dx + dy * dy) ^ .5
+                if dist > 1 then
+                    -- local nx, ny, nz = 0, 0, 1 -- Normal vector
+                    x, y, z = rotate_point_around_axis(
+                        x, y, z,
+                        -dy, dx, 0, -- simplified cross product
+                        -- ny * dz - nz * dy,
+                        -- nz * dx - nx * dz,
+                        -- nx * dy - ny * dx,
+                        -dist / t2
+                    )
+                end
             end
-        end
 
-        meshVertices[i][1], meshVertices[i][2] = x / (z / f + 1), y / (z / f + 1)
+            meshVertices[i][1], meshVertices[i][2] = x / (z / f + 1), y / (z / f + 1)
+        end
+        tempMesh:setVertices(meshVertices)
+    else
+        gc_push()
+        gc_translate(self.x1, self.y1)
+        gc_rotate(finalRot + rot3D)
+        gc_scale(cos(rot3D) * finalSize, finalSize)
     end
-    tempMesh:setVertices(meshVertices)
 
     -- Hint layer
     if a1 or a2 then
-        gc_push('all')
-        gc_setCanvas(tempCanvas)
-        gc_clear()
-        gc_origin()
-        gc_translate(canvasW / 2, canvasH / 2)
+        if _3D then
+            gc_push('all')
+            gc_setCanvas(tempCanvas)
+            gc_clear()
+            gc_origin()
+            gc_translate(canvasW / 2, canvasH / 2)
+            gc_setBlendMode('alpha', 'premultiplied')
+        end
 
-        gc_setBlendMode('alpha', 'premultiplied')
         if a1 then
             gc_setColor(r1, g1, b1, a1)
             gc_draw(activeFrame, -frame1W, -frame1H)
@@ -641,16 +651,21 @@ function Card:draw()
             gc_setColor(r2, g2, b2, a2)
             gc_draw(activeFrame2, -frame2W, -frame2H)
         end
-        gc_pop()
-        gc_draw(tempMesh, self.x1, self.y1, finalRot, finalSize)
+
+        if _3D then
+            gc_pop()
+            gc_draw(tempMesh, self.x1, self.y1, finalRot, finalSize)
+        end
     end
 
     -- Card layer
-    gc_push('all')
-    gc_setCanvas(tempCanvas)
-    gc_clear()
-    gc_origin()
-    gc_translate(canvasW / 2, canvasH / 2)
+    if _3D then
+        gc_push('all')
+        gc_setCanvas(tempCanvas)
+        gc_clear()
+        gc_origin()
+        gc_translate(canvasW / 2, canvasH / 2)
+    end
 
     -- Card
     if not GAME.invisCard then
@@ -749,7 +764,9 @@ function Card:draw()
     end
 
     gc_pop()
-    gc_draw(tempMesh, self.x1, self.y1, finalRot, finalSize)
+    if _3D then
+        gc_draw(tempMesh, self.x1, self.y1, finalRot, finalSize)
+    end
 end
 
 return Card
