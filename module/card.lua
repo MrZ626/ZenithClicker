@@ -349,14 +349,16 @@ function Card:revJump()
         end)
     local rot = self.id == 'AS' and 3 * 3.1416 or 3.1416
     local ease = self.id == 'GV' and 'OutQuart' or 'OutBack'
+    local s = self.r_2d_rev
     TWEEN.new(function(t)
-        self.r_2d_rev = t * rot
+        self.r_2d_rev = lerp(s, rot, t)
     end):setUnique('spin2D_' .. self.id):setEase(ease):setDuration((GAME.slowmo and 2.6 or 1) * .52):run()
 end
 
 function Card:revCancel()
+    local s = self.r_2d_rev
     TWEEN.new(function(t)
-        self.r_2d_rev = (1 - t) * 3.1416
+        self.r_2d_rev = lerp(s, 0, t)
     end):setUnique('spin2D_' .. self.id):setEase('OutQuart'):setDuration((GAME.slowmo and 2.6 or 1) * .26):run()
 end
 
