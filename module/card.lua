@@ -738,12 +738,6 @@ function Card:draw()
         end
         -- Float star
         if not self.active then
-            if revMastery then
-                gc_setColor(.5, .5, .5, t)
-                gc_setBlendMode('add')
-                gc_blurCircle(blur, -x, -y, cr)
-                gc_setBlendMode('alpha')
-            end
             gc_setColor(1, 1, 1, t)
             local star1 = TEXTURE[self.id == 'DP' and STAT.clicker and 'star2' or 'star1']
             gc_mDraw(star1, x, y, ang, lerp(.16, .42, t))
