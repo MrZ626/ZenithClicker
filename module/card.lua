@@ -269,7 +269,7 @@ function Card:spin()
         end)
 end
 
-local bounceEase = { 'linear', 'inQuad' }
+local bounceEase = { 'linear', 'inCubic' }
 function Card:bounce(height, duration)
     TWEEN.new(function(t)
         self.y1 = self.y + t * (t - 1) * height
@@ -351,7 +351,7 @@ function Card:revJump()
     local s = self.r_2d_rev
     TWEEN.new(function(t)
         self.r_2d_rev = lerp(s, rot, t)
-    end):setUnique('spin2D_' .. self.id):setEase(ease):setDuration((GAME.slowmo and 2.6 or 1) * .52):run()
+    end):setUnique('spin2D_' .. self.id):setEase(ease):setDuration((GAME.slowmo and 2.6 or 1.06) * .52):run()
 end
 
 function Card:revCancel()

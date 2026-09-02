@@ -9,7 +9,7 @@ local pages = {}
 -- 2. Video
 -- 3. User
 -- 4. Album
--- 5. Skin
+-- 5. Deck
 local page = 1
 local maxPage = 5
 
@@ -1297,7 +1297,7 @@ local tab = {
     newTabBtn("VIDEO  ", 50 + 90 * 2, '2'),
     newTabBtn("USER   ", 50 + 90 * 3, '3'),
     newTabBtn("ALB    ", 50 + 90 * 4, '4'),
-    newTabBtn("SKIN   ", 50 + 90 * 5, '5', function() return CalculateCR() >= 20000 end),
+    newTabBtn("DECK   ", 50 + 90 * 5, '5'),
     WIDGET.new {
         type = 'button',
         pos = { 0, 0 }, x = 60, y = 140, w = 160, h = 60,
