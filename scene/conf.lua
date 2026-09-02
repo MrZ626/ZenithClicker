@@ -318,14 +318,26 @@ function scene.keyDown(key, isRep)
                     update = true
                 end
             elseif key == 'left' then
-                if skinPage ~= skinList[1] then
-                    skinPage = TABLE.prev(skinList, skinPage) or skinPage
+                if TABLE.find(skinList, skinPage) then
+                    if skinPage ~= skinList[1] then
+                        skinPage = TABLE.prev(skinList, skinPage) or skinPage
+                        startCardFanAnim()
+                        update = true
+                    end
+                else
+                    skinPage = skinList[1]
                     startCardFanAnim()
                     update = true
                 end
             elseif key == 'right' then
-                if skinPage ~= skinList[#skinList] then
-                    skinPage = TABLE.next(skinList, skinPage) or skinPage
+                if TABLE.find(skinList, skinPage) then
+                    if skinPage ~= skinList[#skinList] then
+                        skinPage = TABLE.next(skinList, skinPage) or skinPage
+                        startCardFanAnim()
+                        update = true
+                    end
+                else
+                    skinPage = skinList[#skinList]
                     startCardFanAnim()
                     update = true
                 end
@@ -1260,7 +1272,7 @@ pages[5] = {
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "< PREV",
         onClick = WIDGET.c_pressKey 'left',
-        visibleFunc = function() return page == 5 and TABLE.find(skinList, skinPage) > 1 end
+        visibleFunc = function() return page == 5 and (TABLE.find(skinList, skinPage) or 1e99) > 1 end
     },
     WIDGET.new { -- CONFIRM
         type = 'button',
@@ -1276,7 +1288,7 @@ pages[5] = {
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "NEXT >",
         onClick = WIDGET.c_pressKey 'right',
-        visibleFunc = function() return page == 5 and TABLE.find(skinList, skinPage) < #skinList end
+        visibleFunc = function() return page == 5 and (TABLE.find(skinList, skinPage) or -1e99) < #skinList end
     },
 }
 

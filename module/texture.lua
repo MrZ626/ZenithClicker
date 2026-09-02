@@ -378,9 +378,9 @@ TEXTURE = TABLE.linkSource({}, TEXTURE, function(path)
     if path:match('^_lock') then
         local lockType = path:match('_(lock....)')
         local char = path:sub(-1)
-        local w, h = TEXTURE[lockType]:getDimensions()
+        local w, h = TEXTURE.card[CONF.skin][lockType]:getDimensions()
         return GC.initCanvas(w, h, function()
-            GC.draw(TEXTURE[lockType], 0, 0)
+            GC.draw(TEXTURE.card[CONF.skin][lockType], 0, 0)
             local t = GC.newText(FONT.get(70, 'sans'), char)
             if lockType == 'lockfull' then
                 GC.setColor(CLR.HEX "646483FF")
