@@ -592,7 +592,7 @@ function Card:draw()
     local f = 2600 - 20 * CONF.rot3D_focal
     local t = CONF.rot3D_tilt * .0042
     local t2 = CONF.rot3D_tilt * 20
-    local float = FloatOnCard == self.initOrder
+    local float = self == CD[FloatOnCard]
     for i = 1, #meshVerticePosTemplate do
         local x, y, z = meshVerticePosTemplate[i][1], meshVerticePosTemplate[i][2], 0
 
@@ -607,10 +607,11 @@ function Card:draw()
 
         if float and t2 > 0 then
             -- float tilting
-            local dx, dy, dz = MX - self.x, MY - self.y, 0 -- Cursor vector
+            local dx, dy = MX - self.x, MY - self.y -- Cursor vector
+            -- local dx, dy, dz = MX - self.x, MY - self.y, 0 -- Cursor vector
             local dist = (dx * dx + dy * dy) ^ .5
             if dist > 1 then
-                local nx, ny, nz = 0, 0, 1 -- Normal vector
+                -- local nx, ny, nz = 0, 0, 1 -- Normal vector
                 x, y, z = rotate_point_around_axis(
                     x, y, z,
                     -dy, dx, 0, -- simplified cross product
