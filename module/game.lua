@@ -281,7 +281,7 @@ function GAME.getHand(real)
                 ins(list, CD[i].id)
             end
         end
-        -- for _, C in ipairs(Cards) do
+        -- for _, C in ipairs(CD) do
         --     if C.active then
         --         ins(list, C.id)
         --     end
@@ -1670,7 +1670,7 @@ function GAME.refreshDailyChallengeText()
                 break
             end
         else
-            if Cards[v].lock then
+            if CD[v].lock then
                 Daily.available = false
                 break
             end

@@ -1,4 +1,3 @@
-local max, min = math.max, math.min
 local abs, rnd = math.abs, math.random
 local sin, cos = math.sin, math.cos
 local sign, lerp = MATH.sign, MATH.lerp
@@ -300,7 +299,7 @@ function Card:revJump()
                             if self.id == 'EX' then
                                 r = r * (URM and 12.6 or 2.6)
                             elseif self.id == 'MS' then
-                                r = max(sign((r - .5)) * abs(r - .5) ^ .3333 / 1.5874 + .5, 0)
+                                r = math.max(sign((r - .5)) * abs(r - .5) ^ .3333 / 1.5874 + .5, 0)
                             elseif self.id == 'GV' then
                                 r = r * (URM and .0626 or .26)
                             end
@@ -393,7 +392,7 @@ function Card:update(dt)
         end
     end
     if self.charge > 0 then
-        self.charge = max(self.charge - dt, 0)
+        self.charge = math.max(self.charge - dt, 0)
     end
 end
 

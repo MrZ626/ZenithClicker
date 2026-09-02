@@ -317,23 +317,25 @@ Metatable = {
 }
 
 CONF = {
+    sfx = 60,
+    bgm = 100,
+    autoMute = false,
+    bg = true,
+    syscursor = false,
+    fullscreen = true,
     keybind = {
         "q", "w", "e", "r", "t", "y", "u", "i", "o",
         "a", "s", "d", "f", "g", "h", "j", "k", "l",
         "space", "z", "x", "c"
     },
-    fullscreen = true,
-    syscursor = false,
+
     cardBrightness = 90,
     bgBrightness = 40,
     boardOpacity = 50,
     damageShakiness = 50,
     rot3D_focal = 50,
     rot3D_tilt = 50,
-    bg = true,
-    sfx = 60,
-    bgm = 100,
-    autoMute = false,
+
     oldHitbox = false,
 }
 SR = {}
