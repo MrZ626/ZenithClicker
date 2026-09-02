@@ -398,7 +398,7 @@ end
 
 local gc_setCanvas, gc_clear = GC.setCanvas, GC.clear
 local gc_push, gc_pop = GC.push, GC.pop
-local gc_origin, gc_translate, gc_scale, gc_rotate = GC.origin, GC.translate, GC.scale, GC.rotate
+local gc_origin, gc_translate, gc_rotate, gc_scale, gc_shear = GC.origin, GC.translate, GC.rotate, GC.scale, GC.shear
 local gc_setColor, gc_setAlpha = GC.setColor, GC.setAlpha
 local gc_setShader, gc_setLineWidth = GC.setShader, GC.setLineWidth
 local gc_draw, gc_polygon, gc_mDraw = GC.draw, GC.polygon, GC.mDraw
@@ -626,9 +626,18 @@ function Card:draw()
         end
         tempMesh:setVertices(meshVertices)
     else
+        -- 2D approach for performance
         gc_push()
         gc_translate(self.x1, self.y1)
-        gc_rotate(finalRot + rot3D)
+        gc_rotate(finalRot - sin(rot3D) * CONF.rot3D_tilt * .0026)
+        if self == CD[FloatOnCard] then
+            local dx, dy = (MX - self.x1) / (240 * self.size), (MY - self.y1) / (330 * self.size)
+            local d = (abs(dx) - abs(dy)) * .026
+            gc_scale(math.min(1, 1 - d), math.min(1, 1 + d))
+            local D = -sign(dx * dy) * abs(dx * dy) ^ .626 * CONF.rot3D_tilt * .00042
+            gc_shear(D, D)
+            gc_scale(1 - abs(D))
+        end
         gc_scale(cos(rot3D) * finalSize, finalSize)
     end
 

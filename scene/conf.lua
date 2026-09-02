@@ -459,8 +459,10 @@ function scene.draw()
         drawSliderComponents(300, "BOARD  OPACITY", "TRANSPARENT", "OPAQUE", CONF.boardOpacity)
         drawSliderComponents(380, "DAMAGE  SHAKINESS", "STIFF", "SHAKY", CONF.damageShakiness)
         if CONF.rot3D then
-            drawSliderComponents(460 + 80, "3D  ROTATION  FOCAL", "FAR", "CLOSE", CONF.rot3D_focal)
-            drawSliderComponents(540 + 80, "3D  ROTATION  TILT", "PLAIN", "TILT", CONF.rot3D_tilt)
+            drawSliderComponents(540, "3D  ROTATION  TILT", "PLAIN", "TILT", CONF.rot3D_tilt)
+            drawSliderComponents(620, "3D  ROTATION  FOCAL", "FAR", "CLOSE", CONF.rot3D_focal)
+        else
+            drawSliderComponents(540, "2D  ROTATION  TILT", "PLAIN", "TILT", CONF.rot3D_focal)
         end
     elseif page == 3 then
         if resetall_anim > .1 then
@@ -765,7 +767,7 @@ pages[2] = {
         code = function(value) CONF.damageShakiness = value end,
         sound_drag = 'rotate',
     },
-    WIDGET.new { -- fullscreen
+    WIDGET.new { -- 3D rotation
         type = 'checkBox',
         fillColor = clr.cbFill,
         frameColor = clr.cbFrame,
@@ -775,26 +777,24 @@ pages[2] = {
         code = function()
             CONF.rot3D = not CONF.rot3D
             scene.widgetList.rot3D_focal:setVisible()
-            scene.widgetList.rot3D_tilt:setVisible()
         end,
-    },
-    WIDGET.new { -- 3D rotation focal
-        name = 'rot3D_focal', type = 'slider',
-        x = baseX + 240 + 85, y = baseY + 460 + 80, w = 400,
-        axis = { 0, 100, 10 },
-        frameColor = 'dD', fillColor = clr.D,
-        disp = function() return CONF.rot3D_focal end,
-        code = function(value) CONF.rot3D_focal = value end,
-        sound_drag = 'rotate',
-        visibleFunc = function() return page == 2 and CONF.rot3D end,
     },
     WIDGET.new { -- 3D rotation tilt
         name = 'rot3D_tilt', type = 'slider',
-        x = baseX + 240 + 85, y = baseY + 540 + 80, w = 400,
+        x = baseX + 240 + 85, y = baseY + 540, w = 400,
         axis = { 0, 100, 10 },
         frameColor = 'dD', fillColor = clr.D,
         disp = function() return CONF.rot3D_tilt end,
         code = function(value) CONF.rot3D_tilt = value end,
+        sound_drag = 'rotate',
+    },
+    WIDGET.new { -- 3D rotation focal
+        name = 'rot3D_focal', type = 'slider',
+        x = baseX + 240 + 85, y = baseY + 620, w = 400,
+        axis = { 0, 100, 10 },
+        frameColor = 'dD', fillColor = clr.D,
+        disp = function() return CONF.rot3D_focal end,
+        code = function(value) CONF.rot3D_focal = value end,
         sound_drag = 'rotate',
         visibleFunc = function() return page == 2 and CONF.rot3D end,
     },
