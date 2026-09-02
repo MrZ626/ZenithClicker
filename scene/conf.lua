@@ -2,14 +2,18 @@
 local scene = {}
 
 
+-- widget lists of each page, will be registered to scene.widgetList at the end
+local pages = {}
+
 -- 1. General
 -- 2. Video
 -- 3. User
 -- 4. Album
+-- 5. Skin
 local page = 1
-local maxPage = 4
-local uidList = {} ---@type ({uid: string, modTime?: string} | false)[]
+local maxPage = 5
 
+local uidList = {} ---@type ({uid: string, modTime?: string} | false)[]
 local anonUser
 local resetall_cnt, resetall_anim, lastClear
 
@@ -107,6 +111,29 @@ local bgmHeight = {
     Floors[9].top + 26, -- special
 }
 
+local skinList = {}
+local skinPage
+local skinAnimInt, skinAnim
+local skinDesc = {
+    zc = "Zenith Clicker - MrZ",
+    star = "Planets - Rodinia",
+}
+local function tween_cardFan(t)
+    skinAnim = 18 * t
+    if t == 0 then skinAnimInt = 0 end
+    if math.ceil(skinAnim) > skinAnimInt then
+        skinAnimInt = math.ceil(skinAnim)
+        SFX.play('card_slide_' .. math.random(4), .42)
+    end
+end
+local function startCardFanAnim()
+    TWEEN.new(tween_cardFan)
+        :setUnique('cardfan')
+        :setEase('OutQuad')
+        :setDuration(1.26)
+        :run()
+end
+
 local function refreshWidgets()
     for _, W in next, scene.widgetList do W:setVisible() end
 end
@@ -144,6 +171,14 @@ local function refreshUID()
         uidList[i] = dat and { uid = dat.uid, modTime = timePast(dat.modTime, os.time()) } or false
     end
 end
+local function refreshSkin()
+    TABLE.clear(skinList)
+    table.insert(skinList, 'zc')
+    if CalculateCR() >= 20000 then table.insert(skinList, 'star') end
+    -- if STAT.clicker then table.insert(skinList, '???') end
+    -- if TABLE.countAll(GAME.completion, 2) == #ModData.deck then table.insert(skinList, '???') end
+    skinPage = CONF.skin
+end
 
 local sp = { f0 = 1, f1 = 1, f0r = 1, f1r = 1 }
 local function refreshSongInfo()
@@ -178,6 +213,7 @@ function scene.load()
     refreshWidgets()
     refreshSongInfo()
     refreshUID()
+    refreshSkin()
 end
 
 -- function scene.unload()
@@ -255,6 +291,7 @@ function scene.keyDown(key, isRep)
                 page = p
                 SFX.play('menuclick')
                 refreshWidgets()
+                if p == 5 then startCardFanAnim() end
             end
         elseif page == 4 then
             if key == 'left' then
@@ -272,6 +309,28 @@ function scene.keyDown(key, isRep)
                 BgmLooping, BgmNeedSkip = false, false
             end
             return true
+        elseif page == 5 then
+            local update = true
+            if key == CONF.keybind[19] then
+                if CONF.skin ~= skinPage then
+                    CONF.skin = skinPage
+                    SFX.play('garbagesmash', 1, 0, 1.26)
+                    update = true
+                end
+            elseif key == 'left' then
+                if skinPage ~= skinList[1] then
+                    skinPage = TABLE.prev(skinList, skinPage) or skinPage
+                    startCardFanAnim()
+                    update = true
+                end
+            elseif key == 'right' then
+                if skinPage ~= skinList[#skinList] then
+                    skinPage = TABLE.next(skinList, skinPage) or skinPage
+                    startCardFanAnim()
+                    update = true
+                end
+            end
+            if update then for i = 1, 3 do pages[5][i]:setVisible() end end
         end
     end
     ZENITHA._cursor.active = true
@@ -283,13 +342,38 @@ scene.resize = refreshWidgets
 -- Panel size
 local w, h = 900, 830
 local baseX, baseY = 800 - w / 2, 500 - h / 2 + 10
+local cardFanData = {}
+for i = 1, 9 do
+    local dist = 460
+    local angle = MATH.interpolate(1, -130 / 180 * 3.1416, 9, -50 / 180 * 3.1416, i)
+    table.insert(cardFanData, {
+        x = w * .5 + dist * math.cos(angle),
+        y = h * .75 + dist * math.sin(angle),
+        r = angle + 3.1416 / 2,
+        k = .4,
+        id = Cards[i].id,
+        face = 'front',
+    })
+end
+for i = 1, 9 do
+    local dist = 360
+    local angle = MATH.interpolate(1, -130 / 180 * 3.1416, 9, -50 / 180 * 3.1416, i)
+    table.insert(cardFanData, {
+        x = w * .5 + dist * math.cos(angle),
+        y = h * .85 + dist * math.sin(angle),
+        r = angle + 3.1416 / 2,
+        k = .4,
+        id = Cards[i].id,
+        face = 'back',
+    })
+end
 
 local gc = love.graphics
 local gc_replaceTransform = gc.replaceTransform
 local gc_draw, gc_setColor, gc_rectangle = gc.draw, gc.setColor, gc.rectangle
 local gc_print, gc_printf = gc.print, gc.printf
 local gc_ucs_move, gc_ucs_back = GC.ucs_move, GC.ucs_back
-local gc_setAlpha, gc_mRect, gc_mStr = GC.setAlpha, GC.mRect, GC.mStr
+local gc_setAlpha, gc_mDraw, gc_mRect, gc_mStr = GC.setAlpha, GC.mDraw, GC.mRect, GC.mStr
 local setFont = FONT.set
 local function drawSliderComponents(y, title, t1, t2, value)
     gc_ucs_move(0, y)
@@ -368,8 +452,8 @@ function scene.draw()
         if resetall_anim > .1 then
             local t2 = MATH.iLerp(.1, 1, resetall_anim)
             gc_setColor(1, 1, 1, t2 * .42)
-            GC.mDraw(TEXTURE.warning, w / 2, h / 2, 0, MATH.lerp(1, 2.6, t2) ^ 2.6)
-            GC.setLineWidth(2)
+            gc_mDraw(TEXTURE.warning, w / 2, h / 2, 0, MATH.lerp(1, 2.6, t2) ^ 2.6)
+            gc.setLineWidth(2)
             gc_setColor(1, t % .16 < .08 and 0 or 1, 0, resetall_anim * 2)
             gc_mRect('line', 450, 420, 520, 140, 20)
         end
@@ -471,6 +555,19 @@ function scene.draw()
             gc_mRect('fill', len * BgmNeedSkip[2] / playingBgmLength, 48, 2, 9)
         end
         gc_ucs_back()
+    elseif page == 5 then
+        -- Card fan
+        gc_setColor(1, 1, 1, skinAnim + 1 - skinAnimInt)
+        for i = skinAnimInt, 1, -1 do
+            local d = cardFanData[i]
+            gc_mDraw(TEXTURE.card[skinPage][d.id][d.face], d.x, d.y, d.r, d.k)
+            gc_setColor(1, 1, 1)
+        end
+        setFont(50)
+        gc_setColor(clr.LT); gc_mStr(skinDesc[skinPage], w / 2, h - 230)
+        if skinPage == CONF.skin then
+            gc_setColor(clr.L); gc_mStr("EQUIPPED", w / 2, h - 155)
+        end
     end
 
     -- Top bar & title
@@ -501,9 +598,6 @@ function scene.draw()
     setFont(30)
     gc_print("TWEAK YOUR SETTINGS FOR A BETTER CLICKING EXPERIENCE", 15, -45, 0, .85, 1)
 end
-
--- widget lists of each page, will be registered to scene.widgetList at the end
-local pages = {}
 
 pages[1] = {
     -- General
@@ -1159,22 +1253,51 @@ albumBtn {
     visibleFunc = function() return page == 4 and STAT.clicker end,
 }
 
-local function newTabBtn(text, y, key)
+pages[5] = {
+    WIDGET.new { -- PREV
+        type = 'button',
+        x = baseX + 110, y = baseY + h - 120, w = 160, h = 60,
+        color = clr.L,
+        fontSize = 30, textColor = clr.LT, text = "< PREV",
+        onClick = WIDGET.c_pressKey 'left',
+        visibleFunc = function() return page == 5 and TABLE.find(skinList, skinPage) > 1 end
+    },
+    WIDGET.new { -- CONFIRM
+        type = 'button',
+        x = baseX + w / 2, y = baseY + h - 120, w = 160, h = 60,
+        color = clr.L,
+        fontSize = 30, textColor = clr.LT, text = "SELECT",
+        onClick = function() love.keypressed(CONF.keybind[19]) end,
+        visibleFunc = function() return page == 5 and skinPage ~= CONF.skin end
+    },
+    WIDGET.new { -- NEXT
+        type = 'button',
+        x = baseX + w - 110, y = baseY + h - 120, w = 160, h = 60,
+        color = clr.L,
+        fontSize = 30, textColor = clr.LT, text = "NEXT >",
+        onClick = WIDGET.c_pressKey 'right',
+        visibleFunc = function() return page == 5 and TABLE.find(skinList, skinPage) < #skinList end
+    },
+}
+
+local function newTabBtn(text, y, key, visFunc)
     return WIDGET.new {
         type = 'button',
         pos = { 1, 0 }, x = -60, y = y, w = 160, h = 60,
         color = { CLR.HEX '383838' },
         fontSize = 30, text = text, textColor = 'DL',
         onClick = function() love.keypressed(key) end,
+        visibleFunc = visFunc,
     }
 end
 
 -- Tabs
 local tab = {
-    newTabBtn("GENRL  ", 140 + 90 * 0, '1'),
-    newTabBtn("VIDEO  ", 140 + 90 * 1, '2'),
-    newTabBtn("USER   ", 140 + 90 * 2, '3'),
-    newTabBtn("ALB   ", 140 + 90 * 3, '4'),
+    newTabBtn("GENRL  ", 50 + 90 * 1, '1'),
+    newTabBtn("VIDEO  ", 50 + 90 * 2, '2'),
+    newTabBtn("USER   ", 50 + 90 * 3, '3'),
+    newTabBtn("ALB    ", 50 + 90 * 4, '4'),
+    newTabBtn("SKIN   ", 50 + 90 * 5, '5', function() return CalculateCR() >= 20000 end),
     WIDGET.new {
         type = 'button',
         pos = { 0, 0 }, x = 60, y = 140, w = 160, h = 60,

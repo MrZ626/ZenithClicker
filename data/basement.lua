@@ -278,7 +278,7 @@ NegEvents = {
     {
         text = 'b4.effStart',
         event = function()
-            GAME.glassCard = true
+            GAME.steadfast = true
             GAME.refreshPieceFstr()
         end
     },
@@ -301,7 +301,7 @@ NegEvents = {
     { h = -450 },
     {
         event = function()
-            GAME.glassCard = false
+            GAME.steadfast = false
             GAME.refreshPieceFstr()
         end
     },

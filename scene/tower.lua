@@ -8,9 +8,10 @@ local KBisDown, MSisDown = love.keyboard.isDown, love.mouse.isDown
 
 local GAME = GAME
 local M = GAME.mod
-local MD = ModData
+local ModData = ModData
+local Cards = Cards
 CardHintText = {}
-for i = 1, #MD.deck do CardHintText[i] = GC.newText(FONT.get(50)) end
+for i = 1, #ModData.deck do CardHintText[i] = GC.newText(FONT.get(50)) end
 
 HoldingButtons = {}
 local HoldingButtons = HoldingButtons
@@ -238,7 +239,7 @@ function scene.load()
     end
     RevUnlocked = TABLE.countAll(GAME.completion, 0) < 9
 
-    for i = 1, #MD.deck do CardHintText[i]:set(CONF.keybind[i]:upper()) end
+    for i = 1, #ModData.deck do CardHintText[i]:set(CONF.keybind[i]:upper()) end
 
     GAME.refreshDailyChallengeText()
     TASK.unlock('sure_quit')
@@ -529,7 +530,6 @@ local stc_reset, stc_setComp, stc_setPen, stc_stop = GC.stc_reset, GC.stc_setCom
 local stc_rect, stc_mRect, stc_circ = GC.stc_rect, GC.stc_mRect, GC.stc_circ
 
 local TEXTURE = TEXTURE
-local Cards = Cards
 local TextColor = TextColor
 local ShadeColor = ShadeColor
 local bgQuad = GC.newQuad(0, 0, 0, 0, 0, 0)
@@ -1457,7 +1457,7 @@ function scene.overDraw()
             gc_setAlpha(.7)
             gc_rectangle('fill', -888 / 2, -145, 888, 120, 10)
             if GAME.anyRev and M[infoID] == 2 then
-                local text = URM and MD.ultraName[infoID] or MD.revName[infoID]
+                local text = URM and ModData.ultraName[infoID] or ModData.revName[infoID]
                 setFont(70)
                 gc_push()
                 gc_translate(0, -118)
@@ -1473,13 +1473,13 @@ function scene.overDraw()
                 setFont(30)
                 gc_strokePrint(
                     'full', 2, COLOR.dW, URM and CLR.D or COLOR.W,
-                    (URM and MD.ultraDesc or MD.revDesc)[infoID], 260, -68, 2600, 'center', 0, .8, 1
+                    (URM and ModData.ultraDesc or ModData.revDesc)[infoID], 260, -68, 2600, 'center', 0, .8, 1
                 )
             else
                 setFont(70)
-                gc_strokePrint('full', 3, ShadeColor, TextColor, MD.fullName[infoID], 130, -150, 2600, 'center', 0, .9, 1)
+                gc_strokePrint('full', 3, ShadeColor, TextColor, ModData.fullName[infoID], 130, -150, 2600, 'center', 0, .9, 1)
                 setFont(30)
-                gc_strokePrint('full', 2, ShadeColor, TextColor, MD.desc[infoID], 260, -73, 2600, 'center', 0, .8, 1)
+                gc_strokePrint('full', 2, ShadeColor, TextColor, ModData.desc[infoID], 260, -73, 2600, 'center', 0, .8, 1)
             end
             gc_ucs_back()
         end

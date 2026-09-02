@@ -323,6 +323,7 @@ CONF = {
     bg = true,
     syscursor = false,
     fullscreen = true,
+    skin = 'zc',
     keybind = {
         "q", "w", "e", "r", "t", "y", "u", "i", "o",
         "a", "s", "d", "f", "g", "h", "j", "k", "l",

@@ -25,79 +25,83 @@ local h = 520
 addText("Design", -26, h, .42, 'right')
 addText("MrZ", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("Programming", -26, h, .42, 'right')
 addText("MrZ", 26, h, .42, 'left')
 
-h = h + 90
-addText("Mod Icons", -26, h, .42, 'right')
-addText("CreepercraftYT", 26, h, .42, 'left')
-
-h = h + 90
+h = h + 85
 addText("BG Reconstruction", -26, h, .42, 'right')
 addText("DJ Asriel", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
+addText("Card Art", -26, h, .42, 'right')
+addText("Rodinia", 26, h, .42, 'left')
+
+h = h + 85
+addText("Mod Icons", -26, h, .42, 'right')
+addText("CreepercraftYT", 26, h, .42, 'left')
+
+h = h + 85
 addText("Rank Icons", -26, h, .42, 'right')
 addText("Zyrixia", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("Achievement Icons", -26, h, .42, 'right')
 addText("MrZ & DJ Asriel", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("Textworks (Ultra Mods)", -26, h, .42, 'right')
 addText("FMichael & Obsidian", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("Textworks (Design)", -26, h, .42, 'right')
 addText("FMichael & Spritzy Sheep", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("Textworks (Neg. Alt.)", -26, h, .42, 'right')
 addText("FCSplayz", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("Text Revision", -26, h, .42, 'right')
 addText("MattMayuga & Flowerling", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("Musics", -26, h, .42, 'right')
 addText("Dr Ocelot & petrtech", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("Extra Music", -26, h, .42, 'right')
 addText("Ronezkj15 & MrshimJSK", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("World Design", -26, h, .42, 'right')
 addText("Garbo", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("Font (D-Din-Pro)", -26, h, .42, 'right')
 addText("Adrian Frutiger", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("Font (Abhayalibre)", -26, h, .42, 'right')
 addText("Mooniak", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("SFX", -26, h, .42, 'right')
 addText("[from TETR.IO]", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("Floor Art 1-5", -26, h, .42, 'right')
 addText("Largeonions", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("Floor Art 6-8", -26, h, .42, 'right')
 addText("S. Zhang", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("Floor Art 9-10", -26, h, .42, 'right')
 addText("Lauren Sheng", 26, h, .42, 'left')
 
-h = h + 90
+h = h + 85
 addText("Original Card Art", -26, h, .42, 'right')
 addText("Ricman", 26, h, .42, 'left')
 

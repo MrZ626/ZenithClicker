@@ -35,7 +35,7 @@ PieceData = {
     [0] = { id = 'allclear', text = { CLR.W, "-" }, piece = { CLR.W, CHAR.brik.O1 }, popup = { CLR.W, "All Clear" } },
     { id = 'nightcore', text = { COLOR.lR, "Z" }, piece = { COLOR.lR, CHAR.brik.Z }, popup = { COLOR.lR, "Z - Nightcore" } },
     { id = 'slowmo',    text = { COLOR.lG, "S" }, piece = { COLOR.lG, CHAR.brik.S }, popup = { COLOR.lG, "S - Sloooooow-mo" } },
-    { id = 'glassCard', text = { COLOR.lB, "J" }, piece = { COLOR.lB, CHAR.brik.J }, popup = { COLOR.lB, "J - Glass Card" } },
+    { id = 'steadfast', text = { COLOR.lB, "J" }, piece = { COLOR.lB, CHAR.brik.J }, popup = { COLOR.lB, "J - Steadfast " } },
     { id = 'fastLeak',  text = { COLOR.lO, "L" }, piece = { COLOR.lO, CHAR.brik.L }, popup = { COLOR.lO, "L - Fast Leak" } },
     { id = 'invisUI',   text = { COLOR.lM, "T" }, piece = { COLOR.lM, CHAR.brik.T }, popup = { COLOR.lM, "T - Invisible UI" } },
     { id = 'invisCard', text = { COLOR.lY, "O" }, piece = { COLOR.lY, CHAR.brik.O }, popup = { COLOR.lY, "O - Invisible Card" } },

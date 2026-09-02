@@ -218,7 +218,7 @@ function Card:setActive(auto, key)
     if self.active then
         local postfix = revOn and '_reverse' or ''
         SFX.play(
-            GAME.glassCard and 'harddrop' or 'card_select' .. postfix, 1, 0,
+            'card_select' .. postfix, 1, 0,
             key and clampInterpolate(-200, -4.2, 200, 4.2, self.y1 - MY) or MATH.rand(-2.6, 2.6)
         )
         local toneName = 'card_tone_' .. ModData.name[self.id]
@@ -396,39 +396,44 @@ function Card:update(dt)
     end
 end
 
-local gc = love.graphics
-local gc_setCanvas, gc_clear = gc.setCanvas, gc.clear
-local gc_push, gc_pop = gc.push, gc.pop
-local gc_origin, gc_translate, gc_scale = gc.origin, gc.translate, gc.scale
-local gc_setColor, gc_setAlpha = gc.setColor, GC.setAlpha
-local gc_setShader, gc_setLineWidth = GC.setShader, gc.setLineWidth
-local gc_draw, gc_mDraw, gc_mRect = gc.draw, GC.mDraw, GC.mRect
+local gc_setCanvas, gc_clear = GC.setCanvas, GC.clear
+local gc_push, gc_pop = GC.push, GC.pop
+local gc_origin, gc_translate = GC.origin, GC.translate
+local gc_setColor, gc_setAlpha = GC.setColor, GC.setAlpha
+local gc_setShader, gc_setLineWidth = GC.setShader, GC.setLineWidth
+local gc_draw, gc_polygon, gc_mDraw = GC.draw, GC.polygon, GC.mDraw
 local gc_blurCircle, gc_setBlendMode = GC.blurCircle, GC.setBlendMode
 
-local iconFrame
-xpcall(function()
-    local suc, res = FILE.safeLoad('customAssets/mod_polygon.luaon', '-luaon')
-    if not suc then error("!" .. res) end
-    iconFrame = res
-    assert(iconFrame, "")
-    assert(type(iconFrame) == 'table', "!Invalid mod_polygon data")
-    assert(#iconFrame % 2 == 0, "!mod_polygon must have an even number of points")
-    assert(#iconFrame <= 52, "!mod_polygon must have at most 26 points")
-    for i = 1, #iconFrame do assert(type(iconFrame[i]) == 'number', "!mod_polygon must be a list of numbers") end
-    assert(next(iconFrame, #iconFrame) == nil, "!mod_polygon must be a pure array")
-end, function(msg)
-    if msg:find("!") then LOG('warn', msg:match("!(.*)")) end
-    local x, y = 156.5, -245.5
-    local r = 65
-    iconFrame = {
-        x - r, y - r,
-        x + 7, y - r,
-        x + r, y - 7,
-        x + r, y + r,
-        x - 12, y + r,
-        x - r, y + 12,
-    }
-end)
+local iconFrame = (function()
+    local f = {}
+
+    do
+        local x, y = 156.5, -245.5
+        local r = 65
+        f.zc = {
+            x - r, y - r,
+            x + 7, y - r,
+            x + r, y - 7,
+            x + r, y + r,
+            x - 12, y + r,
+            x - r, y + 12,
+        }
+        f.star = f.zc
+    end
+
+    do
+        local x, y = 157, -246
+        local r = 72
+        f.io = {
+            x, y - r,
+            x + r, y,
+            x, y + r,
+            x - r, y,
+        }
+    end
+
+    return f
+end)()
 
 local burnColor = {
     uAS = { 1, .42, .26 },
@@ -473,12 +478,6 @@ do
     tempMesh:setVertexMap(unpack(vMap))
 end
 tempMesh:setTexture(tempCanvas)
-local glassCardText = setmetatable({}, {
-    __index = function(t, k)
-        t[k] = GC.newText(FONT.get(50), k)
-        return t[k]
-    end
-})
 local function rotate_point_around_axis(x, y, z, ax, ay, az, theta)
     local len = (ax * ax + ay * ay + az * az) ^ .5
     local kx, ky, kz = ax / len, ay / len, az / len
@@ -493,16 +492,15 @@ local function rotate_point_around_axis(x, y, z, ax, ay, az, theta)
 end
 
 function Card:draw()
-    local texture = TEXTURE[self.id]
     local playing = GAME.playing
     local img, img2
     local rot3D = self.r_3d + self.r_3d_in
     local faceUp
-    local glassW, glassH = 480, 660
     local finalRot = playing and self.r_2d_shake or self.r_2d_rev + self.r_2d_shake
     local finalSize = self == CD[FloatOnCard] and M.EX > 0 and love.mouse.isDown(1, 2) and .9 * self.size or self.size
 
     -- Select texture
+    local texture = TEXTURE.card[CONF.skin][self.id]
     if self.lock and self.lockfull then
         img = texture.lock
     else
@@ -635,26 +633,13 @@ function Card:draw()
         gc_translate(canvasW / 2, canvasH / 2)
 
         gc_setBlendMode('alpha', 'premultiplied')
-        if GAME.glassCard then
-            if a1 then
-                gc_setLineWidth(52)
-                gc_setColor(r1, g1, b1, a1)
-                gc_mRect('line', 0, 0, glassW + 52, glassH + 52, 52)
-            end
-            if a2 then
-                gc_setLineWidth(26)
-                gc_setColor(r2, g2, b2, a2)
-                gc_mRect('line', 0, 0, glassW + 26, glassH + 26, 39)
-            end
-        else
-            if a1 then
-                gc_setColor(r1, g1, b1, a1)
-                gc_draw(activeFrame, -frame1W, -frame1H)
-            end
-            if a2 then
-                gc_setColor(r2, g2, b2, a2)
-                gc_draw(activeFrame2, -frame2W, -frame2H)
-            end
+        if a1 then
+            gc_setColor(r1, g1, b1, a1)
+            gc_draw(activeFrame, -frame1W, -frame1H)
+        end
+        if a2 then
+            gc_setColor(r2, g2, b2, a2)
+            gc_draw(activeFrame2, -frame2W, -frame2H)
         end
         gc_pop()
         gc_draw(tempMesh, self.x1, self.y1, finalRot, finalSize)
@@ -667,64 +652,34 @@ function Card:draw()
     gc_origin()
     gc_translate(canvasW / 2, canvasH / 2)
 
-    if GAME.glassCard then
-        -- Fill
-        gc_setColor((faceUp and ModData.textColor or ModData.color)[self.id])
-        gc_setAlpha((CONF.cardBrightness / 100) ^ 2 * .872)
-        gc_mRect('fill', 0, 0, glassW, glassH, 26)
-
-        -- Text
-        gc_setColor(
-            self.burn and (
-                URM and M.AS == 2 and burnColor.uAS or
-                GAME.time % .16 < .08 and burnColor.AS1 or burnColor.AS2
-            ) or CLR.W
-        )
-        FONT.set(50)
-        if faceUp then
-            gc_scale(2.6)
-            gc_mDraw(glassCardText[self.id])
-            gc_scale(1 / 2.6)
-        else
-            gc_scale(2)
-            gc_mDraw(glassCardText["TETR.IO"])
-            gc_scale(1 / 2)
-        end
-
-        -- Outline
-        gc_setColor(1, 1, 1, .62)
-        gc_setLineWidth(4)
-        gc_mRect('line', 0, 0, glassW - 3, glassH - 3, 26)
-    else
-        -- Card
-        if not GAME.invisCard then
-            if self.burn then
-                if URM and M.AS == 2 then
-                    gc_setColor(burnColor.uAS)
-                else
-                    gc_setColor(
-                        GAME.time % .16 < .08 and
-                        (faceUp and COLOR.lR or COLOR.R) or
-                        (faceUp and COLOR.lY or COLOR.Y)
-                    )
-                end
+    -- Card
+    if not GAME.invisCard then
+        if self.burn then
+            if URM and M.AS == 2 then
+                gc_setColor(burnColor.uAS)
             else
-                local b = CONF.cardBrightness / 100
-                gc_setColor(b, b, b)
+                gc_setColor(
+                    GAME.time % .16 < .08 and
+                    (faceUp and COLOR.lR or COLOR.R) or
+                    (faceUp and COLOR.lY or COLOR.Y)
+                )
             end
-            gc_draw(img, -img:getWidth() / 2, -img:getHeight() / 2)
-            if img2 then
-                gc_draw(img2, -img2:getWidth() / 2, -img2:getHeight() / 2)
-            end
+        else
+            local b = CONF.cardBrightness / 100
+            gc_setColor(b, b, b)
         end
+        gc_draw(img, -img:getWidth() / 2, -img:getHeight() / 2)
+        if img2 then
+            gc_draw(img2, -img2:getWidth() / 2, -img2:getHeight() / 2)
+        end
+    end
 
-        -- Rev Throb
-        if not playing and not self.upright and GAME.revDeckSkin and faceUp then
-            gc_setColor(1, 1, 1, ThrobAlpha.card)
-            gc_setShader(SHADER.throb)
-            gc_draw(img, -img:getWidth() / 2, -img:getHeight() / 2)
-            gc_setShader()
-        end
+    -- Rev Throb
+    if not playing and not self.upright and GAME.revDeckSkin and faceUp then
+        gc_setColor(1, 1, 1, ThrobAlpha.card)
+        gc_setShader(SHADER.throb)
+        gc_draw(img, -img:getWidth() / 2, -img:getHeight() / 2)
+        gc_setShader()
     end
 
     -- Star
@@ -774,21 +729,22 @@ function Card:draw()
 
     -- Icon cover
     if faceUp then
-        gc_setColor((GAME.glassCard and ModData.color or ModData.textColor)[self.id])
+        gc_setColor(ModData.textColor[self.id])
         local active = playing and self.inLastCommit or not playing and self.active
+        local frame = iconFrame[CONF.skin]
         if M.EX == 0 then
             if active then
                 gc_setLineWidth(6)
-                gc.polygon('line', iconFrame)
+                gc_polygon('line', frame)
                 gc_setAlpha(.62)
-                gc.polygon('fill', iconFrame)
+                gc_polygon('fill', frame)
             else
                 gc_setLineWidth(4)
-                gc.polygon('line', iconFrame)
+                gc_polygon('line', frame)
             end
         elseif active then
             gc_setAlpha(.62)
-            gc.polygon('fill', iconFrame)
+            gc_polygon('fill', frame)
         end
     end
 

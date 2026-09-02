@@ -16,8 +16,6 @@ local clr = {
 local colorRev = false
 
 local M = GAME.mod
-local MD = ModData
-local CD = Cards
 
 local baseX, baseY = 200, 110
 local pw, ph = 1200, 300
@@ -28,12 +26,12 @@ for i = 1, 62 do
     revBGquads[i] = GC.newQuad(MATH.rand(0, 1586 - pw), MATH.rand(0, 606 - 110), pw, 110, 1586, 606)
 end
 local cardIDs = {}
-for i = 1, #MD.deck do cardIDs[i] = MD.deck[i].id end
+for i = 1, #ModData.deck do cardIDs[i] = ModData.deck[i].id end
 
 local scroll, scroll1, maxScroll
 local cd, timer = 0, 0
 local set = {
-    sel = TABLE.new(0, #MD.deck),
+    sel = TABLE.new(0, #ModData.deck),
     match = 'include', ---@type 'include' | 'exclude' | 'exact' | 'include+' | 'exclude+' | 'exact+'
     floor = 1,
     floorComp = '>', ---@type '>' | '<' | '='
@@ -149,7 +147,7 @@ local function query()
     for i = 1, #recList do recList[i].comboText:release() end
 
     local list = {}
-    for i = 1, #MD.deck do
+    for i = 1, #ModData.deck do
         if set.sel[i] > 0 then
             table.insert(list, (set.sel[i] == 2 and 'r' or '') .. cardIDs[i])
         end
@@ -276,7 +274,7 @@ function scene.load()
     end
     scroll, scroll1 = 0, 0
 
-    for i = 1, #CD do cardPos[i] = i end
+    for i = 1, #Cards do cardPos[i] = i end
     if M.MS == 1 then
         for _ = 1, math.random(2, 3) do
             local r1 = math.random(2, 8)
@@ -286,7 +284,7 @@ function scene.load()
     elseif M.MS == 2 then
         TABLE.shuffle(cardPos)
     end
-    for i = 1, #CD do
+    for i = 1, #Cards do
         local w = widgetSet.mod[i]
         w.x = baseX - 60 + 100 * cardPos[i]
         w:resetPos()
@@ -512,7 +510,7 @@ function scene.draw()
 
     -- Rev glow
     gc_setColor(1, 1, 1)
-    for i = 1, #CD do
+    for i = 1, #Cards do
         if set.sel[i] == 2 then
             gc_draw(TEXTURE.recRevLight, -120 + 100 * cardPos[i], 100 - 60)
         end
@@ -643,12 +641,12 @@ widgetSet.sort = {
 }
 
 widgetSet.mod = {}
-for i = 1, #CD do
+for i = 1, #Cards do
     table.insert(widgetSet.mod, WIDGET.new {
         type = 'checkBox',
-        fillColor = { COLOR.lerp(MD.color[cardIDs[i]], CLR.K, .8) },
-        frameColor = { COLOR.lerp(MD.color[cardIDs[i]], CLR.K, .26) },
-        textColor = { COLOR.lerp(MD.textColor[cardIDs[i]], CLR.W, .26) },
+        fillColor = { COLOR.lerp(ModData.color[cardIDs[i]], CLR.K, .8) },
+        frameColor = { COLOR.lerp(ModData.color[cardIDs[i]], CLR.K, .26) },
+        textColor = { COLOR.lerp(ModData.textColor[cardIDs[i]], CLR.W, .26) },
         text = cardIDs[i], sound_off = false, sound_on = false,
         x = baseX - 60 + 100 * i, y = baseY + 100,
         disp = function() return set.sel[i] > 0 end,

@@ -188,7 +188,7 @@ local GAME = {
     pieceEffectID = 0,
     nightcore = false,
     slowmo = false,
-    glassCard = false,
+    steadfast = false,
     closeCard = false,
     fastLeak = false,
     invisCard = false,
@@ -1524,12 +1524,12 @@ function GAME.refreshLayout()
             else
                 C.x = selX
             end
-            C.y = baseY - ((C.active and 45 or 0) + (i == FloatOnCard and 55 or 0))
+            C.y = GAME.steadfast and baseY or baseY - ((C.active and 45 or 0) + (i == FloatOnCard and 55 or 0))
         end
     else
         for i, C in ipairs(CD) do
             C.x = 800 + (i - 5) * baseDist
-            C.y = baseY - ((C.active and 45 or 0) + (i == FloatOnCard and 55 or 0))
+            C.y = GAME.steadfast and baseY or baseY - ((C.active and 45 or 0) + (i == FloatOnCard and 55 or 0))
         end
     end
 end
@@ -2975,7 +2975,7 @@ function GAME.finish(reason)
         GAME.pieceEffectID = 0
         GAME.nightcore = false
         GAME.slowmo = false
-        GAME.glassCard = false
+        GAME.steadfast = false
         GAME.fastLeak = false
         GAME.invisUI = false
         GAME.invisCard = false
