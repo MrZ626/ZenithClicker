@@ -1022,23 +1022,13 @@ function scene.draw()
         gc_mDraw(TEXTS.zpChange, 220, 98, 0, .626)
 
         -- Input stats
-        local w = 260
+        local w = TEXTS.endHeight:getWidth() * 1.8
         local x = 0
         for i = 1, 4 do
             gc_setColor(inputStatColor[i])
-            gc_rectangle('fill', (x - .5) * w, 188, w * GAME.inputStatNorm[i], 2)
+            gc_rectangle('fill', (x - .5) * w, 188, w * GAME.inputStatNorm[i], 3)
             x = x + GAME.inputStatNorm[i]
         end
-        -- gc_setBlendMode('darken', 'premultiplied')
-        -- local w = TEXTS.endHeight:getWidth() * 1.8
-        -- local x = 0
-        -- for i = 1, 4 do
-        --     gc_setColor(inputStatColor[i])
-        --     gc_setAlpha(.26)
-        --     gc_rectangle('fill', (x - .5) * w, 100, w * GAME.inputStatNorm[i], 90)
-        --     x = x + GAME.inputStatNorm[i]
-        -- end
-        -- gc_setBlendMode('alpha')
     end
 
     -- Daily Challenge Button
