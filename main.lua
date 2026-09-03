@@ -1282,6 +1282,7 @@ function CurlRequest(act, data)
             alt = GAME.roundHeight,
             time = GAME.gigaTime and MATH.roundUnit(GAME.gigaTime, .001),
             cr = RankAvailable() and CalculateCR() or 0,
+            input = { GAME.inputStat.m, GAME.inputStat.c, GAME.inputStat.k, GAME.inputStat.t },
         }
         ASYNC.runCmd('submitDaily', Daily.cmd)
         MSG('dark', "Submitting Daily Challenge score...")

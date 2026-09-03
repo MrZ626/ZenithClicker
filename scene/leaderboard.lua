@@ -35,6 +35,21 @@ local CRcache = setmetatable({}, {
         return s
     end
 })
+local inputCache = setmetatable({}, {
+    __index = function(t, k)
+        local sum = MATH.sum(k)
+        local s = {}
+        for i = 1, 4 do s[i] = k[i] / sum end
+        t[k] = s
+        return s
+    end
+})
+local inputStatColor = {
+    { COLOR.HEX 'FF7866C0' },
+    { COLOR.HEX 'FFB66DC0' },
+    { COLOR.HEX 'FFEB55C0' },
+    { COLOR.HEX 'A3FF5CC0' },
+}
 
 local function refreshBtn()
     local L = scene.widgetList
@@ -188,9 +203,9 @@ local function drawBtn(x, y, w, h)
     gc_rectangle('fill', x + 3, y + h, w - 3, -3)
 end
 
-local baseX, baseY = 200, 110
-local pw, ph = 1200, 300
-local noW = 160
+local baseX, baseY = 200, 110 -- Panel position
+local pw, ph = 1200, 300      -- Panel width & height
+local noW = 160               -- "No." width
 local entryH = 100
 local entryGap = 10
 local rankColor = {
@@ -243,11 +258,24 @@ function scene.draw()
         for i = 1, #l do
             local p = l[i]
 
-            -- Number pannel
+            -- Base
             gc_setColor(clr.D)
             drawBtn(0, 0, pw, entryH)
+
+            -- Number pannel
             gc_setColor(0, 0, 0, .15)
             gc_rectangle('fill', 0, 0, noW, entryH)
+
+            -- Input stat
+            if p.input then
+                local data = inputCache[p.input]
+                local x = 0
+                for j = 1, 4 do
+                    gc_setColor(inputStatColor[j])
+                    gc_rectangle('fill', noW + 18 + x * 64, entryH * .926, data[j] * 64, -6)
+                    x = x + data[j]
+                end
+            end
 
             -- Rank icon
             gc_setColor(1, 1, 1)
