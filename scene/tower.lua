@@ -103,6 +103,7 @@ local function keyTrigger(key)
         if C then
             if GAME.playing or not C.lock then
                 GAME.nixPrompt('keep_no_keyboard')
+                GAME.inputStat.k = GAME.inputStat.k + 1
                 FloatOnCard = bindID
                 SetMouseVisible(false)
                 MX, MY = C.x1 + math.random(-126, 126), C.y1 + math.random(-260, 260)
@@ -129,30 +130,35 @@ local function keyTrigger(key)
                     SCN.back()
                 end
             end
-        elseif bindID == 20 then
-            GAME.nixPrompt('keep_no_keyboard')
-            local W = scene.widgetList.reset
-            W._pressTime = W._pressTimeMax * 2
-            W._hoverTime = W._hoverTimeMax
-            SFX.play('menuclick')
-            if M.AS == 0 then GAME.nixPrompt('keep_no_reset') end
-            GAME.cancelAll()
-            if not GAME.achv_noKeyboardH then GAME.achv_noKeyboardH = GAME.roundHeight end
-        elseif bindID == 21 or bindID == 22 then
-            GAME.nixPrompt('keep_no_keyboard')
-            scene.mouseDown(MX, MY, bindID == 21 and 1 or 2)
-            scene.mouseUp(MX, MY, bindID == 21 and 1 or 2)
-            if not GAME.achv_noKeyboardH then GAME.achv_noKeyboardH = GAME.roundHeight end
-        elseif bindID == 19 then
-            GAME.nixPrompt('keep_no_keyboard')
-            local W = scene.widgetList.start
-            W._pressTime = W._pressTimeMax * 2
-            W._hoverTime = W._hoverTimeMax
-            if GAME.playing then
-                GAME.commit()
+        elseif bindID then
+            if bindID == 19 then
+                GAME.nixPrompt('keep_no_keyboard')
+                GAME.inputStat.k = GAME.inputStat.k + 1
+                local W = scene.widgetList.start
+                W._pressTime = W._pressTimeMax * 2
+                W._hoverTime = W._hoverTimeMax
+                if GAME.playing then
+                    GAME.commit()
+                    if not GAME.achv_noKeyboardH then GAME.achv_noKeyboardH = GAME.roundHeight end
+                else
+                    GAME.start()
+                end
+            elseif bindID == 20 then
+                GAME.nixPrompt('keep_no_keyboard')
+                GAME.inputStat.k = GAME.inputStat.k + 1
+                local W = scene.widgetList.reset
+                W._pressTime = W._pressTimeMax * 2
+                W._hoverTime = W._hoverTimeMax
+                SFX.play('menuclick')
+                if M.AS == 0 then GAME.nixPrompt('keep_no_reset') end
+                GAME.cancelAll()
                 if not GAME.achv_noKeyboardH then GAME.achv_noKeyboardH = GAME.roundHeight end
-            else
-                GAME.start()
+            elseif bindID == 21 or bindID == 22 then
+                GAME.nixPrompt('keep_no_keyboard')
+                GAME.inputStat.k = GAME.inputStat.k + 1
+                scene.mouseDown(MX, MY, bindID == 21 and 1 or 2)
+                scene.mouseUp(MX, MY, bindID == 21 and 1 or 2)
+                if not GAME.achv_noKeyboardH then GAME.achv_noKeyboardH = GAME.roundHeight end
             end
         elseif key == '`' then
             if GAME.playing then
@@ -269,7 +275,10 @@ function scene.mouseMove(x, y, _, dy)
             STAT.maxHeight
         )
     else
-        GAME.nixPrompt('keep_no_mouse')
+        if TASK.lock('mouse_trigger_cooldown', .26) then
+            GAME.nixPrompt('keep_no_mouse')
+            GAME.inputStat.m = GAME.inputStat.m + 1
+        end
         mouseMove(x, y)
     end
 end
@@ -299,6 +308,7 @@ function scene.mouseDown(x, y, k)
     if k == 3 then return true end
     HoldingButtons['mouse' .. k] = true
     GAME.nixPrompt('keep_no_mouse')
+    GAME.inputStat.c = GAME.inputStat.c + 1
 
     if getBtnPressed() > 1 + (URM and M.VL == 2 and 0 or floor(M.VL / 2)) then return true end
     if M.EX == 0 then
@@ -313,8 +323,8 @@ function scene.mouseUp(x, y, k)
     if k > 3 then return end
     if not HoldingButtons['mouse' .. k] then return end
     HoldingButtons['mouse' .. k] = nil
-    if GAME.zenithTraveler then return end
     GAME.nixPrompt('keep_no_mouse')
+    if GAME.zenithTraveler then return end
     if k == 3 then return end
 
     if getBtnPressed() > (URM and M.VL == 2 and 0 or floor(M.VL / 2)) then return end
@@ -562,6 +572,12 @@ local windupColor = {
 local koMsgColor = {
     kill = { CLR.HEX "FFB300FF" },
     death = { CLR.HEX "910000FF" },
+}
+local inputStatColor = {
+    { COLOR.HEX 'FF7866C0' },
+    { COLOR.HEX 'FFB66DC0' },
+    { COLOR.HEX 'FFEB55C0' },
+    { COLOR.HEX 'A3FF5CC0' },
 }
 
 function DrawBG(brightness, showRuler)
@@ -1004,6 +1020,25 @@ function scene.draw()
         gc_draw(TEXTS.rankTime, -526, 224 - GAME.uiHide * 150, 0, .38)
         gc_setColor(CLR.dL)
         gc_mDraw(TEXTS.zpChange, 220, 98, 0, .626)
+
+        -- Input stats
+        local w = 260
+        local x = 0
+        for i = 1, 4 do
+            gc_setColor(inputStatColor[i])
+            gc_rectangle('fill', (x - .5) * w, 188, w * GAME.inputStatNorm[i], 2)
+            x = x + GAME.inputStatNorm[i]
+        end
+        -- gc_setBlendMode('darken', 'premultiplied')
+        -- local w = TEXTS.endHeight:getWidth() * 1.8
+        -- local x = 0
+        -- for i = 1, 4 do
+        --     gc_setColor(inputStatColor[i])
+        --     gc_setAlpha(.26)
+        --     gc_rectangle('fill', (x - .5) * w, 100, w * GAME.inputStatNorm[i], 90)
+        --     x = x + GAME.inputStatNorm[i]
+        -- end
+        -- gc_setBlendMode('alpha')
     end
 
     -- Daily Challenge Button
