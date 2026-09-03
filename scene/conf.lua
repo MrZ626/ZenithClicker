@@ -210,10 +210,10 @@ function scene.load()
     TASK.unlock('import')
     TASK.unlock('rebind_control')
     TASK.unlock('just_saved')
-    refreshWidgets()
     refreshSongInfo()
     refreshUID()
     refreshSkin()
+    refreshWidgets()
 end
 
 -- function scene.unload()
@@ -310,39 +310,37 @@ function scene.keyDown(key, isRep)
             end
             return true
         elseif page == 5 then
-            local update = true
             if key == CONF.keybind[19] then
                 if CONF.skin ~= skinPage then
                     CONF.skin = skinPage
+                    refreshWidgets()
                     SFX.play('garbagesmash', 1, 0, 1.26)
-                    update = true
                 end
             elseif key == 'left' then
                 if TABLE.find(skinList, skinPage) then
                     if skinPage ~= skinList[1] then
                         skinPage = TABLE.prev(skinList, skinPage) or skinPage
                         startCardFanAnim()
-                        update = true
+                        refreshWidgets()
                     end
                 else
                     skinPage = skinList[1]
                     startCardFanAnim()
-                    update = true
+                    refreshWidgets()
                 end
             elseif key == 'right' then
                 if TABLE.find(skinList, skinPage) then
                     if skinPage ~= skinList[#skinList] then
                         skinPage = TABLE.next(skinList, skinPage) or skinPage
                         startCardFanAnim()
-                        update = true
+                        refreshWidgets()
                     end
                 else
                     skinPage = skinList[#skinList]
                     startCardFanAnim()
-                    update = true
+                    refreshWidgets()
                 end
             end
-            if update then for i = 1, 3 do pages[5][i]:setVisible() end end
         end
     end
     ZENITHA._cursor.active = true
