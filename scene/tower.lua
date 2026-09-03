@@ -1639,6 +1639,14 @@ function scene.overDraw()
         end
     end
 
+    -- Steadfast cover
+    if GAME.steadfast then
+        gc_replaceTransform(SCR.origin)
+        gc_setColor(1, .42, 0, (GAME.playing and .626 or 1) * .42)
+        gc_draw(TEXTURE.transition, 0, 0, -1.5708, .26 / 128 * -SCR.h, SCR.w)
+        gc_draw(TEXTURE.transition, 0, SCR.h, -1.5708, .26 / 128 * SCR.h, SCR.w)
+    end
+
     -- Fastleak cover
     if GAME.fastLeak then
         gc_replaceTransform(SCR.origin)

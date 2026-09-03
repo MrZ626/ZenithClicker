@@ -55,6 +55,11 @@ local d = {
         desc = "Finished a speedrun with rEX & Close Card",
     },
     {
+        id = 'true_ascetic',
+        name = "True Ascetic",
+        desc = "Finished a speedrun with rNH & Steadfast",
+    },
+    {
         id = 'true_master',
         name = "True Master",
         desc = "Finished a speedrun with rGV & Nightcore",

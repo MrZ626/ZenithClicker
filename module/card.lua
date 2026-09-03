@@ -642,7 +642,7 @@ function Card:draw()
     end
 
     -- Hint layer
-    if a1 or a2 then
+    if (a1 or a2) and not GAME.steadfast then
         if _3D then
             gc_push('all')
             gc_setCanvas(tempCanvas)

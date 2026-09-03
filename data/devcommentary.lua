@@ -76,6 +76,7 @@ return {
         I want to reproduce the feeling of "classic" like what QP2 does, so I tried many combinations of "limited next queue" "no cancel" "no reset button".
         And finally I decided to make it "limited next queue" + "no auto cancel", and "remove +1 atk on perfect pass".
         Though it doesn't look like very "classic", it does need you read the only next quest and plan ahead, just like classical Tetris.
+        Be ascetic in your flesh then your spirit will be steadf...
     ]],
     ['rMS'] = STRING.trimIndent [[
         What about... shuffling cards after each quest? Sounds evil but that's how reversed mods should be like, right?
