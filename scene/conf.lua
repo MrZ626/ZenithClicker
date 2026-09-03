@@ -460,7 +460,7 @@ function scene.draw()
             drawSliderComponents(540, "3D  ROTATION  TILT", "PLAIN", "TILT", CONF.rot3D_tilt)
             drawSliderComponents(620, "3D  ROTATION  FOCAL", "FAR", "CLOSE", CONF.rot3D_focal)
         else
-            drawSliderComponents(540, "2D  ROTATION  TILT", "PLAIN", "TILT", CONF.rot3D_focal)
+            drawSliderComponents(540, "2D  ROTATION  TILT", "PLAIN", "TILT", CONF.rot3D_tilt)
         end
     elseif page == 3 then
         if resetall_anim > .1 then
