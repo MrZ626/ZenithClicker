@@ -183,12 +183,7 @@ local GAME = {
     koCharge = 0,
     koBuffer = {}, ---@type {uid:string, timer:number, valid:boolean}[]
     koAnim = {}, ---@type {id1:love.Text, id2:love.Text, a:number, timer:number, pos:number, showP1:boolean, toOppo:boolean}[]
-    inputStat = {
-        m = 0,                      -- Move (mouse)
-        c = 0,                      -- Click (mouse)
-        k = 0,                      -- Keyboard
-        t = 0,                      -- Touch
-    },
+    inputStat = { 0, 0, 0, 0 },     -- Move (mouse) / Click (mouse) / Keyboard / Touch
     inputStatNorm = { 0, 0, 0, 0 }, -- normalized inputStat
 
     zenithTraveler = false,
@@ -2337,7 +2332,7 @@ function GAME.start()
     GAME.heightBonus = 0
     GAME.peakRank = 1
     GAME.rankTimer = TABLE.new(0, 62)
-    GAME.inputStat.m, GAME.inputStat.c, GAME.inputStat.k, GAME.inputStat.t = 0, 0, 0, 0
+    for k in next, GAME.inputStat do GAME.inputStat[k] = 0 end
 
     -- Time
     GAME.time = 0
@@ -2623,9 +2618,8 @@ function GAME.finish(reason)
             end
         end
 
-        local sum = MATH.sumAll(GAME.inputStat)
-        GAME.inputStatNorm[1], GAME.inputStatNorm[2], GAME.inputStatNorm[3], GAME.inputStatNorm[4] =
-            GAME.inputStat.m / sum, GAME.inputStat.c / sum, GAME.inputStat.k / sum, GAME.inputStat.t / sum
+        local sum = math.max(MATH.sumAll(GAME.inputStat), 1)
+        for i = 1, 4 do GAME.inputStatNorm[i] = GAME.inputStat[i] / sum end
 
         -- ZP
         local zpGain = abs(GAME.roundHeight) * GAME.comboZP

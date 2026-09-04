@@ -103,7 +103,7 @@ local function keyTrigger(key)
         if C then
             if GAME.playing or not C.lock then
                 GAME.nixPrompt('keep_no_keyboard')
-                GAME.inputStat.k = GAME.inputStat.k + 1
+                GAME.inputStat[3] = GAME.inputStat[3] + 1
                 FloatOnCard = bindID
                 SetMouseVisible(false)
                 MX, MY = C.x1 + math.random(-126, 126), C.y1 + math.random(-260, 260)
@@ -133,7 +133,7 @@ local function keyTrigger(key)
         elseif bindID then
             if bindID == 19 then
                 GAME.nixPrompt('keep_no_keyboard')
-                GAME.inputStat.k = GAME.inputStat.k + 1
+                GAME.inputStat[3] = GAME.inputStat[3] + 1
                 local W = scene.widgetList.start
                 W._pressTime = W._pressTimeMax * 2
                 W._hoverTime = W._hoverTimeMax
@@ -145,7 +145,7 @@ local function keyTrigger(key)
                 end
             elseif bindID == 20 then
                 GAME.nixPrompt('keep_no_keyboard')
-                GAME.inputStat.k = GAME.inputStat.k + 1
+                GAME.inputStat[3] = GAME.inputStat[3] + 1
                 local W = scene.widgetList.reset
                 W._pressTime = W._pressTimeMax * 2
                 W._hoverTime = W._hoverTimeMax
@@ -155,7 +155,7 @@ local function keyTrigger(key)
                 if not GAME.achv_noKeyboardH then GAME.achv_noKeyboardH = GAME.roundHeight end
             elseif bindID == 21 or bindID == 22 then
                 GAME.nixPrompt('keep_no_keyboard')
-                GAME.inputStat.k = GAME.inputStat.k + 1
+                GAME.inputStat[3] = GAME.inputStat[3] + 1
                 scene.mouseDown(MX, MY, bindID == 21 and 1 or 2)
                 scene.mouseUp(MX, MY, bindID == 21 and 1 or 2)
                 if not GAME.achv_noKeyboardH then GAME.achv_noKeyboardH = GAME.roundHeight end
@@ -277,7 +277,7 @@ function scene.mouseMove(x, y, _, dy)
     else
         if TASK.lock('mouse_trigger_cooldown', .26) then
             GAME.nixPrompt('keep_no_mouse')
-            GAME.inputStat.m = GAME.inputStat.m + 1
+            GAME.inputStat[1] = GAME.inputStat[1] + 1
         end
         mouseMove(x, y)
     end
@@ -308,7 +308,7 @@ function scene.mouseDown(x, y, k)
     if k == 3 then return true end
     HoldingButtons['mouse' .. k] = true
     GAME.nixPrompt('keep_no_mouse')
-    GAME.inputStat.c = GAME.inputStat.c + 1
+    GAME.inputStat[2] = GAME.inputStat[2] + 1
 
     if getBtnPressed() > 1 + (URM and M.VL == 2 and 0 or floor(M.VL / 2)) then return true end
     if M.EX == 0 then
@@ -362,6 +362,7 @@ function scene.touchDown(x, y, id)
     HoldingButtons['touch' .. tostring(id)] = true
     if M.EX == 0 then
         SFX.play('move')
+        GAME.inputStat[4] = GAME.inputStat[4] + 1
         mouseTrigger(x, y, next(revHold) and 2 or 1)
     else
         SFX.play('rotate')
