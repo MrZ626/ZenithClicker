@@ -33,10 +33,10 @@ UltraMessinessMaxUnmoved = { 5, 5, 5, 5, 4, 4, 4, 3, 3, 2 }
 
 PieceData = {
     [0] = { id = 'allclear', text = { CLR.W, "-" }, piece = { CLR.W, CHAR.brik.O1 }, popup = { CLR.W, "All Clear" } },
-    { id = 'nightcore', text = { COLOR.lR, "Z" }, piece = { COLOR.lR, CHAR.brik.Z }, popup = { COLOR.lR, "Z - Nightcore" } },
-    { id = 'slowmo',    text = { COLOR.lG, "S" }, piece = { COLOR.lG, CHAR.brik.S }, popup = { COLOR.lG, "S - Sloooooow-mo" } },
-    { id = 'steadfast', text = { COLOR.lB, "J" }, piece = { COLOR.lB, CHAR.brik.J }, popup = { COLOR.lB, "J - Steadfast " } },
-    { id = 'fastLeak',  text = { COLOR.lO, "L" }, piece = { COLOR.lO, CHAR.brik.L }, popup = { COLOR.lO, "L - Fast Leak" } },
+    { id = 'steadfast', text = { COLOR.lB, "Z" }, piece = { COLOR.lR, CHAR.brik.Z }, popup = { COLOR.lR, "Z - Steadfast " } },
+    { id = 'fastLeak',  text = { COLOR.lO, "S" }, piece = { COLOR.lG, CHAR.brik.S }, popup = { COLOR.lG, "S - Fast Leak" } },
+    { id = 'slowmo',    text = { COLOR.lR, "J" }, piece = { COLOR.lB, CHAR.brik.J }, popup = { COLOR.lB, "J - Sloooooow-mo" } },
+    { id = 'nightcore', text = { COLOR.lG, "L" }, piece = { COLOR.lO, CHAR.brik.L }, popup = { COLOR.lO, "L - Nightcore" } },
     { id = 'invisUI',   text = { COLOR.lM, "T" }, piece = { COLOR.lM, CHAR.brik.T }, popup = { COLOR.lM, "T - Invisible UI" } },
     { id = 'invisCard', text = { COLOR.lY, "O" }, piece = { COLOR.lY, CHAR.brik.O }, popup = { COLOR.lY, "O - Invisible Card" } },
     { id = 'closeCard', text = { COLOR.lC, "I" }, piece = { COLOR.lC, CHAR.brik.I }, popup = { COLOR.lC, "I - Close Card" } },

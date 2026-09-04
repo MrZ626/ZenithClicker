@@ -1537,15 +1537,28 @@ function scene.overDraw()
     end
 
     -- TimeMul
-    if GAME.nightcore or GAME.slowmo then
+    if GAME.slowmo or GAME.nightcore then
         gc_replaceTransform(SCR.xOy_m)
         GC.rotate(-1.5708)
         gc_setLineWidth(42)
         local a
-        if GAME.nightcore then
-            gc_setColor(1, 1, 1, GAME.playing and .1 or .26)
+        if GAME.slowmo then
+            gc_setColor(.26, .42, 1, GAME.playing and .1 or .26)
             gc_circle('line', 0, 0, 620)
-            gc_setColor(1, 1, 1, GAME.playing and .26 or .42)
+            gc_setColor(.26, .42, 1, GAME.playing and .26 or .42)
+            a = os.date('%H') / 6 * 3.1416
+            gc_setLineWidth(26)
+            gc_line(0, 0, 120 * cos(a), 120 * sin(a))
+            a = os.date('%M') / 30 * 3.1416
+            gc_setLineWidth(16)
+            gc_line(0, 0, 260 * cos(a), 260 * sin(a))
+            a = os.date('%S') / 30 * 3.1416
+            gc_setLineWidth(10)
+            gc_line(0, 0, 420 * cos(a), 420 * sin(a))
+        else
+            gc_setColor(1, .42, 0, GAME.playing and .06 or .2)
+            gc_circle('line', 0, 0, 620)
+            gc_setColor(1, .42, 0, GAME.playing and .2 or .35)
             a = os.date('%H') / 6 * 3.1416
             gc_setLineWidth(26)
             gc_line(0, 0, 120 * cos(a), 120 * sin(a))
@@ -1559,19 +1572,6 @@ function scene.overDraw()
             gc_line(0, 0, 520 * cos(a), 520 * sin(a))
             a = love.timer.getTime() / 30 * 3.1416 * 60
             gc_line(0, 0, 600 * cos(a), 600 * sin(a))
-        else
-            gc_setColor(1, 1, 1, GAME.playing and .0626 or .1)
-            gc_circle('line', 0, 0, 620)
-            gc_setColor(1, 1, 1, GAME.playing and .1 or .26)
-            a = os.date('%H') / 6 * 3.1416
-            gc_setLineWidth(26)
-            gc_line(0, 0, 120 * cos(a), 120 * sin(a))
-            a = os.date('%M') / 30 * 3.1416
-            gc_setLineWidth(16)
-            gc_line(0, 0, 260 * cos(a), 260 * sin(a))
-            a = os.date('%S') / 30 * 3.1416
-            gc_setLineWidth(10)
-            gc_line(0, 0, 420 * cos(a), 420 * sin(a))
         end
     end
 
@@ -1668,7 +1668,7 @@ function scene.overDraw()
     -- Steadfast cover
     if GAME.steadfast then
         gc_replaceTransform(SCR.origin)
-        gc_setColor(1, .42, 0, (GAME.playing and .626 or 1) * .42)
+        gc_setColor(1, 0, 0, (GAME.playing and .626 or 1) * .42)
         gc_draw(TEXTURE.transition, 0, 0, -1.5708, .26 / 128 * -SCR.h, SCR.w)
         gc_draw(TEXTURE.transition, 0, SCR.h, -1.5708, .26 / 128 * SCR.h, SCR.w)
     end
