@@ -2189,8 +2189,8 @@ function GAME.commit(auto)
                         CD[r], CD[r + 1], CD[r + 2] = CD[r + 1], CD[r + 2], CD[r]
                     end
                 end
-                GAME.refreshLayout()
             end
+            GAME.refreshLayout()
         end
 
         if M.NH < 2 then GAME.cancelAll(true) end
