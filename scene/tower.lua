@@ -1,5 +1,5 @@
 local next = next
-local floor = math.floor
+local floor, abs = math.floor, math.abs
 local max, min = math.max, math.min
 local sin, cos = math.sin, math.cos
 local clamp, interpolate, clampInterpolate = MATH.clamp, MATH.interpolate, MATH.clampInterpolate
@@ -583,97 +583,95 @@ local inputStatColor = {
 
 function DrawBG(brightness, showRuler)
     gc_replaceTransform(SCR.origin)
-    if GAME.bgH > -50 then
-        local bgFloor = GAME.calculateFloor(GAME.bgH)
-        local imgBG = CONF.bg and not GAME.invisUI
-        if imgBG then
-            if bgFloor < 10 then
+    local bgFloor = GAME.calculateFloor(abs(GAME.bgH))
+    local imgBG = CONF.bg and not GAME.invisUI and GAME.bgH > -50
+    if imgBG then
+        if bgFloor < 10 then
+            gc_setColor(1, 1, 1)
+            local bottom = Floors[bgFloor - 1].top
+            local top = Floors[bgFloor].top
+            local bg = TEXTURE.towerBG[bgFloor]
+            local w, h = bg:getDimensions()
+            local quadStartH = interpolate(bottom, h, top, 0, GAME.bgH) - 640
+            bgQuad:setViewport(GAME.bgX, quadStartH, 1024, 640, w, h)
+            gc_mDrawQ(bg, bgQuad, SCR.w / 2, SCR.h / 2, 0, BgScale)
+            if bgFloor == 9 then
+                if GAME.bgH > 1562 then
+                    gc_setColor(.5, .5, .5, interpolate(1562, 0, 1650, 1, GAME.bgH))
+                    gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
+                end
+            elseif quadStartH < 0 then
+                bg = TEXTURE.towerBG[bgFloor + 1]
+                w, h = bg:getDimensions()
+                bgQuad:setViewport(GAME.bgX, h - 640, 1024, 640, w, h)
+                gc_mDrawQ(bg, bgQuad, SCR.w / 2, SCR.h * interpolate(0, -.5, -640, .5, quadStartH), 0, BgScale)
+            end
+        else
+            -- Space color
+            if GAME.bgH < 2500 then
+                -- Top
+                if GAME.bgH < 1900 then
+                    gc_setColor(0, 0, interpolate(1650, .2, 1900, 0, GAME.bgH))
+                    gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
+                end
+
+                -- Bottom
+                local t = MATH.iLerp(1650, 2500, GAME.bgH)
+                gc_setColor(
+                    lLerp(f10colors[1], t),
+                    lLerp(f10colors[2], t),
+                    lLerp(f10colors[3], t),
+                    .626 * (1 - t)
+                )
+                gc_draw(TEXTURE.transition, 0, SCR.h, -1.5708, SCR.h / 128, SCR.w)
+            elseif ComboColor[1] then
+                -- Vacuum
+                local t = GAME.time % 1
+                gc_setColor(
+                    lLerp(ComboColor[1], t),
+                    lLerp(ComboColor[2], t),
+                    lLerp(ComboColor[3], t),
+                    icLerp(2500, 6200, GAME.bgH) * .355
+                )
+                gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
+            end
+
+            -- Bodies
+            gc_setBlendMode('add')
+            gc_setColor(1, 1, 1, .8)
+            gc_draw(StarPS, SCR.w / 2, SCR.h / 2 + GAME.bgH * 2 * BgScale)
+            gc_mDraw(TEXTURE.moon, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 2202.84) * 2 * BgScale, 0, .2 * BgScale)
+            gc_setBlendMode('alpha')
+
+            -- Tower
+            if GAME.bgH < 1700 then
                 gc_setColor(1, 1, 1)
-                local bottom = Floors[bgFloor - 1].top
-                local top = Floors[bgFloor].top
-                local bg = TEXTURE.towerBG[bgFloor]
+                local bg = TEXTURE.towerBG[10]
                 local w, h = bg:getDimensions()
-                local quadStartH = interpolate(bottom, h, top, 0, GAME.bgH) - 640
-                bgQuad:setViewport(GAME.bgX, quadStartH, 1024, 640, w, h)
+                local quadStartH = interpolate(1650, h, 1700, 0, GAME.bgH) - 640
+                bgQuad:setViewport(0, quadStartH, 1024, 640, w, h)
                 gc_mDrawQ(bg, bgQuad, SCR.w / 2, SCR.h / 2, 0, BgScale)
-                if bgFloor == 9 then
-                    if GAME.bgH > 1562 then
-                        gc_setColor(.5, .5, .5, interpolate(1562, 0, 1650, 1, GAME.bgH))
-                        gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
-                    end
-                elseif quadStartH < 0 then
-                    bg = TEXTURE.towerBG[bgFloor + 1]
-                    w, h = bg:getDimensions()
-                    bgQuad:setViewport(GAME.bgX, h - 640, 1024, 640, w, h)
-                    gc_mDrawQ(bg, bgQuad, SCR.w / 2, SCR.h * interpolate(0, -.5, -640, .5, quadStartH), 0, BgScale)
-                end
-            else
-                -- Space color
-                if GAME.bgH < 2500 then
-                    -- Top
-                    if GAME.bgH < 1900 then
-                        gc_setColor(0, 0, interpolate(1650, .2, 1900, 0, GAME.bgH))
-                        gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
-                    end
+            end
 
-                    -- Bottom
-                    local t = MATH.iLerp(1650, 2500, GAME.bgH)
-                    gc_setColor(
-                        lLerp(f10colors[1], t),
-                        lLerp(f10colors[2], t),
-                        lLerp(f10colors[3], t),
-                        .626 * (1 - t)
-                    )
-                    gc_draw(TEXTURE.transition, 0, SCR.h, -1.5708, SCR.h / 128, SCR.w)
-                elseif ComboColor[1] then
-                    -- Vacuum
-                    local t = GAME.time % 1
-                    gc_setColor(
-                        lLerp(ComboColor[1], t),
-                        lLerp(ComboColor[2], t),
-                        lLerp(ComboColor[3], t),
-                        icLerp(2500, 6200, GAME.bgH) * .355
-                    )
-                    gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
-                end
-
-                -- Bodies
-                gc_setBlendMode('add')
-                gc_setColor(1, 1, 1, .8)
-                gc_draw(StarPS, SCR.w / 2, SCR.h / 2 + GAME.bgH * 2 * BgScale)
-                gc_mDraw(TEXTURE.moon, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 2202.84) * 2 * BgScale, 0, .2 * BgScale)
-                gc_setBlendMode('alpha')
-
-                -- Tower
-                if GAME.bgH < 1700 then
-                    gc_setColor(1, 1, 1)
-                    local bg = TEXTURE.towerBG[10]
-                    local w, h = bg:getDimensions()
-                    local quadStartH = interpolate(1650, h, 1700, 0, GAME.bgH) - 640
-                    bgQuad:setViewport(0, quadStartH, 1024, 640, w, h)
-                    gc_mDrawQ(bg, bgQuad, SCR.w / 2, SCR.h / 2, 0, BgScale)
-                end
-
-                -- Cover
-                local f10CoverAlpha = max(icLerp(1660, 1650, GAME.bgH), 1 - (love.timer.getTime() - GAME.f10Time) / 2.6)
-                if f10CoverAlpha > 0 then
-                    gc_setColor(.5, .5, .5, f10CoverAlpha)
-                    gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
-                end
+            -- Cover
+            local f10CoverAlpha = max(icLerp(1660, 1650, GAME.bgH), 1 - (love.timer.getTime() - GAME.f10Time) / 2.6)
+            if f10CoverAlpha > 0 then
+                gc_setColor(.5, .5, .5, f10CoverAlpha)
+                gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
             end
         end
-        local alpha_dH = icLerp(62, 260, math.abs(GAME.bgH - GAME.height)) ^ .5
-        local alpha = max(imgBG and 0 or 1, alpha_dH)
-        if alpha > 0 then
-            local top = Floors[bgFloor].top
-            local t = icLerp(1, 10, bgFloor + clampInterpolate(top - 50, 0, top, 1, GAME.bgH))
-            local r, g, b =
-                lLerp(floorColors[1], t) * lerp(1, .42, alpha_dH),
-                lLerp(floorColors[2], t) * lerp(1, .42, alpha_dH),
-                lLerp(floorColors[3], t) * lerp(1, .42, alpha_dH)
-            gc_setColor(r, g, b, alpha)
-            gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
-        end
+    end
+    local alpha_dH = icLerp(62, 260, abs(GAME.bgH - GAME.height)) ^ .5
+    local alpha = GAME.bgH > 0 and max(imgBG and 0 or 1, alpha_dH) or icLerp(-0, -26, GAME.bgH) * .62
+    if alpha > 0 then
+        local top = Floors[bgFloor].top
+        local t = icLerp(1, 10, bgFloor + clampInterpolate(top - 50, 0, top, 1, abs(GAME.bgH)))
+        local r, g, b =
+            lLerp(floorColors[1], t) * lerp(1, .42, alpha_dH),
+            lLerp(floorColors[2], t) * lerp(1, .42, alpha_dH),
+            lLerp(floorColors[3], t) * lerp(1, .42, alpha_dH)
+        gc_setColor(r, g, b, alpha)
+        gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
     end
 
     -- Brightness cover
@@ -751,7 +749,7 @@ function scene.draw()
             end
             gc_setColor(1, 1, 1, GAME.uiHide *
                 clamp((GAME.rank - 2) / 6, .26, 1) * .26 *
-                MATH.cLerp(.62, 1, math.abs(dh * 26))
+                MATH.cLerp(.62, 1, abs(dh * 26))
             )
             gc_draw(WindBatch)
         end
@@ -981,7 +979,7 @@ function scene.draw()
         -- MP & ZP Preview
         if not GAME.playing and STAT.maxFloor >= 10 then
             gc_setColor(TextColor)
-            gc_setAlpha(.12 + math.abs(math.log(GAME.comboZP)) * 2)
+            gc_setAlpha(.12 + abs(math.log(GAME.comboZP)) * 2)
             gc_draw(TEXTS.zpPreview, 1370, 275, 0, 1, 1, TEXTS.zpPreview:getWidth())
             if GAME.comboMP >= 6 then
                 gc_setAlpha(clampInterpolate(5, 0, 8, 1, GAME.comboMP))
