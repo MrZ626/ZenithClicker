@@ -111,8 +111,13 @@ local bgmHeight = {
     Floors[9].top + 26, -- special
 }
 
-local skinList = {}
-local skinPage
+local skinCtrl
+local skinList = {
+    skin_front = { 'zc', 'mini', 'star', 'draft' },
+    skin_back = { 'zc', 'mini', 'star' },
+}
+local skinUnlocked = {}
+local skinPage = { skin_front = '', skin_back = '' }
 local skinAnimInt, skinAnim
 local skinDesc = {
     zc = "Zenith Clicker - MrZ",
@@ -174,13 +179,12 @@ local function refreshUID()
     end
 end
 local function refreshSkin()
-    TABLE.clear(skinList)
-    table.insert(skinList, 'zc')
-    if TABLE.countAll(GAME.completion, 0) == 0 then table.insert(skinList, 'mini') end
-    if CalculateCR() >= 20000 then table.insert(skinList, 'star') end
-    if STAT.clicker then table.insert(skinList, 'draft') end
-    -- if TABLE.countAll(GAME.completion, 2) == #ModData.deck then table.insert(skinList, '???') end
-    skinPage = CONF.skin
+    skinUnlocked.zc = true
+    skinUnlocked.mini = TABLE.countAll(GAME.completion, 0) == 0
+    skinUnlocked.star = CalculateCR() >= 20000
+    skinUnlocked.draft = STAT.clicker
+    skinPage.skin_front = CONF.skin_front
+    skinPage.skin_back = CONF.skin_back
 end
 
 local sp = { f0 = 1, f1 = 1, f0r = 1, f1r = 1 }
@@ -313,37 +317,41 @@ function scene.keyDown(key, isRep)
             end
             return true
         elseif page == 5 then
+            local holdCtrl
+            if skinCtrl ~= nil then holdCtrl = skinCtrl else holdCtrl = KBisDown('lctrl', 'rctrl') end
+            local skinKey = holdCtrl and 'skin_back' or 'skin_front'
             if key == CONF.keybind[19] then
-                if CONF.skin ~= skinPage then
-                    CONF.skin = skinPage
+                if CONF[skinKey] ~= skinPage[skinKey] then
+                    CONF[skinKey] = skinPage[skinKey]
                     refreshWidgets()
                     SFX.play('garbagesmash', 1, 0, 1.26)
                 end
             elseif key == 'left' then
-                if TABLE.find(skinList, skinPage) then
-                    if skinPage ~= skinList[1] then
-                        skinPage = TABLE.prev(skinList, skinPage) or skinPage
+                if TABLE.find(skinList[skinKey], skinPage[skinKey]) then
+                    if skinPage[skinKey] ~= skinList[skinKey][1] then
+                        skinPage[skinKey] = TABLE.prev(skinList[skinKey], skinPage[skinKey]) or skinPage[skinKey]
                         startCardFanAnim()
                         refreshWidgets()
                     end
                 else
-                    skinPage = skinList[1]
+                    skinPage[skinKey] = skinList[skinKey][1]
                     startCardFanAnim()
                     refreshWidgets()
                 end
             elseif key == 'right' then
-                if TABLE.find(skinList, skinPage) then
-                    if skinPage ~= skinList[#skinList] then
-                        skinPage = TABLE.next(skinList, skinPage) or skinPage
+                if TABLE.find(skinList[skinKey], skinPage[skinKey]) then
+                    if skinPage[skinKey] ~= skinList[skinKey][#skinList[skinKey]] then
+                        skinPage[skinKey] = TABLE.next(skinList[skinKey], skinPage[skinKey]) or skinPage[skinKey]
                         startCardFanAnim()
                         refreshWidgets()
                     end
                 else
-                    skinPage = skinList[#skinList]
+                    skinPage[skinKey] = skinList[skinKey][#skinList[skinKey]]
                     startCardFanAnim()
                     refreshWidgets()
                 end
             end
+            if holdCtrl then skinPage.skin_back = skinPage[skinKey] else skinPage.skin_front = skinPage[skinKey] end
         end
     end
     ZENITHA._cursor.active = true
@@ -357,25 +365,21 @@ local w, h = 900, 830
 local baseX, baseY = 800 - w / 2, 500 - h / 2 + 10
 local cardFanData = {}
 for i = 1, 9 do
-    local dist = 460
-    local angle = MATH.interpolate(1, -130 / 180 * 3.1416, 9, -50 / 180 * 3.1416, i)
+    local dist = 80
     table.insert(cardFanData, {
-        x = w * .5 + dist * math.cos(angle),
-        y = h * .75 + dist * math.sin(angle),
-        r = angle + 3.1416 / 2,
-        k = .4,
+        x = w * .5 + dist * (i - 5),
+        y = h * .17,
+        k = .35,
         id = Cards[i].id,
         face = 'front',
     })
 end
 for i = 1, 9 do
-    local dist = 360
-    local angle = MATH.interpolate(1, -130 / 180 * 3.1416, 9, -50 / 180 * 3.1416, i)
+    local dist = 80
     table.insert(cardFanData, {
-        x = w * .5 + dist * math.cos(angle),
-        y = h * .85 + dist * math.sin(angle),
-        r = angle + 3.1416 / 2,
-        k = .4,
+        x = w * .5 + dist * (i - 5),
+        y = h * .65,
+        k = .35,
         id = Cards[i].id,
         face = 'back',
     })
@@ -577,14 +581,16 @@ function scene.draw()
         gc_setColor(1, 1, 1, skinAnim + 1 - skinAnimInt)
         for i = skinAnimInt, 1, -1 do
             local d = cardFanData[i]
-            gc_mDraw(TEXTURE.card[skinPage][d.face][d.id], d.x, d.y, d.r, d.k)
+            gc_mDraw(TEXTURE.card[d.face == 'front' and skinPage.skin_front or skinPage.skin_back][d.face][d.id], d.x, d.y, d.r, d.k)
             gc_setColor(1, 1, 1)
         end
         setFont(50)
-        gc_setColor(clr.LT); gc_mStr(skinDesc[skinPage], w / 2, h - 230)
-        if skinPage == CONF.skin then
-            gc_setColor(clr.L); gc_mStr("EQUIPPED", w / 2, h - 155)
-        end
+        gc_setColor(clr.LT)
+        gc_mStr(skinDesc[skinPage.skin_front], w / 2, 270)
+        gc_mStr(skinDesc[skinPage.skin_back], w / 2, h - 160)
+        gc_setColor(clr.L)
+        if skinPage.skin_front == CONF.skin_front then gc_mStr(skinUnlocked[skinPage.skin_front] and "EQUIPPED" or "LOCKED", w / 2, 340) end
+        if skinPage.skin_back == CONF.skin_back then gc_mStr(skinUnlocked[skinPage.skin_back] and "EQUIPPED" or "LOCKED", w / 2, h - 90) end
     end
 
     -- Top bar & title
@@ -1286,27 +1292,76 @@ albumBtn {
 pages[5] = {
     WIDGET.new { -- PREV
         type = 'button',
-        x = baseX + 110, y = baseY + h - 120, w = 160, h = 60,
+        x = baseX + 110, y = baseY + 375, w = 160, h = 60,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "< PREV",
-        onClick = WIDGET.c_pressKey 'left',
-        visibleFunc = function() return page == 5 and (TABLE.find(skinList, skinPage) or 1e99) > 1 end
+        onClick = function()
+            skinCtrl = false
+            love.keypressed('left')
+            skinCtrl = nil
+        end,
+        visibleFunc = function() return page == 5 and TABLE.find(skinList.skin_front, skinPage.skin_front) > 1 end
     },
-    WIDGET.new { -- CONFIRM
+    WIDGET.new { -- SELECT
         type = 'button',
-        x = baseX + w / 2, y = baseY + h - 120, w = 160, h = 60,
+        x = baseX + w / 2, y = baseY + 375, w = 160, h = 60,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "SELECT",
-        onClick = function() love.keypressed(CONF.keybind[19]) end,
-        visibleFunc = function() return page == 5 and skinPage ~= CONF.skin end
+        onClick = function()
+            skinCtrl = false
+            love.keypressed(CONF.keybind[19])
+            skinCtrl = nil
+        end,
+        visibleFunc = function() return page == 5 and skinPage.skin_front ~= CONF.skin_front and skinUnlocked[skinPage.skin_front] end
     },
     WIDGET.new { -- NEXT
         type = 'button',
-        x = baseX + w - 110, y = baseY + h - 120, w = 160, h = 60,
+        x = baseX + w - 110, y = baseY + 375, w = 160, h = 60,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "NEXT >",
-        onClick = WIDGET.c_pressKey 'right',
-        visibleFunc = function() return page == 5 and (TABLE.find(skinList, skinPage) or -1e99) < #skinList end
+        onClick = function()
+            skinCtrl = false
+            love.keypressed('right')
+            skinCtrl = nil
+        end,
+        visibleFunc = function() return page == 5 and TABLE.find(skinList.skin_front, skinPage.skin_front) < #skinList.skin_front end
+    },
+
+    WIDGET.new { -- PREV
+        type = 'button',
+        x = baseX + 110, y = baseY + h - 60, w = 160, h = 60,
+        color = clr.L,
+        fontSize = 30, textColor = clr.LT, text = "< PREV",
+        onClick = function()
+            skinCtrl = true
+            love.keypressed('left')
+            skinCtrl = nil
+        end,
+        visibleFunc = function() return page == 5 and TABLE.find(skinList.skin_back, skinPage.skin_back) > 1 end
+    },
+    WIDGET.new { -- SELECT
+        type = 'button',
+        x = baseX + w / 2, y = baseY + h - 60, w = 160, h = 60,
+        color = clr.L,
+        fontSize = 30, textColor = clr.LT, text = "SELECT",
+        onClick = function()
+            skinCtrl = true
+            love.keypressed(CONF.keybind[19])
+            skinCtrl = nil
+        end,
+        visibleFunc = function() return page == 5 and skinPage.skin_back ~= CONF.skin_back and skinUnlocked[skinPage.skin_back] end
+    },
+    WIDGET.new { -- NEXT
+        type = 'button',
+        x = baseX + w - 110, y = baseY + h - 60, w = 160, h = 60,
+        color = clr.L,
+        fontSize = 30, textColor = clr.LT, text = "NEXT >",
+        onClick = function()
+            skinCtrl = true
+            love.keypressed('right')
+            skinCtrl = nil
+        end,
+        visibleFunc = function() return page == 5 and TABLE.find(skinList.skin_back, skinPage.skin_back) < #skinList.skin_back end
     },
 }
 

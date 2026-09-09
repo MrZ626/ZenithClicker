@@ -204,6 +204,10 @@ local upgradeFunc = {
         if (SR.rank_ss or 1e99) < 260 then SR.rank_ss = nil end
         return 198
     end,
+    [198] = function()
+        CONF.skin_front, CONF.skin_back, CONF.skin = CONF.skin, CONF.skin, nil
+        return 199
+    end,
 }
 
 function Initialize(save)

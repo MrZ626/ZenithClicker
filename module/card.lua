@@ -404,39 +404,6 @@ local gc_setShader, gc_setLineWidth = GC.setShader, GC.setLineWidth
 local gc_draw, gc_polygon, gc_mDraw = GC.draw, GC.polygon, GC.mDraw
 local gc_blurCircle, gc_setBlendMode = GC.blurCircle, GC.setBlendMode
 
-local iconFrame = (function()
-    local f = {}
-
-    do
-        local x, y = 156.5, -245.5
-        local r = 65
-        f.zc = {
-            x - r, y - r,
-            x + 7, y - r,
-            x + r, y - 7,
-            x + r, y + r,
-            x - 12, y + r,
-            x - r, y + 12,
-        }
-        f.mini = f.zc
-        f.star = f.zc
-        f.draft = f.zc
-    end
-
-    do
-        local x, y = 157, -246
-        local r = 72
-        f.io = {
-            x, y - r,
-            x + r, y,
-            x, y + r,
-            x - r, y,
-        }
-    end
-
-    return f
-end)()
-
 local burnColor = {
     uAS = { 1, .42, .26 },
     AS1 = COLOR.R,
@@ -504,16 +471,16 @@ function Card:draw()
 
     -- Select texture
     if self.lock and self.lockfull then
-        img = TEXTURE.card[CONF.skin].lock[self.id]
+        img = TEXTURE.card[CONF.skin_front].lock[self.id]
     else
         if M.IN == 2 then
-            img = TEXTURE.card[CONF.skin].back[self.id]
+            img = TEXTURE.card[CONF.skin_back].back[self.id]
         else
             faceUp = math.floor(rot3D / 3.1416 + .5) % 2 == 0
-            img = faceUp and TEXTURE.card[CONF.skin].front[self.id] or TEXTURE.card[CONF.skin].back[self.id]
+            img = faceUp and TEXTURE.card[CONF.skin_front].front[self.id] or TEXTURE.card[CONF.skin_back].back[self.id]
         end
         if self.lock then
-            img2 = TEXTURE.card[CONF.skin].lock[self.id]
+            img2 = TEXTURE.card[CONF.skin_front].lock[self.id]
         end
     end
 
@@ -750,7 +717,7 @@ function Card:draw()
     if faceUp then
         gc_setColor(ModData.textColor[self.id])
         local active = playing and self.inLastCommit or not playing and self.active
-        local frame = iconFrame[CONF.skin]
+        local frame = TEXTURE.card[CONF.skin_front].iconFrame
         if M.EX == 0 then
             if active then
                 gc_setLineWidth(6)
