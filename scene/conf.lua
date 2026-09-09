@@ -116,7 +116,9 @@ local skinPage
 local skinAnimInt, skinAnim
 local skinDesc = {
     zc = "Zenith Clicker - MrZ",
+    mini = "Minimalism - MrZ",
     star = "Planets - Rodinia",
+    draft = "Zenith Clicker (Draft) - MrZ",
 }
 local function tween_cardFan(t)
     skinAnim = 18 * t
@@ -174,8 +176,9 @@ end
 local function refreshSkin()
     TABLE.clear(skinList)
     table.insert(skinList, 'zc')
+    if TABLE.countAll(GAME.completion, 0) == 0 then table.insert(skinList, 'mini') end
     if CalculateCR() >= 20000 then table.insert(skinList, 'star') end
-    -- if STAT.clicker then table.insert(skinList, '???') end
+    if STAT.clicker then table.insert(skinList, 'draft') end
     -- if TABLE.countAll(GAME.completion, 2) == #ModData.deck then table.insert(skinList, '???') end
     skinPage = CONF.skin
 end
@@ -574,7 +577,7 @@ function scene.draw()
         gc_setColor(1, 1, 1, skinAnim + 1 - skinAnimInt)
         for i = skinAnimInt, 1, -1 do
             local d = cardFanData[i]
-            gc_mDraw(TEXTURE.card[skinPage][d.id][d.face], d.x, d.y, d.r, d.k)
+            gc_mDraw(TEXTURE.card[skinPage][d.face][d.id], d.x, d.y, d.r, d.k)
             gc_setColor(1, 1, 1)
         end
         setFont(50)

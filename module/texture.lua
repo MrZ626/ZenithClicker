@@ -88,34 +88,67 @@ TEXTURE = {
         rEX = q2(0945, 1331, 315, 332),
         rDP = q2(1260, 1016, 419, 378),
     },
-    card = {
-        zc = {
-            EX = { lock = '_lockover_9', front = assets 'card/zc/expert.png', back = assets 'card/zc/expert-back.png' },
-            NH = { lock = '_lockfull_2', front = assets 'card/zc/nohold.png', back = assets 'card/zc/nohold-back.png' },
-            MS = { lock = '_lockfull_3', front = assets 'card/zc/messy.png', back = assets 'card/zc/messy-back.png' },
-            GV = { lock = '_lockfull_4', front = assets 'card/zc/gravity.png', back = assets 'card/zc/gravity-back.png' },
-            VL = { lock = '_lockfull_5', front = assets 'card/zc/volatile.png', back = assets 'card/zc/volatile-back.png' },
-            DH = { lock = '_lockfull_6', front = assets 'card/zc/doublehole.png', back = assets 'card/zc/doublehole-back.png' },
-            IN = { lock = '_lockfull_7', front = assets 'card/zc/invisible.png', back = assets 'card/zc/invisible-back.png' },
-            AS = { lock = '_lockfull_8', front = assets 'card/zc/allspin.png', back = assets 'card/zc/allspin-back.png' },
-            DP = { lock = '_lockover_?', front = assets 'card/zc/duo.png', back = assets 'card/zc/duo-back.png' },
-            lockfull = assets 'card/lockfull.png',
-            lockover = assets 'card/lockover.png',
-        },
-        star = {
-            EX = { lock = '_lockover_9', front = assets 'card/star/expert.png', back = assets 'card/star/expert-back.png' },
-            NH = { lock = '_lockfull_2', front = assets 'card/star/nohold.png', back = assets 'card/star/nohold-back.png' },
-            MS = { lock = '_lockfull_3', front = assets 'card/star/messy.png', back = assets 'card/star/messy-back.png' },
-            GV = { lock = '_lockfull_4', front = assets 'card/star/gravity.png', back = assets 'card/star/gravity-back.png' },
-            VL = { lock = '_lockfull_5', front = assets 'card/star/volatile.png', back = assets 'card/star/volatile-back.png' },
-            DH = { lock = '_lockfull_6', front = assets 'card/star/doublehole.png', back = assets 'card/star/doublehole-back.png' },
-            IN = { lock = '_lockfull_7', front = assets 'card/star/invisible.png', back = assets 'card/star/invisible-back.png' },
-            AS = { lock = '_lockfull_8', front = assets 'card/star/allspin.png', back = assets 'card/star/allspin-back.png' },
-            DP = { lock = '_lockover_?', front = assets 'card/star/duo.png', back = assets 'card/star/duo-back.png' },
-            lockfull = assets 'card/lockfull.png',
-            lockover = assets 'card/lockover.png',
-        },
-    },
+    card = (function()
+        local fileName = {
+            EX = 'expert',
+            NH = 'nohold',
+            MS = 'messy',
+            GV = 'gravity',
+            VL = 'volatile',
+            DH = 'doublehole',
+            IN = 'invisible',
+            AS = 'allspin',
+            DP = 'duo',
+        }
+        local zc = { front = {}, back = {} }
+        local mini = TABLE.copyAll(zc)
+        local star = TABLE.copyAll(zc)
+        local draft = TABLE.copyAll(zc)
+
+        -- Front
+        for k, v in next, fileName do
+            zc.front[k] = assets('card/front_zc/' .. v .. '.png')
+            mini.front[k] = assets('card/front_mini/' .. v .. '.png')
+            star.front[k] = assets('card/front_star/' .. v .. '.png')
+            draft.front[k] = assets('card/front_draft/' .. v .. '.png')
+        end
+
+        -- Back
+        for k, v in next, fileName do
+            zc.back[k] = assets('card/back_zc/' .. v .. '-back.png')
+            mini.back[k] = assets('card/back_mini/' .. v .. '-back.png')
+            star.back[k] = assets('card/back_star/' .. v .. '-back.png')
+        end
+        draft.back = zc.back
+
+        -- Lock
+        zc.lock = {
+            EX = '_lockover_9',
+            NH = '_lockfull_2',
+            MS = '_lockfull_3',
+            GV = '_lockfull_4',
+            VL = '_lockfull_5',
+            DH = '_lockfull_6',
+            IN = '_lockfull_7',
+            AS = '_lockfull_8',
+            DP = '_lockover_?',
+            lockfull = assets 'card/lock_zc/lockfull.png',
+            lockover = assets 'card/lock_zc/lockover.png',
+        }
+        mini.lock = setmetatable({
+            lockfull = assets 'card/lock_mini/lockfull.png',
+            lockover = assets 'card/lock_mini/lockover.png',
+        }, { __index = zc.lock })
+        star.lock = zc.lock
+        draft.lock = zc.lock
+
+        return {
+            zc = zc,
+            mini = mini,
+            star = star,
+            draft = draft,
+        }
+    end)(),
     towerBG = { assets 'tower/f1.jpg', assets 'tower/f2.jpg', assets 'tower/f3.jpg', assets 'tower/f4.jpg', assets 'tower/f5.jpg', assets 'tower/f6.jpg', assets 'tower/f7.jpg', assets 'tower/f8.jpg', assets 'tower/f9.jpg', assets 'tower/f10.png' },
     moon = assets 'tower/moon.png',
     stars = assets 'tower/stars.png',
@@ -378,9 +411,9 @@ TEXTURE = TABLE.linkSource({}, TEXTURE, function(path)
     if path:match('^_lock') then
         local lockType = path:match('_(lock....)')
         local char = path:sub(-1)
-        local w, h = TEXTURE.card[CONF.skin][lockType]:getDimensions()
+        local w, h = TEXTURE.card[CONF.skin].lock[lockType]:getDimensions()
         return GC.initCanvas(w, h, function()
-            GC.draw(TEXTURE.card[CONF.skin][lockType], 0, 0)
+            GC.draw(TEXTURE.card[CONF.skin].lock[lockType], 0, 0)
             local t = GC.newText(FONT.get(70, 'sans'), char)
             if lockType == 'lockfull' then
                 GC.setColor(CLR.HEX "646483FF")

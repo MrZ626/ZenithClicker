@@ -418,7 +418,9 @@ local iconFrame = (function()
             x - 12, y + r,
             x - r, y + 12,
         }
+        f.mini = f.zc
         f.star = f.zc
+        f.draft = f.zc
     end
 
     do
@@ -501,18 +503,17 @@ function Card:draw()
     local finalSize = self == CD[FloatOnCard] and M.EX > 0 and love.mouse.isDown(1, 2) and .9 * self.size or self.size
 
     -- Select texture
-    local texture = TEXTURE.card[CONF.skin][self.id]
     if self.lock and self.lockfull then
-        img = texture.lock
+        img = TEXTURE.card[CONF.skin].lock[self.id]
     else
         if M.IN == 2 then
-            img = texture.back
+            img = TEXTURE.card[CONF.skin].back[self.id]
         else
             faceUp = math.floor(rot3D / 3.1416 + .5) % 2 == 0
-            img = faceUp and texture.front or texture.back
+            img = faceUp and TEXTURE.card[CONF.skin].front[self.id] or TEXTURE.card[CONF.skin].back[self.id]
         end
         if self.lock then
-            img2 = texture.lock
+            img2 = TEXTURE.card[CONF.skin].lock[self.id]
         end
     end
 
