@@ -118,27 +118,45 @@ local skinList = {
 }
 local skinUnlocked = {}
 local skinPage = { skin_front = '', skin_back = '' }
-local skinAnimInt, skinAnim
 local skinDesc = {
     zc = "Zenith Clicker - MrZ",
     mini = "Minimalism - MrZ",
     star = "Planets - Rodinia",
     draft = "Zenith Clicker (Draft) - MrZ",
 }
-local function tween_cardFan(t)
-    skinAnim = 18 * t
-    if t == 0 then skinAnimInt = 0 end
-    if math.ceil(skinAnim) > skinAnimInt then
-        skinAnimInt = math.ceil(skinAnim)
+local skinAnimInt1, skinAnim1
+local function tween_cardFan1(t)
+    skinAnim1 = 9 * t
+    if t == 0 then skinAnimInt1 = 0 end
+    if math.ceil(skinAnim1) > skinAnimInt1 then
+        skinAnimInt1 = math.ceil(skinAnim1)
         SFX.play('card_slide_' .. math.random(4), .42)
     end
 end
-local function startCardFanAnim()
-    TWEEN.new(tween_cardFan)
-        :setUnique('cardfan')
-        :setEase('OutQuad')
-        :setDuration(1.26)
-        :run()
+local skinAnimInt2, skinAnim2
+local function tween_cardFan2(t)
+    skinAnim2 = 9 * t
+    if t == 0 then skinAnimInt2 = 0 end
+    if math.ceil(skinAnim2) > skinAnimInt2 then
+        skinAnimInt2 = math.ceil(skinAnim2)
+        SFX.play('card_slide_' .. math.random(4), .42)
+    end
+end
+local function startCardFanAnim(which)
+    if which ~= 2 then
+        TWEEN.new(tween_cardFan1)
+            :setUnique('cardfan1')
+            :setEase('OutQuad')
+            :setDuration(.62)
+            :run()
+    end
+    if which ~= 1 then
+        TWEEN.new(tween_cardFan2)
+            :setUnique('cardfan2')
+            :setEase('OutQuad')
+            :setDuration(.62)
+            :run()
+    end
 end
 
 local function refreshWidgets()
@@ -330,24 +348,24 @@ function scene.keyDown(key, isRep)
                 if TABLE.find(skinList[skinKey], skinPage[skinKey]) then
                     if skinPage[skinKey] ~= skinList[skinKey][1] then
                         skinPage[skinKey] = TABLE.prev(skinList[skinKey], skinPage[skinKey]) or skinPage[skinKey]
-                        startCardFanAnim()
+                        startCardFanAnim(holdCtrl and 2 or 1)
                         refreshWidgets()
                     end
                 else
                     skinPage[skinKey] = skinList[skinKey][1]
-                    startCardFanAnim()
+                    startCardFanAnim(holdCtrl and 2 or 1)
                     refreshWidgets()
                 end
             elseif key == 'right' then
                 if TABLE.find(skinList[skinKey], skinPage[skinKey]) then
                     if skinPage[skinKey] ~= skinList[skinKey][#skinList[skinKey]] then
                         skinPage[skinKey] = TABLE.next(skinList[skinKey], skinPage[skinKey]) or skinPage[skinKey]
-                        startCardFanAnim()
+                        startCardFanAnim(holdCtrl and 2 or 1)
                         refreshWidgets()
                     end
                 else
                     skinPage[skinKey] = skinList[skinKey][#skinList[skinKey]]
-                    startCardFanAnim()
+                    startCardFanAnim(holdCtrl and 2 or 1)
                     refreshWidgets()
                 end
             end
@@ -363,20 +381,17 @@ scene.resize = refreshWidgets
 -- Panel size
 local w, h = 900, 830
 local baseX, baseY = 800 - w / 2, 500 - h / 2 + 10
-local cardFanData = {}
+local cardFanData1, cardFanData2 = {}, {}
 for i = 1, 9 do
     local dist = 80
-    table.insert(cardFanData, {
+    table.insert(cardFanData1, {
         x = w * .5 + dist * (i - 5),
         y = h * .17,
         k = .35,
         id = Cards[i].id,
         face = 'front',
     })
-end
-for i = 1, 9 do
-    local dist = 80
-    table.insert(cardFanData, {
+    table.insert(cardFanData2, {
         x = w * .5 + dist * (i - 5),
         y = h * .65,
         k = .35,
@@ -578,10 +593,16 @@ function scene.draw()
         gc_ucs_back()
     elseif page == 5 then
         -- Card fan
-        gc_setColor(1, 1, 1, skinAnim + 1 - skinAnimInt)
-        for i = skinAnimInt, 1, -1 do
-            local d = cardFanData[i]
-            gc_mDraw(TEXTURE.card[d.face == 'front' and skinPage.skin_front or skinPage.skin_back][d.face][d.id], d.x, d.y, d.r, d.k)
+        gc_setColor(1, 1, 1, skinAnim1 + 1 - skinAnimInt1)
+        for i = skinAnimInt1, 1, -1 do
+            local d = cardFanData1[i]
+            gc_mDraw(TEXTURE.card[skinPage.skin_front][d.face][d.id], d.x, d.y, d.r, d.k)
+            gc_setColor(1, 1, 1)
+        end
+        gc_setColor(1, 1, 1, skinAnim2 + 1 - skinAnimInt2)
+        for i = skinAnimInt2, 1, -1 do
+            local d = cardFanData2[i]
+            gc_mDraw(TEXTURE.card[skinPage.skin_back][d.face][d.id], d.x, d.y, d.r, d.k)
             gc_setColor(1, 1, 1)
         end
         setFont(50)
