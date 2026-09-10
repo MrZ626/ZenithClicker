@@ -205,7 +205,9 @@ local upgradeFunc = {
         return 198
     end,
     [198] = function()
-        CONF.skin_front, CONF.skin_back, CONF.skin = CONF.skin, CONF.skin, nil
+        if CONF.skin then
+            CONF.skin_front, CONF.skin_back, CONF.skin = CONF.skin, CONF.skin, nil
+        end
         return 199
     end,
 }
