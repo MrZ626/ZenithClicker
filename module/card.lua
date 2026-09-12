@@ -313,7 +313,7 @@ function Card:revJump()
                             elseif self.id == 'MS' then
                                 r = math.max(sign((r - .5)) * abs(r - .5) ^ .3333 / 1.5874 + .5, 0)
                             elseif self.id == 'GV' then
-                                r = r * (URM and .0626 or .26)
+                                r = r * (URM and .126 or .26)
                             end
                             C:bounce(lerp(62, 420, r), lerp(.42, .62, r))
                         end
