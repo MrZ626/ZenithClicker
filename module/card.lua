@@ -59,7 +59,6 @@ end
 local completion = GAME.completion
 local KBisDown = love.keyboard.isDown
 local function tween_deckPress(t) DeckPress = 26 * (1 - t) end
-local function tween_expertOn(t) GAME.exTimer = M.EX > 0 and t or (1 - t) end
 local function task_refreshBGM()
     TASK.yieldT(.1)
     RefreshBGM()
@@ -153,7 +152,11 @@ function Card:setActive(auto, key)
             self:revCancel()
         end
         if self.id == 'EX' then
-            TWEEN.new(tween_expertOn):setDuration(M.EX > 0 and .26 or .1):run()
+            local s = GAME.exTimer
+            local e = M.EX > 0 and 1 or 0
+            TWEEN.new(function(t)
+                GAME.exTimer = lerp(s, e, t)
+            end):setUnique('expertOn'):setEase('OutQuad'):setDuration(M.EX > 0 and .26 or .1):run()
             TABLE.clear(HoldingButtons)
         elseif self.id == 'IN' then
             for _, C in ipairs(CD) do C:flip() end
