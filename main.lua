@@ -1419,6 +1419,8 @@ function Daemon_Fast()
             ThrobAlpha.card = max(.626 - 2 * T / bar % 1, .626 - 2 * (T / bar - .375) % 1)
             ThrobAlpha.bg1 = .626 - 2 * T / bar % 1
             ThrobAlpha.bg2 = .626 - 2 * (T / bar - 1 / 32) % 1
+            ThrobAlpha.bg3 = .8 - 4 * T / bar % 1
+            ThrobAlpha.bg4 = .8 - 4 * (T / bar - 1 / 32) % 1
 
             -- Giga anim
             if GigaSpeed.alpha > 0 then

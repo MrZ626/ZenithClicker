@@ -530,7 +530,7 @@ local f10colors = TABLE.transpose {
 local GC = GC
 local gc_push, gc_pop = GC.push, GC.pop
 local gc_replaceTransform = GC.replaceTransform
-local gc_translate = GC.translate
+local gc_translate, gc_scale = GC.translate, GC.scale
 local gc_setColor, gc_setLineWidth, gc_setBlendMode = GC.setColor, GC.setLineWidth, GC.setBlendMode
 local gc_draw, gc_line, gc_rectangle, gc_circle, gc_arc = GC.draw, GC.line, GC.rectangle, GC.circle, GC.arc
 local gc_mRect, gc_mDraw, gc_mDrawQ = GC.mRect, GC.mDraw, GC.mDrawQ
@@ -787,13 +787,19 @@ function scene.draw()
         gc_setColor(ShadeColor)
         gc_draw(TEXTURE.transition, 800 - 1586 / 2, panelH - 303, 1.5708, 6.26, 1586, 0, 1)
         if GAME.revDeckSkin then
-            gc_setColor(1, 1, 1, GAME.revTimer)
-            gc_mDraw(TEXTURE.panel.glass_a, 800, panelH)
-            gc_mDraw(TEXTURE.panel.glass_b, 800, panelH)
-            gc_setColor(1, 1, 1, ThrobAlpha.bg1)
-            gc_mDraw(TEXTURE.panel.throb_a, 800, panelH)
-            gc_setColor(1, 1, 1, ThrobAlpha.bg2)
-            gc_mDraw(TEXTURE.panel.throb_b, 800, panelH)
+            gc_push()
+            gc_translate(800, panelH)
+            for i = 1, URM and 2 or 1 do
+                gc_setColor(1, 1, 1, GAME.revTimer)
+                gc_mDraw(TEXTURE.panel.glass_a)
+                gc_mDraw(TEXTURE.panel.glass_b)
+                gc_setColor(1, 1, 1, i == 1 and ThrobAlpha.bg1 or ThrobAlpha.bg3)
+                gc_mDraw(TEXTURE.panel.throb_a)
+                gc_setColor(1, 1, 1, i == 1 and ThrobAlpha.bg2 or ThrobAlpha.bg4)
+                gc_mDraw(TEXTURE.panel.throb_b)
+                gc_scale(-1, 1)
+            end
+            gc_pop()
         end
         gc_setColor(ShadeColor)
         gc_draw(TEXTURE.transition, 800 - 1586 / 2, panelH - 303, 1.5708, 12.6, -3, 0, 1)
