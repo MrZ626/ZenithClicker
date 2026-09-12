@@ -288,7 +288,7 @@ end
 
 function Card:revJump()
     TWEEN.tag_kill('bounce_' .. self.id)
-    local h = 355
+    local h = 326
     if self.id == 'EX' then
         h = h * (URM and 1.626 or 1.26)
     elseif self.id == 'GV' then
@@ -398,7 +398,9 @@ local frame2W, frame2H = activeFrame2:getWidth() / 2, activeFrame2:getHeight() /
 
 function Card:update(dt)
     self.x1 = expApproach(self.x1, self.x, dt * 16)
-    self.y1 = expApproach(self.y1, self.y + self.dy_ms, dt * 16)
+    if not (self.revJumping or self.bouncing) then
+        self.y1 = expApproach(self.y1, self.y + self.dy_ms, dt * 16)
+    end
     self.float = expApproach(self.float, CD[FloatOnCard] == self and 1 or 0, dt * 12)
     if self.burn then
         self.burn = self.burn - dt
