@@ -46,6 +46,7 @@ function Card.new(d)
         required2 = false,
         inLastCommit = false,
         charge = 0,
+        revJumping = false,
     }, Card)
     return obj
 end
@@ -274,12 +275,14 @@ end
 
 local bounceEase = { 'linear', 'inCubic' }
 function Card:bounce(height, duration)
+    if self.revJumping then return end
     TWEEN.new(function(t)
         self.y1 = self.y + t * (t - 1) * height
-    end):setUnique('bounce_' .. self.id):setEase(bounceEase):setDuration((GAME.slowmo and 2.6 or 1) * duration):run()
+    end):setUnique('bounce_' .. self.id):setTag('bounce_' .. self.id):setEase(bounceEase):setDuration((GAME.slowmo and 2.6 or 1) * duration):run()
 end
 
 function Card:revJump()
+    TWEEN.tag_kill('bounce_' .. self.id)
     local h = 355
     if self.id == 'EX' then
         h = h * (URM and 1.626 or 1.26)
@@ -292,6 +295,7 @@ function Card:revJump()
         self.size = .62 - .355 * t
     end):setUnique('revJump_' .. self.id):setEase(bounceEase):setDuration((GAME.slowmo and 2.6 or 1) * .62 * (h / 355) ^ .5):run()
         :setOnFinish(function()
+            self.revJumping = false
             local currentState = M[self.id]
             if currentState == 2 then
                 TWEEN.new(tween_deckPress):setUnique('DeckPress'):setEase('OutQuad'):setDuration((GAME.slowmo and 2.6 or 1) * .42):run()
@@ -349,6 +353,10 @@ function Card:revJump()
                 end
             end
         end)
+        :setOnKill(function()
+            self.revJumping = false
+        end)
+    self.revJumping = true
     local rot = self.id == 'AS' and 3 * 3.1416 or 3.1416
     local ease = self.id == 'GV' and 'OutQuart' or 'OutBack'
     local s = self.r_2d_rev
