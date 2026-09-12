@@ -1412,20 +1412,20 @@ function Daemon_Fast()
     local t = 0
     while true do
         if BgmPlaying then
-            local bar = 2 * 60 / BgmData[BgmPlaying].bpm * 4
             local T = BGM.tell()
+            local barCnt = T / (4 * 2 * 60 / BgmData[BgmPlaying].bpm)
 
             -- Throb transparency
-            ThrobAlpha.card = max(.626 - 2 * T / bar % 1, .626 - 2 * (T / bar - .375) % 1)
-            ThrobAlpha.bg1 = .626 - 2 * T / bar % 1
-            ThrobAlpha.bg2 = .626 - 2 * (T / bar - 1 / 32) % 1
-            ThrobAlpha.bg3 = .8 - 4 * T / bar % 1
-            ThrobAlpha.bg4 = .8 - 4 * (T / bar - 1 / 32) % 1
+            ThrobAlpha.card = max(.626 - 2 * barCnt % 1, .626 - 2 * (barCnt - .375) % 1)
+            ThrobAlpha.bg1 = .626 - 2 * barCnt % 1
+            ThrobAlpha.bg2 = .626 - 2 * (barCnt - 1 / 32) % 1
+            ThrobAlpha.bg3 = .8 - 4 * barCnt % 1
+            ThrobAlpha.bg4 = .8 - 4 * (barCnt - 1 / 32) % 1
 
             -- Giga anim
             if GigaSpeed.alpha > 0 then
-                GigaSpeed.r, GigaSpeed.g, GigaSpeed.b = hsv(T / bar % 1, .626, 1)
-                GigaSpeed.bgAlpha = 1 - 4 * T / bar % 1
+                GigaSpeed.r, GigaSpeed.g, GigaSpeed.b = hsv(barCnt % 1, .626, 1)
+                GigaSpeed.bgAlpha = 1 - 4 * barCnt % 1
             end
 
             -- Update MusicBeat
