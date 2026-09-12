@@ -47,6 +47,7 @@ function Card.new(d)
         inLastCommit = false,
         charge = 0,
         revJumping = false,
+        bouncing = false,
     }, Card)
     return obj
 end
@@ -275,10 +276,14 @@ end
 
 local bounceEase = { 'linear', 'inCubic' }
 function Card:bounce(height, duration)
-    if self.revJumping then return end
+    if self.revJumping or self.bouncing then return end
     TWEEN.new(function(t)
         self.y1 = self.y + t * (t - 1) * height
     end):setUnique('bounce_' .. self.id):setTag('bounce_' .. self.id):setEase(bounceEase):setDuration((GAME.slowmo and 2.6 or 1) * duration):run()
+        :setOnKill(function()
+            self.bouncing = false
+        end)
+    self.bouncing = true
 end
 
 function Card:revJump()
