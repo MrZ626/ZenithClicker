@@ -1753,26 +1753,32 @@ local function activeEffect(id, n)
         MSG({
             cat = (URM and 'ultra' or 'ultra2'),
             str = "ULTRA REVERSED MOD: " .. (URM and "ON" or "OFF"),
-            time = 1.2
+            time = 2.6,
         })
     else
         if n == 0 then
             for i = 1, #PieceData do GAME[PieceData[i].id] = false end
+            GAME.refreshPieceFstr()
             URM = false
             ultraStateChange()
-            SFX.play(PieceData[0].sfx)
+            SFX.play('allclear')
+            MSG({
+                cat = 'bright',
+                str = "ALL CLEAR",
+                time = 2.6,
+            })
         else
             local effID = PieceData[n].id
             GAME[effID] = not GAME[effID]
             GAME.refreshPieceFstr()
             SFX.play(PieceData[n].sfx, 1, 0, Tone(6))
             if not GAME[effID] then return end
+            MSG({
+                cat = 'dark',
+                str = PieceData[n].popup,
+                time = 2.6,
+            })
         end
-        MSG({
-            cat = 'dark',
-            str = PieceData[n].popup,
-            time = 1.2
-        })
     end
 end
 local function checkPieceEffect()

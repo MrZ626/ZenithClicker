@@ -32,7 +32,6 @@ GravityTimer = {
 UltraMessinessMaxUnmoved = { 5, 5, 5, 5, 4, 4, 4, 3, 3, 2 }
 
 PieceData = {
-    [0] = { id = 'allclear', sfx = 'allclear', text = { CLR.W, "-" }, piece = { CLR.W, CHAR.brik.O1 }, popup = { CLR.W, "All Clear" } },
     { id = 'nightcore', sfx = 'z', text = { COLOR.lR, "Z" }, piece = { COLOR.lR, CHAR.brik.Z }, popup = { COLOR.lR, "Z - Nightcore" } },
     { id = 'slowmo',    sfx = 's', text = { COLOR.lG, "S" }, piece = { COLOR.lG, CHAR.brik.S }, popup = { COLOR.lG, "S - Sloooooow-mo" } },
     { id = 'steadfast', sfx = 'j', text = { COLOR.lB, "J" }, piece = { COLOR.lB, CHAR.brik.J }, popup = { COLOR.lB, "J - Steadfast " } },
