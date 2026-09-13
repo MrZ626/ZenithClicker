@@ -14,8 +14,6 @@ local colorRev = false
 local Achievements = Achievements
 local M = GAME.mod
 
-OverDevProgressText = "Open ACHV page to refresh the over-dev progress."
-
 ---@class EmptyAchv
 ---@field title string
 
@@ -119,7 +117,7 @@ function RefreshAchvList(canShuffle)
     end
     if odCount >= odCap * .62 then IssueSecret('exceed_dev', true) end
     if odCount >= odCap * .26 then IssueSecret('exceed_dev_half', true) end
-    OverDevProgressText = "ACHV scores better than Dev: " .. odCount .. "/" .. odCap
+    GAME.overDevProgText = "ACHV scores better than Dev: " .. odCount .. "/" .. odCap
     if canShuffle then
         if M.NH == 2 then
             TABLE.foreach(achvList, function(v) return not v.id end, true)
@@ -324,7 +322,7 @@ function scene.load()
         whenItsReady = URM and M.IN == 2 or MATH.roll(.01 + M.IN * .026)
     end
 
-    hyper = M.EX > 0 or BgmPlaying == 'tera' or BgmPlaying == 'terar'
+    hyper = M.EX > 0 or BgmState.playing == 'tera' or BgmState.playing == 'terar'
 
     RefreshAchvList(true)
 
@@ -334,7 +332,7 @@ end
 
 function scene.unload()
     if clearNotice then
-        TABLE.clear(AchvNotice)
+        TABLE.clear(GAME.achvNotice)
     end
 end
 
@@ -477,7 +475,7 @@ function scene.draw()
                 gc_rectangle('fill', 0, 0, 600, 130)
 
                 -- Flashing notice
-                if AchvNotice[a.id] then
+                if GAME.achvNotice[a.id] then
                     gc_setColor(1, 1, 1, .1 + .1 * sin(t * (6.2 + M.VL * 4.2)))
                     gc_rectangle('fill', 0, 0, 600, 130)
                 end

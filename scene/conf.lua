@@ -207,10 +207,10 @@ end
 
 local sp = { f0 = 1, f1 = 1, f0r = 1, f1r = 1 }
 local function refreshSongInfo()
-    if sp[SongNamePlaying] then
-        playingBgmTitle = songList[SongNamePlaying .. (GAME.mod.EX > 0 and '_EX' or '')]
+    if sp[BgmState.playingName] then
+        playingBgmTitle = songList[BgmState.playingName .. (GAME.mod.EX > 0 and '_EX' or '')]
     else
-        playingBgmTitle = songList[SongNamePlaying] or "Rewrite"
+        playingBgmTitle = songList[BgmState.playingName] or "Rewrite"
     end
     playingBgmLength = BGM.getDuration()
     playingBgmLengthStr = STRING.time_simp(playingBgmLength)
@@ -331,7 +331,7 @@ function scene.keyDown(key, isRep)
             elseif key == 'end' then
                 TASK.new(Task_MusicEnd, true)
             elseif key == 'space' then
-                BgmLooping, BgmNeedSkip = false, false
+                BgmState.looping, BgmState.needSkip = false, false
             end
             return true
         elseif page == 5 then
@@ -429,12 +429,12 @@ end
 
 local playing
 function scene.update(dt)
-    if SongNamePlaying ~= playing then
+    if BgmState.playingName ~= playing then
         refreshSongInfo()
-        playing = SongNamePlaying
+        playing = BgmState.playingName
     end
-    if page == 4 and (BgmPlaying == 'tera' or BgmPlaying == 'terar') then
-        GAME.height = math.max(-62, GAME.height + dt * (BgmPlaying == 'tera' and 20 or 42) * (GAME.height >= 1650 and .2 or 1))
+    if page == 4 and (BgmState.playing == 'tera' or BgmState.playing == 'terar') then
+        GAME.height = math.max(-62, GAME.height + dt * (BgmState.playing == 'tera' and 20 or 42) * (GAME.height >= 1650 and .2 or 1))
         if GAME.height >= 1726 then GAME.bgH, GAME.height = -30, -30 end
         dt = dt * 2.6
     end
@@ -537,8 +537,8 @@ function scene.draw()
         gc_print(playingBgmLengthStr, len - 45, 49, 0, .626)
 
         -- Repeat marks
-        local data = BgmData[BgmPlaying]
-        if BgmLooping then
+        local data = BgmMeta[BgmState.playing]
+        if BgmState.looping then
             if data.loop[1] == 0 then
                 gc_print('D.C.', len * data.loop[2] / playingBgmLength, 35, 0, .3)
             else
@@ -550,22 +550,22 @@ function scene.draw()
         -- Progress bar
         gc_setColor(clr.L)
         gc_rectangle('fill', 0, 46, len, 4)
-        if BgmPlaying == 'tera' then
+        if BgmState.playing == 'tera' then
             gc_setColor(COLOR.rainbow_light(2.6 * t))
-        elseif BgmPlaying == 'terar' then
+        elseif BgmState.playing == 'terar' then
             gc_setColor(COLOR.rainbow_light(20 * t))
         else
-            gc_setColor(bgmColors[SongNamePlaying])
+            gc_setColor(bgmColors[BgmState.playingName])
         end
         gc_rectangle('fill', 0, 46, len * playTime / playingBgmLength, 4)
 
         -- Ambient Glow
         gc.push('transform')
         gc_replaceTransform(SCR.origin)
-        if BgmPlaying == 'tera' or BgmPlaying == 'terar' then
+        if BgmState.playing == 'tera' or BgmState.playing == 'terar' then
             gc_setAlpha(.42)
         else
-            gc_setAlpha(.26 - .12 * MusicBeat)
+            gc_setAlpha(.26 - .12 * BgmState.beat)
         end
         gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * SCR.w, SCR.h)
         gc_draw(TEXTURE.transition, SCR.w, 0, 0, -.42 / 128 * SCR.w, SCR.h)
@@ -574,8 +574,8 @@ function scene.draw()
         -- Title
         gc_setAlpha(1)
         gc_mStr(playingBgmTitle, len / 2, 0)
-        if not (BgmPlaying == 'tera' or BgmPlaying == 'terar') then
-            gc_setColor(1, 1, 1, MATH.lerp(.62, .26, MusicBeat))
+        if not (BgmState.playing == 'tera' or BgmState.playing == 'terar') then
+            gc_setColor(1, 1, 1, MATH.lerp(.62, .26, BgmState.beat))
             gc_mStr(playingBgmTitle, len / 2, -1.26)
         end
         gc_setColor(clr.LT)
@@ -583,14 +583,14 @@ function scene.draw()
         gc_printf(data.meta, len / 2, 56, 2 * len, 'center', 0, .42, .42, len)
 
         -- Skip marks
-        if BgmNeedSkip then
+        if BgmState.needSkip then
             local alpha = .26 + .62 * (-2.6 * t % 1)
             gc_setColor(COLOR.C)
             gc_setAlpha(alpha)
-            gc_mRect('fill', len * BgmNeedSkip[1] / playingBgmLength, 48, 2, 9)
+            gc_mRect('fill', len * BgmState.needSkip[1] / playingBgmLength, 48, 2, 9)
             gc_setColor(COLOR.O)
             gc_setAlpha(alpha)
-            gc_mRect('fill', len * BgmNeedSkip[2] / playingBgmLength, 48, 2, 9)
+            gc_mRect('fill', len * BgmState.needSkip[2] / playingBgmLength, 48, 2, 9)
         end
         gc_ucs_back()
     elseif page == 5 then
@@ -1238,7 +1238,7 @@ pages[4] = {
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "NO LOOPS",
         onClick = function()
-            BgmLooping, BgmNeedSkip = false, false
+            BgmState.looping, BgmState.needSkip = false, false
         end,
     },
 }

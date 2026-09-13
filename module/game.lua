@@ -24,127 +24,13 @@ local ins, rem = table.insert, table.remove
 ---@field progObj love.Text
 
 ---@class Game
----@field playing boolean
----@field finishTime number
----
----@field prevPB number
----@field comboStr string
----@field totalFlip number
----@field totalQuest number
----@field totalPerfect number
----@field totalAttack number
----@field totalSurge number
----@field heightBonus number
----@field peakRank number
----@field rankTimer number[]
----
----@field time number
----@field gigaTime false | number
----@field questTime number
----@field floorTime number
----@field reviveTime false | number
----@field secTime number[]
----
----@field rank number
----@field xp number
----@field rankupLast boolean
----@field xpLockLevel number
----@field xpLockTimer number
----
----@field floor number
----@field height number
----@field roundHeight number for statistics and achievement
----@field heightBuffer number
----@field fatigueSet {time:number, event:table, text:string, desc:string, color?:string, duration?:number, final?:true}[]
----@field fatigue number
----@field animDuration number
----
----@field maxQuestCount number
----@field maxQuestSize number
----@field extraQuestBase number
----@field extraQuestVar number
----@field questFavor number Increase by floor. Higher questFavor will result in mods generated consecutively more often, in design
----@field dmgHeal number
----@field dmgWrong number
----@field dmgWrongExtra number
----@field dmgTime number
----@field dmgDelay number
----@field dmgCycle number
----
----@field life number
----@field fullHealth number
----@field dmgTimer number
----@field chain number
----@field gigaspeed boolean
----@field gigaspeedEntered false | number time when enter
----@field gigaCount number
----@field teraCount number
----@field teramusic boolean
----@field atkBuffer number
----@field atkBufferCap number
----@field shuffleMessiness number | false
----@field lastCommit string[]
----
----@field spikeTimer number
----@field spikeCounter number
----@field spikeCounterWeak number
----@field maxSpike number
----@field maxSpikeWeak number
----
----@field gravDelay false | number
----@field gravTimer false | number
----@field resetCount number
----
----@field omega boolean
----@field negFloor number
----@field negEvent number
----@field timerMul number
----@field attackMul number
----@field xpLockLevelMax number
----@field leakSpeed number
----@field invincible boolean
----
----@field onAlly boolean
----@field life2 number
----@field rankLimit number
----@field reviveCount number
----@field reviveDifficulty number
----@field koAlly number
----@field quests Question[]
----@field reviveTasks ReviveTask[]
----@field currentTask ReviveTask |false
----@field DPlock boolean
----@field lastFlip number | false
 local GAME = {
-    forfeitTimer = 0,
-    exTimer = 0,
-    anyRev = false,
-    revTimer = 0,
-    revDeckSkin = false,
-    uiHide = 0,
-    boardAnim = 0,
-    boardDim = { 1, 1, 1 },
-    boardColorPatch = {
-        timer = 0,
-        color = CLR.L,
-    },
-    shakeTimer = 0,
-    bgX = 0,
-    bgXdir = 0,
-    bgH = 0,
-    bgLastH = 0,
-    lifeShow = 0,
-    lifeShow2 = 0,
-    prevPB = -2600,
-    modIB = GC.newSpriteBatch(TEXTURE.modIcon),
-    resIB = GC.newSpriteBatch(TEXTURE.modIcon),
-    comboMP = 0,
-    comboZP = 1,
-    isUltraRun = false,
-    endFloorFstr = {},
-    pieceFstr = {},
-    pieceFstrObj = GC.newText(FONT.get(70, 'symbol')),
+    --------------------------------------------------------------
+    -- Global
 
+    -- Progress
+    cursorProg = 0,
+    cursorHide = true,
     completion = { -- 0=not mastered, 1=mastered, 2=rev mastered
         EX = 0,
         NH = 0,
@@ -156,37 +42,61 @@ local GAME = {
         AS = 0,
         DP = 0,
     },
-
-    mod = {
-        EX = 0,
-        NH = 0,
-        MS = 0,
-        GV = 0,
-        VL = 0,
-        DH = 0,
-        IN = 0,
-        AS = 0,
-        DP = 0,
+    revUnlocked = false,
+    CRprog = {
+        f10 = 0,
+        sr = 0,
+        achvGet = 0,
+        achvAll = 0,
     },
-    hardMode = false,
-    numberRev = false,
+    overDevProgText = "Open ACHV page to refresh the over-dev progress.",
 
-    quests = {},
-    reviveTasks = {},
-    currentTask = false,
-    lastFlip = false,
-    switch_sickness = 0,
-    hasseenDPnerf = false,
-    gigaspeedFloor = {},
-    teraspeedFloor = {},
-    windupAnim = {}, ---@type Windup[]
-    koCharge = 0,
-    koBuffer = {}, ---@type {uid:string, timer:number, valid:boolean}[]
-    koAnim = {}, ---@type {id1:love.Text, id2:love.Text, a:number, timer:number, pos:number, showP1:boolean, toOppo:boolean}[]
-    inputStat = { 0, 0, 0, 0 },     -- Move (mouse) / Click (mouse) / Keyboard / Touch
-    inputStatNorm = { 0, 0, 0, 0 }, -- normalized inputStat
-
+    -- Flags
     zenithTraveler = false,
+    achvNotice = {},
+    buttonHeld = {},
+
+    -- Background
+    bgX = 0,
+    bgXdir = 0,
+    bgH = 0,
+    bgLastH = 0,
+
+    -- UI Anim
+    uiHide = 0,
+    exTimer = 0,
+    revTimer = 0,
+    forfeitTimer = 0,
+    f10Time = -2600,
+    finishTime = -2600,
+    impactGlow = {},
+    throb = {
+        card = 0,
+        bg1 = 0,
+        bg2 = 0,
+        bg3 = 0,
+        bg4 = 0,
+    },
+
+    -- Drawable
+    cardHintText = {},
+    windObj = {},
+    windB = GC.newSpriteBatch(GC.load { w = 1, h = 1, { 'clear', 1, 1, 1, 1 } }, 260, 'static'),
+    endFloorFstr = {},
+    modIB = GC.newSpriteBatch(TEXTURE.modIcon),
+    resIB = GC.newSpriteBatch(TEXTURE.modIcon),
+    pieceFstr = {},
+    pieceFstrObj = GC.newText(FONT.get(70, 'symbol')),
+
+    -- Mod active state
+    mod = { EX = 0, NH = 0, MS = 0, GV = 0, VL = 0, DH = 0, IN = 0, AS = 0, DP = 0 },
+    comboMP = 0,
+    comboZP = 1,
+    hardMode = false,
+    anyRev = false,
+    revDeckSkin = false,
+
+    -- Piece effects
     nightcore = false,
     slowmo = false,
     steadfast = false,
@@ -195,53 +105,146 @@ local GAME = {
     invisCard = false,
     invisUI = false,
 
-    achv_perfectH = nil,
-    achv_demoteH = nil,
-    achv_carriedH = nil,
-    achv_noPerfectH = nil,
-    achv_noChargeH = nil,
-    achv_noManualCommitH = nil,
-    achv_noDamageH = nil,
-    achv_noKeyboardH = nil,
-    achv_shareModH = nil,
-    achv_noShareModH = nil,
-    achv_protectH = nil,
-    achv_maxChain = nil,
-    achv_maxReviveH = nil,
-    achv_totalDmg = nil,
-    achv_clutchQuest = nil,
-    achv_escapeBurnt = nil,
-    achv_escapeQuest = nil,
-    achv_felMagicBurnt = nil,
-    achv_felMagicQuest = nil,
-    achv_artistTrinityH = nil,
-    achv_noResetH = nil,
-    achv_obliviousQuest = nil,
-    achv_doublePass = nil,
-    achv_level19capH = nil,
-    achv_totalResetCount = nil,
-    achv_altFromSurge = nil,
+    -- Board
+    lifeShow = 0,
+    lifeShow2 = 0,
+    shakeTimer = 0,
+    boardAnim = 0,
+    boardDim = { 1, 1, 1 },
+    boardColorPatch = {
+        timer = 0,
+        color = CLR.L,
+    },
+
+    --------------------------------------------------------------
+    -- Game
+
+    -- Basic states
+    playing = false,
+    isUltraRun = false,
+
+    -- Statistics
+    comboStr = "",
+    prevPB = -2600,
+    totalFlip = 0,
+    totalQuest = 0,
+    totalPerfect = 0,
+    totalAttack = 0,
+    totalSurge = 0,
+    heightBonus = 0,
+    peakRank = 0,
+    rankTimer = {}, ---@type number[]
+    inputStat = { 0, 0, 0, 0 },     -- Move (mouse) / Click (mouse) / Keyboard / Touch
+    inputStatNorm = { 0, 0, 0, 0 }, -- normalized inputStat
+
+    -- Time
+    time = 0,
+    timerMul = 0,
+    gigaTime = false, ---@type false | number
+    questTime = 0,
+    floorTime = 0,
+    reviveTime = false, ---@type false | number
+    secTime = {}, ---@type number[]
+
+    -- Rank
+    rank = 0,
+    xp = 0,
+    xpLockLevelMax = 0,
+    xpLockLevel = 0,
+    xpLockTimer = 0,
+    rankupLast = false,
+    leakSpeed = 0,
+
+    -- Floor
+    floor = 0,
+    omega = false,
+    negFloor = 0,
+    negEvent = 0,
+    height = 0,
+    heightBuffer = 0,
+    roundHeight = 0, -- for statistics and achievement
+    fatigueSet = {}, ---@type {time:number, event:table, text:string, desc:string, color?:string, duration?:number, final?:true}[]
+    fatigue = 0,
+    animDuration = 0,
+
+    -- Params
+    attackMul = 0,
+    maxQuestCount = 0,
+    maxQuestSize = 0,
+    extraQuestBase = 0,
+    extraQuestVar = 0,
+    questFavor = 0, -- Increase by floor. Higher questFavor will result in mods generated consecutively more often, in design
+    dmgHeal = 0,
+    dmgWrong = 0,
+    dmgWrongExtra = 0,
+    dmgTime = 0,
+    dmgTimerMul = 1,
+    dmgDelay = 0,
+    dmgCycle = 0,
+    lifeLeak = 0,
+    dmgTimer = 0,
+
+    -- Player
+    fullHealth = 0,
+    startingHealth = 20,
+    life = 0,
+    invincible = false,
+    chain = 0,
+    gigaspeed = false,
+    gigaspeedEntered = 0, ---@type false | number time when enter
+    gigaspeedFloor = {},
+    teraspeedFloor = {},
+    gigaCount = 0,
+    teraCount = 0,
+    teramusic = false,
+    finishTera = false,
+    atkBuffer = 0,
+    atkBufferCap = 0,
+    shuffleMessiness = 0, ---@type number | false
+    lastCommit = {}, ---@type string[]
+
+    -- Spike
+    spikeTimer = 0,
+    spikeCounter = 0,
+    spikeCounterWeak = 0,
+    maxSpike = 0,
+    maxSpikeWeak = 0,
+
+    -- KO
+    koCount = 0,
+    koCharge = 0,
+
+    -- GV
+    gravDelay = false, ---@type false | number
+    gravTimer = false, ---@type false | number
+    resetCount = 0,
+
+    -- Ally (DP & rDP)
+    onAlly = false,
+    life2 = 0,
+    rankLimit = 0,
+    reviveCount = 0,
+    reviveDifficulty = 0,
+    koAlly = 0,
+    currentTask = false, ---@type ReviveTask |false
+    DPlock = false,
+    lastFlip = 0, ---@type number | false
+    switch_sickness = 0,
+    hasseenDPnerf = false,
+
+    -- Other singletons
+    quests = {}, ---@type Question[]
+    windupAnim = {}, ---@type Windup[]
+    koBuffer = {}, ---@type {uid:string, timer:number, valid:boolean}[]
+    koAnim = {}, ---@type {id1:love.Text, id2:love.Text, a:number, timer:number, pos:number, showP1:boolean, toOppo:boolean}[]
+    reviveTasks = {}, ---@type ReviveTask[]
 }
 
-GAME.playing = false
-GAME.maxQuestCount = 0
-GAME.finishTime = -2600
-GAME.fullHealth = 20
-GAME.startingHealth = 20
-GAME.life = 0
-GAME.life2 = 0
-GAME.time = 0
-GAME.spikeCounter = 0
-GAME.spikeTimer = 0
-GAME.floorTime = 0
-GAME.f10Time = love.timer.getTime()
-GAME.reviveTime = false
-GAME.floor = 1
-GAME.negFloor = 1
-GAME.rank = 1
-GAME.xp = 0
-GAME.height = 0
-GAME.chain = 0
+for i = 1, #ModData.deck do GAME.cardHintText[i] = GC.newText(FONT.get(50)) end
+for i = 1, 62 do
+    GAME.windObj[i] = { math.random(), math.random(), MATH.clampInterpolate(1, 0.5, 260, 2.6, i) }
+    GAME.windB:add(0, 0)
+end
 
 local M = GAME.mod
 local MD = ModData
@@ -581,8 +584,8 @@ function GAME.calculateSurgeColor(c)
 end
 
 function GAME.task_gigaspeed()
-    TWEEN.new(function(t) GigaSpeed.textTimer = 1 - 2 * t end):setEase('Linear'):setDuration(2.6):run()
-        :setOnFinish(function() GigaSpeed.textTimer = false end)
+    TWEEN.new(function(t) GigaAnim.textTimer = 1 - 2 * t end):setEase('Linear'):setDuration(2.6):run()
+        :setOnFinish(function() GigaAnim.textTimer = false end)
 end
 
 function GAME.task_fatigueWarn()
@@ -958,13 +961,13 @@ end
 
 function GAME.setGigaspeedAnim(on)
     GAME.gigaspeed = on
-    local s = GigaSpeed.alpha
+    local s = GigaAnim.alpha
     if on then
         GAME.gigaspeedEntered = GAME.time
         GAME.gigaspeedFloor[GAME.floor] = true
         GAME.gigaCount = GAME.gigaCount + 1
-        GigaSpeed.isTera = false
-        TWEEN.new(function(t) GigaSpeed.alpha = lerp(s, 1, t) end):setUnique('giga'):run()
+        GigaAnim.isTera = false
+        TWEEN.new(function(t) GigaAnim.alpha = lerp(s, 1, t) end):setUnique('giga'):run()
         TASK.removeTask_code(GAME.task_gigaspeed)
         TASK.new(GAME.task_gigaspeed)
         SFX.play('zenith_speedrun_start')
@@ -973,7 +976,7 @@ function GAME.setGigaspeedAnim(on)
         if GAME.floor == 1 then IssueAchv('speedrun_speedrunning') end
         if GAME.comboMP >= 15 then IssueAchv('abyss_weaver') end
     else
-        TWEEN.new(function(t) GigaSpeed.alpha = lerp(s, 0, t) end):setDuration(GAME.floor == 10 and 6.26 or 3.55):setUnique('giga'):run()
+        TWEEN.new(function(t) GigaAnim.alpha = lerp(s, 0, t) end):setDuration(GAME.floor == 10 and 6.26 or 3.55):setUnique('giga'):run()
     end
 end
 
@@ -981,7 +984,7 @@ function GAME.startTeraAnim()
     GAME.teramusic = true
     GAME.teraspeedFloor[GAME.floor] = true
     GAME.teraCount = GAME.teraCount + 1
-    GigaSpeed.isTera = true
+    GigaAnim.isTera = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
     SFX.play('zenith_speedrun_start')
@@ -1378,8 +1381,8 @@ function GAME.refreshRPC()
         end
     else
         stateStr = "Enjoying music"
-        if BgmPlaying and BgmPlaying ~= 'f0' then
-            stateStr = stateStr .. " (" .. BgmPlaying:upper():gsub("R$", "-R") .. ")"
+        if BgmState.playing and BgmState.playing ~= 'f0' then
+            stateStr = stateStr .. " (" .. BgmState.playing:upper():gsub("R$", "-R") .. ")"
         end
         local pitch = URM and M.GV == 2 and 3 or M.GV
         if GAME.nightcore then pitch = pitch + 12 end
@@ -1388,11 +1391,9 @@ function GAME.refreshRPC()
         if M.IN > 0 then stateStr = stateStr:gsub(".", { j = "r", s = "z", p = "b", c = "g", t = "d" }) end
     end
 
-    DiscordState = {
-        needUpdate = true,
-        details = detailStr,
-        state = stateStr,
-    }
+    DiscordState.needUpdate = true
+    DiscordState.details = detailStr
+    DiscordState.state = stateStr
     TASK.lock('RPC_update', 1.6)
 end
 
@@ -1543,7 +1544,7 @@ function GAME.refreshCursor()
     for _, v in next, GAME.completion do
         sum = sum + v ^ 1.37851162325373
     end
-    CursorProgress = sum / 23.4
+    GAME.cursorProg = sum / 23.4
 end
 
 function GAME.refreshLockState()
@@ -1628,12 +1629,12 @@ function GAME.refreshRev()
             GAME.bgX = lerp(x, 0, t)
             t = lerp(s, e, t)
             GAME.revTimer = t
-            TextColor[1] = lerp(BaseTextColor[1], .62, t)
-            TextColor[2] = lerp(BaseTextColor[2], .1, t)
-            TextColor[3] = lerp(BaseTextColor[3], .1, t)
-            ShadeColor[1] = lerp(BaseShadeColor[1], .1, t)
-            ShadeColor[2] = lerp(BaseShadeColor[2], 0, t)
-            ShadeColor[3] = lerp(BaseShadeColor[3], 0, t)
+            Palette.text[1] = lerp(Palette.BaseText[1], .62, t)
+            Palette.text[2] = lerp(Palette.BaseText[2], .1, t)
+            Palette.text[3] = lerp(Palette.BaseText[3], .1, t)
+            Palette.shade[1] = lerp(Palette.BaseShade[1], .1, t)
+            Palette.shade[2] = lerp(Palette.BaseShade[2], 0, t)
+            Palette.shade[3] = lerp(Palette.BaseShade[3], 0, t)
         end):setUnique('revSwitched'):setDuration(.26):run()
     end
 end
@@ -1922,7 +1923,7 @@ function GAME.commit(auto)
                 if GAME[k] > oldLife then GAME.incrementPrompt('heal', GAME[k] - oldLife) end
                 if GAME.chain > 0 then surge = GAME.chain end
                 local r, g, b = GAME.calculateSurgeColor(GAME.chain)
-                table.insert(ImpactGlow, {
+                table.insert(GAME.impactGlow, {
                     r = r,
                     g = g,
                     b = b,
@@ -2317,10 +2318,9 @@ function GAME.start()
 
     if M.DP > 0 then IssueAchv('intended_glitch') end
 
-    -- Setup game state
+    -- Basic states
     GAME.playing = true
     GAME.isUltraRun = GAME.anyUltra
-    GAME.attackMul = GAME.isUltraRun and .62 or 1
 
     -- Statistics
     GAME.comboStr = table.concat(TABLE.sort(GAME.getHand(true)))
@@ -2362,12 +2362,13 @@ function GAME.start()
     GAME.negEvent = 1
     GAME.height = 0
     GAME.heightBuffer = 0
+    GAME.roundHeight = 0
     GAME.fatigueSet = Fatigue[M.EX == 2 and 'rEX' or M.DP == 2 and 'rDP' or 'normal']
     GAME.fatigue = 1
     GAME.animDuration = GAME.slowmo and 26 or 1
-    GAME.lastCommit = {}
 
     -- Params
+    GAME.attackMul = GAME.isUltraRun and .62 or 1
     GAME.maxQuestCount = M.NH == 2 and 2 or 3
     GAME.maxQuestSize = (M.NH < 2 and M.DH == 2) and 3 or 4
     GAME.extraQuestBase = M.NH == 2 and (M.DH > 0 and 2.42 - M.DH or 1.26) or M.DH == 1 and 0.26 or 0
@@ -2375,6 +2376,7 @@ function GAME.start()
     GAME.questFavor = 0 -- Initialized in GAME.upFloor()
     GAME.dmgHeal = 2
     GAME.dmgWrong = 1
+    GAME.dmgWrongExtra = 0
     GAME.dmgTime = 2
     GAME.dmgTimerMul = 1
     GAME.dmgDelay = 15
@@ -2399,6 +2401,7 @@ function GAME.start()
     GAME.atkBuffer = 0
     GAME.atkBufferCap = 8 + (M.DH == 1 and M.NH < 2 and 2 or 0)
     GAME.shuffleMessiness = false
+    GAME.lastCommit = {}
 
     -- Spike
     GAME.spikeTimer = 0
@@ -2446,20 +2449,20 @@ function GAME.start()
 
     -- Refresh UI things
     GAME.refreshModIcon()
-    TABLE.clear(ComboColor)
+    TABLE.clear(Palette.combo)
     for k, v in next, M do
         if v > 0 then
             local c = TABLE.copy(MD.color[k])
             c[4] = nil
-            ins(ComboColor, c)
+            ins(Palette.combo, c)
         end
     end
-    if #ComboColor > 0 then
-        TABLE.shuffle(ComboColor)
-        ins(ComboColor, TABLE.copy(ComboColor[1]))
-        TABLE.transpose(ComboColor)
+    if #Palette.combo > 0 then
+        TABLE.shuffle(Palette.combo)
+        ins(Palette.combo, TABLE.copy(Palette.combo[1]))
+        TABLE.transpose(Palette.combo)
     end
-    BoardColor[1], BoardColor[2], BoardColor[3] = BoardColorData.r[1], BoardColorData.g[1], BoardColorData.b[1]
+    Palette.board[1], Palette.board[2], Palette.board[3] = BoardColorData.r[1], BoardColorData.g[1], BoardColorData.b[1]
     GAME.boardColorPatch.timer = 0
     GAME.boardDim = { 1, 1, 1 }
 
@@ -2510,7 +2513,7 @@ function GAME.finish(reason)
     SCN.scenes.tower.widgetList.help:setVisible(not GAME.zenithTraveler)
     SCN.scenes.tower.widgetList.help2:setVisible(not GAME.zenithTraveler)
     SCN.scenes.tower.widgetList.daily:setVisible(not GAME.zenithTraveler)
-    TABLE.clear(HoldingButtons)
+    TABLE.clear(GAME.buttonHeld)
     MSG.clear()
 
     -- Reset tasks
@@ -2564,7 +2567,7 @@ function GAME.finish(reason)
                 if v > GAME.completion[k] then
                     if GAME.completion[k] == 0 then
                         unlockRev = unlockRev + 1
-                        RevUnlocked = true
+                        GAME.revUnlocked = true
                     end
                     GAME.completion[k] = v
                 end

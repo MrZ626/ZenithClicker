@@ -10,16 +10,11 @@ local GAME = GAME
 local M = GAME.mod
 local ModData = ModData
 local Cards = Cards
-CardHintText = {}
-for i = 1, #ModData.deck do CardHintText[i] = GC.newText(FONT.get(50)) end
 
-HoldingButtons = {}
-local HoldingButtons = HoldingButtons
+local buttonHeld = GAME.buttonHeld
 
 URM = false
-RevUnlocked = false
-UsingTouch = MOBILE
-local usingTouch = UsingTouch
+local usingTouch = MOBILE
 local revHold = {}
 local lastTimeRemain = 1e99 -- For checking if daily challenge should update
 
@@ -35,7 +30,7 @@ local function switchVisitor(bool)
         for _, W in next, scene.widgetList do W:setVisible(not bool) end
         if usingTouch then scene.widgetList.help:setVisible(true) end
         if bool then IssueAchv('zenith_traveler') end
-        TABLE.clear(HoldingButtons)
+        TABLE.clear(buttonHeld)
     end
 end
 
@@ -243,17 +238,17 @@ function scene.load()
             "[WARNING]\nThe web version is for trial purposes only.\nPlease note that your progress may be lost without warning, and this cannot be fixed.\nDownload the desktop version to keep playing in the future, with far better performance.\nThank you for your support!",
             12.6)
     end
-    RevUnlocked = TABLE.countAll(GAME.completion, 0) < 9
+    GAME.revUnlocked = TABLE.countAll(GAME.completion, 0) < 9
 
-    for i = 1, #ModData.deck do CardHintText[i]:set(CONF.keybind[i]:upper()) end
+    for i = 1, #ModData.deck do GAME.cardHintText[i]:set(CONF.keybind[i]:upper()) end
 
     GAME.refreshDailyChallengeText()
     TASK.unlock('sure_quit')
     ZENITHA.setAppInfo("Zenith Clicker")
 
-    if PendingComboFromRecord then
-        applyCombo(PendingComboFromRecord)
-        PendingComboFromRecord = nil
+    if PendingCombo then
+        applyCombo(PendingCombo)
+        PendingCombo = nil
     end
 
     TABLE.clear(revHold)
@@ -297,16 +292,13 @@ end
 
 function scene.mouseDown(x, y, k)
     if k > 3 then return end
-    if usingTouch and k == 1 then
-        usingTouch = false
-        UsingTouch = false
-    end
+    if usingTouch and k == 1 then usingTouch = false end
     if GAME.zenithTraveler then
         switchVisitor(false)
         return true
     end
     if k == 3 then return true end
-    HoldingButtons['mouse' .. k] = true
+    buttonHeld['mouse' .. k] = true
     GAME.nixPrompt('keep_no_mouse')
     GAME.inputStat[2] = GAME.inputStat[2] + 1
 
@@ -321,8 +313,8 @@ end
 
 function scene.mouseUp(x, y, k)
     if k > 3 then return end
-    if not HoldingButtons['mouse' .. k] then return end
-    HoldingButtons['mouse' .. k] = nil
+    if not buttonHeld['mouse' .. k] then return end
+    buttonHeld['mouse' .. k] = nil
     GAME.nixPrompt('keep_no_mouse')
     if GAME.zenithTraveler then return end
     if k == 3 then return end
@@ -348,10 +340,7 @@ end
 function scene.touchMove(x, y, dx, dy) scene.mouseMove(x, y, dx, dy) end
 
 function scene.touchDown(x, y, id)
-    if not usingTouch then
-        usingTouch = true
-        UsingTouch = true
-    end
+    usingTouch = true
     if GAME.zenithTraveler then return end
     local x1, y1 = SCR.xOy_dl:inverseTransformPoint(SCR.xOy:transformPoint(x, y))
     if not GAME.playing and x1 <= 200 and MATH.between(y1, -600, -40) then
@@ -359,7 +348,7 @@ function scene.touchDown(x, y, id)
         return
     end
 
-    HoldingButtons['touch' .. tostring(id)] = true
+    buttonHeld['touch' .. tostring(id)] = true
     if M.EX == 0 then
         SFX.play('move')
         GAME.inputStat[4] = GAME.inputStat[4] + 1
@@ -375,8 +364,8 @@ function scene.touchUp(x, y, id)
         revHold[id] = nil
         return
     end
-    if not HoldingButtons['touch' .. tostring(id)] then return end
-    HoldingButtons['touch' .. tostring(id)] = nil
+    if not buttonHeld['touch' .. tostring(id)] then return end
+    buttonHeld['touch' .. tostring(id)] = nil
     if M.EX > 0 then
         mouseTrigger(x, y, next(revHold) and 2 or 1)
     end
@@ -387,7 +376,7 @@ end
 -- scene.mouseUp=scene.touchUp
 
 function scene.keyDown(key)
-    HoldingButtons[key] = true
+    buttonHeld[key] = true
     if GAME.zenithTraveler then
         if key == 'escape' or key == '\\' or key == 'space' then
             switchVisitor(false)
@@ -409,8 +398,8 @@ function scene.keyDown(key)
 end
 
 function scene.keyUp(key)
-    if not HoldingButtons[key] then return end
-    HoldingButtons[key] = nil
+    if not buttonHeld[key] then return end
+    buttonHeld[key] = nil
     if GAME.zenithTraveler then return end
     if M.EX > 0 then
         keyTrigger(key)
@@ -440,11 +429,12 @@ function scene.update(dt)
     if DeckPress > 0 then
         DeckPress = DeckPress - dt
     end
-    for i = #ImpactGlow, 1, -1 do
-        local L = ImpactGlow[i]
+    local glow = GAME.impactGlow
+    for i = #glow, 1, -1 do
+        local L = glow[i]
         L.t = L.t - dt * L.tk
         if L.t <= 0 then
-            table.remove(ImpactGlow, i)
+            table.remove(glow, i)
         end
     end
 
@@ -485,13 +475,18 @@ function scene.update(dt)
     end
 end
 
-XMasTextColor = { .4, .4, 1 }
-XMasShadeColor = { .2, .2, .42 }
-ValentineTextColor = { 1, .6, .8 }
-ValentineShadeColor = { .45, .3, .45 }
-BaseTextColor = { .7, .5, .3 }
-BaseShadeColor = { .3, .15, 0 }
-TextColor, ShadeColor, ComboColor = {}, {}, {}
+Palette = {
+    board = { 1, 1, 1 },
+    XMasText = { .4, .4, 1 },
+    XMasShade = { .2, .2, .42 },
+    ValentineText = { 1, .6, .8 },
+    ValentineShade = { .45, .3, .45 },
+    BaseText = { .7, .5, .3 },
+    BaseShade = { .3, .15, 0 },
+    text = {},
+    shade = {},
+    combo = {},
+}
 local rankColor = {
     [0] = { 1, 1, 1, .26 },
     { 1,  .1, 0 },
@@ -541,8 +536,8 @@ local stc_reset, stc_setComp, stc_setPen, stc_stop = GC.stc_reset, GC.stc_setCom
 local stc_rect, stc_mRect, stc_circ = GC.stc_rect, GC.stc_mRect, GC.stc_circ
 
 local TEXTURE = TEXTURE
-local TextColor = TextColor
-local ShadeColor = ShadeColor
+local TextColor = Palette.text
+local ShadeColor = Palette.shade
 local bgQuad = GC.newQuad(0, 0, 0, 0, 0, 0)
 local rulerQuad = GC.newQuad(0, 0, 32, 300, TEXTURE.ruler)
 
@@ -624,13 +619,13 @@ function DrawBG(brightness, showRuler)
                     .626 * (1 - t)
                 )
                 gc_draw(TEXTURE.transition, 0, SCR.h, -1.5708, SCR.h / 128, SCR.w)
-            elseif ComboColor[1] then
+            elseif Palette.combo[1] then
                 -- Vacuum
                 local t = GAME.time % 1
                 gc_setColor(
-                    lLerp(ComboColor[1], t),
-                    lLerp(ComboColor[2], t),
-                    lLerp(ComboColor[3], t),
+                    lLerp(Palette.combo[1], t),
+                    lLerp(Palette.combo[2], t),
+                    lLerp(Palette.combo[3], t),
                     icLerp(2500, 6200, GAME.bgH) * .355
                 )
                 gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
@@ -676,7 +671,7 @@ function DrawBG(brightness, showRuler)
     end
 
     -- Brightness cover
-    gc_setColor(0, 0, 0, 1 - (GAME.gigaspeed and (.7 + GigaSpeed.bgAlpha * .6) or 1) * brightness / 100)
+    gc_setColor(0, 0, 0, 1 - (GAME.gigaspeed and (.7 + GigaAnim.bgAlpha * .6) or 1) * brightness / 100)
     gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
 
     -- Ruler
@@ -741,18 +736,18 @@ function scene.draw()
             local dh = GAME.bgH - GAME.bgLastH
             GAME.bgLastH = GAME.bgH
             for i = 1, 62 do
-                local w = Wind[i]
+                local w = GAME.windObj[i]
                 w[2] = w[2] + dh / w[3] / 42
                 if w[2] < 0 or w[2] > 1 then
                     w[1], w[2] = math.random(), w[2] % 1
                 end
-                WindBatch:set(i, w[1] * SCR.w, (w[2] * 1.2 - .1) * SCR.h, 0, 5, (-6 - dh * 260) / w[3] * SCR.k, .5, 0)
+                GAME.windB:set(i, w[1] * SCR.w, (w[2] * 1.2 - .1) * SCR.h, 0, 5, (-6 - dh * 260) / w[3] * SCR.k, .5, 0)
             end
             gc_setColor(1, 1, 1, GAME.uiHide *
                 clamp((GAME.rank - 2) / 6, .26, 1) * .26 *
                 MATH.cLerp(.62, 1, abs(dh * 26))
             )
-            gc_draw(WindBatch)
+            gc_draw(GAME.windB)
         end
 
         -- PB line
@@ -767,17 +762,17 @@ function scene.draw()
         local panelH = 697 + GAME.uiHide * (420 + GAME.height / 6.2)
 
         -- GigaSpeed BG
-        if GigaSpeed.alpha > 0 then
+        if GigaAnim.alpha > 0 then
             local gigaPower = (1 - clamp((GAME.time - (GAME.gigaspeedEntered or GAME.time) - 120) / 180, 0, 1)) ^ 1.5
             if gigaPower > 0 then
                 gc_replaceTransform(SCR.origin)
-                gc_setColor(GigaSpeed.r, GigaSpeed.g, GigaSpeed.b, .42 * GigaSpeed.alpha * gigaPower)
+                gc_setColor(GigaAnim.r, GigaAnim.g, GigaAnim.b, .42 * GigaAnim.alpha * gigaPower)
                 local h1 = SCR.y + 478 * SCR.k
                 gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * SCR.w, h1)
                 gc_draw(TEXTURE.transition, SCR.w, 0, 0, -.42 / 128 * SCR.w, h1)
 
                 gc_replaceTransform(SCR.xOy)
-                gc_setAlpha(GigaSpeed.alpha * gigaPower)
+                gc_setAlpha(GigaAnim.alpha * gigaPower)
                 gc_draw(TEXTURE.transition, 800 - 1586 / 2, panelH - 303, 1.5708, 26, 1586, 0, 1)
             end
         end
@@ -794,9 +789,9 @@ function scene.draw()
                 gc_setColor(1, 1, 1, GAME.revTimer)
                 gc_mDraw(TEXTURE.panel.glass_a)
                 gc_mDraw(TEXTURE.panel.glass_b)
-                gc_setColor(1, 1, 1, i == 1 and ThrobAlpha.bg1 or ThrobAlpha.bg3)
+                gc_setColor(1, 1, 1, i == 1 and GAME.throb.bg1 or GAME.throb.bg3)
                 gc_mDraw(TEXTURE.panel.throb_a)
-                gc_setColor(1, 1, 1, i == 1 and ThrobAlpha.bg2 or ThrobAlpha.bg4)
+                gc_setColor(1, 1, 1, i == 1 and GAME.throb.bg2 or GAME.throb.bg4)
                 gc_mDraw(TEXTURE.panel.throb_b)
                 gc_scale(-1, 1)
             end
@@ -854,11 +849,12 @@ function scene.draw()
             stc_circ(boardRX, boardRY, 22, 4)
 
             -- Draw board
+            local boardClr = Palette.board
             stc_setComp('equal', 1)
             gc_setColor(.05, .05, .05, (GAME.playing and GAME.boardAnim ^ 4.2 or 1) * CONF.boardOpacity / 100)
             gc_mRect('fill', 0, 0, boardRX * 2, boardRY * 2)
             stc_setComp('equal', 2)
-            gc_setColor(BoardColor[1], BoardColor[2], BoardColor[3], (GAME.playing and GAME.boardAnim ^ 4.2 or 1) * CONF.boardOpacity / 100)
+            gc_setColor(boardClr[1], boardClr[2], boardClr[3], (GAME.playing and GAME.boardAnim ^ 4.2 or 1) * CONF.boardOpacity / 100)
             gc_mRect('fill', 0, 0, boardRX * 2, boardRY * 2)
             stc_stop()
             if M.EX > 0 then
@@ -920,7 +916,7 @@ function scene.draw()
                 stc_circ(-774, 193, 15, 4)
                 stc_circ(-410, 193, 15, 4)
                 if GAME.dmgTimerMul < 1 then
-                    gc_setColor(1, 0, 1, .62 * (1 - MusicBeat))
+                    gc_setColor(1, 0, 1, .62 * (1 - BgmState.beat))
                     gc_rectangle('fill', -410 - w, 157, w3, 36)
                 end
                 gc_setColor(GAME.dmgTimer > GAME.dmgCycle and CLR.DL or COLOR.lR)
@@ -931,8 +927,8 @@ function scene.draw()
 
                 -- Damage Timer number
                 setFont(30)
-                gc_strokePrint('full', 1, CLR.D, BoardColor, GAME.dmgDelay, -777 + w3, 140, nil, nil, nil, .4)
-                gc_strokePrint('full', 1, CLR.D, BoardColor, GAME.dmgCycle, -410 - w2, 140, nil, nil, nil, .4)
+                gc_strokePrint('full', 1, CLR.D, boardClr, GAME.dmgDelay, -777 + w3, 140, nil, nil, nil, .4)
+                gc_strokePrint('full', 1, CLR.D, boardClr, GAME.dmgCycle, -410 - w2, 140, nil, nil, nil, .4)
             end
 
             -- Gravity Timer
@@ -955,7 +951,7 @@ function scene.draw()
 
             -- Quest counter
             if GAME.totalQuest <= 40 then
-                gc_strokePrint('full', 1, CLR.D, BoardColor, GAME.totalQuest, 410, 12)
+                gc_strokePrint('full', 1, CLR.D, boardClr, GAME.totalQuest, 410, 12)
             end
             -- Revive counter
             if GAME.reviveCount > 0 then
@@ -1065,10 +1061,11 @@ function scene.overDraw()
         end
 
         -- Glow
-        if ImpactGlow[1] then
+        if GAME.impactGlow[1] then
             gc_setBlendMode('add')
-            for i = 1, #ImpactGlow do
-                local L = ImpactGlow[i]
+            local glow = GAME.impactGlow
+            for i = 1, #glow do
+                local L = glow[i]
                 gc_setColor(L.r, L.g, L.b, L.t)
                 GC.blurCircle(0, L.x, L.y, 120 * (L.t + 1.6) ^ 2)
             end
@@ -1076,33 +1073,33 @@ function scene.overDraw()
         end
 
         -- GigaSpeed Timer
-        if GigaSpeed.alpha > 0 then
+        if GigaAnim.alpha > 0 then
             local w, h = TEXTS.gigatime:getDimensions()
             local gigaFade = clamp((GAME.time - (GAME.gigaspeedEntered or GAME.time) - 120) / 180, 0, 1)
-            gc_setColor(GigaSpeed.r, GigaSpeed.g, GigaSpeed.b, .2 * (GigaSpeed.alpha - gigaFade))
+            gc_setColor(GigaAnim.r, GigaAnim.g, GigaAnim.b, .2 * (GigaAnim.alpha - gigaFade))
             gc_strokeDraw('full', 3, TEXTS.gigatime, 800, 277, 0, 1.4, 1.1, w * .5, h * .5)
             if M.DP < 2 then
-                gc_setAlpha(GigaSpeed.alpha)
+                gc_setAlpha(GigaAnim.alpha)
                 gc_draw(TEXTS.gigatime, 800, 277, 0, 1.4, 1.1, w * .5, h * .5)
                 if gigaFade > 0 then
                     local l = gigaFade == 1 and .5 or .8
-                    gc_setColor(l, l, l, GigaSpeed.alpha * gigaFade)
+                    gc_setColor(l, l, l, GigaAnim.alpha * gigaFade)
                     gc_draw(TEXTS.gigatime, 800, 277, 0, 1.4, 1.1, w * .5, h * .5)
                 end
             end
         end
 
         -- GigaSpeed Anim
-        if GigaSpeed.textTimer then
+        if GigaAnim.textTimer then
             gc_setBlendMode('add')
             gc_setColor(.26, .26, .26)
-            if GigaSpeed.isTera then
+            if GigaAnim.isTera then
                 for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.teraspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
+                    gc_mDraw(TEXTS.teraspeed, 800 + (GigaAnim.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
                 end
             else
                 for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.gigaspeed, 800 + (GigaSpeed.textTimer + p * .012) ^ 5 * 2600, 395, 0, 1.6)
+                    gc_mDraw(TEXTS.gigaspeed, 800 + (GigaAnim.textTimer + p * .012) ^ 5 * 2600, 395, 0, 1.6)
                 end
             end
             gc_setBlendMode('alpha')
@@ -1210,7 +1207,7 @@ function scene.overDraw()
     end
 
     -- Rev trigger for touchscreen
-    if usingTouch and not GAME.playing and RevUnlocked then
+    if usingTouch and not GAME.playing and GAME.revUnlocked then
         gc_replaceTransform(SCR.xOy_dl)
         if URM then
             gc_setColor(COLOR.C)
@@ -1252,7 +1249,7 @@ function scene.overDraw()
 
     -- AS keyboard hint
     if M.AS > 0 and M.EX == 0 then
-        local texts = CardHintText
+        local texts = GAME.cardHintText
         for i = 1, #Cards do
             local obj = texts[i]
             local x, y = Cards[i].x1 + 90, Cards[i].y1 + 155
@@ -1350,7 +1347,7 @@ function scene.overDraw()
                 gc_ucs_back()
             elseif GAME.comboStr == 'VLrGV' then
                 local x, y = -474, 52
-                gc_strokePrint('corner', 2, CLR.D, BoardColor, floor(GAME.achv_altFromSurge) .. "m", x, y - 20, 260, 'center')
+                gc_strokePrint('corner', 2, CLR.D, Palette.board, floor(GAME.achv_altFromSurge) .. "m", x, y - 20, 260, 'center')
             end
 
             -- Revive Task
@@ -1727,7 +1724,7 @@ end
 local function button_start()
     if GAME.playing then
         GAME.commit()
-        if UsingTouch then
+        if usingTouch then
             FloatOnCard = nil
             GAME.refreshLayout()
         end
@@ -1738,7 +1735,7 @@ end
 local function button_reset()
     if M.AS == 0 then GAME.nixPrompt('keep_no_reset') end
     GAME.cancelAll()
-    if UsingTouch then
+    if usingTouch then
         FloatOnCard = nil
         GAME.refreshLayout()
     end
@@ -1876,7 +1873,7 @@ scene.widgetList = {
         fontSize = 70, text = "START",
         onPress = function(k)
             if k == 3 then return end
-            HoldingButtons.startBtn = true
+            buttonHeld.startBtn = true
             if M.EX == 0 then
                 SFX.play('move')
                 button_start()
@@ -1886,8 +1883,8 @@ scene.widgetList = {
         end,
         onClick = function(k)
             if k == 3 then return end
-            if not HoldingButtons.startBtn then return end
-            HoldingButtons.startBtn = nil
+            if not buttonHeld.startBtn then return end
+            buttonHeld.startBtn = nil
             if M.EX > 0 then button_start() end
         end,
     },
@@ -1899,7 +1896,7 @@ scene.widgetList = {
         fontSize = 30, text = "RESET", textColor = TextColor,
         onPress = function(k)
             if k == 3 then return end
-            HoldingButtons.resetBtn = true
+            buttonHeld.resetBtn = true
             if M.EX == 0 then
                 SFX.play('move')
                 button_reset()
@@ -1909,7 +1906,7 @@ scene.widgetList = {
         end,
         onClick = function(k)
             if k == 3 then return end
-            if not HoldingButtons.resetBtn then return end
+            if not buttonHeld.resetBtn then return end
             if M.EX > 0 then button_reset() end
         end,
     },

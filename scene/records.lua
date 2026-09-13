@@ -318,8 +318,8 @@ function scene.mouseClick(x, y, k)
         MSG('dark', "Mod set applied!", 1)
         SFX.play('ihs')
         ---@class PendingCombo
-        PendingComboFromRecord = TABLE.copy(recList[y]._list)
-        PendingComboFromRecord.ultra = not not recList[y]._ultra
+        PendingCombo = TABLE.copy(recList[y]._list)
+        PendingCombo.ultra = not not recList[y]._ultra
         TABLE.delete(SCN.stack, 'chnl')
     end
 end

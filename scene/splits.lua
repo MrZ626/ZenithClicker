@@ -94,7 +94,7 @@ function scene.draw()
     if SRActive then
         GC.setBlendMode('add')
         gc_setColor(clr.L)
-        gc_setAlpha(.16 - .1 * MusicBeat)
+        gc_setAlpha(.16 - .1 * BgmState.beat)
         GC.mDrawQ(TEXTURE.achievement.icons, TEXTURE.achievement.iconQuad.zenith_speedrun, 0, 0, 0, 2.6)
         GC.setBlendMode('alpha')
     end

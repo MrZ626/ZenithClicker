@@ -2,6 +2,7 @@ love.window.setIcon(love.image.newImageData('assets/icon.png'))
 love.mouse.setVisible(false)
 
 require 'Zenitha'
+UTIL.runVarMonitor()
 for k, v in next, {
     DR = 'd4RS', dR = 'd1RS', R = 'l2RS', lR = 'l4RS', LR = 'l5RS',
     DF = 'd4RyS', dF = 'd1RyS', F = 'l2RyS', lF = 'l4RyS', LF = 'l5RyS',
@@ -353,12 +354,6 @@ UTIL.time("Prepare storage", true)
 TestMode = false
 DiscordState = {}
 Cards = {} ---@type Map<Card>
-CRprogress = {
-    f10 = 0,
-    sr = 0,
-    achvGet = 0,
-    achvAll = 0,
-}
 Daily = {
     history = {},
     historyDisp = {},
@@ -372,7 +367,7 @@ GAME = require 'module/game'
 -- Vars: VFX
 
 FloatOnCard = nil ---@type number?
-GigaSpeed = {
+GigaAnim = {
     r = 0,
     g = 0,
     b = 0,
@@ -381,26 +376,13 @@ GigaSpeed = {
     textTimer = false,
     isTera = false,
 }
-BoardColor = { 1, 1, 1 }
-ImpactGlow = {}
 DeckPress = 0
-ThrobAlpha = {
-    card = 0,
-    bg1 = 0,
-    bg2 = 0,
-}
-Wind = {}
-WindBatch = GC.newSpriteBatch(GC.load { w = 1, h = 1, { 'clear', 1, 1, 1, 1 } }, 260, 'static')
-for i = 1, 62 do
-    Wind[i] = { math.random(), math.random(), MATH.clampInterpolate(1, 0.5, 260, 2.6, i) }
-    WindBatch:add(0, 0)
-end
 BgScale = 1
 
 -- Vars: Music
 
 ---@enum (key) ZC.bgmName
-BgmData = {
+BgmMeta = {
     --[[
         # F0 (Watchful Eye)           4|4 ♩ = 184         C Minor
         # F1 (Divine Registration)    4|4 ♩ = 184         C Minor
@@ -441,7 +423,7 @@ BgmData = {
     fomgr = { meta = '4|4  184 BPM  B Minor & C Minor ', bar = 4, bpm = 184, toneFix = -.5, loop = { 60 / 184 * 76, 60 / 184 * 632 } },
     b6    = { meta = '4|4  120 BPM  G Minor           ', bar = 4, bpm = 120, toneFix = 2.0, loop = { 16, 224 } },
 }
-for _, v in next, BgmData do
+for _, v in next, BgmMeta do
     v.meta = STRING.trim(v.meta)
     if not v.bpmData then v.bpmData = { v.bpm } end
 end
@@ -454,12 +436,14 @@ BgmSet = {
     },
     f1 = { 'f1', 'f1ex', 'f1rev' },
 }
-BgmPlaying = false ---@type ZC.bgmName | false
-SongNamePlaying = false -- Same as BgmPlaying, but this distinguishes f0(r) and f1(r) for album page
-BgmLooping = false
-BgmNeedSkip = false
-BgmNeedStop = false
-MusicBeat = 0 ---@type number 0-1, envelope: /|/|/|
+BgmState = {
+    playing = false, ---@type ZC.bgmName | false
+    playingName = false, ---@type ZC.bgmName | false Same as playing, but this distinguishes f0(r) and f1(r) for album page
+    looping = false, ---@type boolean
+    needSkip = false,
+    needStop = false,
+    beat = 0, ---@type number 0-1, envelope: /|/|/|
+}
 
 -- Vars: Daily Challenge extras
 
@@ -471,8 +455,6 @@ ZDAY = false
 -- Vars: Cursor
 
 MX, MY = -260, 0 -- Mouse position
-CursorProgress = 0
-CursorHide = true
 
 local M = GAME.mod
 
@@ -482,7 +464,7 @@ function SetMouseVisible(bool)
     if CONF.syscursor then
         love.mouse.setVisible(bool)
     else
-        CursorHide = not bool
+        GAME.cursorHide = not bool
     end
 end
 
@@ -568,8 +550,6 @@ function InitProfile()
     }
 
     ACHV = {}
-
-    AchvNotice = {}
 end
 
 function LoadSave()
@@ -619,7 +599,7 @@ function CalculateCR()
         if hs[id] >= Floors[9].top then s = s + 1 end
         if hs['r' .. id] >= Floors[9].top then s = s + 1 end
     end
-    CRprogress.f10 = s
+    GAME.CRprog.f10 = s
 
     s = 0
     for i = 1, #deck do
@@ -627,7 +607,7 @@ function CalculateCR()
         if sr[id] < 1e26 then s = s + 1 end
         if sr['r' .. id] < 1e26 then s = s + 1 end
     end
-    CRprogress.sr = s
+    GAME.CRprog.sr = s
 
     local p, P = 0, 0
     for i = 1, #Achievements do
@@ -640,7 +620,7 @@ function CalculateCR()
             end
         end
     end
-    CRprogress.achvGet, CRprogress.achvAll = p, P
+    GAME.CRprog.achvGet, GAME.CRprog.achvAll = p, P
 
     local cap = 25000
     local cr = 0
@@ -652,10 +632,10 @@ function CalculateCR()
     cr = cr + 5000 * norm(MATH.icLerp(420, 76.2, STAT.minTime), -.5)
 
     -- Mod completion (3K)
-    cr = cr + 3000 * norm(MATH.icLerp(0, #deck * 2, CRprogress.f10), .62)
+    cr = cr + 3000 * norm(MATH.icLerp(0, #deck * 2, GAME.CRprog.f10), .62)
 
     -- Mod speedrun (2K)
-    cr = cr + 2000 * norm(MATH.icLerp(0, #deck * 2, CRprogress.sr), .62)
+    cr = cr + 2000 * norm(MATH.icLerp(0, #deck * 2, GAME.CRprog.sr), .62)
 
     -- Zenith point (3K)
     cr = cr + 3000 * norm(MATH.icLerp(0, 26e4, STAT.zp), 4.2)
@@ -664,7 +644,7 @@ function CalculateCR()
     cr = cr + 2000 * norm(MATH.icLerp(0, 6200, STAT.dzp), 2.6)
 
     -- Achievement (5K)
-    cr = cr + 5000 * norm(MATH.icLerp(0, CRprogress.achvAll, CRprogress.achvGet), 2.6)
+    cr = cr + 5000 * norm(MATH.icLerp(0, GAME.CRprog.achvAll, GAME.CRprog.achvGet), 2.6)
 
     -- ACHV Wreath (competitive achievement count)
     for i = 1, #Achievements do
@@ -749,7 +729,7 @@ function IssueAchv(id, silent)
     end
 
     ACHV[id] = 0
-    AchvNotice[id] = true
+    GAME.achvNotice[id] = true
     saveAchvTimer = .26
 
     return true
@@ -792,7 +772,7 @@ function SubmitAchv(id, score, silent, realSilent)
 
     ACHV[id] = score
     if not realSilent then
-        AchvNotice[id] = true
+        GAME.achvNotice[id] = true
     end
     saveAchvTimer = .26
 
@@ -845,7 +825,7 @@ end
 -- Functions: Music
 
 function Tone(pitch)
-    return pitch + (URM and M.GV == 2 and 3 or M.GV) + BgmData[BgmPlaying].toneFix
+    return pitch + (URM and M.GV == 2 and 3 or M.GV) + BgmMeta[BgmState.playing].toneFix
 end
 
 function RevMusicMode()
@@ -860,43 +840,43 @@ end
 function PlayBGM(name, force)
     if GAME.teramusic and not force then return end
 
-    SongNamePlaying = name
-    local last = BgmPlaying
+    BgmState.playingName = name
+    local last = BgmState.playing
 
     if GAME.playing and RevMusicMode() then name = name .. 'r' end
     if name == 'f0r' then
-        BgmPlaying = 'f0'
+        BgmState.playing = 'f0'
     elseif name == 'f1r' then -- Note: 'f1ex' is only a track name, not musicID
-        BgmPlaying = 'f1'
+        BgmState.playing = 'f1'
     elseif name == 'b6r' then -- Note: 'b6ex' is only a track name, not musicID
         name = 'b6'
-        BgmPlaying = 'b6'
+        BgmState.playing = 'b6'
     else
-        BgmPlaying = name
+        BgmState.playing = name
     end
 
-    if not BgmData[BgmPlaying] then return end
+    if not BgmMeta[BgmState.playing] then return end
 
-    BgmNeedStop = false
+    BgmState.needStop = false
 
-    if BgmPlaying == 'f0' then
-        BgmLooping = false
-        BgmNeedSkip = BgmData[BgmPlaying].teleport
+    if BgmState.playing == 'f0' then
+        BgmState.looping = false
+        BgmState.needSkip = BgmMeta[BgmState.playing].teleport
 
         BGM.play(BgmSet.f0)
         RefreshBGM(name)
-    elseif BgmPlaying == 'f1' then
-        BgmLooping = BgmData[BgmPlaying].loop
-        BgmNeedSkip = BgmData[BgmPlaying].teleport
+    elseif BgmState.playing == 'f1' then
+        BgmState.looping = BgmMeta[BgmState.playing].loop
+        BgmState.needSkip = BgmMeta[BgmState.playing].teleport
 
         BGM.play(BgmSet.f1, force and '' or '-sdin')
-        local start = math.random(3, 5) * BgmData.f1.introLen
-        BgmNeedSkip[1] = start + BgmData.f1.introLen
+        local start = math.random(3, 5) * BgmMeta.f1.introLen
+        BgmState.needSkip[1] = start + BgmMeta.f1.introLen
         BGM.set('all', 'seek', start)
         RefreshBGM(name)
     elseif name == 'tera' then
-        BgmLooping = BgmData[BgmPlaying].loop
-        BgmNeedSkip = BgmData[BgmPlaying].teleport
+        BgmState.looping = BgmMeta[BgmState.playing].loop
+        BgmState.needSkip = BgmMeta[BgmState.playing].teleport
 
         BGM.play('tera', '-sdin')
         local startFrom
@@ -905,13 +885,13 @@ function PlayBGM(name, force)
             startFrom = tonumber(last:match("%d+"))
             if startFrom then startFrom = startFrom - 1 end
         end
-        local start = (GAME.playing and GAME.floor or startFrom or math.random(0, 9)) * BgmData.tera.introLen
-        BgmNeedSkip[1] = start + BgmData.tera.introLen
+        local start = (GAME.playing and GAME.floor or startFrom or math.random(0, 9)) * BgmMeta.tera.introLen
+        BgmState.needSkip[1] = start + BgmMeta.tera.introLen
         BGM.set('all', 'seek', start)
         RefreshBGM()
     elseif BGM.play(name, force and '' or '-sdin') then
-        BgmLooping = BgmData[BgmPlaying].loop
-        BgmNeedSkip = BgmData[BgmPlaying].teleport
+        BgmState.looping = BgmMeta[BgmState.playing].loop
+        BgmState.needSkip = BgmMeta[BgmState.playing].teleport
         RefreshBGM()
     end
 end
@@ -924,7 +904,7 @@ function RefreshBGM(mode)
     local justBegin = BGM.tell() < 1
     BGM.set('all', 'pitch', pitch, justBegin and 0 or .26)
     BGM.set('all', 'highgain', M.IN == 0 and 1 or M.IN == 1 and .8 or not URM and .626 or .55, justBegin and 0 or .626)
-    if BgmPlaying == 'f0' then
+    if BgmState.playing == 'f0' then
         local revMode = mode == 'f0r' or RevMusicMode()
         BGM.set('all', 'volume', revMode and 0 or 1, 2.6)
         BGM.set('expert', 'volume', M.EX > 0 and 1 or 0, .26)
@@ -934,7 +914,7 @@ function RefreshBGM(mode)
         BGM.set('violin', 'volume', M.DP == 2 and 1 or 0, .26)
         BGM.set('violin2', 'volume', M.DP == 2 and 1 or 0, .26)
         BGM.set('rev', 'volume', revMode and (M.DP > 0 and .5 or .7) or 0, revMode and 1.6 or 2.6)
-    elseif BgmPlaying == 'f1' then
+    elseif BgmState.playing == 'f1' then
         local revMode = mode == 'f1r' or RevMusicMode()
         BGM.set('f1', 'volume', 1)
         BGM.set('f1ex', 'volume', M.EX > 0 and 1 or 0, 0)
@@ -943,87 +923,87 @@ function RefreshBGM(mode)
 end
 
 function Task_MusicEnd(manual)
-    BgmLooping = false
-    local D = BgmData[BgmPlaying]
+    BgmState.looping = false
+    local D = BgmMeta[BgmState.playing]
     local outroStart
-    if BgmPlaying == 'f1' or BgmPlaying == 'f1r' then
+    if BgmState.playing == 'f1' or BgmState.playing == 'f1r' then
         outroStart = D.loop[2] + 4 * 60 / D.bpm
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f2' or BgmPlaying == 'f2r' then
+        BgmState.needStop = outroStart + 8 * 60 / D.bpm
+    elseif BgmState.playing == 'f2' or BgmState.playing == 'f2r' then
         outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f3' or BgmPlaying == 'f3r' then
+        BgmState.needStop = outroStart + 8 * 60 / D.bpm
+    elseif BgmState.playing == 'f3' or BgmState.playing == 'f3r' then
         if BGM.tell() < D.loop[1] then
             outroStart = D.loop[2] + 0
         else
             outroStart = D.loop[2] + 8 * 60 / D.bpm
         end
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f4' or BgmPlaying == 'f4r' then
+        BgmState.needStop = outroStart + 8 * 60 / D.bpm
+    elseif BgmState.playing == 'f4' or BgmState.playing == 'f4r' then
         outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 10 * 60 / D.bpm
-    elseif BgmPlaying == 'f5' or BgmPlaying == 'f5r' then
+        BgmState.needStop = outroStart + 10 * 60 / D.bpm
+    elseif BgmState.playing == 'f5' or BgmState.playing == 'f5r' then
         outroStart = D.loop[2] + 32 * 60 / D.bpm
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f6' or BgmPlaying == 'f6r' then
+        BgmState.needStop = outroStart + 8 * 60 / D.bpm
+    elseif BgmState.playing == 'f6' or BgmState.playing == 'f6r' then
         outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f7' or BgmPlaying == 'f7r' then
+        BgmState.needStop = outroStart + 8 * 60 / D.bpm
+    elseif BgmState.playing == 'f7' or BgmState.playing == 'f7r' then
         outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f8' or BgmPlaying == 'f8r' then
+        BgmState.needStop = outroStart + 8 * 60 / D.bpm
+    elseif BgmState.playing == 'f8' or BgmState.playing == 'f8r' then
         outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f9' or BgmPlaying == 'f9r' then
+        BgmState.needStop = outroStart + 8 * 60 / D.bpm
+    elseif BgmState.playing == 'f9' or BgmState.playing == 'f9r' then
         outroStart = D.loop[2]
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'f10' or BgmPlaying == 'f10r' then
-        local t = BgmPlaying == 'f10' and 4.2 or 6.2
+        BgmState.needStop = outroStart + 8 * 60 / D.bpm
+    elseif BgmState.playing == 'f10' or BgmState.playing == 'f10r' then
+        local t = BgmState.playing == 'f10' and 4.2 or 6.2
         if BGM.tell() < 56 * 4 * 60 / D.bpm then
             BGM.stop(t)
             TASK.yieldT(t)
         elseif BGM.tell() < 118 * 4 * 60 / D.bpm then
             BGM.set('all', 'seek', 118 * 4 * 60 / D.bpm)
-            BgmNeedStop = BGM.tell() + 10 * 60 / D.bpm
+            BgmState.needStop = BGM.tell() + 10 * 60 / D.bpm
         elseif BGM.tell() < 154.5 * 4 * 60 / D.bpm then
             BGM.stop(t)
             TASK.yieldT(t)
         else
             outroStart = D.loop[2]
-            BgmNeedStop = outroStart + 8 * 60 / D.bpm
+            BgmState.needStop = outroStart + 8 * 60 / D.bpm
         end
-    elseif BgmPlaying == 'tera' then
+    elseif BgmState.playing == 'tera' then
         outroStart = D.loop[2] + math.random(0, 3) * 8 * 60 / D.bpm
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
-    elseif BgmPlaying == 'terar' then
+        BgmState.needStop = outroStart + 8 * 60 / D.bpm
+    elseif BgmState.playing == 'terar' then
         outroStart = D.loop[2] + 96 * 60 / D.bpm
-        BgmNeedStop = outroStart + 30 * 60 / D.bpm
-    elseif BgmPlaying == 'fomg' then
+        BgmState.needStop = outroStart + 30 * 60 / D.bpm
+    elseif BgmState.playing == 'fomg' then
         if BGM.tell() < D.loop[1] then
             outroStart = D.loop[2] + 32 * 60 / D.bpm
-            BgmNeedStop = outroStart + 16 * 60 / D.bpm
+            BgmState.needStop = outroStart + 16 * 60 / D.bpm
         else
             outroStart = D.loop[2]
-            BgmNeedStop = outroStart + 26 * 60 / D.bpm
+            BgmState.needStop = outroStart + 26 * 60 / D.bpm
         end
-    elseif BgmPlaying == 'fomgr' then
+    elseif BgmState.playing == 'fomgr' then
         if BGM.tell() < D.loop[1] then
             outroStart = D.loop[2] + 32 * 60 / D.bpm
-            BgmNeedStop = outroStart + 16 * 60 / D.bpm
+            BgmState.needStop = outroStart + 16 * 60 / D.bpm
         else
             outroStart = D.loop[2]
-            BgmNeedStop = outroStart + 26 * 60 / D.bpm
+            BgmState.needStop = outroStart + 26 * 60 / D.bpm
         end
-    elseif BgmPlaying == 'b6' then
+    elseif BgmState.playing == 'b6' then
         outroStart = D.loop[2] + 32 * 60 / D.bpm
-        BgmNeedStop = outroStart + 8 * 60 / D.bpm
+        BgmState.needStop = outroStart + 8 * 60 / D.bpm
     else
-        BgmNeedStop = BGM.tell() + 4 * 60 / D.bpm
+        BgmState.needStop = BGM.tell() + 4 * 60 / D.bpm
     end
     if outroStart then BGM.set('all', 'seek', outroStart) end
-    BgmLooping, BgmNeedSkip = false, false
-    if BgmNeedStop then
-        repeat TASK.yieldT(.0626) until not BgmNeedStop
+    BgmState.looping, BgmState.needSkip = false, false
+    if BgmState.needStop then
+        repeat TASK.yieldT(.0626) until not BgmState.needStop
     else
         repeat TASK.yieldT(.0626) until not BGM.isPlaying()
     end
@@ -1039,7 +1019,7 @@ require 'module/initialize'
 
 local pressValue = 0
 local function starCursor(x, y)
-    if CursorHide or GAME.zenithTraveler then return end
+    if GAME.cursorHide or GAME.zenithTraveler then return end
     gc_translate(x, y)
     gc_scale(1.42)
     gc_rotate(MATH.lerp(-.626, -1.2, pressValue))
@@ -1051,14 +1031,14 @@ local function starCursor(x, y)
     gc_setShader(SHADER.coloring)
     gc_setColor(1, .626, .5)
     gc_draw(TEXTURE.star0, -150, 0)
-    if CursorProgress <= .384626 then
-        local t = MATH.interpolate(0, 1, .384626, 0, CursorProgress)
+    if GAME.cursorProg <= .384626 then
+        local t = MATH.interpolate(0, 1, .384626, 0, GAME.cursorProg)
         gc_setColor(.9, .9, .9, t)
         gc_draw(TEXTURE.star0, -150, 0)
         gc_setShader()
     else
         gc_setShader()
-        gc_setColor(1, 1, 1, MATH.iLerp(.384626, 1, CursorProgress))
+        gc_setColor(1, 1, 1, MATH.iLerp(.384626, 1, GAME.cursorProg))
         gc_draw(TEXTURE.star1, -150, 0)
     end
 end
@@ -1078,7 +1058,7 @@ function ReloadTexts()
         local s = h < sep35 and 30 or h < sep57 and 50 or 70
         if f ~= FONT._cache['led'][s] then text:setFont(FONT.get(s)) end
     end
-    for _, text in next, CardHintText do text:setFont(FONT.get(50)) end
+    for _, text in next, GAME.cardHintText do text:setFont(FONT.get(50)) end
     for _, quest in next, GAME.quests do quest.name:setFont(FONT.get(70)) end
     for _, W in next, SCN.scenes[SCN.cur].widgetList do W:reset() end
     for _, text in next, SRSplitText1 do text:setFont(FONT.get(50)) end
@@ -1200,14 +1180,14 @@ function RefreshDaily()
     if VALENTINE ~= isV then
         VALENTINE = isV
         ModData.desc.DP, VALENTINE_TEXT = VALENTINE_TEXT, ModData.desc.DP
-        ValentineTextColor, BaseTextColor = BaseTextColor, ValentineTextColor
-        ValentineShadeColor, BaseShadeColor = BaseShadeColor, ValentineShadeColor
+        Palette.ValentineText, Palette.BaseText = Palette.BaseText, Palette.ValentineText
+        Palette.ValentineShade, Palette.BaseShade = Palette.BaseShade, Palette.ValentineShade
     end
     local isX = os.date('!%m%d') == '1224' or os.date('!%m%d') == '1225'
     if XMAS ~= isX then
         XMAS = isX
-        XMasTextColor, BaseTextColor = BaseTextColor, XMasTextColor
-        XMasShadeColor, BaseShadeColor = BaseShadeColor, XMasShadeColor
+        Palette.XMasText, Palette.BaseText = Palette.BaseText, Palette.XMasText
+        Palette.XMasShade, Palette.BaseShade = Palette.BaseShade, Palette.XMasShade
     end
     local isZ = os.date('!%d') == '26'
     if ZDAY ~= isZ then
@@ -1307,14 +1287,14 @@ function Daemon_Slow()
     local length
     while true do
         -- Music syncing
-        if BgmPlaying == 'f0' and BGM.isPlaying() then
+        if BgmState.playing == 'f0' and BGM.isPlaying() then
             length = length or lib[f0List[1]].source:getDuration()
             local t0 = lib[f0List[1]].source:tell() % length
             for i = #f0List, 2, -1 do
                 local obj = lib[f0List[i]]
                 local T = t0
                 if f0List[i] == 'piano2' then T = T * 2 % length end
-                if f0List[i] == 'violin2' then T = (T - 8 * 60 / BgmData.f0.bpm) % length end
+                if f0List[i] == 'violin2' then T = (T - 8 * 60 / BgmMeta.f0.bpm) % length end
                 if math.abs(obj.source:tell() - T) > 0.026 then
                     -- print('Desync', set[i])
                     obj.source:seek(math.max(T, 0))
@@ -1412,25 +1392,27 @@ function Daemon_Fast()
     local skipNextShuffle = true -- Flip-flop for MS shaking each 2 beats
     local MSactive = false       -- for skipping meaningless Ypos resets to improve performance
     local t = 0
+    local BgmState = BgmState
     while true do
-        if BgmPlaying then
+        if BgmState.playing then
             local T = BGM.tell()
-            local barCnt = T / (4 * 2 * 60 / BgmData[BgmPlaying].bpm)
+            local barCnt = T / (4 * 2 * 60 / BgmMeta[BgmState.playing].bpm)
 
             -- Throb transparency
-            ThrobAlpha.card = max(.626 - 2 * barCnt % 1, .626 - 2 * (barCnt - .375) % 1)
-            ThrobAlpha.bg1 = .626 - 2 * barCnt % 1
-            ThrobAlpha.bg2 = .626 - 2 * (barCnt - 1 / 32) % 1
-            ThrobAlpha.bg3 = .8 - 4 * barCnt % 1
-            ThrobAlpha.bg4 = .8 - 4 * (barCnt - 1 / 32) % 1
+            local throb = GAME.throb
+            throb.card = max(.626 - 2 * barCnt % 1, .626 - 2 * (barCnt - .375) % 1)
+            throb.bg1 = .626 - 2 * barCnt % 1
+            throb.bg2 = .626 - 2 * (barCnt - 1 / 32) % 1
+            throb.bg3 = .8 - 4 * barCnt % 1
+            throb.bg4 = .8 - 4 * (barCnt - 1 / 32) % 1
 
             -- Giga anim
-            if GigaSpeed.alpha > 0 then
-                GigaSpeed.r, GigaSpeed.g, GigaSpeed.b = hsv(barCnt % 1, .626, 1)
-                GigaSpeed.bgAlpha = 1 - 4 * barCnt % 1
+            if GigaAnim.alpha > 0 then
+                GigaAnim.r, GigaAnim.g, GigaAnim.b = hsv(barCnt % 1, .626, 1)
+                GigaAnim.bgAlpha = 1 - 4 * barCnt % 1
             end
 
-            -- Update MusicBeat
+            -- Update beat info
             if T < beatS then
                 -- warp back
                 beatS, beatE = 0, 0
@@ -1439,7 +1421,7 @@ function Daemon_Fast()
             while T > beatE do
                 -- next beat
                 beatS = beatE
-                local dat = BgmData[BgmPlaying].bpmData
+                local dat = BgmMeta[BgmState.playing].bpmData
                 local bpm = dat[1]
                 for i = #dat - 1, 2, -2 do
                     if beatS + .1 >= dat[i] then
@@ -1451,7 +1433,7 @@ function Daemon_Fast()
                 newBeat = true
                 -- if TASK.lock('test', .1) then SFX.play('clearline', .62) end
             end
-            MusicBeat = MATH.icLerp(beatS, beatE, T)
+            BgmState.beat = MATH.icLerp(beatS, beatE, T)
 
             -- MS shaking (each 2 beats)
             if newBeat then
@@ -1476,31 +1458,31 @@ function Daemon_Fast()
             end
 
             -- BGM time control
-            if BgmLooping then
-                if BGM.tell() > BgmLooping[2] then
-                    local pass = BGM.tell() - BgmLooping[2]
+            if BgmState.looping then
+                if BGM.tell() > BgmState.looping[2] then
+                    local pass = BGM.tell() - BgmState.looping[2]
                     if pass < .26 then
-                        BGM.set('all', 'seek', BgmLooping[1] + pass)
+                        BGM.set('all', 'seek', BgmState.looping[1] + pass)
                     else
-                        BGM.set('all', 'seek', BgmLooping[1])
+                        BGM.set('all', 'seek', BgmState.looping[1])
                     end
                 end
             end
-            if BgmNeedSkip then
-                if BGM.tell() > BgmNeedSkip[1] then
-                    local pass = BGM.tell() - BgmNeedSkip[1]
+            if BgmState.needSkip then
+                if BGM.tell() > BgmState.needSkip[1] then
+                    local pass = BGM.tell() - BgmState.needSkip[1]
                     if pass < .26 then
-                        BGM.set('all', 'seek', BgmNeedSkip[2] + pass)
+                        BGM.set('all', 'seek', BgmState.needSkip[2] + pass)
                     else
-                        BGM.set('all', 'seek', BgmNeedSkip[2])
+                        BGM.set('all', 'seek', BgmState.needSkip[2])
                     end
-                    BgmNeedSkip = false
+                    BgmState.needSkip = false
                 end
             end
-            if BgmNeedStop then
-                if BGM.tell() > BgmNeedStop - .0626 then
+            if BgmState.needStop then
+                if BGM.tell() > BgmState.needStop - .0626 then
                     BGM.stop(.0626)
-                    BgmNeedStop = false
+                    BgmState.needStop = false
                 end
             end
         end
@@ -1528,9 +1510,10 @@ function Daemon_Fast()
                 g = MATH.lLerp(BoardColorData.g, _t) * GAME.boardDim[2]
                 b = MATH.lLerp(BoardColorData.b, _t) * GAME.boardDim[3]
             end
-            BoardColor[1] = MATH.linearApproach(BoardColor[1], r, dt * 2)
-            BoardColor[2] = MATH.linearApproach(BoardColor[2], g, dt * 2)
-            BoardColor[3] = MATH.linearApproach(BoardColor[3], b, dt * 2)
+            local boardClr = Palette.board
+            boardClr[1] = MATH.linearApproach(boardClr[1], r, dt * 2)
+            boardClr[2] = MATH.linearApproach(boardClr[2], g, dt * 2)
+            boardClr[3] = MATH.linearApproach(boardClr[3], b, dt * 2)
         end
 
         -- Mouse holding animation
@@ -1651,8 +1634,8 @@ InitProfile()
 LoadSave()
 Initialize()
 
-TABLE.update(TextColor, BaseTextColor)
-TABLE.update(ShadeColor, BaseShadeColor)
+TABLE.update(Palette.text, Palette.BaseText)
+TABLE.update(Palette.shade, Palette.BaseShade)
 RefreshDaily()
 TEXTS.version:set(SYSTEM .. (CONF.oldHitbox and " T" or " V") .. (require 'version'.verStr))
 GAME.refreshCurrentCombo()

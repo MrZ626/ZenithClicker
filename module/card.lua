@@ -159,7 +159,7 @@ function Card:setActive(auto, key)
             TWEEN.new(function(t)
                 GAME.exTimer = lerp(s, e, t)
             end):setUnique('expertOn'):setEase('OutQuad'):setDuration(M.EX > 0 and .26 or .1):run()
-            TABLE.clear(HoldingButtons)
+            TABLE.clear(GAME.buttonHeld)
         elseif self.id == 'IN' then
             for _, C in ipairs(CD) do C:flip() end
             noSpin = M.IN == 1
@@ -320,7 +320,7 @@ function Card:revJump()
                     end
                 end
                 local color = ModData.color[self.id]
-                table.insert(ImpactGlow, {
+                table.insert(GAME.impactGlow, {
                     r = (color[1] - .26) * .8,
                     g = (color[2] - .26) * .8,
                     b = (color[3] - .26) * .8,
@@ -686,7 +686,7 @@ function Card:draw()
 
     -- Rev Throb
     if not playing and not self.upright and GAME.revDeckSkin and faceUp then
-        gc_setColor(1, 1, 1, ThrobAlpha.card)
+        gc_setColor(1, 1, 1, GAME.throb.card)
         gc_setShader(SHADER.throb)
         gc_draw(img, -img:getWidth() / 2, -img:getHeight() / 2)
         gc_setShader()
