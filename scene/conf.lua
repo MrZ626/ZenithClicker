@@ -339,7 +339,9 @@ function scene.keyDown(key, isRep)
             if skinCtrl ~= nil then holdCtrl = skinCtrl else holdCtrl = KBisDown('lctrl', 'rctrl') end
             local skinKey = holdCtrl and 'skin_back' or 'skin_front'
             if key == CONF.keybind[19] then
-                if CONF[skinKey] ~= skinPage[skinKey] then
+                if not skinUnlocked[skinPage[skinKey]] then
+                    SFX.play('no')
+                elseif CONF[skinKey] ~= skinPage[skinKey] then
                     CONF[skinKey] = skinPage[skinKey]
                     refreshWidgets()
                     SFX.play('garbagesmash', 1, 0, 1.26)
@@ -610,8 +612,8 @@ function scene.draw()
         gc_mStr(skinDesc[skinPage.skin_front], w / 2, 270)
         gc_mStr(skinDesc[skinPage.skin_back], w / 2, h - 160)
         gc_setColor(clr.L)
-        if skinPage.skin_front == CONF.skin_front then gc_mStr(skinUnlocked[skinPage.skin_front] and "EQUIPPED" or "LOCKED", w / 2, 340) end
-        if skinPage.skin_back == CONF.skin_back then gc_mStr(skinUnlocked[skinPage.skin_back] and "EQUIPPED" or "LOCKED", w / 2, h - 90) end
+        if not skinUnlocked[skinPage.skin_front] or skinPage.skin_front == CONF.skin_front then gc_mStr(skinUnlocked[skinPage.skin_front] and "EQUIPPED" or "LOCKED", w / 2, 340) end
+        if not skinUnlocked[skinPage.skin_back] or skinPage.skin_back == CONF.skin_back then gc_mStr(skinUnlocked[skinPage.skin_back] and "EQUIPPED" or "LOCKED", w / 2, h - 90) end
     end
 
     -- Top bar & title
