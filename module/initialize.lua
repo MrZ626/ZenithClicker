@@ -211,7 +211,11 @@ local upgradeFunc = {
     [200] = function()
         STAT.srActive = nil
         return 201
-    end
+    end,
+    [201] = function()
+        STAT.badge.ultraheart, STAT.badge.cardiac_arrest = STAT.badge.cardiac_arrest, nil
+        return 202
+    end,
 }
 
 function Initialize(save)

@@ -50,6 +50,11 @@ local d = {
         desc = "Reached 12600m",
     },
     {
+        id = 'universal_gravitation',
+        name = "Universal Gravitation",
+        desc = "Reached F10 but finished at negative altitude",
+    },
+    {
         id = 'true_ascetic',
         name = "True Ascetic",
         desc = "Finished a speedrun with rNH & Steadfast",
@@ -90,14 +95,9 @@ local d = {
         desc = "Finished a speedrun (or F10 w/o keyboard) with uAS & all other piece effects",
     },
     {
-        id = 'cardiac_arrest',
-        name = "Cardiac Arrest",
-        desc = "Die with max HP less than 5",
-    },
-    {
-        id = 'universal_gravitation',
-        name = "Universal Gravitation",
-        desc = "Reached F10 but finished at negative altitude",
+        id = 'ultraheart',
+        name = "Ultra Heart",
+        desc = "Ended a run with max HP less than 5",
     },
     {
         id = 'rDP_meta',

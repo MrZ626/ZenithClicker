@@ -3020,7 +3020,7 @@ function GAME.finish(reason)
         end
         SubmitAchv('zenith_explorer_plus', GAME.roundHeight)
         SubmitAchv('supercharged_plus', GAME.achv_maxChain)
-        if GAME.fullHealth <= 5 then IssueSecret('cardiac_arrest') end
+        if GAME.fullHealth <= 5 then IssueSecret('ultraheart') end
         if #GAME.secTime >= 10 and GAME.height < 0 then IssueSecret('universal_gravitation') end
         SaveStat()
         ReleaseAchvBuffer()
