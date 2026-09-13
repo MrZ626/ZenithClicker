@@ -475,6 +475,14 @@ NegEvents = {
     { h = -1800 },
     {
         event = function()
+            GAME.nightcore = false
+            GAME.slowmo = false
+            GAME.steadfast = false
+            GAME.closeCard = false
+            GAME.fastLeak = false
+            GAME.invisCard = false
+            GAME.invisUI = false
+            GAME.refreshPieceFstr()
             GAME.heightBonus = 0
             GAME.height = -1800
             FloatOnCard = nil
