@@ -91,6 +91,13 @@ function scene.draw()
     gc_rectangle('fill', 0, 3, 3, h + 3)
 
     gc_replaceTransform(SCR.xOy_m)
+    if SRActive then
+        GC.setBlendMode('add')
+        gc_setColor(clr.L)
+        gc_setAlpha(.16 - .1 * MusicBeat)
+        GC.mDrawQ(TEXTURE.achievement.icons, TEXTURE.achievement.iconQuad.zenith_speedrun, 0, 0, 0, 2.6)
+        GC.setBlendMode('alpha')
+    end
     gc_setLineWidth(2)
     FONT.set(30)
     local textH = SRSplitText1[1]:getHeight()
@@ -148,7 +155,12 @@ function scene.draw()
     gc_replaceTransform(SCR.xOy_dl)
     gc_setColor(clr.L)
     FONT.set(30)
-    gc_print("BACKUP YOUR SAVE AND TRY WITH NEW ACCOUNT!", 15, -45, 0, .85, 1)
+    gc_print(
+        SRActive and
+        "USES IN-GAME TIME, QUITTING GAME ENDS THE RUN!" or
+        "BACKUP YOUR SAVE AND TRY WITH NEW ACCOUNT!",
+        15, -45, 0, .85, 1
+    )
 end
 
 scene.widgetList = {
