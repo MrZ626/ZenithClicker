@@ -662,7 +662,8 @@ function DrawBG(brightness, showRuler)
         end
     end
     local alpha_dH = icLerp(62, 260, abs(GAME.bgH - GAME.height)) ^ .5
-    local alpha = GAME.bgH > 0 and max(imgBG and 0 or 1, alpha_dH) or icLerp(-0, -26, GAME.bgH) * .62
+    local alpha = max(imgBG and 0 or 1, alpha_dH)
+    if GAME.bgH < 0 then alpha = alpha * clampInterpolate(-0, 1, -26, .62, GAME.bgH) end
     if alpha > 0 then
         local top = Floors[bgFloor].top
         local t = icLerp(1, 10, bgFloor + clampInterpolate(top - 50, 0, top, 1, abs(GAME.bgH)))
@@ -1200,6 +1201,14 @@ function scene.overDraw()
         gc_ucs_back()
     end
 
+    -- Piece effect
+    do
+        gc_replaceTransform(SCR.xOy_m)
+        gc_setColor(1, 1, 1, .26)
+        local w, h = GAME.pieceFstrObj:getDimensions()
+        GC.draw(GAME.pieceFstrObj, 0, -160 + DeckPress, 0, min(4.2, 740 / w), nil, w / 2, h * .57)
+    end
+
     -- Rev trigger for touchscreen
     if usingTouch and not GAME.playing and RevUnlocked then
         gc_replaceTransform(SCR.xOy_dl)
@@ -1579,14 +1588,6 @@ function scene.overDraw()
         end
     end
 
-    -- Piece effect
-    do
-        gc_replaceTransform(SCR.xOy_m)
-        GC.setColor(1, 1, 1, .26 * GAME.uiHide)
-        local w, h = GAME.pieceFstrObj:getDimensions()
-        GC.draw(GAME.pieceFstrObj, 0, -160, 0, min(4.2, 740 / w), nil, w / 2, h * .57)
-    end
-
     -- Windup animation
     gc_replaceTransform(SCR.xOy_m)
     gc_translate(0, -170)
@@ -1672,16 +1673,16 @@ function scene.overDraw()
     -- Steadfast cover
     if GAME.steadfast then
         gc_replaceTransform(SCR.origin)
-        gc_setColor(1, .42, 0, (GAME.playing and .626 or 1) * .42)
-        gc_draw(TEXTURE.transition, 0, 0, -1.5708, .26 / 128 * -SCR.h, SCR.w)
-        gc_draw(TEXTURE.transition, 0, SCR.h, -1.5708, .26 / 128 * SCR.h, SCR.w)
+        gc_setColor(1, 0, 1, (GAME.playing and .626 or 1) * .42)
+        gc_draw(TEXTURE.transition, 0, 0, -1.5708, .35 / 128 * -SCR.h, SCR.w)
+        gc_draw(TEXTURE.transition, 0, SCR.h, -1.5708, .35 / 128 * SCR.h, SCR.w)
     end
 
     -- Fastleak cover
     if GAME.fastLeak then
         gc_replaceTransform(SCR.origin)
-        gc_setColor(0, 1, .42, (GAME.playing and .626 or 1) * ((M.EX > 0 or M.DP == 2) and .62 or .42))
-        gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * SCR.w, SCR.h)
+        gc_setColor(.8, 0, 0, (GAME.playing and .626 or 1) * ((M.EX > 0 or M.DP == 2) and .62 or .42))
+        gc_draw(TEXTURE.transition, 0, 0, 0, .62 / 128 * SCR.w, SCR.h)
         gc_draw(TEXTURE.transition, SCR.w, 0, 0, -.42 / 128 * SCR.w, SCR.h)
     end
 
@@ -1741,7 +1742,120 @@ local function button_reset()
     end
     SFX.play('menuclick')
 end
-
+local function activeEffect(id, n)
+    Cards[id]:setActive(true)
+    if n == 8 then
+        URM = not URM
+        SFX.play(URM and 'exchange' or 'undo')
+        ultraStateChange()
+        MSG({
+            cat = (URM and 'ultra' or 'ultra2'),
+            str = "ULTRA REVERSED MOD: " .. (URM and "ON" or "OFF"),
+            time = 1.2
+        })
+    else
+        if n == 0 then
+            for i = 1, #PieceData do GAME[PieceData[i].id] = false end
+            URM = false
+            ultraStateChange()
+            SFX.play(PieceData[0].sfx)
+        else
+            local effID = PieceData[n].id
+            GAME[effID] = not GAME[effID]
+            GAME.refreshPieceFstr()
+            SFX.play(PieceData[n].sfx, 1, 0, Tone(6))
+            if not GAME[effID] then return end
+        end
+        MSG({
+            cat = 'dark',
+            str = PieceData[n].popup,
+            time = 1.2
+        })
+    end
+end
+local function checkPieceEffect()
+    if M.EX == 2 then
+        if GAME.completion.EX == 2 then
+            activeEffect('EX', 8)
+        else
+            Cards.EX:shake()
+            SFX.play('no')
+        end
+        return true
+    end
+    if M.NH == 2 then
+        if GAME.completion.NH == 2 then
+            activeEffect('NH', 3)
+        else
+            Cards.NH:shake()
+            SFX.play('no')
+        end
+        return true
+    end
+    if M.MS == 2 then
+        if GAME.completion.MS == 2 then
+            activeEffect('MS', 2)
+        else
+            Cards.MS:shake()
+            SFX.play('no')
+        end
+        return true
+    end
+    if M.GV == 2 then
+        if GAME.completion.GV == 2 then
+            activeEffect('GV', 1)
+        else
+            Cards.GV:shake()
+            SFX.play('no')
+        end
+        return true
+    end
+    if M.VL == 2 then
+        if GAME.completion.VL == 2 then
+            activeEffect('VL', 4)
+        else
+            Cards.VL:shake()
+            SFX.play('no')
+        end
+        return true
+    end
+    if M.DH == 2 then
+        if GAME.completion.DH == 2 then
+            activeEffect('DH', 7)
+        else
+            Cards.DH:shake()
+            SFX.play('no')
+        end
+        return true
+    end
+    if M.IN == 2 then
+        if GAME.completion.IN == 2 then
+            activeEffect('IN', 6)
+        else
+            Cards.IN:shake()
+            SFX.play('no')
+        end
+        return true
+    end
+    if M.AS == 2 then
+        if GAME.completion.AS == 2 then
+            activeEffect('AS', 0)
+        else
+            Cards.AS:shake()
+            SFX.play('no')
+        end
+        return true
+    end
+    if M.DP == 2 then
+        if GAME.completion.DP == 2 then
+            activeEffect('DP', 5)
+        else
+            Cards.DP:shake()
+            SFX.play('no')
+        end
+        return true
+    end
+end
 scene.widgetList = {
     WIDGET.new {
         name = 'back', type = 'button',
@@ -1905,37 +2019,12 @@ scene.widgetList = {
         floatFontSize = 30,
         floatText = "", -- Dynamic text
         onPress = function(k)
-            if STAT.maxFloor < 10 then return SFX.play('no') end
             if k == 2 or KBisDown('lctrl', 'rctrl') or next(revHold) then
-                if RevUnlocked then
-                    URM = not URM
-                    SFX.play(URM and 'exchange' or 'undo')
-                    ultraStateChange()
-                else
-                    SFX.play('no')
+                if checkPieceEffect() then
+                    GAME.refreshLayout()
+                    RefreshBGM()
+                    GAME.refreshRPC()
                 end
-            else
-                GAME.pieceEffectID = (GAME.pieceEffectID + (KBisDown('lshift', 'rshift') and -1 or 1)) % (#PieceData + 1)
-                if GAME.pieceEffectID > 0 then
-                    local piece = ('zsjltoi'):sub(GAME.pieceEffectID, GAME.pieceEffectID)
-                    SFX.play(piece, 1, 0, Tone(6))
-                else
-                    SFX.play('allclear')
-                end
-
-                for i = 1, #PieceData do
-                    GAME[PieceData[i].id] = GAME.pieceEffectID == i
-                end
-
-                GAME.refreshLayout()
-                RefreshBGM()
-                GAME.refreshRPC()
-
-                MSG({
-                    cat = 'dark',
-                    str = PieceData[GAME.pieceEffectID].popup,
-                    time = 1.2
-                })
             end
         end,
         visibleFunc = function() return not GAME.playing and TABLE.countAll(GAME.completion, 0) < 9 end,

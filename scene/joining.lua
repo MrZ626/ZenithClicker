@@ -39,7 +39,6 @@ function scene.update(dt)
                 InitProfile()
                 LoadSave()
                 URM = false
-                GAME.pieceEffectID = 0
                 GAME.floor = 0
                 STAT.srActive = SCN.args[1] == 'reset'
                 Initialize(true)

@@ -187,7 +187,6 @@ local GAME = {
     inputStatNorm = { 0, 0, 0, 0 }, -- normalized inputStat
 
     zenithTraveler = false,
-    pieceEffectID = 0,
     nightcore = false,
     slowmo = false,
     steadfast = false,
@@ -1206,14 +1205,15 @@ function GAME.upFloor()
             if GAME.time <= 76.2 then IssueSecret('subluminal') end
             if GAME.time <= 42 then IssueSecret('superluminal') end
             if GAME.time - GAME.gigaspeedEntered >= 300 then IssueAchv('worn_out') end
-            if GAME.closeCard and GAME.comboStr == 'rEX' then IssueSecret('true_expert') end
             if GAME.steadfast and GAME.comboStr == 'rNH' then IssueSecret('true_ascetic') end
             if GAME.slowmo and GAME.comboStr == 'rMS' then IssueSecret('true_messy') end
             if GAME.nightcore and GAME.comboStr == 'rGV' then IssueSecret('true_master') end
             if GAME.fastLeak and GAME.comboStr == 'rVL' then IssueSecret('true_strength') end
+            if GAME.closeCard and GAME.comboStr == 'rDH' then IssueSecret('true_devil') end
             if GAME.invisCard and GAME.comboStr == 'rIN' then IssueSecret('true_invis') end
             if GAME.invisUI and GAME.comboStr == 'rDP' then IssueSecret('true_couple') end
         end
+        if (GAME.gigaspeed or GAME.inputStat[3] < 26) and URM and GAME.steadfast and GAME.slowmo and GAME.nightcore and GAME.fastLeak and GAME.closeCard and GAME.invisCard and GAME.invisUI and GAME.comboStr == 'rAS' then IssueSecret('true_magician') end
 
         if GAME.comboStr == '' then SubmitAchv('zenith_speedrun', roundTime) end
         SubmitAchv('zenith_speedrun_plus', roundTime)
@@ -2321,7 +2321,6 @@ function GAME.start()
     GAME.attackMul = GAME.isUltraRun and .62 or 1
 
     -- Statistics
-    GAME.refreshPieceFstr()
     GAME.comboStr = table.concat(TABLE.sort(GAME.getHand(true)))
     GAME.prevPB = BEST.highScore[(GAME.isUltraRun and 'u' or '') .. GAME.comboStr]
     if GAME.prevPB == 0 then GAME.prevPB = -2600 end
@@ -2978,16 +2977,12 @@ function GAME.finish(reason)
     end
     GAME.setGigaspeedAnim(false) -- This process resets some variables that are used in the previous process, so this has to be executed later
 
-    -- Reset piece effects after basement run
-    if URM and GAME.height < -10 then
-        GAME.pieceEffectID = 0
-        GAME.nightcore = false
-        GAME.slowmo = false
-        GAME.steadfast = false
-        GAME.fastLeak = false
-        GAME.invisUI = false
-        GAME.invisCard = false
-        GAME.closeCard = false
+    -- B10 hints
+    if URM and GAME.comboStr == 'rEX' then
+        if (GAME.floor == 8 or GAME.floor == 9) and BEST.highScore.urEX < Floors[9].top then MSG('ultra', "You are going in the wrong direction.", 6.26) end
+        if MATH.between(GAME.negFloor, 3, 4) then MSG('ultra', "You are not skilled enough.", 6.26) end
+        if MATH.between(GAME.negFloor, 5, 6) then MSG('ultra', "You are doomed to fail here.", 6.26) end
+        if MATH.between(GAME.negFloor, 7, 8) then MSG('ultra', "You are facing an insurmountable challenge.", 6.26) end
     end
 
     -- Refresh UI

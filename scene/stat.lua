@@ -3,7 +3,7 @@ local scene = {}
 
 local maskAlpha, cardShow
 local card = GC.newCanvas(1200, 720)
-local totalBadges = 22
+local totalBadges = #BadgeData
 
 local floor = math.floor
 
@@ -146,7 +146,7 @@ function RefreshProfile()
         local id = badges[i]
         if TEXTURE.stat.badges[id] then
             badgeCount = badgeCount + 1
-            GC.mDraw(TEXTURE.stat.badges[id], 6 + 52 * badgeCount, 242, 0, 50 / math.max(TEXTURE.stat.badges[id]:getDimensions()))
+            GC.mDraw(TEXTURE.stat.badges[id], 6 + 50 * badgeCount, 242, 0, 50 / math.max(TEXTURE.stat.badges[id]:getDimensions()))
             local bd = BadgeData[id] or BadgeData[0]
             scene.widgetList[badgeCount].floatText = bd.name .. "\n" .. bd.desc
             scene.widgetList[badgeCount]:reset()
@@ -434,7 +434,7 @@ for i = 1, totalBadges do
     table.insert(scene.widgetList, i, WIDGET.new {
         name = 'link', type = 'hint',
         text = "",
-        pos = { .5, .5 }, x = -363 + 35 * (i - 1), y = -80, w = 35,
+        pos = { .5, .5 }, x = -363 + 33.7 * (i - 1), y = -80, w = 33,
         color = COLOR.X,
         labelPos = 'topRight',
         floatFontSize = 30,

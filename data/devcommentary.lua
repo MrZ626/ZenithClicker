@@ -69,14 +69,13 @@ return {
 
     ['rEX'] = STRING.trimIndent [[
         Until I write this, there are still only 2 players mastered rEX in QP2, way too hard for everyone to even have a try.
-        I tried to shrink cards spacing furthermore, but that turns out to be too hard, so I abandoned this idea. But you could try this challenge with...
+        I tried to shrink cards spacing furthermore, but that turns out to be too hard, so I abandoned this idea.
         Anyways, Zenith Clicker's aim is to let everyone enjoy all mods! Just practice a few weeks to beat rEX here! Or use AS to skip the challenge :>
     ]],
     ['rNH'] = STRING.trimIndent [[
         I want to reproduce the feeling of "classic" like what QP2 does, so I tried many combinations of "limited next queue" "no cancel" "no reset button".
         And finally I decided to make it "limited next queue" + "no auto cancel", and "remove +1 atk on perfect pass".
         Though it doesn't look like very "classic", it does need you read the only next quest and plan ahead, just like classical Tetris.
-        Be ascetic in your flesh then your spirit will be steadf...
     ]],
     ['rMS'] = STRING.trimIndent [[
         What about... shuffling cards after each quest? Sounds evil but that's how reversed mods should be like, right?
@@ -87,13 +86,12 @@ return {
         20G Tetris players love pure speed. So let's go faster, just faster, and nothing else changed.
         And being lenient: pause the timer for a while on passing previous quest, and reset the timer on wrong commit & reset cards.
         You said you didn't noticed that? Good, now you know how many details I added :>
-        Btw do you wanna take a more exciting challenge? Go activating rGV + nightco... oops maybe I shouldn't give you hint about this XD
     ]],
     ['rVL'] = STRING.trimIndent [[
         Double clicks? Quadruple clicks! Due to health reasons, Left+Right click is allowed here, it's still very tiring to double double clicks for each card,
         and you could even use keyboard to further reduce the inputs, but that's also harder to coordinate. Which strat is the best? Up to you.
         Oh and don't forget that in QP2 there's only triple garbages but no triple cancelling, so you need to click 4 times to cancel a card too :>
-        Tips: EX or any reversed mod activates "hard mode", reducing your XP gain from selecting (clearing single gives 1 atk in QP2). So what if XP lea...
+        Tips: EX or any reversed mod activates "hard mode", reducing your XP gain from selecting (clearing single gives 1 atk in QP2)
     ]],
     ['rDH'] = STRING.trimIndent [[
         When I came to design this mod, QP2's rDH was still "messy garbage + no cancelling", not the current "messy garbage + dig to attack" one
@@ -104,7 +102,6 @@ return {
         Time to play real invisible! Reversed invisible should be really invisible. Let's hide quests after a few seconds...
         Wait, should we just hide all of them, which could be too hard, or only hiding current one, which could be too easy if you just pre-read one quest?
         Maybe I can take the compromise: current one first, then the latter ones. And don't forget to be lenient: show quests when player make mistake.
-        Btw can you imagine a challenge that both quests and your cards are invisible?
     ]],
     ['rAS'] = STRING.trimIndent [[
         Just like in QP2, rAS makes player stronger but also more fragile. So let's take the +1 attack on B2B x 4+,
@@ -115,7 +112,6 @@ return {
         Why rDP in QP2 is only available for a few da... oh it's permanent now, nvm
         Same as DP, except your attacks will also be sent to the other player, you have to master switching players now.
         Though the "backfire" doesn't give you garbage to send more, your max rank is still limited just like in QP2.
-        Can you FEEL the rhythm of switching between players even you...
     ]],
 
     ['uEX'] = STRING.trimIndent [[

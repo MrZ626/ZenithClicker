@@ -617,6 +617,8 @@ BG.set('black')
 MSG.setSafeY(75)
 MSG.addCategory('dark', CLR.D, CLR.L)
 MSG.addCategory('bright', CLR.L, CLR.D)
+MSG.addCategory('ultra', CLR.l2R, CLR.D)
+MSG.addCategory('ultra2', CLR.d3R, CLR.L)
 MSG.addCategory('speedrun', COLOR.lG, CLR.D)
 for i = 0, 6 do MSG.addCategory(AchvMsgStyle[i].id, AchvMsgStyle[i].bg, CLR.L, TEXTURE.achievement.frame[i]) end
 for i = 1, 6 do MSG.addCategory("wreath_" .. i, AchvMsgStyle[5].bg, CLR.L, GC.load { w = 256, { 'draw', TEXTURE.achievement.frame[5] }, { 'draw', TEXTURE.achievement.wreath[i] } }) end

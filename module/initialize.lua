@@ -210,6 +210,10 @@ local upgradeFunc = {
         end
         return 199
     end,
+    [199] = function()
+        STAT.badge.true_expert = nil
+        return 200
+    end
 }
 
 function Initialize(save)

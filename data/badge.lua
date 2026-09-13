@@ -50,11 +50,6 @@ local d = {
         desc = "Reached 12600m",
     },
     {
-        id = 'true_expert',
-        name = "True Expert",
-        desc = "Finished a speedrun with rEX & Close Card",
-    },
-    {
         id = 'true_ascetic',
         name = "True Ascetic",
         desc = "Finished a speedrun with rNH & Steadfast",
@@ -75,6 +70,11 @@ local d = {
         desc = "Finished a speedrun with rVL & Fast Leak",
     },
     {
+        id = 'true_devil',
+        name = "True Devil",
+        desc = "Finished a speedrun with rDH & Close Card",
+    },
+    {
         id = 'true_invis',
         name = "True Invisible",
         desc = "Finished a speedrun with rIN & Invisible Card",
@@ -83,6 +83,11 @@ local d = {
         id = 'true_couple',
         name = "True Couple",
         desc = "Finished a speedrun with rDP & Invisible UI",
+    },
+    {
+        id = 'true_magician',
+        name = "True Magician",
+        desc = "Finished a speedrun (or F10 w/o keyboard) with uAS & all other piece effects",
     },
     {
         id = 'cardiac_arrest',
