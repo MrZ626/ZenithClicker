@@ -2315,6 +2315,8 @@ function GAME.start()
     SFX.play('menuconfirm', .8)
     SFX.play((M.DP > 0 or VALENTINE and not GAME.anyRev) and 'zenith_start_duo' or 'zenith_start', 1, 0, Tone(0))
 
+    if M.DP > 0 then IssueAchv('intended_glitch') end
+
     -- Setup game state
     GAME.playing = true
     GAME.isUltraRun = GAME.anyUltra
@@ -2490,7 +2492,6 @@ function GAME.start()
     GAME.achv_level19capH = nil
     GAME.achv_totalResetCount = 0
     GAME.achv_altFromSurge = 0
-    if M.DP > 0 then IssueAchv('intended_glitch') end
 end
 
 function GAME.clearResultStat()
