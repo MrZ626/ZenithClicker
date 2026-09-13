@@ -1479,7 +1479,7 @@ function scene.overDraw()
             gc_setAlpha(.42)
             TEXTS.srTimer:set(STRING.time(STAT.srTimer_game) .. "/ " .. STRING.time(STAT.srTimer_life, 2))
             gc_draw(TEXTS.srTimer, 7, -70)
-            if STAT.srActive then
+            if SRActive then
                 gc_setBlendMode('add')
                 gc_mDrawQ(TEXTURE.achievement.icons, TEXTURE.achievement.iconQuad.zenith_speedrun, 26, -90, 0, -.18, .18)
                 gc_setBlendMode('alpha')

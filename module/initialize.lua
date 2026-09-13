@@ -196,12 +196,6 @@ local upgradeFunc = {
         return 197
     end,
     [197] = function()
-        if (SR.star_9 or 1e99) < 60 then SR.star_9 = nil end
-        if (SR.star_18 or 1e99) < 200 then SR.star_18 = nil end
-        if (SR.clicker or 1e99) < 260 then SR.clicker = nil end
-        if (SR.mod_up or 1e99) < 200 then SR.mod_up = nil end
-        if (SR.mod_rev or 1e99) < 260 then SR.mod_rev = nil end
-        if (SR.rank_ss or 1e99) < 260 then SR.rank_ss = nil end
         return 198
     end,
     [198] = function()
@@ -213,6 +207,10 @@ local upgradeFunc = {
     [199] = function()
         STAT.badge.true_expert = nil
         return 200
+    end,
+    [200] = function()
+        STAT.srActive = nil
+        return 201
     end
 }
 

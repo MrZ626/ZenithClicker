@@ -343,6 +343,7 @@ CONF = {
 }
 SR = {}
 LB = {}
+SRActive = false
 
 UTIL.time("Prepare storage", true)
 --------------------------------------------------------------
@@ -528,7 +529,6 @@ function InitProfile()
         srTimer_life = 0,
         srTimer_game = 0,
         srMilestone = {},
-        srActive = true,
         joinDate = os.date("%b %Y"),
         hid = os.date("%d%S%m%M%y%H") .. math.random(26000, 42000) .. math.random(42000, 62000),
         uid = "ANON-" .. os.date("%d_") .. math.random(2600, 6200),
@@ -580,6 +580,8 @@ function LoadSave()
         if not STAT.srTimer_game then
             STAT.srTimer_game, STAT.srTimer_life = STAT.totalTime, MATH.roundUnit(STAT.totalTime * 1.26, .001)
         end
+    else
+        SRActive = true
     end
     if FILE.exist('best.luaon') then TABLE.update(BEST, FILE.load('best.luaon', '-luaon')) end
     if FILE.exist('achv.luaon') then TABLE.update(ACHV, FILE.load('achv.luaon', '-luaon')) end
@@ -812,8 +814,8 @@ end
 function IssueSpeedrunMilestone(id)
     if not STAT.srMilestone[id] then
         local t = MATH.roundUnit(STAT.srTimer_game, .001)
-        STAT.srMilestone[id] = t * (STAT.srActive and 1 or -1)
-        if STAT.srActive then
+        STAT.srMilestone[id] = t * (SRActive and 1 or -1)
+        if SRActive then
             if t < (SR[id] or 1e99) then
                 SR[id] = t
                 SaveSR()
@@ -1638,6 +1640,12 @@ end
 
 TABLE.update(CONF, FILE.safeLoad('conf.luaon', '-luaon') or NONE)
 TABLE.update(SR, FILE.safeLoad('speedrun.luaon', '-luaon') or NONE)
+if (SR.star_9 or 1e99) < 60 then SR.star_9 = nil end
+if (SR.star_18 or 1e99) < 200 then SR.star_18 = nil end
+if (SR.clicker or 1e99) < 260 then SR.clicker = nil end
+if (SR.mod_up or 1e99) < 200 then SR.mod_up = nil end
+if (SR.mod_rev or 1e99) < 260 then SR.mod_rev = nil end
+if (SR.rank_ss or 1e99) < 260 then SR.rank_ss = nil end
 TABLE.update(LB, FILE.safeLoad('leaderboard.luaon', '-luaon') or NONE)
 InitProfile()
 LoadSave()

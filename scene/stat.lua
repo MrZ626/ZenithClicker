@@ -221,7 +221,7 @@ function RefreshProfile()
     GC.setColor(1, 1, 1)
     local iconX, iconY = bw / 2 - t50:getWidth() / 2 - 26, bh / 2
     GC.mDraw(TEXTURE.stat.rank[zRank and 0 or rank], iconX, iconY, 0, 62 / rankIcon:getWidth())
-    if zRank and STAT.srActive then
+    if zRank and SRActive then
         GC.mDraw(TEXTURE.stat.rank[rank], iconX + 31 / 2, iconY + 31 / 2, 0, 31 / rankIcon:getWidth())
     end
     -- Progress Bar

@@ -1012,6 +1012,7 @@ pages[3] = {
                 STAT.system = SYSTEM
                 IssueAchv('zenith_relocation')
             end
+            SRActive = false
             Initialize(true)
             if TestMode then
                 MSG('dark', "Progress imported, but won't be saved")
