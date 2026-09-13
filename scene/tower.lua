@@ -456,7 +456,7 @@ function scene.update(dt)
     end
 
     for i = 1, #Cards do
-        Cards[i]:update(GAME.slowmo and dt / 6.26 or dt)
+        Cards[i]:update(GAME.slowmo and dt / 9.42 or dt)
     end
     if GAME.playing and (KBisDown('escape') or MSisDown(3)) then
         GAME.forfeitTimer = GAME.forfeitTimer +

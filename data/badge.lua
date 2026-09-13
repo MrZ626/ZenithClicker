@@ -60,6 +60,11 @@ local d = {
         desc = "Finished a speedrun with rNH & Steadfast",
     },
     {
+        id = 'true_messy',
+        name = "True Messy",
+        desc = "Finished a speedrun with rMS & Sloooooow-mo",
+    },
+    {
         id = 'true_master',
         name = "True Master",
         desc = "Finished a speedrun with rGV & Nightcore",

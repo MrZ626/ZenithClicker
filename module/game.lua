@@ -1208,6 +1208,7 @@ function GAME.upFloor()
             if GAME.time - GAME.gigaspeedEntered >= 300 then IssueAchv('worn_out') end
             if GAME.closeCard and GAME.comboStr == 'rEX' then IssueSecret('true_expert') end
             if GAME.steadfast and GAME.comboStr == 'rNH' then IssueSecret('true_ascetic') end
+            if GAME.slowmo and GAME.comboStr == 'rMS' then IssueSecret('true_messy') end
             if GAME.nightcore and GAME.comboStr == 'rGV' then IssueSecret('true_master') end
             if GAME.fastLeak and GAME.comboStr == 'rVL' then IssueSecret('true_strength') end
             if GAME.invisCard and GAME.comboStr == 'rIN' then IssueSecret('true_invis') end
