@@ -1787,12 +1787,13 @@ local PieceEffectOrder = {
 local function checkPieceEffect()
     for _, effect in next, PieceEffectOrder do
         if M[effect[1]] == 2 then
-            if GAME.completion[effect[1]] == 2 then
-                activeEffect(effect[1], effect[2])
-            else
-                Cards[effect[1]]:shake()
-                SFX.play('no')
-            end
+            activeEffect(effect[1], effect[2])
+            -- if GAME.completion[effect[1]] == 2 then
+            --     activeEffect(effect[1], effect[2])
+            -- else
+            --     Cards[effect[1]]:shake()
+            --     SFX.play('no')
+            -- end
             return true
         end
     end
