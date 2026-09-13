@@ -74,7 +74,7 @@ return {
     move = { 466, 0.2 },
     rotate = { 365, 0.2 },
     spin = { 193, 2 },
-    -- spinend = { 166, 0.8 },
+    spinend = { 166, 0.8 },
     floor = { 768, 0.5 },
     -- hit = { 593, 0.3 },
     -- sidehit = { 719, 0.3 },

@@ -1757,13 +1757,19 @@ local function activeEffect(id, n)
             local effID = PieceData[n].id
             GAME[effID] = not GAME[effID]
             GAME.refreshPieceFstr()
-            SFX.play(PieceData[n].sfx, 1, 0, Tone(6))
-            if not GAME[effID] then return end
-            MSG({
-                cat = 'dark',
-                str = PieceData[n].popup,
-                time = 2.6,
-            })
+            if GAME[effID] then
+                SFX.play(PieceData[n].sfx, 1, 0, Tone(6))
+                MSG({
+                    cat = 'dark',
+                    str = PieceData[n].popup,
+                    time = 2.6,
+                })
+            else
+                SFX.play('spinend')
+                SFX.play('floor')
+                SFX.play('hold')
+            end
+            SFX.play('card_slide_' .. math.random(4))
         end
     end
 end
@@ -1910,7 +1916,7 @@ scene.widgetList = {
         floatCornerR = 26,
         floatText = "NO DATA",
         onPress = function(k)
-            if not GAME.dailyPlayable then return end
+            if not GAME.dailyPlayable then return SFX.play('no') end
             if k == 2 or KBisDown('lctrl', 'rctrl') or next(revHold) then
                 TryOpenLeaderboard()
             else
@@ -1959,6 +1965,8 @@ scene.widgetList = {
                     GAME.refreshLayout()
                     RefreshBGM()
                     GAME.refreshRPC()
+                else
+                    SFX.play('no')
                 end
             end
         end,
