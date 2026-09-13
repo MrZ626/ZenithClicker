@@ -53,14 +53,60 @@ local GAME = {
 
     -- Flags
     zenithTraveler = false,
+    speedrunning = false,
     achvNotice = {},
     buttonHeld = {},
+
+    -- Daily
+    dailyHist = {},
+    dailyHistDisp = {},
+    dailyCombo = {},
+    dailyActive = false,
+    dailyPlayable = false,
+    dailyReadySubmit = false,
+    dailyCMD = nil,
+
+    -- Festival
+    fes_VALENTINE = false,
+    fes_VALENTINE_TEXT = "FLOOD THE TOWER SIDE BY SIDE WITH WHAT COULD BE",
+    fes_XMAS = false,
+    fes_ZDAY = false,
+
+    -- Palette
+    clr_board = { 1, 1, 1 },
+    clr_XMasText = { .4, .4, 1 },
+    clr_XMasShade = { .2, .2, .42 },
+    clr_ValentineText = { 1, .6, .8 },
+    clr_ValentineShade = { .45, .3, .45 },
+    clr_BaseText = { .7, .5, .3 },
+    clr_BaseShade = { .3, .15, 0 },
+    clr_text = {},
+    clr_shade = {},
+    clr_combo = {},
+
+    -- BGM
+    bgm_playing = false, ---@type ZC.bgmName | false
+    bgm_playingName = false, ---@type ZC.bgmName | false Same as playing, but this distinguishes f0(r) and f1(r) for album page
+    bgm_looping = false, ---@type boolean
+    bgm_needSkip = false,
+    bgm_needStop = false,
+    bgm_beat = 0, ---@type number 0-1, envelope: /|/|/|
 
     -- Background
     bgX = 0,
     bgXdir = 0,
     bgH = 0,
     bgLastH = 0,
+    bgK = 1,
+
+    -- Giga anim
+    giga_r = 0,
+    giga_g = 0,
+    giga_b = 0,
+    giga_a = 0,
+    giga_bgAlpha = 0,
+    giga_textTimer = false,
+    giga_isTera = false,
 
     -- UI Anim
     uiHide = 0,
@@ -69,6 +115,7 @@ local GAME = {
     forfeitTimer = 0,
     f10Time = -2600,
     finishTime = -2600,
+    deckPress = 0,
     impactGlow = {},
     throb = {
         card = 0,
@@ -79,6 +126,7 @@ local GAME = {
     },
 
     -- Drawable
+    avatar = nil, -- pfp
     cardHintText = {},
     windObj = {},
     windB = GC.newSpriteBatch(GC.load { w = 1, h = 1, { 'clear', 1, 1, 1, 1 } }, 260, 'static'),
@@ -584,8 +632,8 @@ function GAME.calculateSurgeColor(c)
 end
 
 function GAME.task_gigaspeed()
-    TWEEN.new(function(t) GigaAnim.textTimer = 1 - 2 * t end):setEase('Linear'):setDuration(2.6):run()
-        :setOnFinish(function() GigaAnim.textTimer = false end)
+    TWEEN.new(function(t) GAME.giga_textTimer = 1 - 2 * t end):setEase('Linear'):setDuration(2.6):run()
+        :setOnFinish(function() GAME.giga_textTimer = false end)
 end
 
 function GAME.task_fatigueWarn()
@@ -961,13 +1009,13 @@ end
 
 function GAME.setGigaspeedAnim(on)
     GAME.gigaspeed = on
-    local s = GigaAnim.alpha
+    local s = GAME.giga_a
     if on then
         GAME.gigaspeedEntered = GAME.time
         GAME.gigaspeedFloor[GAME.floor] = true
         GAME.gigaCount = GAME.gigaCount + 1
-        GigaAnim.isTera = false
-        TWEEN.new(function(t) GigaAnim.alpha = lerp(s, 1, t) end):setUnique('giga'):run()
+        GAME.giga_isTera = false
+        TWEEN.new(function(t) GAME.giga_a = lerp(s, 1, t) end):setUnique('giga'):run()
         TASK.removeTask_code(GAME.task_gigaspeed)
         TASK.new(GAME.task_gigaspeed)
         SFX.play('zenith_speedrun_start')
@@ -976,7 +1024,7 @@ function GAME.setGigaspeedAnim(on)
         if GAME.floor == 1 then IssueAchv('speedrun_speedrunning') end
         if GAME.comboMP >= 15 then IssueAchv('abyss_weaver') end
     else
-        TWEEN.new(function(t) GigaAnim.alpha = lerp(s, 0, t) end):setDuration(GAME.floor == 10 and 6.26 or 3.55):setUnique('giga'):run()
+        TWEEN.new(function(t) GAME.giga_a = lerp(s, 0, t) end):setDuration(GAME.floor == 10 and 6.26 or 3.55):setUnique('giga'):run()
     end
 end
 
@@ -984,7 +1032,7 @@ function GAME.startTeraAnim()
     GAME.teramusic = true
     GAME.teraspeedFloor[GAME.floor] = true
     GAME.teraCount = GAME.teraCount + 1
-    GigaAnim.isTera = true
+    GAME.giga_isTera = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
     SFX.play('zenith_speedrun_start')
@@ -1165,12 +1213,12 @@ function GAME.upFloor()
     if GAME.floor >= 10 then
         GAME.f10Time = love.timer.getTime()
         if GAME.gigaspeed then
-            if Daily.actived then
+            if GAME.dailyActive then
                 if roundTime < STAT.dailyFast then
                     STAT.dailyFast = roundTime
                     STAT.dailyDate = os.date("%y.%m.%d %H:%M%p")
                     SaveStat()
-                    Daily.needSubmit = true
+                    GAME.dailyReadySubmit = true
                 end
             end
             if roundTime < STAT.minTime then
@@ -1360,7 +1408,7 @@ function GAME.refreshRPC()
 
     local stateStr
     if GAME.playing then
-        if Daily.actived then
+        if GAME.dailyActive then
             stateStr = GAME.teramusic and "Daily SPEEDRUN: " or GAME.gigaspeed and "Daily speedrun: " or "Daily game: "
         else
             stateStr = GAME.teramusic and "SPEEDRUN: " or GAME.gigaspeed and "Speedrun: " or "In game: "
@@ -1381,8 +1429,8 @@ function GAME.refreshRPC()
         end
     else
         stateStr = "Enjoying music"
-        if BgmState.playing and BgmState.playing ~= 'f0' then
-            stateStr = stateStr .. " (" .. BgmState.playing:upper():gsub("R$", "-R") .. ")"
+        if GAME.bgm_playing and GAME.bgm_playing ~= 'f0' then
+            stateStr = stateStr .. " (" .. GAME.bgm_playing:upper():gsub("R$", "-R") .. ")"
         end
         local pitch = URM and M.GV == 2 and 3 or M.GV
         if GAME.nightcore then pitch = pitch + 12 end
@@ -1502,9 +1550,9 @@ function GAME.refreshCurrentCombo()
         GAME.comboZP = GAME.getComboZP(hand)
         TEXTS.mpPreview:set(GAME.comboMP .. " MP")
         TEXTS.zpPreview:set(("%.2fx ZP"):format(GAME.comboZP))
-        Daily.actived =
-            #GAME.getHand(true) == #Daily.combo and
-            TABLE.equal(TABLE.sort(GAME.getHand(true)), TABLE.sort(TABLE.copy(Daily.combo)))
+        GAME.dailyActive =
+            #GAME.getHand(true) == #GAME.dailyCombo and
+            TABLE.equal(TABLE.sort(GAME.getHand(true)), TABLE.sort(TABLE.copy(GAME.dailyCombo)))
 
         RefreshHelpText()
     end
@@ -1629,12 +1677,12 @@ function GAME.refreshRev()
             GAME.bgX = lerp(x, 0, t)
             t = lerp(s, e, t)
             GAME.revTimer = t
-            Palette.text[1] = lerp(Palette.BaseText[1], .62, t)
-            Palette.text[2] = lerp(Palette.BaseText[2], .1, t)
-            Palette.text[3] = lerp(Palette.BaseText[3], .1, t)
-            Palette.shade[1] = lerp(Palette.BaseShade[1], .1, t)
-            Palette.shade[2] = lerp(Palette.BaseShade[2], 0, t)
-            Palette.shade[3] = lerp(Palette.BaseShade[3], 0, t)
+            GAME.clr_text[1] = lerp(GAME.clr_BaseText[1], .62, t)
+            GAME.clr_text[2] = lerp(GAME.clr_BaseText[2], .1, t)
+            GAME.clr_text[3] = lerp(GAME.clr_BaseText[3], .1, t)
+            GAME.clr_shade[1] = lerp(GAME.clr_BaseShade[1], .1, t)
+            GAME.clr_shade[2] = lerp(GAME.clr_BaseShade[2], 0, t)
+            GAME.clr_shade[3] = lerp(GAME.clr_BaseShade[3], 0, t)
         end):setUnique('revSwitched'):setDuration(.26):run()
     end
 end
@@ -1664,26 +1712,26 @@ end
 function GAME.refreshDailyChallengeText()
     TEXTS.dcBest:set(
         STAT.dailyBest > 0 and
-        ("%.0fm  %.0fZP"):format(STAT.dailyBest / GAME.getComboZP(Daily.combo), STAT.dailyBest)
+        ("%.0fm  %.0fZP"):format(STAT.dailyBest / GAME.getComboZP(GAME.dailyCombo), STAT.dailyBest)
         or ""
     )
-    Daily.available = true
-    for _, v in next, Daily.combo do
+    GAME.dailyPlayable = true
+    for _, v in next, GAME.dailyCombo do
         if v:find('r') then
             if GAME.completion[v:sub(2)] == 0 then
-                Daily.available = false
+                GAME.dailyPlayable = false
                 break
             end
         else
             if CD[v].lock then
-                Daily.available = false
+                GAME.dailyPlayable = false
                 break
             end
         end
     end
     local str
-    if Daily.available then
-        local sortedDaily = TABLE.copy(Daily.combo)
+    if GAME.dailyPlayable then
+        local sortedDaily = TABLE.copy(GAME.dailyCombo)
         table.sort(sortedDaily, modCardSorter)
         str = "Today's Combo: " .. table.concat(sortedDaily, " ")
         local rev = str:match("r(%S+)")
@@ -2314,7 +2362,7 @@ function GAME.start()
 
     -- Game start SFX
     SFX.play('menuconfirm', .8)
-    SFX.play((M.DP > 0 or VALENTINE and not GAME.anyRev) and 'zenith_start_duo' or 'zenith_start', 1, 0, Tone(0))
+    SFX.play((M.DP > 0 or GAME.fes_VALENTINE and not GAME.anyRev) and 'zenith_start_duo' or 'zenith_start', 1, 0, Tone(0))
 
     if M.DP > 0 then IssueAchv('intended_glitch') end
 
@@ -2449,20 +2497,20 @@ function GAME.start()
 
     -- Refresh UI things
     GAME.refreshModIcon()
-    TABLE.clear(Palette.combo)
+    TABLE.clear(GAME.clr_combo)
     for k, v in next, M do
         if v > 0 then
             local c = TABLE.copy(MD.color[k])
             c[4] = nil
-            ins(Palette.combo, c)
+            ins(GAME.clr_combo, c)
         end
     end
-    if #Palette.combo > 0 then
-        TABLE.shuffle(Palette.combo)
-        ins(Palette.combo, TABLE.copy(Palette.combo[1]))
-        TABLE.transpose(Palette.combo)
+    if #GAME.clr_combo > 0 then
+        TABLE.shuffle(GAME.clr_combo)
+        ins(GAME.clr_combo, TABLE.copy(GAME.clr_combo[1]))
+        TABLE.transpose(GAME.clr_combo)
     end
-    Palette.board[1], Palette.board[2], Palette.board[3] = BoardColorData.r[1], BoardColorData.g[1], BoardColorData.b[1]
+    GAME.clr_board[1], GAME.clr_board[2], GAME.clr_board[3] = BoardColorData.r[1], BoardColorData.g[1], BoardColorData.b[1]
     GAME.boardColorPatch.timer = 0
     GAME.boardDim = { 1, 1, 1 }
 
@@ -2630,11 +2678,11 @@ function GAME.finish(reason)
         local newZP = STAT.zp +
             zpGain *                           -- base ZP gain
             icLerp(26, 16, STAT.zp / zpGain) * -- soft cap: slow down after 16x, stop at 26x
-            (Daily.actived and 2.6 or 1)       -- gain 2.6x on daily challenge
+            (GAME.dailyActive and 2.6 or 1)    -- gain 2.6x on daily challenge
 
         -- ZP text animation
         TASK.new(function()
-            local str = Daily.actived and "%.0f ZP  (+%.0f, 260%%)" or "%.0f ZP  (+%.0f)"
+            local str = GAME.dailyActive and "%.0f ZP  (+%.0f, 260%%)" or "%.0f ZP  (+%.0f)"
             TEXTS.zpChange:set(str:format(zpGain, 0))
 
             local zpAdd = newZP - STAT.zp
@@ -2650,12 +2698,12 @@ function GAME.finish(reason)
         end)
 
         -- Daily
-        if Daily.actived then
+        if GAME.dailyActive then
             STAT.dzp = max(STAT.dzp, zpGain)
             STAT.peakDZP = max(STAT.peakDZP, STAT.dzp)
             if zpGain > STAT.dailyBest then
                 STAT.dailyBest = zpGain
-                Daily.needSubmit = true
+                GAME.dailyReadySubmit = true
             end
             if GAME.floor >= 10 then
                 if GAME.comboStr:find('r') then
@@ -2670,9 +2718,9 @@ function GAME.finish(reason)
                 end
             end
         end
-        if Daily.needSubmit then
+        if GAME.dailyReadySubmit then
             CurlRequest('submit')
-            Daily.needSubmit = false
+            GAME.dailyReadySubmit = false
         end
 
         -- Best
@@ -2885,7 +2933,7 @@ function GAME.finish(reason)
         if GAME.floor < 10 then SubmitAchv('divine_rejection', GAME.roundHeight) end
         if GAME.heightBonus / GAME.height * 100 >= 260 then IssueAchv('fruitless_effort') end
         if GAME.comboStr == 'DP' then
-            if VALENTINE then SubmitAchv('lovers_promise', GAME.roundHeight) end
+            if GAME.fes_VALENTINE then SubmitAchv('lovers_promise', GAME.roundHeight) end
         elseif GAME.comboStr == 'NH' then
             SubmitAchv('level_19_cap', GAME.achv_level19capH or GAME.roundHeight)
         elseif GAME.comboStr == 'AS' then

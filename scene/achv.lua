@@ -322,7 +322,7 @@ function scene.load()
         whenItsReady = URM and M.IN == 2 or MATH.roll(.01 + M.IN * .026)
     end
 
-    hyper = M.EX > 0 or BgmState.playing == 'tera' or BgmState.playing == 'terar'
+    hyper = M.EX > 0 or GAME.bgm_playing == 'tera' or GAME.bgm_playing == 'terar'
 
     RefreshAchvList(true)
 

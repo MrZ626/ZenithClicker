@@ -62,7 +62,7 @@ local function refreshBtn()
 end
 
 local function switchPage(p)
-    local combo = Daily.history[p]
+    local combo = GAME.dailyHist[p]
     if LB[combo] and LB[combo].lastUpd then
         if not pageStable[p] then
             if p == 0 then
@@ -105,7 +105,7 @@ function scene.load()
 
     switchPage(0)
 
-    if Daily.cmd and ASYNC.runCmd('submitDaily', Daily.cmd) then
+    if GAME.dailyCMD and ASYNC.runCmd('submitDaily', GAME.dailyCMD) then
         MSG('info', "Re-submitting Daily Challenge score...")
         SFX.play('social_online')
     end
@@ -163,7 +163,7 @@ function scene.update(dt)
         GAME.bgH = math.max(GAME.bgH + (y0 - scroll1) / 355, 0)
     end
     if TASK.lock('text_lastUpdate', .1) then
-        local L = LB[Daily.history[page]]
+        local L = LB[GAME.dailyHist[page]]
         noteText2 = ""
         if L.lastUpd and not pageStable[page] then
             local t = os.time() - L.lastUpd
@@ -177,7 +177,7 @@ function scene.update(dt)
                 noteText2 = "(last update: " .. (math.floor(t / 3600)) .. "h ago)"
             end
         end
-        noteText = noteTextPrefix[page] .. " " .. Daily.historyDisp[page]
+        noteText = noteTextPrefix[page] .. " " .. GAME.dailyHistDisp[page]
     end
     GAME.height = GAME.bgH
 end
@@ -231,7 +231,7 @@ function scene.draw()
     gc_rectangle('fill', 30, 190, pw - 30 * 2, 80, 4)
 
     -- List
-    local L = LB[Daily.history[page]]
+    local L = LB[GAME.dailyHist[page]]
     if not L.lastUpd then
         -- Loading
         gc_setColor(clr.D)

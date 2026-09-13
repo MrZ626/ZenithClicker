@@ -60,7 +60,7 @@ end
 
 local completion = GAME.completion
 local KBisDown = love.keyboard.isDown
-local function tween_deckPress(t) DeckPress = 26 * (1 - t) end
+local function tween_deckPress(t) GAME.deckPress = 26 * (1 - t) end
 local function task_refreshBGM()
     TASK.yieldT(.1)
     RefreshBGM()

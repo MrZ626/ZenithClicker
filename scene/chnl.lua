@@ -87,7 +87,7 @@ function scene.update()
                 SFX.play('social_online')
             elseif code:find('5656565656') then
                 if not TestMode then
-                    SRActive = false
+                    GAME.speedrunning = false
                     TestMode = true
                     SFX.play('maintenance')
                 else

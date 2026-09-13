@@ -40,7 +40,7 @@ function scene.update(dt)
                 LoadSave()
                 URM = false
                 GAME.floor = 0
-                SRActive = SCN.args[1] == 'reset'
+                GAME.speedrunning = SCN.args[1] == 'reset'
                 Initialize(true)
                 GAME.clearResultStat()
                 collectgarbage()

@@ -2,9 +2,7 @@
 local scene = {}
 
 local SRrank = {}
-SRSplitText1 = {} ---@type love.Text[]
-SRSplitText2 = {} ---@type love.Text[]
-SRSplitText3 = {} ---@type love.Text[]
+SRSplitText = { {}, {}, {} } ---@type love.Text[][]
 
 local clr = {
     D = { CLR.HEX '19311EFF' },
@@ -23,27 +21,27 @@ function scene.load()
     end
     for i = 1, #SpeedrunData do
         local id = SpeedrunData[i].id
-        if not SRSplitText1[i] then
-            SRSplitText1[i] = GC.newText(FONT.get(50), "")
-            SRSplitText2[i] = GC.newText(FONT.get(50), "")
-            SRSplitText3[i] = GC.newText(FONT.get(30), "")
+        if not SRSplitText[1][i] then
+            SRSplitText[1][i] = GC.newText(FONT.get(50), "")
+            SRSplitText[2][i] = GC.newText(FONT.get(50), "")
+            SRSplitText[3][i] = GC.newText(FONT.get(30), "")
             SRrank[i] = 0
         end
-        SRSplitText1[i]:set(SpeedrunData[i].name)
+        SRSplitText[1][i]:set(SpeedrunData[i].name)
         if tonumber(STAT.joinDate:match("%d+") or 0) <= 2025 then
-            SRSplitText2[i]:set("N/A")
+            SRSplitText[2][i]:set("N/A")
         else
             local t = STAT.srMilestone[id]
             if not t then
-                SRSplitText2[i]:set("N/A")
+                SRSplitText[2][i]:set("N/A")
             elseif t < 0 then
-                SRSplitText2[i]:set("*" .. STRING.time(-t))
+                SRSplitText[2][i]:set("*" .. STRING.time(-t))
             else
-                SRSplitText2[i]:set(STRING.time(t))
+                SRSplitText[2][i]:set(STRING.time(t))
             end
         end
         if SR[id] then
-            SRSplitText3[i]:set(STRING.time(SR[id]))
+            SRSplitText[3][i]:set(STRING.time(SR[id]))
             if SR[id] <= DevScore.srMilestone[id] then
                 SRrank[i] = 3
             elseif SR[id] <= SpeedrunData[i].par1 then
@@ -52,7 +50,7 @@ function scene.load()
                 SRrank[i] = 1
             end
         else
-            SRSplitText3[i]:set("N/A")
+            SRSplitText[3][i]:set("N/A")
         end
     end
 end
@@ -91,31 +89,31 @@ function scene.draw()
     gc_rectangle('fill', 0, 3, 3, h + 3)
 
     gc_replaceTransform(SCR.xOy_m)
-    if SRActive then
+    if GAME.speedrunning then
         GC.setBlendMode('add')
         gc_setColor(clr.L)
-        gc_setAlpha(.16 - .1 * BgmState.beat)
+        gc_setAlpha(.16 - .1 * GAME.bgm_beat)
         GC.mDrawQ(TEXTURE.achievement.icons, TEXTURE.achievement.iconQuad.zenith_speedrun, 0, 0, 0, 2.6)
         GC.setBlendMode('alpha')
     end
     gc_setLineWidth(2)
     FONT.set(30)
-    local textH = SRSplitText1[1]:getHeight()
+    local textH = SRSplitText[1][1]:getHeight()
     local x1 = -w / 2 + 150
     local x2 = w / 2 - 150
     local achv = TEXTURE.achievement
     for i = 1, #SpeedrunData do
         local y = (i - #SpeedrunData / 2 - .5) * 110 - 20
         gc_setColor(clr.T)
-        gc_draw(SRSplitText1[i], x1, y, 0, 1, 1, 0, textH / 2)
-        gc_draw(SRSplitText2[i], x2, y, 0, 1, 1, SRSplitText2[i]:getWidth(), textH / 2)
+        gc_draw(SRSplitText[1][i], x1, y, 0, 1, 1, 0, textH / 2)
+        gc_draw(SRSplitText[2][i], x2, y, 0, 1, 1, SRSplitText[2][i]:getWidth(), textH / 2)
         gc_setAlpha(.62)
-        gc_line(x1 + SRSplitText1[i]:getWidth() + 20, y, x2 - SRSplitText2[i]:getWidth() - 20, y)
+        gc_line(x1 + SRSplitText[1][i]:getWidth() + 20, y, x2 - SRSplitText[2][i]:getWidth() - 20, y)
         gc_setColor(clr.L)
         gc_print(SpeedrunData[i].desc, x1, y + 26, 0, .626)
         gc_setAlpha(.62)
-        local w3 = SRSplitText3[i]:getWidth()
-        gc_draw(SRSplitText3[i], x2, y + 26, 0, .626, .626, w3)
+        local w3 = SRSplitText[3][i]:getWidth()
+        gc_draw(SRSplitText[3][i], x2, y + 26, 0, .626, .626, w3)
         if SRrank[i] > 0 then
             if SRrank[i] >= 3 then
                 gc_setColor(1, 1, 1, .16)
@@ -156,7 +154,7 @@ function scene.draw()
     gc_setColor(clr.L)
     FONT.set(30)
     gc_print(
-        SRActive and
+        GAME.speedrunning and
         "USES IN-GAME TIME, QUITTING GAME ENDS THE RUN!" or
         "BACKUP YOUR SAVE AND TRY WITH NEW ACCOUNT!",
         15, -45, 0, .85, 1

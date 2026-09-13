@@ -207,10 +207,10 @@ end
 
 local sp = { f0 = 1, f1 = 1, f0r = 1, f1r = 1 }
 local function refreshSongInfo()
-    if sp[BgmState.playingName] then
-        playingBgmTitle = songList[BgmState.playingName .. (GAME.mod.EX > 0 and '_EX' or '')]
+    if sp[GAME.bgm_playingName] then
+        playingBgmTitle = songList[GAME.bgm_playingName .. (GAME.mod.EX > 0 and '_EX' or '')]
     else
-        playingBgmTitle = songList[BgmState.playingName] or "Rewrite"
+        playingBgmTitle = songList[GAME.bgm_playingName] or "Rewrite"
     end
     playingBgmLength = BGM.getDuration()
     playingBgmLengthStr = STRING.time_simp(playingBgmLength)
@@ -331,7 +331,7 @@ function scene.keyDown(key, isRep)
             elseif key == 'end' then
                 TASK.new(Task_MusicEnd, true)
             elseif key == 'space' then
-                BgmState.looping, BgmState.needSkip = false, false
+                GAME.bgm_looping, GAME.bgm_needSkip = false, false
             end
             return true
         elseif page == 5 then
@@ -429,17 +429,17 @@ end
 
 local playing
 function scene.update(dt)
-    if BgmState.playingName ~= playing then
+    if GAME.bgm_playingName ~= playing then
         refreshSongInfo()
-        playing = BgmState.playingName
+        playing = GAME.bgm_playingName
     end
-    if page == 4 and (BgmState.playing == 'tera' or BgmState.playing == 'terar') then
-        GAME.height = math.max(-62, GAME.height + dt * (BgmState.playing == 'tera' and 20 or 42) * (GAME.height >= 1650 and .2 or 1))
+    if page == 4 and (GAME.bgm_playing == 'tera' or GAME.bgm_playing == 'terar') then
+        GAME.height = math.max(-62, GAME.height + dt * (GAME.bgm_playing == 'tera' and 20 or 42) * (GAME.height >= 1650 and .2 or 1))
         if GAME.height >= 1726 then GAME.bgH, GAME.height = -30, -30 end
         dt = dt * 2.6
     end
     GAME.bgH = MATH.expApproach(GAME.bgH, GAME.height, dt * 1.6)
-    StarPS:moveTo(0, -GAME.bgH * 2 * BgScale)
+    StarPS:moveTo(0, -GAME.bgH * 2 * GAME.bgK)
     StarPS:update(dt)
     if not TASK.getLock('reset_all') then
         if resetall_cnt == 16 then IssueAchv('knifes_edge') end
@@ -537,8 +537,8 @@ function scene.draw()
         gc_print(playingBgmLengthStr, len - 45, 49, 0, .626)
 
         -- Repeat marks
-        local data = BgmMeta[BgmState.playing]
-        if BgmState.looping then
+        local data = BgmMeta[GAME.bgm_playing]
+        if GAME.bgm_looping then
             if data.loop[1] == 0 then
                 gc_print('D.C.', len * data.loop[2] / playingBgmLength, 35, 0, .3)
             else
@@ -550,22 +550,22 @@ function scene.draw()
         -- Progress bar
         gc_setColor(clr.L)
         gc_rectangle('fill', 0, 46, len, 4)
-        if BgmState.playing == 'tera' then
+        if GAME.bgm_playing == 'tera' then
             gc_setColor(COLOR.rainbow_light(2.6 * t))
-        elseif BgmState.playing == 'terar' then
+        elseif GAME.bgm_playing == 'terar' then
             gc_setColor(COLOR.rainbow_light(20 * t))
         else
-            gc_setColor(bgmColors[BgmState.playingName])
+            gc_setColor(bgmColors[GAME.bgm_playingName])
         end
         gc_rectangle('fill', 0, 46, len * playTime / playingBgmLength, 4)
 
         -- Ambient Glow
         gc.push('transform')
         gc_replaceTransform(SCR.origin)
-        if BgmState.playing == 'tera' or BgmState.playing == 'terar' then
+        if GAME.bgm_playing == 'tera' or GAME.bgm_playing == 'terar' then
             gc_setAlpha(.42)
         else
-            gc_setAlpha(.26 - .12 * BgmState.beat)
+            gc_setAlpha(.26 - .12 * GAME.bgm_beat)
         end
         gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * SCR.w, SCR.h)
         gc_draw(TEXTURE.transition, SCR.w, 0, 0, -.42 / 128 * SCR.w, SCR.h)
@@ -574,8 +574,8 @@ function scene.draw()
         -- Title
         gc_setAlpha(1)
         gc_mStr(playingBgmTitle, len / 2, 0)
-        if not (BgmState.playing == 'tera' or BgmState.playing == 'terar') then
-            gc_setColor(1, 1, 1, MATH.lerp(.62, .26, BgmState.beat))
+        if not (GAME.bgm_playing == 'tera' or GAME.bgm_playing == 'terar') then
+            gc_setColor(1, 1, 1, MATH.lerp(.62, .26, GAME.bgm_beat))
             gc_mStr(playingBgmTitle, len / 2, -1.26)
         end
         gc_setColor(clr.LT)
@@ -583,14 +583,14 @@ function scene.draw()
         gc_printf(data.meta, len / 2, 56, 2 * len, 'center', 0, .42, .42, len)
 
         -- Skip marks
-        if BgmState.needSkip then
+        if GAME.bgm_needSkip then
             local alpha = .26 + .62 * (-2.6 * t % 1)
             gc_setColor(COLOR.C)
             gc_setAlpha(alpha)
-            gc_mRect('fill', len * BgmState.needSkip[1] / playingBgmLength, 48, 2, 9)
+            gc_mRect('fill', len * GAME.bgm_needSkip[1] / playingBgmLength, 48, 2, 9)
             gc_setColor(COLOR.O)
             gc_setAlpha(alpha)
-            gc_mRect('fill', len * BgmState.needSkip[2] / playingBgmLength, 48, 2, 9)
+            gc_mRect('fill', len * GAME.bgm_needSkip[2] / playingBgmLength, 48, 2, 9)
         end
         gc_ucs_back()
     elseif page == 5 then
@@ -1012,7 +1012,7 @@ pages[3] = {
                 STAT.system = SYSTEM
                 IssueAchv('zenith_relocation')
             end
-            SRActive = false
+            GAME.speedrunning = false
             Initialize(true)
             if TestMode then
                 MSG('dark', "Progress imported, but won't be saved")
@@ -1238,7 +1238,7 @@ pages[4] = {
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "NO LOOPS",
         onClick = function()
-            BgmState.looping, BgmState.needSkip = false, false
+            GAME.bgm_looping, GAME.bgm_needSkip = false, false
         end,
     },
 }

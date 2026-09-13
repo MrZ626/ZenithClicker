@@ -252,7 +252,7 @@ function scene.update(dt)
         end
     end
     if GAME.bgH >= 1650 then
-        StarPS:moveTo(0, -GAME.bgH * 2 * BgScale)
+        StarPS:moveTo(0, -GAME.bgH * 2 * GAME.bgK)
         StarPS:update(dt)
     end
     GAME.height = GAME.bgH
