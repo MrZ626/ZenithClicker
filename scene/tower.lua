@@ -1781,87 +1781,28 @@ local function activeEffect(id, n)
         end
     end
 end
+local PieceEffectOrder = {
+    { 'EX', 8 },
+    { 'NH', 3 },
+    { 'MS', 2 },
+    { 'GV', 1 },
+    { 'VL', 4 },
+    { 'DH', 7 },
+    { 'IN', 6 },
+    { 'AS', 0 },
+    { 'DP', 5 },
+}
 local function checkPieceEffect()
-    if M.EX == 2 then
-        if GAME.completion.EX == 2 then
-            activeEffect('EX', 8)
-        else
-            Cards.EX:shake()
-            SFX.play('no')
+    for _, effect in next, PieceEffectOrder do
+        if M[effect[1]] == 2 then
+            if GAME.completion[effect[1]] == 2 then
+                activeEffect(effect[1], effect[2])
+            else
+                Cards[effect[1]]:shake()
+                SFX.play('no')
+            end
+            return true
         end
-        return true
-    end
-    if M.NH == 2 then
-        if GAME.completion.NH == 2 then
-            activeEffect('NH', 3)
-        else
-            Cards.NH:shake()
-            SFX.play('no')
-        end
-        return true
-    end
-    if M.MS == 2 then
-        if GAME.completion.MS == 2 then
-            activeEffect('MS', 2)
-        else
-            Cards.MS:shake()
-            SFX.play('no')
-        end
-        return true
-    end
-    if M.GV == 2 then
-        if GAME.completion.GV == 2 then
-            activeEffect('GV', 1)
-        else
-            Cards.GV:shake()
-            SFX.play('no')
-        end
-        return true
-    end
-    if M.VL == 2 then
-        if GAME.completion.VL == 2 then
-            activeEffect('VL', 4)
-        else
-            Cards.VL:shake()
-            SFX.play('no')
-        end
-        return true
-    end
-    if M.DH == 2 then
-        if GAME.completion.DH == 2 then
-            activeEffect('DH', 7)
-        else
-            Cards.DH:shake()
-            SFX.play('no')
-        end
-        return true
-    end
-    if M.IN == 2 then
-        if GAME.completion.IN == 2 then
-            activeEffect('IN', 6)
-        else
-            Cards.IN:shake()
-            SFX.play('no')
-        end
-        return true
-    end
-    if M.AS == 2 then
-        if GAME.completion.AS == 2 then
-            activeEffect('AS', 0)
-        else
-            Cards.AS:shake()
-            SFX.play('no')
-        end
-        return true
-    end
-    if M.DP == 2 then
-        if GAME.completion.DP == 2 then
-            activeEffect('DP', 5)
-        else
-            Cards.DP:shake()
-            SFX.play('no')
-        end
-        return true
     end
 end
 scene.widgetList = {
