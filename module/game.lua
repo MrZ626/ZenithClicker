@@ -2692,7 +2692,7 @@ function GAME.finish(reason)
                 TASK.yieldT(0.626)
                 TWEEN.new(function(t)
                     TEXTS.zpChange:set(str:format(zpGain, zpAdd * t))
-                end):setEase('InOutCubic'):setDuration(2):run()
+                end):setTag('zpChange'):setEase('InOutCubic'):setDuration(2):run()
                 SFX.play('ratingraise', zpAdd ^ .5 / 60)
             end
         end)

@@ -36,6 +36,8 @@ function scene.update(dt)
                 for i = 1, #PieceData do
                     GAME[PieceData[i].id] = false
                 end
+                TWEEN.tag_kill('zpChange')
+                TEXTS.zpChange:set("")
                 InitProfile()
                 LoadSave()
                 URM = false
