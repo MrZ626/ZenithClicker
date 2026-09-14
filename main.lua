@@ -1085,12 +1085,14 @@ function RefreshDaily()
         ModData.desc.DP, GAME.fes_VALENTINE_TEXT = GAME.fes_VALENTINE_TEXT, ModData.desc.DP
         GAME.clr_ValentineText, GAME.clr_BaseText = GAME.clr_BaseText, GAME.clr_ValentineText
         GAME.clr_ValentineShade, GAME.clr_BaseShade = GAME.clr_BaseShade, GAME.clr_ValentineShade
+        GAME.refreshThemeColor()
     end
     local isX = os.date('!%m%d') == '1224' or os.date('!%m%d') == '1225'
     if GAME.fes_XMAS ~= isX then
         GAME.fes_XMAS = isX
         GAME.clr_XMasText, GAME.clr_BaseText = GAME.clr_BaseText, GAME.clr_XMasText
         GAME.clr_XMasShade, GAME.clr_BaseShade = GAME.clr_BaseShade, GAME.clr_XMasShade
+        GAME.refreshThemeColor()
     end
     local isZ = os.date('!%d') == '26'
     if GAME.fes_ZDAY ~= isZ then
@@ -1537,9 +1539,9 @@ InitProfile()
 LoadSave()
 Initialize()
 
+RefreshDaily()
 TABLE.update(GAME.clr_text, GAME.clr_BaseText)
 TABLE.update(GAME.clr_shade, GAME.clr_BaseShade)
-RefreshDaily()
 TEXTS.version:set(SYSTEM .. (CONF.oldHitbox and " T" or " V") .. (require 'version'.verStr))
 GAME.refreshCurrentCombo()
 

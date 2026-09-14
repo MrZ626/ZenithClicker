@@ -80,8 +80,8 @@ local GAME = {
     clr_ValentineShade = { .45, .3, .45 },
     clr_BaseText = { .7, .5, .3 },
     clr_BaseShade = { .3, .15, 0 },
-    clr_text = {},
-    clr_shade = {},
+    clr_text = { .7, .5, .3 },
+    clr_shade = { .3, .15, 0 },
     clr_combo = {},
 
     -- BGM
@@ -1644,6 +1644,19 @@ function GAME.refreshSectionTime()
     TEXTS.floorTime:set(secTimeStr)
 end
 
+function GAME.refreshThemeColor()
+    local r = GAME.anyRev and 1 or 0
+    local toText = { lerp(GAME.clr_BaseText[1], .62, r), lerp(GAME.clr_BaseText[2], .1, r), lerp(GAME.clr_BaseText[3], .1, r) }
+    local toShade = { lerp(GAME.clr_BaseShade[1], .1, r), lerp(GAME.clr_BaseShade[2], 0, r), lerp(GAME.clr_BaseShade[3], 0, r) }
+    local fromText, fromShade = TABLE.copy(GAME.clr_text), TABLE.copy(GAME.clr_shade)
+    TWEEN.new(function(p)
+        for i = 1, 3 do
+            GAME.clr_text[i] = lerp(fromText[i], toText[i], p)
+            GAME.clr_shade[i] = lerp(fromShade[i], toShade[i], p)
+        end
+    end):setUnique('themeColor'):setDuration(.26):run()
+end
+
 function GAME.refreshRev()
     local hasRev = false
     for _, C in ipairs(CD) do
@@ -1667,23 +1680,16 @@ function GAME.refreshRev()
         W.fillColor[1], W.fillColor[3] = W.fillColor[3], W.fillColor[1]
         W.textColor[1], W.textColor[3] = W.textColor[3], W.textColor[1]
 
-        if not hasRev then
-            GAME.revDeckSkin = false
-        end
+        if not hasRev then GAME.revDeckSkin = false end
 
         local s, e = GAME.revTimer, hasRev and 1 or 0
         local x = (GAME.bgX + 1024) % 2048 - 1024
         TWEEN.new(function(t)
             GAME.bgX = lerp(x, 0, t)
-            t = lerp(s, e, t)
-            GAME.revTimer = t
-            GAME.clr_text[1] = lerp(GAME.clr_BaseText[1], .62, t)
-            GAME.clr_text[2] = lerp(GAME.clr_BaseText[2], .1, t)
-            GAME.clr_text[3] = lerp(GAME.clr_BaseText[3], .1, t)
-            GAME.clr_shade[1] = lerp(GAME.clr_BaseShade[1], .1, t)
-            GAME.clr_shade[2] = lerp(GAME.clr_BaseShade[2], 0, t)
-            GAME.clr_shade[3] = lerp(GAME.clr_BaseShade[3], 0, t)
+            GAME.revTimer = lerp(s, e, t)
         end):setUnique('revSwitched'):setDuration(.26):run()
+
+        GAME.refreshThemeColor()
     end
 end
 
