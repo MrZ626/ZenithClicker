@@ -367,6 +367,7 @@ function scene.touchUp(x, y, id)
     if not buttonHeld['touch' .. tostring(id)] then return end
     buttonHeld['touch' .. tostring(id)] = nil
     if M.EX > 0 then
+        GAME.inputStat[4] = GAME.inputStat[4] + 1
         mouseTrigger(x, y, next(revHold) and 2 or 1)
     end
 end
