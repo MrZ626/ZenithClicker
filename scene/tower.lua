@@ -15,7 +15,8 @@ local buttonHeld = GAME.buttonHeld
 
 URM = false
 local usingTouch = MOBILE
-local revHold = {}
+RevHold = {}
+local RevHold = RevHold
 local lastTimeRemain = 1e99 -- For checking if daily challenge should update
 
 ---@type Zenitha.Scene
@@ -251,7 +252,7 @@ function scene.load()
         PendingCombo = nil
     end
 
-    TABLE.clear(revHold)
+    TABLE.clear(RevHold)
 end
 
 function scene.unload()
@@ -344,7 +345,7 @@ function scene.touchDown(x, y, id)
     if GAME.zenithTraveler then return end
     local x1, y1 = SCR.xOy_dl:inverseTransformPoint(SCR.xOy:transformPoint(x, y))
     if not GAME.playing and x1 <= 200 and MATH.between(y1, -600, -40) then
-        revHold[id] = true
+        RevHold[id] = true
         return
     end
 
@@ -352,7 +353,7 @@ function scene.touchDown(x, y, id)
     if M.EX == 0 then
         SFX.play('move')
         GAME.inputStat[4] = GAME.inputStat[4] + 1
-        mouseTrigger(x, y, next(revHold) and 2 or 1)
+        mouseTrigger(x, y, next(RevHold) and 2 or 1)
     else
         SFX.play('rotate')
         -- scene.mouseMove(x, y, 0, 0)
@@ -360,15 +361,15 @@ function scene.touchDown(x, y, id)
 end
 
 function scene.touchUp(x, y, id)
-    if revHold[id] then
-        revHold[id] = nil
+    if RevHold[id] then
+        RevHold[id] = nil
         return
     end
     if not buttonHeld['touch' .. tostring(id)] then return end
     buttonHeld['touch' .. tostring(id)] = nil
     if M.EX > 0 then
         GAME.inputStat[4] = GAME.inputStat[4] + 1
-        mouseTrigger(x, y, next(revHold) and 2 or 1)
+        mouseTrigger(x, y, next(RevHold) and 2 or 1)
     end
 end
 
@@ -1201,10 +1202,10 @@ function scene.overDraw()
         gc_replaceTransform(SCR.xOy_dl)
         if URM then
             gc_setColor(COLOR.C)
-            gc_setAlpha(next(revHold) and .872 or .62)
+            gc_setAlpha(next(RevHold) and .872 or .62)
         else
             gc_setColor(COLOR.S)
-            gc_setAlpha(next(revHold) and .42 or .26)
+            gc_setAlpha(next(RevHold) and .42 or .26)
         end
         gc_draw(TEXTURE.transition, -200 * GAME.uiHide, -40, 0, 200 / 128, -560)
     end
@@ -1919,7 +1920,7 @@ scene.widgetList = {
         floatText = "NO DATA",
         onPress = function(k)
             if not GAME.dailyPlayable then return SFX.play('no') end
-            if k == 2 or KBisDown('lctrl', 'rctrl') or next(revHold) then
+            if k == 2 or KBisDown('lctrl', 'rctrl') or next(RevHold) then
                 TryOpenLeaderboard()
             else
                 applyCombo(GAME.dailyCombo)
@@ -1940,12 +1941,12 @@ scene.widgetList = {
                 if GAME.zenithTraveler then
                     switchVisitor(false)
                 else
-                    if next(revHold) then
+                    if next(RevHold) then
                         switchVisitor(true)
                     end
                 end
             else
-                if k == 2 or KBisDown('lctrl', 'rctrl') or next(revHold) then
+                if k == 2 or KBisDown('lctrl', 'rctrl') or next(RevHold) then
                     switchVisitor(true)
                 end
             end
@@ -1962,7 +1963,7 @@ scene.widgetList = {
         floatFontSize = 30,
         floatText = "", -- Dynamic text
         onPress = function(k)
-            if k == 2 or KBisDown('lctrl', 'rctrl') or next(revHold) then
+            if k == 2 or KBisDown('lctrl', 'rctrl') or next(RevHold) then
                 if checkPieceEffect() then
                     GAME.refreshLayout()
                     RefreshBGM()

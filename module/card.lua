@@ -131,7 +131,7 @@ function Card:setActive(auto, key)
     if not GAME.playing then
         -- not in-game, update various global states
         TASK.unlock('cannotStart')
-        revOn = self.active and (key == 2 or KBisDown('lctrl', 'lalt', 'rctrl', 'ralt'))
+        revOn = self.active and (key == 2 or KBisDown('lctrl', 'lalt', 'rctrl', 'ralt') or next(RevHold))
         if revOn and completion[self.id] == 0 then
             revOn = false
             noSpin = true
