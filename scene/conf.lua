@@ -1309,7 +1309,7 @@ albumBtn {
     color = bgmColors.b6,
     fontSize = 30,
     text = "6?",
-    onClick = function() GAME.height = PlayBGM('b6') or -bgmHeight[6] end,
+    onClick = function() GAME.negFloor, GAME.height = 6, PlayBGM('b6') or -bgmHeight[6] end,
     visibleFunc = function() return page == 4 and STAT.clicker end,
 }
 
