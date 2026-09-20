@@ -528,7 +528,7 @@ function scene.draw()
 
         local playTime = BGM.tell()
 
-        gc_ucs_move(50, 120)
+        gc_ucs_move(50, 100)
 
         -- Time
         setFont(30)
@@ -1183,7 +1183,7 @@ for i = 1, 3 do
     })
 end
 
-local albumY = baseY + 250
+local albumY = baseY + 226
 pages[4] = {
     WIDGET.new { -- title
         type = 'text', alignX = 'left',
@@ -1234,7 +1234,7 @@ pages[4] = {
     },
     WIDGET.new { -- no loop
         type = 'button',
-        x = baseX + 450, y = albumY + 80, w = 200, h = 50,
+        x = baseX + 450, y = albumY + 75, w = 200, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "NO LOOPS",
         onClick = function()
@@ -1252,7 +1252,7 @@ local function albumBtn(param)
 end
 for i = 0, 10 do
     albumBtn {
-        x = baseX + 75 + 75 * i, y = baseY + 410,
+        x = baseX + 75 + 75 * i, y = baseY + 400,
         color = bgmColors['f' .. i],
         text = "" .. i,
         onClick = function()
@@ -1264,7 +1264,7 @@ for i = 0, 10 do
         end,
     }
     albumBtn {
-        x = baseX + 75 + 75 * i, y = baseY + 490,
+        x = baseX + 75 + 75 * i, y = baseY + 480,
         color = bgmColors['f' .. i .. 'r'],
         text = "R" .. i,
         onClick = function()
@@ -1275,21 +1275,21 @@ for i = 0, 10 do
     }
 end
 albumBtn {
-    x = baseX + 450 - 140, y = baseY + 610, w = 120,
+    x = baseX + 450 - 140, y = baseY + 600, w = 120,
     color = bgmColors.tera,
     text = "TERA",
     onClick = function() PlayBGM('tera') end,
     visibleFunc = function() return page == 4 and ACHV.blazing_speed end,
 }
 albumBtn {
-    x = baseX + 450 + 140, y = baseY + 610, w = 120,
+    x = baseX + 450 + 140, y = baseY + 600, w = 120,
     color = bgmColors.terar,
     text = "TERAR",
     onClick = function() PlayBGM('terar') end,
     visibleFunc = function() return page == 4 and ACHV.blazing_speed and BEST.highScore.rEX >= Floors[9].top end,
 }
 albumBtn {
-    x = baseX + 450, y = baseY + 610, w = 120,
+    x = baseX + 450, y = baseY + 600, w = 120,
     color = bgmColors.fomg,
     fontSize = 50,
     text = "FΩ",
@@ -1297,7 +1297,7 @@ albumBtn {
     visibleFunc = function() return page == 4 and STAT.maxHeight >= 6200 end,
 }
 albumBtn {
-    x = baseX + 450, y = baseY + 610 + 140, w = 120,
+    x = baseX + 450, y = baseY + 600 + 140, w = 120,
     color = bgmColors.fomgr,
     fontSize = 50,
     text = "FΩR",
@@ -1305,7 +1305,7 @@ albumBtn {
     visibleFunc = function() return page == 4 and STAT.clicker and #GetClickerStar() >= 6 end,
 }
 albumBtn {
-    x = baseX + 840, y = baseY + 770, w = 80,
+    x = baseX + 840, y = baseY + 760, w = 80,
     color = bgmColors.b6,
     fontSize = 30,
     text = "6?",
