@@ -146,8 +146,6 @@ function ZENITHA.globalEvent.keyDown(key, isRep)
     end
 end
 
-function ZENITHA.globalEvent.quit() SaveStat() end
-
 local function task_autoSoundOff()
     coroutine.yield()
     while true do
@@ -458,10 +456,12 @@ end
 function LoadSave()
     -- Fill BEST, STAT, ACHV tables with actual save data, only called after InitProfile()
     if FILE.exist('stat.luaon') then
-        local stat = FILE.load('stat.luaon', '-luaon')
-        TABLE.update(STAT, stat)
-        if not STAT.srTimer_game then
-            STAT.srTimer_game, STAT.srTimer_life = STAT.totalTime, MATH.roundUnit(STAT.totalTime * 1.26, .001)
+        local stat = FILE.safeLoad('stat.luaon', '-luaon')
+        if stat then
+            TABLE.update(STAT, stat)
+            if not STAT.srTimer_game then
+                STAT.srTimer_game, STAT.srTimer_life = STAT.totalTime, MATH.roundUnit(STAT.totalTime * 1.26, .001)
+            end
         end
     else
         GAME.speedrunning = true
