@@ -18,6 +18,7 @@ local function aq(x, y) return GC.newQuad((x - 1) % 16 * 256, (y - 1) % 16 * 256
 TEXTURE = {
     star0 = assets 'crystal-dark.png',
     star1 = assets 'crystal.png',
+    cursor = assets 'cursor.png',
     star2 = assets 'crystal-fire.png',
     panel = {
         glass_a = assets 'panel/glass-a.png',

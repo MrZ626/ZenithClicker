@@ -923,27 +923,8 @@ require 'module/initialize'
 local pressValue = 0
 local function starCursor(x, y)
     if GAME.cursorHide or GAME.zenithTraveler then return end
-    gc_translate(x, y)
-    gc_scale(1.42)
-    gc_rotate(MATH.lerp(-.626, -1.2, pressValue))
-    gc_scale(.8 + .2 * pressValue, 1)
-    local l = .626 + .374 * pressValue
-    gc_setColor(l, l, l)
-    gc_draw(TEXTURE.star0, 0, -6, 0, .14, .3, TEXTURE.star1:getWidth() * .5, 0)
-    gc_scale(.12, .26)
-    gc_setShader(SHADER.coloring)
-    gc_setColor(1, .626, .5)
-    gc_draw(TEXTURE.star0, -150, 0)
-    if GAME.cursorProg <= .384626 then
-        local t = MATH.interpolate(0, 1, .384626, 0, GAME.cursorProg)
-        gc_setColor(.9, .9, .9, t)
-        gc_draw(TEXTURE.star0, -150, 0)
-        gc_setShader()
-    else
-        gc_setShader()
-        gc_setColor(1, 1, 1, MATH.iLerp(.384626, 1, GAME.cursorProg))
-        gc_draw(TEXTURE.star1, -150, 0)
-    end
+    gc_setColor(1, 1, 1)
+    gc_draw(TEXTURE.cursor, x, y, -.574 * pressValue, .25, .25, 12, 18)
 end
 function ApplySettings()
     love.mouse.setVisible(CONF.syscursor)
