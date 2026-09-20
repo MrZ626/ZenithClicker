@@ -468,6 +468,9 @@ function scene.draw()
         -- Sliders
         drawSliderComponents(140, "EFFECT VOLUME", "QUIET (F3)", "LOUD (F3)", CONF.sfx)
         drawSliderComponents(220, "MUSIC VOLUME", "QUIET (F4)", "LOUD (F4)", CONF.bgm)
+        if not CONF.syscursor then
+            drawSliderComponents(580, "CURSOR SIZE", "SMALL", "LARGE", CONF.cursorSize)
+        end
         -- Keybind
         if bindBuffer then
             setFont(30)
@@ -696,27 +699,38 @@ pages[1] = {
         disp = function() return CONF.bg end,
         code = function() CONF.bg = not CONF.bg end,
     },
-    WIDGET.new { -- star
-        type = 'checkBox',
-        fillColor = clr.cbFill,
-        frameColor = clr.cbFrame,
-        textColor = clr.T, text = "STAR FORCE",
-        x = baseX + 55, y = baseY + 430,
-        disp = function() return not CONF.syscursor end,
-        code = function()
-            CONF.syscursor = not CONF.syscursor
-            SetMouseVisible(true)
-            ApplySettings()
-        end,
-    },
     WIDGET.new { -- fullscreen
         type = 'checkBox',
         fillColor = clr.cbFill,
         frameColor = clr.cbFrame,
         textColor = clr.T, text = "FULLSCREEN  (F11)",
-        x = baseX + 55, y = baseY + 500,
+        x = baseX + 55, y = baseY + 430,
         disp = function() return CONF.fullscreen end,
         code = WIDGET.c_pressKey 'f11',
+    },
+    WIDGET.new { -- star
+        type = 'checkBox',
+        fillColor = clr.cbFill,
+        frameColor = clr.cbFrame,
+        textColor = clr.T, text = "STAR FORCE",
+        x = baseX + 55, y = baseY + 500,
+        disp = function() return not CONF.syscursor end,
+        code = function()
+            CONF.syscursor = not CONF.syscursor
+            SetMouseVisible(true)
+            ApplySettings()
+            scene.widgetList.cursorSize:setVisible()
+        end,
+    },
+    WIDGET.new { -- cursor size
+        name = 'cursorSize', type = 'slider',
+        x = baseX + 240 + 85, y = baseY + 580, w = 400,
+        axis = { 50, 120, 5 },
+        frameColor = 'dD', fillColor = clr.D,
+        disp = function() return CONF.cursorSize end,
+        code = function(value) CONF.cursorSize = value end,
+        sound_drag = 'rotate',
+        visibleFunc = function() return page == 1 and not CONF.syscursor end,
     },
     WIDGET.new { -- keybind
         type = 'button',

@@ -319,8 +319,9 @@ CONF = {
     bgm = 100,
     autoMute = false,
     bg = true,
-    syscursor = false,
     fullscreen = true,
+    syscursor = false,
+    cursorSize = 100,
     skin_front = 'zc',
     skin_back = 'zc',
     keybind = {
@@ -924,7 +925,8 @@ local pressValue = 0
 local function starCursor(x, y)
     if GAME.cursorHide or GAME.zenithTraveler then return end
     gc_setColor(1, 1, 1)
-    gc_draw(TEXTURE.cursor, x, y, -.574 * pressValue, .25, .25, 12, 18)
+    local k = .0026 * CONF.cursorSize
+    gc_draw(TEXTURE.cursor, x, y, -.574 * pressValue, k, k, 12, 18)
 end
 function ApplySettings()
     love.mouse.setVisible(CONF.syscursor)
