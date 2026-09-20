@@ -1321,7 +1321,7 @@ pages[5] = {
         fontSize = 30, textColor = clr.LT, text = "< PREV",
         onClick = function()
             skinCtrl = false
-            love.keypressed('left')
+            scene.keyDown('left')
             skinCtrl = nil
         end,
         visibleFunc = function() return page == 5 and TABLE.find(skinList.skin_front, skinPage.skin_front) > 1 end
@@ -1333,7 +1333,7 @@ pages[5] = {
         fontSize = 30, textColor = clr.LT, text = "SELECT",
         onClick = function()
             skinCtrl = false
-            love.keypressed(CONF.keybind[19])
+            scene.keyDown(CONF.keybind[19])
             skinCtrl = nil
         end,
         visibleFunc = function() return page == 5 and skinPage.skin_front ~= CONF.skin_front and skinUnlocked[skinPage.skin_front] end
@@ -1345,7 +1345,7 @@ pages[5] = {
         fontSize = 30, textColor = clr.LT, text = "NEXT >",
         onClick = function()
             skinCtrl = false
-            love.keypressed('right')
+            scene.keyDown('right')
             skinCtrl = nil
         end,
         visibleFunc = function() return page == 5 and TABLE.find(skinList.skin_front, skinPage.skin_front) < #skinList.skin_front end
@@ -1358,7 +1358,7 @@ pages[5] = {
         fontSize = 30, textColor = clr.LT, text = "< PREV",
         onClick = function()
             skinCtrl = true
-            love.keypressed('left')
+            scene.keyDown('left')
             skinCtrl = nil
         end,
         visibleFunc = function() return page == 5 and TABLE.find(skinList.skin_back, skinPage.skin_back) > 1 end
@@ -1370,7 +1370,7 @@ pages[5] = {
         fontSize = 30, textColor = clr.LT, text = "SELECT",
         onClick = function()
             skinCtrl = true
-            love.keypressed(CONF.keybind[19])
+            scene.keyDown(CONF.keybind[19])
             skinCtrl = nil
         end,
         visibleFunc = function() return page == 5 and skinPage.skin_back ~= CONF.skin_back and skinUnlocked[skinPage.skin_back] end
@@ -1382,7 +1382,7 @@ pages[5] = {
         fontSize = 30, textColor = clr.LT, text = "NEXT >",
         onClick = function()
             skinCtrl = true
-            love.keypressed('right')
+            scene.keyDown('right')
             skinCtrl = nil
         end,
         visibleFunc = function() return page == 5 and TABLE.find(skinList.skin_back, skinPage.skin_back) < #skinList.skin_back end
@@ -1395,7 +1395,7 @@ local function newTabBtn(text, y, key, visFunc)
         pos = { 1, 0 }, x = -60, y = y, w = 160, h = 60,
         color = { CLR.HEX '383838' },
         fontSize = 30, text = text, textColor = 'DL',
-        onClick = function() love.keypressed(key) end,
+        onClick = function() scene.keyDown(key) end,
         visibleFunc = visFunc,
     }
 end
@@ -1412,7 +1412,7 @@ local tab = {
         pos = { 0, 0 }, x = 60, y = 140, w = 160, h = 60,
         color = { .15, .15, .15 },
         fontSize = 30, text = "    BACK", textColor = 'DL',
-        onClick = function() love.keypressed('escape') end,
+        onClick = function() scene.keyDown('escape') end,
     },
 }
 
