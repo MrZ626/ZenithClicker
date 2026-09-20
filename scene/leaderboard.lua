@@ -37,16 +37,16 @@ local CRcache = setmetatable({}, {
 })
 local inputCache = setmetatable({}, {
     __index = function(t, k)
+        if #k == 4 then table.remove(k, 1) end
         local sum = MATH.sum(k)
         local s = {}
-        for i = 1, 4 do s[i] = k[i] / sum end
+        for i = 1, 3 do s[i] = k[i] / sum end
         t[k] = s
         return s
     end
 })
 local inputStatColor = {
     { COLOR.HEX 'FF7866C0' },
-    { COLOR.HEX 'FFB66DC0' },
     { COLOR.HEX 'FFEB55C0' },
     { COLOR.HEX 'A3FF5CC0' },
 }
@@ -270,7 +270,7 @@ function scene.draw()
             if p.input then
                 local data = inputCache[p.input]
                 local x = 0
-                for j = 1, 4 do
+                for j = 1, 3 do
                     gc_setColor(inputStatColor[j])
                     gc_rectangle('fill', noW + 18 + x * 64, entryH * .926, data[j] * 64, -6)
                     x = x + data[j]
