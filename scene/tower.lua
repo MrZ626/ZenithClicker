@@ -1967,7 +1967,21 @@ scene.widgetList = {
                     RefreshBGM()
                     GAME.refreshRPC()
                 else
-                    SFX.play('no')
+                    SFX.play('damage_alert')
+                    TASK.new(function()
+                        for x = 200, 1400, 200 do
+                            table.insert(GAME.impactGlow, {
+                                r = .1,
+                                g = .26,
+                                b = .62,
+                                x = x,
+                                y = 726,
+                                t = .62,
+                                tk = 1 / (GAME.slowmo and 6.2 or 2.6),
+                            })
+                            TASK.yieldT(GAME.slowmo and .062 or .026)
+                        end
+                    end)
                 end
             end
         end,

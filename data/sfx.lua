@@ -214,7 +214,7 @@ return {
     boardlock_revive = { 379, 3.71 },
     party_ready = { 639, 1.6 },
     cutin_superlobby = { 341, 7.04 },
-    -- damage_alert = { 99, 1.5 },
+    damage_alert = { 99, 1.5 },
     damage_small = { 724, 0.8 },
     damage_medium = { 480, 1 },
     damage_large = { 111, 1.2 },
