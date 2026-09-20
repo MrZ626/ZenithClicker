@@ -712,7 +712,7 @@ pages[1] = {
         type = 'checkBox',
         fillColor = clr.cbFill,
         frameColor = clr.cbFrame,
-        textColor = clr.T, text = "CUSTOM CURSOR",
+        textColor = clr.T, text = "CRYSTAL CURSOR",
         x = baseX + 55, y = baseY + 500,
         disp = function() return CONF.customCursor end,
         code = function()
