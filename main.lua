@@ -320,7 +320,7 @@ CONF = {
     autoMute = false,
     bg = true,
     fullscreen = true,
-    syscursor = false,
+    customCursor = true,
     cursorSize = 100,
     skin_front = 'zc',
     skin_back = 'zc',
@@ -363,10 +363,10 @@ MX, MY = -260, 0 -- Mouse position
 -- Functions: Cursor
 
 function SetMouseVisible(bool)
-    if CONF.syscursor then
-        love.mouse.setVisible(bool)
-    else
+    if CONF.customCursor then
         GAME.cursorHide = not bool
+    else
+        love.mouse.setVisible(bool)
     end
 end
 
@@ -929,8 +929,8 @@ local function starCursor(x, y)
     gc_draw(TEXTURE.cursor, x, y, -.574 * pressValue, k, k, 12, 18)
 end
 function ApplySettings()
-    love.mouse.setVisible(CONF.syscursor)
-    ZENITHA.globalEvent.drawCursor = CONF.syscursor and NULL or starCursor
+    love.mouse.setVisible(not CONF.customCursor)
+    ZENITHA.globalEvent.drawCursor = CONF.customCursor and starCursor or NULL
     SFX.setVol(CONF.sfx / 100)
     BGM.setVol(CONF.bgm / 100)
 end
@@ -1405,7 +1405,7 @@ function Daemon_Fast()
         end
 
         -- Mouse holding animation
-        if not CONF.syscursor then
+        if CONF.customCursor then
             pressValue = MSisDown(1, 2) and 1 or expApproach(pressValue, 0, dt * 12)
         end
 

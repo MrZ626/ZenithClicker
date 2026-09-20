@@ -216,6 +216,12 @@ local upgradeFunc = {
         STAT.badge.ultraheart, STAT.badge.cardiac_arrest = STAT.badge.cardiac_arrest, nil
         return 202
     end,
+    [202] = function()
+        if CONF.syscursor ~= nil then
+            CONF.customCursor, CONF.syscursor = not CONF.syscursor, nil
+        end
+        return 203
+    end,
 }
 
 function Initialize(save)
