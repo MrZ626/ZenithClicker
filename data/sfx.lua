@@ -79,7 +79,7 @@ return {
     -- hit = { 593, 0.3 },
     -- sidehit = { 719, 0.3 },
     -- softdrop = { 578, 0.1 },
-    -- harddrop = { 181, 0.4 },
+    harddrop = { 181, 0.4 },
     hold = { 52, 0.4 },
     irs = { 618, 0.2 },
     ihs = { 556, 0.4 },
