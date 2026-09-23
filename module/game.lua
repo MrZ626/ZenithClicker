@@ -327,17 +327,11 @@ function GAME.getHand(real)
         --     end
         -- end
     else
-        -- FASTER
-        for i = 1, #MD.deck do
+        for i = 1, #CD do
             if CD[i].active then
                 ins(list, CD[i].id)
             end
         end
-        -- for _, C in ipairs(CD) do
-        --     if C.active then
-        --         ins(list, C.id)
-        --     end
-        -- end
     end
     return list
 end

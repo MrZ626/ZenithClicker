@@ -198,11 +198,7 @@ local buttonContent = {
         gc_print("LEADERBOARDS", 22, 6, 0, .9)
         gc_print("VIEW THE DAILY CHALLENGE LEADERBOARDS", 26, 62, 0, .36)
     end,
-    function(w, h)
-        -- gc_setColor(1, 1, 1)
-        -- if colorRev then gc_setShader(sd) end
-        -- GC.mDraw(texture_chn.leaderboard, w / 2, h / 2, 0, w / texture_chn.leaderboard:getWidth())
-        -- if colorRev then gc_setShader() end
+    function(_, _)
         gc_setColor(0, 0, 0, .42)
         gc_print("DISCORD", 22, 6 + 6, 0, .9)
         gc_print("JOIN OUR DISCORD COMMUNITY", 26, 62 + 3, 0, .36)
@@ -210,11 +206,7 @@ local buttonContent = {
         gc_print("DISCORD", 22, 6, 0, .9)
         gc_print("JOIN OUR DISCORD COMMUNITY", 26, 62, 0, .36)
     end,
-    function(w, h)
-        -- gc_setColor(1, 1, 1)
-        -- if colorRev then gc_setShader(sd) end
-        -- GC.mDraw(texture_chn.leaderboard, w / 2, h / 2, 0, w / texture_chn.leaderboard:getWidth())
-        -- if colorRev then gc_setShader() end
+    function(_, _)
         gc_setColor(0, 0, 0, .42)
         gc_print("GITHUB", 22, 6 + 6, 0, .9)
         gc_print("OPEN THE GITHUB REPOSITORY", 26, 62 + 3, 0, .36)
