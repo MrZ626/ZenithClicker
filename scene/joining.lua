@@ -28,10 +28,7 @@ function scene.update(dt)
                 end
                 for k in next, GAME.completion do
                     GAME.completion[k] = 0
-                    GAME.mod[k] = 0
-                    if Cards[k].active then
-                        Cards[k]:setActive(true)
-                    end
+                    if Cards[k].active then Cards[k]:setActive(true) end
                 end
                 for i = 1, #PieceData do
                     GAME[PieceData[i].id] = false
