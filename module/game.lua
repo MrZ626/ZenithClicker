@@ -1258,7 +1258,7 @@ function GAME.upFloor()
             if GAME.invisCard and GAME.comboStr == 'rIN' then IssueSecret('true_invis') end
             if GAME.invisUI and GAME.comboStr == 'rDP' then IssueSecret('true_couple') end
         end
-        if (GAME.gigaspeed or GAME.inputStat[3] < 26) and URM and GAME.steadfast and GAME.slowmo and GAME.nightcore and GAME.fastLeak and GAME.closeCard and GAME.invisCard and GAME.invisUI and GAME.comboStr == 'rAS' then IssueSecret('true_magician') end
+        if (GAME.gigaspeed or GAME.inputStat[2] < 26) and URM and GAME.steadfast and GAME.slowmo and GAME.nightcore and GAME.fastLeak and GAME.closeCard and GAME.invisCard and GAME.invisUI and GAME.comboStr == 'rAS' then IssueSecret('true_magician') end
 
         if GAME.comboStr == '' then SubmitAchv('zenith_speedrun', roundTime) end
         SubmitAchv('zenith_speedrun_plus', roundTime)
