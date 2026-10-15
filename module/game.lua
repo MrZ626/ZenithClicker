@@ -2675,6 +2675,7 @@ function GAME.finish(reason)
 
         -- ZP
         local zpGain = abs(GAME.roundHeight) * GAME.comboZP
+        if GAME.roundHeight < 0 then zpGain = min(zpGain, 26000) end
         local newZP = STAT.zp +
             zpGain *                           -- base ZP gain
             icLerp(26, 16, STAT.zp / zpGain) * -- soft cap: slow down after 16x, stop at 26x
