@@ -97,18 +97,43 @@ local bgmColors = {
     b6 = { CLR.HEX '6E5D4AFF' },
 }
 local bgmHeight = {
-    [0] = Floors[0].top,
-    Floors[0].top,
-    Floors[1].top,
-    Floors[2].top,
-    Floors[3].top,
-    Floors[4].top,
-    Floors[5].top,
-    Floors[6].top,
-    Floors[7].top,
-    Floors[8].top,
-    Floors[9].top + 10,
-    Floors[9].top + 26, -- special
+    -- [0] = Floors[0].top,
+    -- Floors[0].top,
+    -- Floors[1].top,
+    -- Floors[2].top,
+    -- Floors[3].top,
+    -- Floors[4].top,
+    -- Floors[5].top,
+    -- Floors[6].top,
+    -- Floors[7].top,
+    -- Floors[8].top,
+    -- Floors[9].top + 10,
+    -- Floors[9].top + 26, -- special
+
+    -- Normal
+    [0] = 0,
+    0,
+    50,
+    150,
+    300,
+    450,
+    650,
+    850,
+    1100,
+    1350,
+    1660,
+
+    -- Rev
+    [-1] = 25,
+    [-2] = 90,
+    [-3] = 225,
+    [-4] = 375,
+    [-5] = 560,
+    [-6] = 750,
+    [-7] = 990,
+    [-8] = 1225,
+    [-9] = 1525,
+    [-10] = 1675,
 }
 
 local skinCtrl
@@ -1282,7 +1307,7 @@ for i = 0, 10 do
         color = bgmColors['f' .. i .. 'r'],
         text = "R" .. i,
         onClick = function()
-            GAME.height = (bgmHeight[i] + bgmHeight[i + 1]) / 2
+            GAME.height = bgmHeight[-i]
             PlayBGM('f' .. i .. 'r')
         end,
         visibleFunc = function() return page == 4 and STAT.maxFloor >= 10 and TABLE.countAll(GAME.completion, 2) > 0 end,
