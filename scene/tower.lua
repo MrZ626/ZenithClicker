@@ -1048,7 +1048,7 @@ function scene.overDraw()
         for i = 1, #glow do
             local L = glow[i]
             gc_setColor(L.r, L.g, L.b, L.t)
-            GC.blurCircle(0, L.x, L.y, 120 * (L.t + 1.6) ^ 2)
+            GC.glowCircle(1, L.x, L.y, 120 * (L.t + 1.6) ^ 2)
         end
         gc_setBlendMode('alpha')
     end
@@ -1276,8 +1276,8 @@ function scene.overDraw()
                 end
 
                 -- Spike ball
-                gc_setColor(r, g, b, a)
-                GC.blurCircle(-.26, 0, 0, 100 * k)
+                gc_setColor(r, g, b, a * .62)
+                GC.glowCircle(1, 0, 0, 100 * k)
                 gc_mDraw(TEXTURE.surgeIcon, 0, 0, GAME.time * 2.6, .25 * k * bk)
 
                 -- Spark
@@ -1683,7 +1683,7 @@ function scene.overDraw()
         gc_replaceTransform(SCR.origin)
         gc_setColor(.42, 0, 0, GAME.playing and .16 or .35)
         gc_draw(TEXTURE.pixel, 0, 0, 0, SCR.w, SCR.h)
-        gc_setColor(0, 0, 0, M.EX == 2 and .62 or .42)
+        gc_setColor(0, 0, 0, M.EX == 2 and .52 or .35)
         gc_draw(TEXTURE.darkCorner, 0, 0, 0, SCR.w / 128, SCR.h / 128)
     end
 

@@ -420,7 +420,7 @@ local gc_origin, gc_translate, gc_rotate, gc_scale, gc_shear = GC.origin, GC.tra
 local gc_setColor, gc_setAlpha = GC.setColor, GC.setAlpha
 local gc_setShader, gc_setLineWidth = GC.setShader, GC.setLineWidth
 local gc_draw, gc_polygon, gc_mDraw = GC.draw, GC.polygon, GC.mDraw
-local gc_blurCircle, gc_setBlendMode = GC.blurCircle, GC.setBlendMode
+local gc_glowCircle, gc_setBlendMode = GC.glowCircle, GC.setBlendMode
 
 local burnColor = {
     uAS = { 1, .42, .26 },
@@ -696,7 +696,7 @@ function Card:draw()
     if not playing and completion[self.id] > 0 then
         img = TEXTURE[self.active and (self.id == 'DP' and STAT.clicker and 'star2' or 'star1') or 'star0']
         local t = self.upright and self.float or 1
-        local blur = (FloatOnCard == self.initOrder or not self.upright) and 0 or -.2
+        local glowAlpha = (FloatOnCard == self.initOrder or not self.upright) and 1 or .62
         local x = lerp(155, 0, t)
         local y = lerp(-370, -330, t)
         local cr = lerp(60, 180, t)
@@ -704,19 +704,19 @@ function Card:draw()
         local ang = -t * 6.2832
         -- Base star
         if self.upright then
-            gc_setColor(.26, .26, .26)
+            gc_setColor(.26, .26, .26, glowAlpha)
             gc_setBlendMode('add')
-            gc_blurCircle(blur, x, y, cr)
-            if revMastery then gc_blurCircle(blur, -x, -y, cr) end
+            gc_glowCircle(1, x, y, cr)
+            if revMastery then gc_glowCircle(1, -x, -y, cr) end
             gc_setBlendMode('alpha')
             gc_setColor(1, 1, 1)
             gc_mDraw(img, x, y, ang, lerp(.16, .42, t))
             if revMastery then gc_mDraw(img, -x, -y, ang, lerp(.16, .42, t)) end
         else
-            gc_setColor(.6, .1, .1)
+            gc_setColor(.6, .1, .1, glowAlpha)
             gc_setBlendMode('add')
-            gc_blurCircle(blur, x, y, cr)
-            if revMastery then gc_blurCircle(blur, -x, -y, cr) end
+            gc_glowCircle(1, x, y, cr)
+            if revMastery then gc_glowCircle(1, -x, -y, cr) end
             gc_setBlendMode('alpha')
             gc_setColor(1, .62 + .1 * sin(getTime() * 42), .26)
             gc_mDraw(img, x, y, ang, lerp(.16, .42, t))
