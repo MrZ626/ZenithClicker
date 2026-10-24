@@ -579,9 +579,9 @@ function scene.draw()
         gc_setColor(clr.L)
         gc_rectangle('fill', 0, 46, len, 4)
         if GAME.bgm_playing == 'tera' then
-            gc_setColor(COLOR.rainbow_light(2.6 * t))
+            gc_setColor(CLR.PSL(2.6 * t, .67, .7))
         elseif GAME.bgm_playing == 'terar' then
-            gc_setColor(COLOR.rainbow_light(20 * t))
+            gc_setColor(CLR.PSL(20 * t, .67, .7))
         else
             gc_setColor(bgmColors[GAME.bgm_playingName])
         end
@@ -595,8 +595,8 @@ function scene.draw()
         else
             gc_setAlpha(.26 - .12 * GAME.bgm_beat)
         end
-        gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * SCR.w, SCR.h)
-        gc_draw(TEXTURE.transition, SCR.w, 0, 0, -.42 / 128 * SCR.w, SCR.h)
+        GC.rectBeam(1, 0, SCR.h / 2, 0, SCR.h, .42 * SCR.w)
+        GC.rectBeam(1, SCR.w, SCR.h / 2, 0, SCR.h, -.42 * SCR.w)
         gc.pop()
 
         -- Title

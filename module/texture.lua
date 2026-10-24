@@ -498,13 +498,6 @@ end)
 TEXTURE.ruler:setFilter('nearest', 'nearest')
 TEXTURE.ruler:setWrap('repeat', 'repeat')
 
-TEXTURE.transition = GC.initCanvas(128, 1, function()
-    for x = 0, 127 do
-        GC.setColor(1, 1, 1, 1 - x / 128)
-        GC.rectangle('fill', x, 0, 1, 1)
-    end
-end)
-
 TEXTURE.triangle = GC.initCanvas(100, 100, function()
     GC.setColor(1, 1, 1)
     GC.polygon('fill', 0, 0, 100, 0, 0, 100)

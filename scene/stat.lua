@@ -99,11 +99,11 @@ function RefreshProfile()
     -- right dark
     GC.setColor(0, 0, 0, .15)
     GC.rectangle('fill', 1200, 720, -3, -560)
-    GC.draw(TEXTURE.transition, 1200, 720 - 560, -1.5708, .626, -3)
+    GC.rectBeam(1, 1200 - 1.5, 720 - 560, -1.5708, -3, .626 * 128)
     -- left light
     GC.setColor(1, 1, 1, .15)
     GC.rectangle('fill', 0, 720, 3, -560)
-    GC.draw(TEXTURE.transition, 0, 720 - 560, -1.5708, .626, 3)
+    GC.rectBeam(1, 1.5, 720 - 560, -1.5708, 3, .626 * 128)
 
     -- X
     FONT.set(30)

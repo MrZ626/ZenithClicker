@@ -607,7 +607,7 @@ function DrawBG(brightness, showRuler)
                     lLerp(f10colors[3], t),
                     .626 * (1 - t)
                 )
-                gc_draw(TEXTURE.transition, 0, SCR.h, -1.5708, SCR.h / 128, SCR.w)
+                GC.rectBeam(1, SCR.w / 2, SCR.h, -1.5708, SCR.w, SCR.h)
             elseif GAME.clr_combo[1] then
                 -- Vacuum
                 local t = GAME.time % 1
@@ -757,12 +757,12 @@ function scene.draw()
                 gc_replaceTransform(SCR.origin)
                 gc_setColor(GAME.giga_r, GAME.giga_g, GAME.giga_b, .42 * GAME.giga_a * gigaPower)
                 local h1 = SCR.y + 478 * SCR.k
-                gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * SCR.w, h1)
-                gc_draw(TEXTURE.transition, SCR.w, 0, 0, -.42 / 128 * SCR.w, h1)
+                GC.rectBeam(1, 0, h1 / 2, 0, h1, .42 * SCR.w)
+                GC.rectBeam(1, SCR.w, h1 / 2, 0, h1, -.42 * SCR.w)
 
                 gc_replaceTransform(SCR.xOy)
                 gc_setAlpha(GAME.giga_a * gigaPower)
-                gc_draw(TEXTURE.transition, 800 - 1586 / 2, panelH - 303, 1.5708, 26, 1586, 0, 1)
+                GC.rectBeam(1, 800, panelH - 303, 1.5708, 1586, 26 * 128)
             end
         end
 
@@ -770,7 +770,7 @@ function scene.draw()
         gc_replaceTransform(SCR.xOy)
         gc_translate(0, GAME.deckPress)
         gc_setColor(ShadeColor)
-        gc_draw(TEXTURE.transition, 800 - 1586 / 2, panelH - 303, 1.5708, 6.26, 1586, 0, 1)
+        GC.rectBeam(1, 800, panelH - 303, 1.5708, 1586, 6.26 * 128)
         if GAME.revDeckSkin then
             gc_push()
             gc_translate(800, panelH)
@@ -787,8 +787,8 @@ function scene.draw()
             gc_pop()
         end
         gc_setColor(ShadeColor)
-        gc_draw(TEXTURE.transition, 800 - 1586 / 2, panelH - 303, 1.5708, 12.6, -3, 0, 1)
-        gc_draw(TEXTURE.transition, 800 + 1586 / 2, panelH - 303, 1.5708, 12.6, 3, 0, 1)
+        GC.rectBeam(1, 800 - 1586 / 2 - 1.5, panelH - 303, 1.5708, -3, 12.6 * 128)
+        GC.rectBeam(1, 800 + 1586 / 2 + 1.5, panelH - 303, 1.5708, 3, 12.6 * 128)
         gc_setColor(TextColor)
         gc_setAlpha(.626)
         gc_mRect('fill', 800, panelH - 303, 1586 + 6, -3)
@@ -1205,7 +1205,7 @@ function scene.overDraw()
             gc_setColor(COLOR.S)
             gc_setAlpha(next(RevHold) and .42 or .26)
         end
-        gc_draw(TEXTURE.transition, -200 * GAME.uiHide, -40, 0, 200 / 128, -560)
+        GC.rectBeam(1, -200 * GAME.uiHide, -320, 0, -560, 200)
     end
 
     -- Cards
@@ -1525,9 +1525,9 @@ function scene.overDraw()
 
             -- Blur
             gc_setColor(1, 1, 1, alpha * .355)
-            gc_draw(TEXTURE.transition, 0, SCR.h - h, 1.5708, h / 128, SCR.w, 0, 1)
+            GC.rectBeam(1, SCR.w / 2, SCR.h - h, 1.5708, SCR.w, h)
             gc_setColor(1, 0, 0, alpha * .42)
-            gc_draw(TEXTURE.transition, 0, SCR.h - h, -1.5708, SCR.k * 42 / 128, SCR.w)
+            GC.rectBeam(1, SCR.w / 2, SCR.h - h, -1.5708, SCR.w, SCR.k * 42)
 
             -- Line
             gc_setColor(1, 0, 0, alpha)
@@ -1666,16 +1666,16 @@ function scene.overDraw()
     if GAME.steadfast then
         gc_replaceTransform(SCR.origin)
         gc_setColor(1, 0, 1, (GAME.playing and .626 or 1) * .42)
-        gc_draw(TEXTURE.transition, 0, 0, -1.5708, .35 / 128 * -SCR.h, SCR.w)
-        gc_draw(TEXTURE.transition, 0, SCR.h, -1.5708, .35 / 128 * SCR.h, SCR.w)
+        GC.rectBeam(1, SCR.w / 2, 0, -1.5708, SCR.w, -.35 * SCR.h)
+        GC.rectBeam(1, SCR.w / 2, SCR.h, -1.5708, SCR.w, .35 * SCR.h)
     end
 
     -- Fastleak cover
     if GAME.fastLeak then
         gc_replaceTransform(SCR.origin)
         gc_setColor(.8, 0, 0, (GAME.playing and .626 or 1) * ((M.EX > 0 or M.DP == 2) and .62 or .42))
-        gc_draw(TEXTURE.transition, 0, 0, 0, .62 / 128 * SCR.w, SCR.h)
-        gc_draw(TEXTURE.transition, SCR.w, 0, 0, -.42 / 128 * SCR.w, SCR.h)
+        GC.rectBeam(1, 0, SCR.h / 2, 0, SCR.h, .62 * SCR.w)
+        GC.rectBeam(1, SCR.w, SCR.h / 2, 0, SCR.h, -.42 * SCR.w)
     end
 
     -- Ultra cover

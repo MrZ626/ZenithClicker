@@ -540,8 +540,8 @@ function scene.draw()
                 gc_setColor(.8, 0, 0, .26)
                 gc_rectangle('fill', 0, 10, pw, 110)
                 gc_setColor(0, 0, 0, .62)
-                gc_draw(TEXTURE.transition, 0, 10, 1.5707963267948966, 42 / 128, -pw)
-                gc_draw(TEXTURE.transition, 0, 120, -1.5707963267948966, 42 / 128, pw)
+                GC.rectBeam(1, pw / 2, 10, 1.5707963267948966, -pw, 42)
+                GC.rectBeam(1, pw / 2, 120, -1.5707963267948966, pw, 42)
             end
 
             gc_translate(0, 120)
