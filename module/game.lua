@@ -2764,6 +2764,16 @@ function GAME.finish(reason)
             end
             SFX.play('applause', GAME.floor / 10)
             SaveBest()
+        elseif GAME.negFloor >= 2 and GAME.roundHeight < BEST.lowScore[setStr] then
+            BEST.lowScore[setStr] = GAME.roundHeight
+            TEXT:add {
+                text = "PERSONAL WORST",
+                x = 800, y = 226, k = 2.6, fontSize = 70,
+                style = 'beat', inPoint = .26, outPoint = .62,
+                color = CLR.l2RSS, duration = 6.2,
+            }
+            SFX.play('ratinglower')
+            SaveBest()
         end
 
         local resStr = {}

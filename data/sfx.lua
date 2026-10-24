@@ -188,7 +188,7 @@ return {
     worldrecord = { 453, 3.7 },
     -- ranklower = { 148, 3.3 },
     -- rankraise = { 607, 9.2 },
-    -- ratinglower = { 733, 2.7 },
+    ratinglower = { 733, 2.7 },
     ratingraise = { 118, 2.2 },
 
     achievement_1 = { 232, 3.65 },

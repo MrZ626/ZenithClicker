@@ -1047,6 +1047,7 @@ pages[3] = {
             setmetatable(BEST.highScore, Metatable.best_highscore)
             GAME.refreshLockState()
             setmetatable(BEST.speedrun, Metatable.best_speedrun)
+            setmetatable(BEST.lowScore, Metatable.best_lowscore)
             if STAT.system ~= SYSTEM then
                 STAT.system = SYSTEM
                 IssueAchv('zenith_relocation')

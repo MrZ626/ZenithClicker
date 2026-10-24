@@ -312,6 +312,7 @@ UTIL.time("Load gamedata & Initialize Textures", true)
 Metatable = {
     best_highscore = { __index = function() return 0 end },
     best_speedrun = { __index = function() return 1e99 end },
+    best_lowscore = { __index = function() return 0 end },
 }
 
 CONF = {
@@ -403,6 +404,7 @@ function InitProfile()
     BEST = {
         highScore = setmetatable({}, Metatable.best_highscore),
         speedrun = setmetatable({}, Metatable.best_speedrun),
+        lowScore = setmetatable({}, Metatable.best_lowscore)
     }
 
     STAT = {
