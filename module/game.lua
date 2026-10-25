@@ -1062,17 +1062,17 @@ function GAME.showFloorText(f, name, duration)
     TEXT:add {
         text = "Floor",
         x = 160, y = 305, k = 1, fontSize = 50,
-        color = CLR.l5YSS, duration = duration,
+        color = CLR.l7YS, duration = duration,
     }
     TEXT:add {
         text = tostring(f),
         x = 240, y = 295, k = 1.1, fontSize = 70,
-        color = CLR.l5YSS, duration = duration, align = 'left',
+        color = CLR.l7YS, duration = duration, align = 'left',
     }
     TEXT:add {
         text = name,
         x = 200, y = 360, k = 1, fontSize = 30,
-        color = CLR.l5YSS, duration = duration,
+        color = CLR.l7YS, duration = duration,
     }
 end
 
@@ -2751,7 +2751,7 @@ function GAME.finish(reason)
                 else
                     t = (GAME.anyUltra and "U-" or GAME.anyRev and "R-" or "") .. (#hand == 1 and "MOD" or "COMBO") .. " MASTERED"
                     size = 2.26
-                    color = CLR.l5CbS
+                    color = CLR.l6CbSS
                     duration = 6.2
                 end
                 TEXT:add {
@@ -2766,7 +2766,7 @@ function GAME.finish(reason)
                     text = "PERSONAL BEST",
                     x = 800, y = 226, k = 2.6, fontSize = 70,
                     style = 'beat', inPoint = .26, outPoint = .62,
-                    color = CLR.l5YSS, duration = 6.2,
+                    color = CLR.l6YSS, duration = 6.2,
                 }
                 SFX.play('personalbest', 1, 0, Tone(-.1))
             end
@@ -2778,7 +2778,7 @@ function GAME.finish(reason)
                 text = "PERSONAL WORST",
                 x = 800, y = 226, k = 2.6, fontSize = 70,
                 style = 'beat', inPoint = .26, outPoint = .62,
-                color = CLR.l2RSS, duration = 6.2,
+                color = CLR.l3RSS, duration = 6.2,
             }
             SFX.play('ratinglower')
             SaveBest()

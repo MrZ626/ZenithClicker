@@ -3,22 +3,22 @@ love.mouse.setVisible(false)
 
 require 'Zenitha'
 for k, v in next, {
-    DR = 'd4RS', dR = 'd1RS', R = 'l2RS', lR = 'l4RS', LR = 'l5RS',
-    DF = 'd4RyS', dF = 'd1RyS', F = 'l2RyS', lF = 'l4RyS', LF = 'l5RyS',
-    DO = 'd4YrrS', dO = 'd1YrrS', O = 'l2YrrS', lO = 'l4YrrS', LO = 'l5YrrS',
-    DY = 'd4YS', dY = 'd1YS', Y = 'l2YS', lY = 'l4YS', LY = 'l5YSS',
-    DA = 'd4YggS', dA = 'd1YggS', A = 'l2YggS', lA = 'l4YggS', LA = 'l5Yggs',
-    DK = 'd4GyS', dK = 'd1GyS', K = 'l2GyS', lK = 'l4GyS', LK = 'l5Gys',
-    DG = 'd4GcS', dG = 'd1GcS', G = 'l2GcS', lG = 'l4GcS', LG = 'l5Gc',
-    DJ = 'd4CggS', dJ = 'd1CggS', J = 'l2CggS', lJ = 'l4CggS', LJ = 'l5CggS',
-    DC = 'd4CS', dC = 'd1CS', C = 'l2CS', lC = 'l4CS', LC = 'l5CS',
-    DI = 'd4CbbS', dI = 'd1CbbS', I = 'l2CbbS', lI = 'l4CbbS', LI = 'l5CbbS',
-    DS = 'd4BcS', dS = 'd1BcS', S = 'l2BcS', lS = 'l4BcS', LS = 'l5BcS',
-    DB = 'd4BmS', dB = 'd1BmS', B = 'l2BmS', lB = 'l4BmS', LB = 'l5BmS',
-    DP = 'd4MbbS', dP = 'd1MbbS', P = 'l2MbbS', lP = 'l4MbbS', LP = 'l5MbbS',
-    DV = 'd4MS', dV = 'd1MS', V = 'l2MS', lV = 'l4MS', LV = 'l5MS',
-    DM = 'd4MrrS', dM = 'd1MrrS', M = 'l2MrrS', lM = 'l4MrrS', LM = 'l5MrrS',
-    DW = 'd4RmS', dW = 'd1RmS', W = 'l2RmS', lW = 'l4RmS', LW = 'l5RmS',
+    DR = 'd7RySSS', dR = 'd3RySSS', R = 'l2RySSS', lR = 'l4RSSS', LR = 'l7RSSS',
+    DF = 'd7RyySSS', dF = 'd3RyS', F = 'l3RySSS', lF = 'l4RyyS', LF = 'l7RyySS',
+    DO = 'd6YrSS', dO = 'd2YrSSS', O = 'l4YrrSSS', lO = 'l6YrSSS', LO = 'l8YrSSS',
+    DY = 'd6YgSSS', dY = 'd1YgSSS', Y = 'l6YgSSS', lY = 'l7YgSSS', LY = 'l8YgSS',
+    DA = 'd6GySSS', dA = 'd1GySS', A = 'l6GySSS', lA = 'l7GySSS', LA = 'l8GyyS',
+    DK = 'd7GSSS', dK = 'd2GSS', K = 'l5GSSS', lK = 'l6GSSS', LK = 'l7Gs',
+    DG = 'd7GcSSS', dG = 'd3GSSS', G = 'l4GSSS', lG = 'l5GcSS', LG = 'l7Gc',
+    DJ = 'd6CgSSS', dJ = 'd2CgSSS', J = 'l4CgSSS', lJ = 'l5CgS', LJ = 'l7Cgss',
+    DC = 'd6CbbSS', dC = 'd3CbbSS', C = 'l3CbbS', lC = 'l5Cbbs', LC = 'l7Cbbs',
+    DI = 'd7BcSS', dI = 'd3BcS', I = 'l2BcS', lI = 'l4Bc', LI = 'l6Bccss',
+    DS = 'd7BSSS', dS = 'd4BSSS', S = 'l1BSSS', lS = 'l3BcS', LS = 'l6Bcs',
+    DB = 'd7BmSSS', dB = 'd4BmSS', B = 'l0BmSSS', lB = 'l3BmSSS', LB = 'l5Bmm',
+    DP = 'd7BmmSSS', dP = 'd5BmmSSS', P = 'd1Bmm', lP = 'l2Bmm', LP = 'l5MbbS',
+    DV = 'd7MbSS', dV = 'd4Mb', V = 'l0Mb', lV = 'l2Mss', LV = 'l5Mss',
+    DM = 'd7MrrSSS', dM = 'd3MrrS', M = 'l2MrrS', lM = 'l3Mrrs', LM = 'l5Mrss',
+    DW = 'd6RSSS', dW = 'd3RSS', W = 'l2RSSS', lW = 'l3RmS', LW = 'l6Rm',
 } do COLOR[k] = CLR[v] end
 
 ZENITHA.setMainLoopSpeed(240)
@@ -35,7 +35,6 @@ SCR.setSize(1600, 1000)
 local gc = love.graphics
 local gc_push, gc_pop = gc.push, gc.pop
 local gc_translate, gc_scale = gc.translate, gc.scale
-local gc_rotate, gc_setShader = gc.rotate, gc.setShader
 local gc_setColor, gc_setLineWidth, gc_setLineJoin = gc.setColor, gc.setLineWidth, gc.setLineJoin
 local gc_draw, gc_line = gc.draw, gc.line
 local gc_mRect = GC.mRect
@@ -959,16 +958,16 @@ function ReloadTexts()
 end
 
 local normalHelp = {
-    CLR.W, "Welcome to ", COLOR.lF, "Zenith Clicker", CLR.W, "! Choose the required tarot cards and send players to scale the tower.\n",
+    CLR.L, "Welcome to ", COLOR.lF, "Zenith Clicker", CLR.L, "! Choose the required tarot cards and send players to scale the tower.\n",
     "The higher you go in the tower, the more tricky players you'll encounter!\n",
     "There's a leaderboard for daily challenge, how high can you reach?\n",
     "[DYNAMIC TEXT]",
 }
 local ultraHelp = {
-    CLR.W, "Welcome to ", COLOR.lR, "Zenith Clicker: ", COLOR.R, "Ultra Reverse", CLR.W, ". Activate a reversed mod to start ", COLOR.lR, "suffering.\n",
-    CLR.W, "The higher you go in the tower, the more likely you are to ", COLOR.R, "die.\n",
-    CLR.W, "There are no more achievements, and ", COLOR.lR, "you are not expected to go very high up.\n",
-    COLOR.R, "Give Up: ", CLR.W, "ESC    ", COLOR.R, "Forfeit: ", CLR.W, "ESC    ", COLOR.R, "Quit: ", CLR.W, "ESC"
+    CLR.L, "Welcome to ", COLOR.lR, "Zenith Clicker: ", COLOR.R, "Ultra Reverse", CLR.L, ". Activate a reversed mod to start ", COLOR.lR, "suffering.\n",
+    CLR.L, "The higher you go in the tower, the more likely you are to ", COLOR.R, "die.\n",
+    CLR.L, "There are no more achievements, and ", COLOR.lR, "you are not expected to go very high up.\n",
+    COLOR.R, "Give Up: ", CLR.L, "ESC    ", COLOR.R, "Forfeit: ", CLR.L, "ESC    ", COLOR.R, "Quit: ", CLR.L, "ESC"
 }
 function RefreshHelpText()
     local s = SCN.scenes.tower.widgetList

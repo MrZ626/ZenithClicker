@@ -8,7 +8,7 @@
 AchvMsgStyle = {
     [0] = { id = 'achv_none', bg = CLR.D, fg = CLR.LD },
     { id = 'achv_bronze',   bg = COLOR.DO, fg = COLOR.lO },
-    { id = 'achv_silver',   bg = CLR.d4,   fg = CLR.dL },
+    { id = 'achv_silver',   bg = COLOR.lD, fg = COLOR.dL },
     { id = 'achv_gold',     bg = COLOR.DY, fg = COLOR.lY },
     { id = 'achv_platinum', bg = COLOR.DJ, fg = COLOR.lJ },
     { id = 'achv_diamond',  bg = COLOR.DP, fg = COLOR.lP },
