@@ -60,27 +60,33 @@ local widgetSet = {}
 ---@field extraText love.Text
 
 ---@return Record?
-local function newRecord(list, isUltra)
-    local mods = #list == 0 and "No Mod" or table.concat(list, " ")
+local function newRecord(list, isUltra, bRun)
     table.sort(list)
     local setStr = (isUltra and 'u' or '') .. table.concat(list)
-    local height = rawget(BEST.highScore, setStr)
-    if not height then return end
+    local height = rawget(bRun and BEST.lowScore or BEST.highScore, setStr)
+    if not height or bRun and set.mode == 'speedrun' then return end
     local time = BEST.speedrun[setStr]
-    local floor = height >= 6200 and 11 or GAME.calculateFloor(height)
+    local floor = bRun and GAME.calculateNegFloor(height) or (height >= 6200 and 11 or GAME.calculateFloor(height))
     local scoreText, floorText, extraText
     local mp, zp = GAME.getComboMP(list), GAME.getComboZP(list)
+    local zpValue = bRun and min(math.abs(height) * zp, 26000) or height * zp
+    local zpSort = zpValue
+    if bRun and zpValue >= 26000 then
+        -- Hide alt info in ZP
+        zpSort = zpSort + min(math.abs(height) / 1e6, .999999)
+    end
+    local floorStr = bRun and ("B" .. floor) or ("F" .. (floor <= 10 and floor or "Ω"))
     if set.mode == 'altitude' then
-        floorText = "F" .. (floor <= 10 and floor or "Ω")
+        floorText = floorStr
         scoreText = ("%.1f M"):format(height)
-        extraText = ("%d ZP"):format(height * zp)
+        extraText = ("%d ZP"):format(zpValue)
     elseif set.mode == 'speedrun' then
         floorText = "GIGA"
         scoreText = STRING.time(time)
         extraText = ("%.1f m/s"):format(1650 / time)
     elseif set.mode == 'zp' then
-        floorText = "F" .. (floor <= 10 and floor or "Ω")
-        scoreText = ("%d ZP"):format(height * zp)
+        floorText = floorStr
+        scoreText = ("%d ZP"):format(zpValue)
         extraText = ("%.1f M"):format(height)
     end
     local comboText = setStr == "" and [["QUICK PICK"]] or GAME.getComboName(list, 'record')
@@ -92,12 +98,13 @@ local function newRecord(list, isUltra)
             comboText = GAME.ultrafyComboName(comboText)
         end
     end
+    local mods = #list == 0 and "No Mod" or table.concat(list, " ")
     return {
         _list = list,
         _height = height,
         _speedrun = time,
         _floor = floor,
-        _zp = height * zp,
+        _zp = zpSort,
         _ultra = isUltra,
 
         comboText = GC.newText(FONT.get(50), comboText),
@@ -142,6 +149,97 @@ local function refresh()
     for _, w in next, widgetSet.mp do w:setVisible(showMP) end
     ph = not (showFloor or showMP) and 180 or 300
 end
+local function tryAdd(list, setStr, height)
+    local bRun = height < 0
+    if bRun and set.mode == 'speedrun' then return end
+    local ultra = setStr:sub(1, 1) == 'u'
+    if set.mode ~= 'speedrun' then
+        -- floor check
+        if not (set.floorComp == '>' and set.floor == 1 or set.floorComp == '<' and set.floor == 10) then
+            local floor = bRun and GAME.calculateNegFloor(height) or GAME.calculateFloor(height)
+            if
+                set.floorComp == '>' and floor < set.floor or
+                set.floorComp == '<' and floor > set.floor or
+                set.floorComp == '=' and floor ~= set.floor
+            then
+                return
+            end
+        end
+    else
+        -- speedrun check
+        if BEST.speedrun[setStr] > 1e26 then return end
+    end
+
+    -- mp check
+    if not (set.mpComp == '>' and set.mp == 1 or set.mpComp == '<' and set.mp == 18) then
+        local mp = (#setStr - (ultra and 1 or 0) + setStr:count('r')) / 2
+        if
+            set.mpComp == '>' and mp < set.mp or
+            set.mpComp == '<' and mp > set.mp or
+            set.mpComp == '=' and mp ~= set.mp
+        then
+            return
+        end
+    end
+
+    -- combo check
+    local key = ultra and setStr:sub(2) or setStr
+    local setL = {}; for m in key:gmatch('r?..') do table.insert(setL, m) end
+    local setS = TABLE.getValueSet(setL)
+    if set.match == 'include' then
+        if #setL < #list then return end
+        local notFound
+        for i = 1, #set.sel do
+            if set.sel[i] > 0 and not setS[(set.sel[i] == 2 and 'r' or '') .. cardIDs[i]] then
+                notFound = true
+                break
+            end
+        end
+        if notFound then return end
+    elseif set.match == 'exclude' then
+        local found
+        for i = 1, #set.sel do
+            if set.sel[i] > 0 and setS[(set.sel[i] == 2 and 'r' or '') .. cardIDs[i]] then
+                found = true
+                break
+            end
+        end
+        if found then return end
+    elseif set.match == 'include+' then
+        if #setL < #list then return end
+        local notFound
+        for i = 1, #set.sel do
+            if set.sel[i] > 0 and not (setS[cardIDs[i]] or setS['r' .. cardIDs[i]]) then
+                notFound = true
+                break
+            end
+        end
+        if notFound then return end
+    elseif set.match == 'exclude+' then
+        if #setL + #list > 9 then return end
+        local found
+        for i = 1, #set.sel do
+            if set.sel[i] > 0 and (setS[cardIDs[i]] or setS['r' .. cardIDs[i]]) then
+                found = true
+                break
+            end
+        end
+        if found then return end
+    elseif set.match == 'exact+' then
+        if #setL ~= #list then return end
+        local notMatch
+        for i = 1, #set.sel do
+            if (set.sel[i] == 0) ~= not (setS[cardIDs[i]] or setS['r' .. cardIDs[i]]) then
+                notMatch = true
+                break
+            end
+        end
+        if notMatch then return end
+    end
+
+    local rec = newRecord(setL, ultra, bRun)
+    if rec then table.insert(recList, rec) end
+end
 local function query()
     clear()
     for i = 1, #recList do recList[i].comboText:release() end
@@ -153,102 +251,15 @@ local function query()
         end
     end
     if set.match == 'exact' then
-        for i = 0, 1 do
-            local rec = newRecord(list, i == 1)
-            if rec then table.insert(recList, rec) end
-        end
+        local rec = newRecord(list)
+        if rec then table.insert(recList, rec) end
+        rec = newRecord(list, true)
+        if rec then table.insert(recList, rec) end
+        rec = newRecord(list, true, true)
+        if rec then table.insert(recList, rec) end
     else
-        for setStr, height in next, BEST.highScore do
-            repeat
-                local ultra = setStr:sub(1, 1) == 'u'
-                if set.mode ~= 'speedrun' then
-                    -- floor check
-                    if not (set.floorComp == '>' and set.floor == 1 or set.floorComp == '<' and set.floor == 10) then
-                        local floor = GAME.calculateFloor(height)
-                        if
-                            set.floorComp == '>' and floor < set.floor or
-                            set.floorComp == '<' and floor > set.floor or
-                            set.floorComp == '=' and floor ~= set.floor
-                        then
-                            break
-                        end
-                    end
-                else
-                    -- speedrun check
-                    if BEST.speedrun[setStr] > 1e26 then break end
-                end
-
-                -- mp check
-                if not (set.mpComp == '>' and set.mp == 1 or set.mpComp == '<' and set.mp == 18) then
-                    local mp = (#setStr - (ultra and 1 or 0) + setStr:count('r')) / 2
-                    if
-                        set.mpComp == '>' and mp < set.mp or
-                        set.mpComp == '<' and mp > set.mp or
-                        set.mpComp == '=' and mp ~= set.mp
-                    then
-                        break
-                    end
-                end
-
-                -- combo check
-                if ultra then setStr = setStr:sub(2) end
-                local setL = {}; for m in setStr:gmatch('r?..') do table.insert(setL, m) end
-                local setS = TABLE.getValueSet(setL)
-                if set.match == 'include' then
-                    if #setL < #list then break end
-                    local notFound
-                    for i = 1, #set.sel do
-                        if set.sel[i] > 0 and not setS[(set.sel[i] == 2 and 'r' or '') .. cardIDs[i]] then
-                            notFound = true
-                            break
-                        end
-                    end
-                    if notFound then break end
-                elseif set.match == 'exclude' then
-                    local found
-                    for i = 1, #set.sel do
-                        if set.sel[i] > 0 and setS[(set.sel[i] == 2 and 'r' or '') .. cardIDs[i]] then
-                            found = true
-                            break
-                        end
-                    end
-                    if found then break end
-                elseif set.match == 'include+' then
-                    if #setL < #list then break end
-                    local notFound
-                    for i = 1, #set.sel do
-                        if set.sel[i] > 0 and not (setS[cardIDs[i]] or setS['r' .. cardIDs[i]]) then
-                            notFound = true
-                            break
-                        end
-                    end
-                    if notFound then break end
-                elseif set.match == 'exclude+' then
-                    if #setL + #list > 9 then break end
-                    local found
-                    for i = 1, #set.sel do
-                        if set.sel[i] > 0 and (setS[cardIDs[i]] or setS['r' .. cardIDs[i]]) then
-                            found = true
-                            break
-                        end
-                    end
-                    if found then break end
-                elseif set.match == 'exact+' then
-                    if #setL ~= #list then break end
-                    local notMatch
-                    for i = 1, #set.sel do
-                        if (set.sel[i] == 0) ~= not (setS[cardIDs[i]] or setS['r' .. cardIDs[i]]) then
-                            notMatch = true
-                            break
-                        end
-                    end
-                    if notMatch then break end
-                end
-
-                local rec = newRecord(setL, ultra)
-                if rec then table.insert(recList, rec) end
-            until true
-        end
+        for setStr, height in next, BEST.highScore do tryAdd(list, setStr, height) end
+        for setStr, height in next, BEST.lowScore do tryAdd(list, setStr, height) end
         table.sort(recList,
             set.mode == 'altitude' and (set.order == 'first' and recSorter.high or recSorter.low) or
             set.mode == 'zp' and (set.order == 'first' and recSorter.high_zp or recSorter.low_zp) or

@@ -598,10 +598,18 @@ function GAME.anim_setBoardAnim_rev(t)
     GAME.anim_setBoardAnim(1 - t)
 end
 
-local floorHeights = {}
-for i = 0, 9 do ins(floorHeights, Floors[i].top) end
 function GAME.calculateFloor(h)
-    return floor(1 + 9 * MATH.ilLerp(floorHeights, h))
+    for i = 1, #Floors - 1 do
+        if h < Floors[i].top then return i end
+    end
+    return #Floors
+end
+
+function GAME.calculateNegFloor(h)
+    for i = 1, #NegFloors - 1 do
+        if h >= NegFloors[i].bottom then return i end
+    end
+    return #NegFloors
 end
 
 function GAME.calculateSurgeColor(c)
@@ -2764,7 +2772,7 @@ function GAME.finish(reason)
             end
             SFX.play('applause', GAME.floor / 10)
             SaveBest()
-        elseif GAME.negFloor >= 2 and GAME.roundHeight < BEST.lowScore[setStr] then
+        elseif GAME.roundHeight < BEST.lowScore[setStr] then
             BEST.lowScore[setStr] = GAME.roundHeight
             TEXT:add {
                 text = "PERSONAL WORST",
