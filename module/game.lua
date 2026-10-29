@@ -2990,7 +2990,6 @@ function GAME.finish(reason)
             SubmitAchv('the_masterful_juggler', GAME.achv_maxChain)
         elseif GAME.comboStr == 'VLrDPrNH' then
             SubmitAchv('toxic_codependence', GAME.achv_maxChain_noDeath)
-            MSG('warn', tostring(GAME.achv_maxChain_noDeath))
         elseif GAME.comboStr == 'ASMSrGVrNH' then
             SubmitAchv('autoplay_is_awesome', GAME.achv_noManualCommitH or GAME.roundHeight)
         elseif GAME.comboStr == 'EXMSNHVLrAS' then
