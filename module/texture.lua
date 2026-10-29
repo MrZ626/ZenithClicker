@@ -344,7 +344,7 @@ TEXTURE = {
             lovers_promise = aq(8, 7),
 
             the_masterful_juggler = aq(11, 7),
-            toxic_codependence = aq(12, 4),
+            toxic_codependence = aq(11, 6),
             fickle_fuel = aq(9, 5),
             slayer_of_the_tower = aq(1, 3),
             perfect_speedrun = aq(15, 5),
