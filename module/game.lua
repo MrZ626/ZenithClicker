@@ -937,6 +937,7 @@ function GAME.takeDamage(dmg, reason, toAlly)
 
     if GAME[k] <= .01 then -- Prevent float number precision error
         GAME[k] = 0
+        GAME.achv_chain_noDeath = 0
         if GAME.invincible then
             GAME[k] = 0.26
         elseif GAME[GAME.getLifeKey(not toAlly)] > 0 then
@@ -1992,6 +1993,7 @@ function GAME.commit(auto)
                 })
             end
             GAME.chain = 0
+            GAME.achv_chain_noDeath = 0
 
             if not GAME.achv_perfectH then
                 GAME.achv_perfectH = GAME.roundHeight
@@ -2024,6 +2026,7 @@ function GAME.commit(auto)
 
             if correct == 1 then
                 GAME.chain = GAME.chain + 1
+                if not GAME.DPlock then GAME.achv_chain_noDeath = GAME.achv_chain_noDeath + 1 end
                 if GAME.chain < 4 then
                 elseif GAME.chain < 8 then
                     if GAME.chain == 4 then SFX.play('b2bcharge_start', .8) end
@@ -2052,6 +2055,7 @@ function GAME.commit(auto)
             xp = xp * 3
             GAME.chain = GAME.chain + 1
             GAME.achv_doublePass = GAME.achv_doublePass + 1
+            if not GAME.DPlock then GAME.achv_chain_noDeath = GAME.achv_chain_noDeath + 1 end
             if not ACHV.lucky_coincidence then IssueAchv('lucky_coincidence') end
         end
         if GAME.switch_sickness >= 20 then
@@ -2116,6 +2120,7 @@ function GAME.commit(auto)
             end
 
             GAME.achv_maxChain = max(GAME.achv_maxChain, GAME.chain)
+            GAME.achv_maxChain_noDeath = max(GAME.achv_maxChain_noDeath, GAME.achv_chain_noDeath)
             if GAME.chain >= 75 and GAME.chain - (dblCorrect and 2 or 1) < 75 then
                 SubmitAchv('perfect_speedrun', GAME.time)
             end
@@ -2539,6 +2544,8 @@ function GAME.start()
     GAME.achv_protectH = nil
     GAME.achv_noManualFlipH = nil
     GAME.achv_maxChain = 0
+    GAME.achv_chain_noDeath = 0
+    GAME.achv_maxChain_noDeath = 0
     GAME.achv_maxReviveH = nil
     GAME.achv_totalDmg = 0
     GAME.achv_clutchQuest = 0
@@ -2981,6 +2988,9 @@ function GAME.finish(reason)
             SubmitAchv('empurple', GAME.achv_noChargeH or GAME.roundHeight)
         elseif GAME.comboStr == 'rGVrINrMS' then
             SubmitAchv('the_masterful_juggler', GAME.achv_maxChain)
+        elseif GAME.comboStr == 'VLrDPrNH' then
+            SubmitAchv('toxic_codependence', GAME.achv_maxChain_noDeath)
+            MSG('warn', tostring(GAME.achv_maxChain_noDeath))
         elseif GAME.comboStr == 'ASMSrGVrNH' then
             SubmitAchv('autoplay_is_awesome', GAME.achv_noManualCommitH or GAME.roundHeight)
         elseif GAME.comboStr == 'EXMSNHVLrAS' then

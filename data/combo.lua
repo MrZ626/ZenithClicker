@@ -28,7 +28,6 @@ d.menu = {
     { set = "MS rDH rIN AS",      name = "Kitsune Trickery" },
     { set = "EX NH MS VL DH rAS", name = "The Artist Trinity" },
     { set = "VL DH rIN",          name = "Empurple" },
-    { set = "rMS rGV rIN",        name = "The Masterful Juggler" },
     { set = "rNH MS rGV AS",      name = "Autoplay is Awesome" },
     { set = "DH AS DP",           name = "A Mutual Agreement" },
     { set = "VL AS DP",           name = "The Cheaters" },
@@ -38,6 +37,8 @@ d.menu = {
     { set = "NH rVL AS",          name = "Zero-To-Sixty" },
     { set = "VL IN AS",           name = "Under The Radar" },
     { set = "rNH MS DP",          name = "Scarcity Mindset" },
+    { set = "rMS rGV rIN",        name = "The Masterful Juggler" },
+    { set = "rNH VL rDP",         name = "Toxic Codependence" },
     { set = "VL rGV",             name = "Fickle Fuel" },
 
     { set = "rEX rNH rVL",        name = "Hardcore Beginning" },
