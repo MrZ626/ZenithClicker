@@ -42,4 +42,5 @@ return {
     fomgr = 'assets/music/fomg-rev.ogg',
 
     b6 = 'assets/music/b6.ogg',
+    b10 = 'assets/music/b10.ogg',
 }

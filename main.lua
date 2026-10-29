@@ -736,9 +736,12 @@ function PlayBGM(name, force)
         GAME.bgm_playing = 'f0'
     elseif name == 'f1r' then -- Note: 'f1ex' is only a track name, not musicID
         GAME.bgm_playing = 'f1'
-    elseif name == 'b6r' then -- Note: 'b6ex' is only a track name, not musicID
+    elseif name == 'b6r' then
         name = 'b6'
         GAME.bgm_playing = 'b6'
+    elseif name == 'b10r' then
+        name = 'b10'
+        GAME.bgm_playing = 'b10'
     else
         GAME.bgm_playing = name
     end
@@ -885,6 +888,9 @@ function Task_MusicEnd(manual)
     elseif GAME.bgm_playing == 'b6' then
         outroStart = D.loop[2] + 32 * 60 / D.bpm
         GAME.bgm_needStop = outroStart + 8 * 60 / D.bpm
+    elseif GAME.bgm_playing == 'b10' then
+        outroStart = D.loop[2] + 110 * 60 / D.bpm
+        GAME.bgm_needStop = outroStart + 6 * 60 / D.bpm
     else
         GAME.bgm_needStop = BGM.tell() + 4 * 60 / D.bpm
     end

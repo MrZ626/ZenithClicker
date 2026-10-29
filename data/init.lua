@@ -115,6 +115,7 @@ BgmMeta = {
     fomg  = { meta = '4|4  180 & 200 BPM  Bb Minor    ', bar = 4, bpm = 200, toneFix = -2., bpmData = { 90, 10.667, 180, 25.333, 200 }, loop = { 38.4 - 11.862, 144 - 11.862 } },
     fomgr = { meta = '4|4  184 BPM  B Minor & C Minor ', bar = 4, bpm = 184, toneFix = -.5, loop = { 60 / 184 * 76, 60 / 184 * 632 } },
     b6    = { meta = '4|4  120 BPM  G Minor           ', bar = 4, bpm = 120, toneFix = 2.0, loop = { 16, 224 } },
+    b10   = { meta = '4|4  100 BPM  G Minor           ', bar = 4, bpm = 100, toneFix = 0.0, loop = { 2.4 + 50.4, 2.4 + 139.2 + 60 / 100 * 80 }, teleport = { -1, 60 / 100 * 3 } },
 }
 for _, v in next, BgmMeta do
     v.meta = STRING.trim(v.meta)

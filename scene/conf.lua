@@ -60,6 +60,7 @@ local songList = {
     fomg = "Ronezkj15 - Strained Endurance",
     fomgr = "Ronezkj15 - Malevolent Blasphemy",
     b6 = "MrshimJSK - Peripeteia",
+    b10 = "MrshimJSK - Endless Void",
 
     f0_EX = "Dr Ocelot - Watchful Eye (EX)",
     f0r_EX = "Dr Ocelot - Awaiting Judgement (EX)",
@@ -94,7 +95,8 @@ local bgmColors = {
     terar = { CLR.HEX 'C0C0C0' },
     fomg = { CLR.HEX '004C89' },
     fomgr = { CLR.HEX '2519A8' },
-    b6 = { CLR.HEX '6E5D4AFF' },
+    b6 = { CLR.HEX '6E5D4A' },
+    b10 = { CLR.HEX '3A176E' },
 }
 local bgmHeight = {
     -- [0] = Floors[0].top,
@@ -1345,11 +1347,19 @@ albumBtn {
     visibleFunc = function() return page == 4 and STAT.clicker and #GetClickerStar() >= 6 end,
 }
 albumBtn {
-    x = baseX + 840, y = baseY + 760, w = 80,
+    x = baseX + 740, y = baseY + 760, w = 80,
     color = bgmColors.b6,
     fontSize = 30,
     text = "6?",
     onClick = function() GAME.negFloor, GAME.height = 6, PlayBGM('b6') or -bgmHeight[6] end,
+    visibleFunc = function() return page == 4 and STAT.clicker end,
+}
+albumBtn {
+    x = baseX + 840, y = baseY + 760, w = 80,
+    color = bgmColors.b10,
+    fontSize = 30,
+    text = "10?",
+    onClick = function() GAME.negFloor, GAME.height = 10, PlayBGM('b10') or -bgmHeight[10] end,
     visibleFunc = function() return page == 4 and STAT.clicker end,
 }
 
