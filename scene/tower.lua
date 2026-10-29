@@ -407,6 +407,7 @@ function scene.keyUp(key)
     end
 end
 
+local qp_timer, qp_delta = 0, 2 ^ -5
 local expApproach = MATH.expApproach
 function scene.update(dt)
     if dt > .26 then dt = .26 end
@@ -449,7 +450,10 @@ function scene.update(dt)
     for i = 1, #Cards do
         Cards[i]:update(GAME.slowmo and dt / 9.42 or dt)
     end
+
+    -- Forfeit timer
     if GAME.playing and (KBisDown('escape') or MSisDown(3)) then
+        -- Charge
         GAME.forfeitTimer = GAME.forfeitTimer +
             (GAME.slowmo and dt / 6.26 or dt) * clampInterpolate(12, 2.6, 26, 1, min(GAME.totalQuest, GAME.time))
         if TASK.lock('forfeit_sfx', .0872) then
@@ -460,19 +464,41 @@ function scene.update(dt)
             GAME.finish('forfeit')
         end
     else
+        -- Discharge
         if GAME.forfeitTimer > 0 then
             GAME.forfeitTimer = GAME.forfeitTimer - (GAME.playing and 1 or 2.6) * (GAME.slowmo and dt / 6.26 or dt)
         end
     end
 
-    if not GAME.playing and TASK.lock('dcTimer', 1) then
-        local timeRemain = 86400 - (3600 * os.date("!%H") + 60 * os.date("!%M") + os.date("!%S"))
-        if timeRemain > lastTimeRemain then
-            RefreshDaily()
-            GAME.refreshDailyChallengeText()
+    if not GAME.playing then
+        if TASK.lock('dcTimer', 1) then
+            local timeRemain = 86400 - (3600 * os.date("!%H") + 60 * os.date("!%M") + os.date("!%S"))
+            if timeRemain > lastTimeRemain then
+                RefreshDaily()
+                GAME.refreshDailyChallengeText()
+            end
+            lastTimeRemain = timeRemain
+            TEXTS.dcTimer:set(os.date("!%H:%M:%S", timeRemain))
         end
-        lastTimeRemain = timeRemain
-        TEXTS.dcTimer:set(os.date("!%H:%M:%S", timeRemain))
+
+        if TASK.lock('qp_timer', qp_delta) then
+            local selCnt = 0
+            for i = #Cards, 1, -1 do
+                if Cards[i].active then
+                    selCnt = selCnt + 1
+                end
+            end
+            if selCnt == 0 then
+                qp_timer = 0
+            else
+                qp_timer = qp_timer + qp_delta
+                if selCnt == 9 and qp_timer < 2 then
+                    IssueAchv('quick_pick')
+                    if qp_timer < 10 then MSG('info', ("QUICK PICKED in %.2fs"):format(qp_timer)) end
+                    qp_timer = 26
+                end
+            end
+        end
     end
 end
 

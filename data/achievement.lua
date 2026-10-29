@@ -1493,6 +1493,16 @@ local d = {
         hide = TRUE,
         type = 'issued',
     },
+    { -- quick_pick
+        ex = true,
+        id = 'quick_pick',
+        name = "Quick Pick",
+        desc = [[Select all mods within 2 seconds]],
+        quote = [["I look away for 2 seconds and you already selected that monstrosity?"]],
+        credit = "@TrevorSmithy",
+        hide = function() return TABLE.countAll(GAME.completion, 0) > 0 end,
+        type = 'issued',
+    },
     { -- knifes_edge
         ex = true,
         id = 'knifes_edge',

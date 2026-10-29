@@ -402,7 +402,8 @@ TEXTURE = {
             dark_force = aq(3, 1),
             return_to_the_light = aq(1, 2),
             smooth_dismount = aq(4, 1),
-            knifes_edge = aq(5, 5),
+            quick_pick = aq(4, 1),
+            knifes_edge = aq(2, 3),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
