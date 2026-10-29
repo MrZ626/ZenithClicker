@@ -46,9 +46,9 @@ local inputCache = setmetatable({}, {
     end
 })
 local inputStatColor = {
-    { COLOR.HEX 'FF7866C0' },
-    { COLOR.HEX 'FFEB55C0' },
-    { COLOR.HEX 'A3FF5CC0' },
+    { CLR.HEX 'FF7866C0' },
+    { CLR.HEX 'FFEB55C0' },
+    { CLR.HEX 'A3FF5CC0' },
 }
 
 local function refreshBtn()

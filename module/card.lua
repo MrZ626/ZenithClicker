@@ -424,8 +424,8 @@ local gc_glowCircle, gc_setBlendMode = GC.glowCircle, GC.setBlendMode
 
 local burnColor = {
     uAS = { 1, .42, .26 },
-    AS1 = COLOR.R,
-    AS2 = COLOR.lY,
+    AS1 = CLR.R,
+    AS2 = CLR.lY,
 }
 local canvasW, canvasH = 600, 800
 
@@ -670,8 +670,8 @@ function Card:draw()
             else
                 gc_setColor(
                     GAME.time % .16 < .08 and
-                    (faceUp and COLOR.lR or COLOR.lR) or
-                    (faceUp and COLOR.lO or COLOR.lY)
+                    (faceUp and CLR.lR or CLR.lR) or
+                    (faceUp and CLR.lO or CLR.lY)
                 )
             end
         else

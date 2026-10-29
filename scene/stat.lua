@@ -396,7 +396,7 @@ scene.widgetList = {
     WIDGET.new {
         name = 'peakZP', type = 'hint',
         pos = { .5, .5 }, x = -100, y = 150, w = 180, h = 35,
-        color = COLOR.X,
+        color = CLR.X,
         labelPos = 'topRight',
         labelDist = 2,
         floatFontSize = 30,
@@ -435,7 +435,7 @@ for i = 1, totalBadges do
         name = 'link', type = 'hint',
         text = "",
         pos = { .5, .5 }, x = -363 + 33.7 * (i - 1), y = -80, w = 33,
-        color = COLOR.X,
+        color = CLR.X,
         labelPos = 'topRight',
         floatFontSize = 30,
         floatText = "", -- Dynamic text

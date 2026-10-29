@@ -613,10 +613,10 @@ function scene.draw()
         -- Skip marks
         if GAME.bgm_needSkip then
             local alpha = .26 + .62 * (-2.6 * t % 1)
-            gc_setColor(COLOR.C)
+            gc_setColor(CLR.C)
             gc_setAlpha(alpha)
             gc_mRect('fill', len * GAME.bgm_needSkip[1] / playingBgmLength, 48, 2, 9)
-            gc_setColor(COLOR.O)
+            gc_setColor(CLR.O)
             gc_setAlpha(alpha)
             gc_mRect('fill', len * GAME.bgm_needSkip[2] / playingBgmLength, 48, 2, 9)
         end
@@ -777,7 +777,7 @@ pages[1] = {
                             "Commit: " .. CONF.keybind[19] .. "\n" ..
                             "Reset: " .. CONF.keybind[20] .. "\n" ..
                             "Click L/R: " .. CONF.keybind[21] .. ", " .. CONF.keybind[22] .. "\n",
-                            COLOR.F, "PRESS AGAIN TO REBIND\n",
+                            CLR.F, "PRESS AGAIN TO REBIND\n",
                             CLR.LD, "(F1-F12 ` Tab Ctrl Alt are not allowed)"
                         },
                         12

@@ -7,12 +7,12 @@
 
 AchvMsgStyle = {
     [0] = { id = 'achv_none', bg = CLR.D, fg = CLR.LD },
-    { id = 'achv_bronze',   bg = COLOR.DO, fg = COLOR.lO },
-    { id = 'achv_silver',   bg = COLOR.lD, fg = COLOR.dL },
-    { id = 'achv_gold',     bg = COLOR.DY, fg = COLOR.lY },
-    { id = 'achv_platinum', bg = COLOR.DJ, fg = COLOR.lJ },
-    { id = 'achv_diamond',  bg = COLOR.DP, fg = COLOR.lP },
-    { id = 'achv_issued',   bg = COLOR.DM, fg = COLOR.lM },
+    { id = 'achv_bronze',   bg = CLR.DO, fg = CLR.lO },
+    { id = 'achv_silver',   bg = CLR.lD, fg = CLR.dL },
+    { id = 'achv_gold',     bg = CLR.DY, fg = CLR.lY },
+    { id = 'achv_platinum', bg = CLR.DJ, fg = CLR.lJ },
+    { id = 'achv_diamond',  bg = CLR.DP, fg = CLR.lP },
+    { id = 'achv_issued',   bg = CLR.DM, fg = CLR.lM },
 }
 
 GigaSpeedReq = { [0] = 7, 8, 8, 9, 9, 10, 1e99, 1e99, 1e99, 1e99, 1e99 }
@@ -32,13 +32,13 @@ GravityTimer = {
 UltraMessinessMaxUnmoved = { 5, 5, 5, 5, 4, 4, 4, 3, 3, 2 }
 
 PieceData = {
-    { id = 'nightcore', sfx = 'z', text = { COLOR.lR, "Z" }, piece = { COLOR.lR, CHAR.brik.Z }, popup = { COLOR.lR, "Z - Nightcore" } },
-    { id = 'slowmo',    sfx = 's', text = { COLOR.lG, "S" }, piece = { COLOR.lG, CHAR.brik.S }, popup = { COLOR.lG, "S - Sloooooow-mo" } },
-    { id = 'steadfast', sfx = 'j', text = { COLOR.lB, "J" }, piece = { COLOR.lB, CHAR.brik.J }, popup = { COLOR.lB, "J - Steadfast " } },
-    { id = 'fastLeak',  sfx = 'l', text = { COLOR.lO, "L" }, piece = { COLOR.lO, CHAR.brik.L }, popup = { COLOR.lO, "L - Fast Leak" } },
-    { id = 'invisUI',   sfx = 't', text = { COLOR.lM, "T" }, piece = { COLOR.lM, CHAR.brik.T }, popup = { COLOR.lM, "T - Invisible UI" } },
-    { id = 'invisCard', sfx = 'o', text = { COLOR.lY, "O" }, piece = { COLOR.lY, CHAR.brik.O }, popup = { COLOR.lY, "O - Invisible Card" } },
-    { id = 'closeCard', sfx = 'i', text = { COLOR.lC, "I" }, piece = { COLOR.lC, CHAR.brik.I }, popup = { COLOR.lC, "I - Close Card" } },
+    { id = 'nightcore', sfx = 'z', text = { CLR.lR, "Z" }, piece = { CLR.lR, CHAR.brik.Z }, popup = { CLR.lR, "Z - Nightcore" } },
+    { id = 'slowmo',    sfx = 's', text = { CLR.lG, "S" }, piece = { CLR.lG, CHAR.brik.S }, popup = { CLR.lG, "S - Sloooooow-mo" } },
+    { id = 'steadfast', sfx = 'j', text = { CLR.lB, "J" }, piece = { CLR.lB, CHAR.brik.J }, popup = { CLR.lB, "J - Steadfast " } },
+    { id = 'fastLeak',  sfx = 'l', text = { CLR.lO, "L" }, piece = { CLR.lO, CHAR.brik.L }, popup = { CLR.lO, "L - Fast Leak" } },
+    { id = 'invisUI',   sfx = 't', text = { CLR.lM, "T" }, piece = { CLR.lM, CHAR.brik.T }, popup = { CLR.lM, "T - Invisible UI" } },
+    { id = 'invisCard', sfx = 'o', text = { CLR.lY, "O" }, piece = { CLR.lY, CHAR.brik.O }, popup = { CLR.lY, "O - Invisible Card" } },
+    { id = 'closeCard', sfx = 'i', text = { CLR.lC, "I" }, piece = { CLR.lC, CHAR.brik.I }, popup = { CLR.lC, "I - Close Card" } },
 }
 
 RevSwampName = {

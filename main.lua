@@ -2,24 +2,7 @@ love.window.setIcon(love.image.newImageData('assets/icon.png'))
 love.mouse.setVisible(false)
 
 require 'Zenitha'
-for k, v in next, {
-    DR = 'd7RySSS', dR = 'd3RySSS', R = 'l2RySSS', lR = 'l4RSSS', LR = 'l7RSSS',
-    DF = 'd7RyySSS', dF = 'd3RyS', F = 'l3RySSS', lF = 'l4RyyS', LF = 'l7RyySS',
-    DO = 'd6YrSS', dO = 'd2YrSSS', O = 'l4YrrSSS', lO = 'l6YrSSS', LO = 'l8YrSSS',
-    DY = 'd6YgSSS', dY = 'd1YgSSS', Y = 'l6YgSSS', lY = 'l7YgSSS', LY = 'l8YgSS',
-    DA = 'd6GySSS', dA = 'd1GySS', A = 'l6GySSS', lA = 'l7GySSS', LA = 'l8GyyS',
-    DK = 'd7GSSS', dK = 'd2GSS', K = 'l5GSSS', lK = 'l6GSSS', LK = 'l7Gs',
-    DG = 'd7GcSSS', dG = 'd3GSSS', G = 'l4GSSS', lG = 'l5GcSS', LG = 'l7Gc',
-    DJ = 'd6CgSSS', dJ = 'd2CgSSS', J = 'l4CgSSS', lJ = 'l5CgS', LJ = 'l7Cgss',
-    DC = 'd6CbbSS', dC = 'd3CbbSS', C = 'l3CbbS', lC = 'l5Cbbs', LC = 'l7Cbbs',
-    DI = 'd7BcSS', dI = 'd3BcS', I = 'l2BcS', lI = 'l4Bc', LI = 'l6Bccss',
-    DS = 'd7BSSS', dS = 'd4BSSS', S = 'l1BSSS', lS = 'l3BcS', LS = 'l6Bcs',
-    DB = 'd7BmSSS', dB = 'd4BmSS', B = 'l0BmSSS', lB = 'l3BmSSS', LB = 'l5Bmm',
-    DP = 'd7BmmSSS', dP = 'd5BmmSSS', P = 'd1Bmm', lP = 'l2Bmm', LP = 'l5MbbS',
-    DV = 'd7MbSS', dV = 'd4Mb', V = 'l0Mb', lV = 'l2Mss', LV = 'l5Mss',
-    DM = 'd7MrrSSS', dM = 'd3MrrS', M = 'l2MrrS', lM = 'l3Mrrs', LM = 'l5Mrss',
-    DW = 'd6RSSS', dW = 'd3RSS', W = 'l2RSSS', lW = 'l3RmS', LW = 'l6Rm',
-} do COLOR[k] = CLR[v] end
+CLR.installFallback()
 
 ZENITHA.setMainLoopSpeed(240)
 ZENITHA.setRenderRate(50)
@@ -958,16 +941,16 @@ function ReloadTexts()
 end
 
 local normalHelp = {
-    CLR.L, "Welcome to ", COLOR.lF, "Zenith Clicker", CLR.L, "! Choose the required tarot cards and send players to scale the tower.\n",
+    CLR.L, "Welcome to ", CLR.lF, "Zenith Clicker", CLR.L, "! Choose the required tarot cards and send players to scale the tower.\n",
     "The higher you go in the tower, the more tricky players you'll encounter!\n",
     "There's a leaderboard for daily challenge, how high can you reach?\n",
     "[DYNAMIC TEXT]",
 }
 local ultraHelp = {
-    CLR.L, "Welcome to ", COLOR.lR, "Zenith Clicker: ", COLOR.R, "Ultra Reverse", CLR.L, ". Activate a reversed mod to start ", COLOR.lR, "suffering.\n",
-    CLR.L, "The higher you go in the tower, the more likely you are to ", COLOR.R, "die.\n",
-    CLR.L, "There are no more achievements, and ", COLOR.lR, "you are not expected to go very high up.\n",
-    COLOR.R, "Give Up: ", CLR.L, "ESC    ", COLOR.R, "Forfeit: ", CLR.L, "ESC    ", COLOR.R, "Quit: ", CLR.L, "ESC"
+    CLR.L, "Welcome to ", CLR.lR, "Zenith Clicker: ", CLR.R, "Ultra Reverse", CLR.L, ". Activate a reversed mod to start ", CLR.lR, "suffering.\n",
+    CLR.L, "The higher you go in the tower, the more likely you are to ", CLR.R, "die.\n",
+    CLR.L, "There are no more achievements, and ", CLR.lR, "you are not expected to go very high up.\n",
+    CLR.R, "Give Up: ", CLR.L, "ESC    ", CLR.R, "Forfeit: ", CLR.L, "ESC    ", CLR.R, "Quit: ", CLR.L, "ESC"
 }
 function RefreshHelpText()
     local s = SCN.scenes.tower.widgetList
@@ -1266,7 +1249,7 @@ end
 
 function Daemon_Fast()
     local max = math.max
-    local hsv = COLOR.HSV
+    local hsv = CLR.HSV
     local yield = coroutine.yield
     local MSisDown = love.mouse.isDown
     local expApproach = MATH.expApproach

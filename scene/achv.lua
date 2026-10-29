@@ -406,7 +406,7 @@ function scene.draw()
         gc_print("Zenith Clicker Achievement System When?", 420, 380)
         gc_setColor(CLR.D)
         gc_rectangle('fill', 480, 435, 560, 50)
-        gc_setColor(COLOR.lS)
+        gc_setColor(CLR.lS)
         gc_polygon('fill',
             25 + 420, 435,
             420, 435 + 25,
@@ -419,7 +419,7 @@ function scene.draw()
         gc_print("MrZ", 444, 440)
         gc_setColor(CLR.lD)
         gc_print("at 2025/3/18 (Tue)", 535, 440)
-        gc_setColor(COLOR.lS)
+        gc_setColor(CLR.lS)
         gc_print("When it's ready.", 482, 515)
     else
         -- Board
@@ -497,7 +497,7 @@ function scene.draw()
                             ea + 1.0472 + ka * a.progress,
                             63, 26)
                     end
-                    if colorRev then gc_setColor(COLOR.lR) end
+                    if colorRev then gc_setColor(CLR.lR) end
                     gc_mDraw(texture.ring, 65, 65, 0, .42)
                     gc_mDraw(texture.ring, 65, 65, 3.1416, .42)
                     gc_stc_stop()
@@ -533,7 +533,7 @@ function scene.draw()
                 end
 
                 -- Credit
-                gc_setColor(colorRev and COLOR.dR or CLR.LD)
+                gc_setColor(colorRev and CLR.dR or CLR.LD)
                 gc_printf(A.credit, 65, 113, 130 / .37, 'center', 0, .37, .37, 65 / .37)
 
                 -- Tags
@@ -567,14 +567,14 @@ function scene.draw()
                 -- Texts
                 gc_setColor(AchvMsgStyle[a.rank].fg)
                 gc_print(a.score, 130, 35, 0)
-                gc_setColor(colorRev and COLOR.lW or CLR.L)
+                gc_setColor(colorRev and CLR.lE or CLR.L)
                 gc_print(a.name, 130, 7, 0, .7)
                 if a.descWidth < 1050 then
                     gc_print(a.desc, 130, 77, 0, min(400 / a.descWidth, .4), .4)
                 else
                     gc_printf(a.desc, 130, 73, 1050, 'left', 0, .4)
                 end
-                gc_setColor(colorRev and COLOR.dR or CLR.LD)
+                gc_setColor(colorRev and CLR.dR or CLR.LD)
                 gc_print(A.quote, 130, a.descWidth <= 1050 and 98 or 103, 0, .42)
 
                 -- Hidden covering

@@ -559,9 +559,9 @@ local koMsgColor = {
     death = { CLR.HEX "910000FF" },
 }
 local inputStatColor = {
-    { COLOR.HEX 'FF7866C0' },
-    { COLOR.HEX 'FFEB55C0' },
-    { COLOR.HEX 'A3FF5CC0' },
+    { CLR.HEX 'FF7866C0' },
+    { CLR.HEX 'FFEB55C0' },
+    { CLR.HEX 'A3FF5CC0' },
 }
 
 function DrawBG(brightness, showRuler)
@@ -855,7 +855,7 @@ function scene.draw()
 
             -- HP Bar
             local safeHP = GAME.playing and max(GAME.dmgWrong + GAME.dmgWrongExtra, GAME.dmgTime) or 0
-            gc_setColor(GAME.playing and GAME.life > safeHP and CLR.L or COLOR.R)
+            gc_setColor(GAME.playing and GAME.life > safeHP and CLR.L or CLR.R)
             if M.DP == 0 then
                 gc_mRect('fill', 0, hpY, hpW * GAME.lifeShow / GAME.startingHealth, hpH)
 
@@ -865,7 +865,7 @@ function scene.draw()
             else
                 if GAME.onAlly then gc_setAlpha(.42) end
                 gc_rectangle('fill', 0, hpY - hpH / 2, -hpW / 2 * GAME.lifeShow / GAME.startingHealth, hpH)
-                gc_setColor(GAME.playing and GAME.life2 > safeHP and CLR.L or COLOR.R)
+                gc_setColor(GAME.playing and GAME.life2 > safeHP and CLR.L or CLR.R)
                 if not GAME.onAlly then gc_setAlpha(.42) end
                 gc_rectangle('fill', 0, hpY - hpH / 2, hpW / 2 * GAME.lifeShow2 / GAME.startingHealth, hpH)
 
@@ -878,16 +878,16 @@ function scene.draw()
             -- Achievement state mark
             if M.DP > 0 then
                 if GAME.comboStr == 'rDP' and not GAME.achv_protectH then
-                    gc_setColor(COLOR.lG)
+                    gc_setColor(CLR.lG)
                     gc_mRect('fill', 1540 / 2 * 10 / GAME.startingHealth, 210, 4, 20)
                     gc_mRect('fill', -1540 / 2 * 10 / GAME.startingHealth, 210, 4, 20)
                 end
                 if not GAME.achv_shareModH then
-                    gc_setColor(COLOR.M)
+                    gc_setColor(CLR.M)
                     gc_mRect('fill', 0, 205, 10, 10)
                 end
                 if not GAME.achv_noShareModH then
-                    gc_setColor(COLOR.dR)
+                    gc_setColor(CLR.dR)
                     gc_mRect('fill', 0, 215, 10, 10)
                 end
             end
@@ -908,10 +908,10 @@ function scene.draw()
                     gc_setColor(1, 0, 1, .62 * (1 - GAME.bgm_beat))
                     gc_rectangle('fill', -410 - w, 157, w3, 36)
                 end
-                gc_setColor(GAME.dmgTimer > GAME.dmgCycle and CLR.DL or COLOR.lR)
+                gc_setColor(GAME.dmgTimer > GAME.dmgCycle and CLR.DL or CLR.lR)
                 gc_rectangle('fill', -410 - w1, 157, w1, 36)
                 stc_stop()
-                gc_setColor(COLOR.lR)
+                gc_setColor(CLR.lR)
                 gc_rectangle('fill', -410 - w2, 157, w2, 4)
 
                 -- Damage Timer number
@@ -944,7 +944,7 @@ function scene.draw()
             end
             -- Revive counter
             if GAME.reviveCount > 0 then
-                gc_strokePrint('full', 1, CLR.D, COLOR.lR, GAME.reviveCount, 0, 212, 260, 'center')
+                gc_strokePrint('full', 1, CLR.D, CLR.lR, GAME.reviveCount, 0, 212, 260, 'center')
             end
 
             gc_pop()
@@ -1174,7 +1174,7 @@ function scene.overDraw()
         gc_setColor(CLR.L)
         gc_mDraw(TEXTS.rank, 1027, 990, 0, .626)
         if GAME.DPlock then
-            gc_setColor(GAME.time % .9 > .45 and COLOR.R or CLR.D)
+            gc_setColor(GAME.time % .9 > .45 and CLR.R or CLR.D)
         end
         gc_mDraw(TEXTS.height, 800, 978)
 
@@ -1199,10 +1199,10 @@ function scene.overDraw()
     if usingTouch and not GAME.playing and GAME.revUnlocked then
         gc_replaceTransform(SCR.xOy_dl)
         if URM then
-            gc_setColor(COLOR.C)
+            gc_setColor(CLR.C)
             gc_setAlpha(next(RevHold) and .872 or .62)
         else
-            gc_setColor(COLOR.S)
+            gc_setColor(CLR.S)
             gc_setAlpha(next(RevHold) and .42 or .26)
         end
         GC.rectBeam(1, -200 * GAME.uiHide, -320, 0, -560, 200)
@@ -1248,7 +1248,7 @@ function scene.overDraw()
                 'full', 3 * k, obj, x, y, 0, k, k,
                 obj:getWidth() / 2, obj:getHeight() / 2
             )
-            gc_setColor(COLOR.lR)
+            gc_setColor(CLR.lR)
             gc_mDraw(obj, x, y, 0, k)
         end
     end
@@ -1290,7 +1290,7 @@ function scene.overDraw()
                 gc_setColor(CLR.D)
                 gc_strokeDraw('full', 1, TEXTS.b2b, xText, -54)
                 if GAME.fault then
-                    gc_setColor(t % .12 < .06 and COLOR.lR or COLOR.LR)
+                    gc_setColor(t % .12 < .06 and CLR.lR or CLR.LR)
                 else
                     gc_setColor(r, g, b)
                 end
@@ -1492,16 +1492,16 @@ function scene.overDraw()
                 gc_translate(0, -118)
                 GC.scale(1 + sin(t / 2.6) * .026)
                 GC.shear(sin(t) * .26, cos(t * 1.2) * .026)
-                gc_strokePrint('full', 6, COLOR.DW, nil, text, 130, -35 + 4, 2600, 'center', 0, .9, 1)
-                gc_strokePrint('full', 4, COLOR.dW, nil, text, 130, -35 + 2, 2600, 'center', 0, .9, 1)
+                gc_strokePrint('full', 6, CLR.DE, nil, text, 130, -35 + 4, 2600, 'center', 0, .9, 1)
+                gc_strokePrint('full', 4, CLR.dE, nil, text, 130, -35 + 2, 2600, 'center', 0, .9, 1)
                 gc_strokePrint(
-                    'full', 2, COLOR.W, URM and CLR.D or CLR.L,
+                    'full', 2, CLR.E, URM and CLR.D or CLR.L,
                     text, 130, -35, 2600, 'center', 0, .9, 1
                 )
                 gc_pop()
                 setFont(30)
                 gc_strokePrint(
-                    'full', 2, COLOR.dW, URM and CLR.D or COLOR.W,
+                    'full', 2, CLR.dE, URM and CLR.D or CLR.E,
                     (URM and ModData.ultraDesc or ModData.revDesc)[infoID], 260, -68, 2600, 'center', 0, .8, 1
                 )
             else

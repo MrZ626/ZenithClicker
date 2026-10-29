@@ -38,7 +38,7 @@ addSection(350)
 
 -- THE TEAM
 
-addText({ COLOR.O, "THE TEAM" }, 0, 20, .3)
+addText({ CLR.O, "THE TEAM" }, 0, 20, .3)
 
 local function addMajorCredit(x, y, color, name, role, desc)
     addText({ color, name }, x, y, .5)
@@ -66,7 +66,7 @@ addMajorCredit(0320, 560, { CLR.HEX 'E9C6FF' }, "FCSPLAYZ", "EXTRA TEXTS")
 
 addSection(1010)
 
-addText({ COLOR.O, "ART BY" }, 0, 20, .3)
+addText({ CLR.O, "ART BY" }, 0, 20, .3)
 
 addMajorCredit(-390, 62, CLR.L, "LARGEONIONS", "FLOORS 1-5")
 addMajorCredit(-130, 62, CLR.L, "S. ZHANG", "FLOORS 6-8")
@@ -76,22 +76,22 @@ addMajorCredit(0390, 62, CLR.L, "RICMAN", "ORIGINAL CARD ART")
 addSection(1160)
 
 addText({
-    COLOR.O, "FONTS BY ",
+    CLR.O, "FONTS BY ",
     CLR.L, "ADRIAN FRUTIGER (D-DIN-PRO) ",
-    COLOR.O, "& ",
+    CLR.O, "& ",
     CLR.L, "MOONIAK (ABHAYALIBRE)"
 }, 0, 20, .32)
 
 addText({
-    COLOR.O, "SOME ACHV ICONS BY ",
+    CLR.O, "SOME ACHV ICONS BY ",
     CLR.L, "LORC, DELAPOUITE, QUOTING ",
-    COLOR.O, "FROM ",
+    CLR.O, "FROM ",
     CLR.L, "GAME-ICONS.NET"
 }, 0, 60, .32)
 
 addSection(1270)
 
-addText({ COLOR.O, "ALL PARTICIPANTS" }, 0, 20, .3)
+addText({ CLR.O, "ALL PARTICIPANTS" }, 0, 20, .3)
 
 addText({
     table.concat({

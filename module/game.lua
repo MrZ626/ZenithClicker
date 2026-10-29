@@ -388,7 +388,7 @@ function GAME.getComboName(list, mode)
             if comboText then
                 fstr = comboText:atomize()
                 for i = #fstr, 1, -1 do
-                    ins(fstr, i, i % #fstr <= 1 and CLR.dL or COLOR.random(5))
+                    ins(fstr, i, i % #fstr <= 1 and CLR.dL or CLR.random(5))
                 end
                 return fstr
             end
@@ -615,13 +615,13 @@ end
 function GAME.calculateSurgeColor(c)
     local r, g, b, a
     if M.AS < 2 then
-        r, g, b, a = COLOR.HSL(
+        r, g, b, a = CLR.HSL(
             26 / (c + 22) + 1.3, 1,
             icLerp(-260, 420, c),
             c < 8 and .26 or 1
         )
     else
-        r, g, b, a = COLOR.HSV(
+        r, g, b, a = CLR.HSV(
             clampInterpolate(4, .76, 26, 0.926, c), 1, 1,
             .16
         )
@@ -1278,16 +1278,16 @@ end
 
 function GAME.setFatigueColor(mode)
     if mode == 'norm' then -- Normal
-        GAME.boardColorPatch.color = { COLOR.HEX "FF00C0" }
+        GAME.boardColorPatch.color = { CLR.HEX "FF00C0" }
         GAME.boardColorPatch.timer = 5
     elseif mode == 'end' then -- Last original
-        GAME.boardColorPatch.color = { COLOR.HEX "FF0040" }
+        GAME.boardColorPatch.color = { CLR.HEX "FF0040" }
         GAME.boardColorPatch.timer = 15
     elseif mode == 'pos' then -- rDP Positive
-        GAME.boardColorPatch.color = { COLOR.HEX "FFB000" }
+        GAME.boardColorPatch.color = { CLR.HEX "FFB000" }
         GAME.boardColorPatch.timer = 5
     elseif mode == 'kill' then -- killscreen
-        GAME.boardColorPatch.color = { COLOR.HEX "B00000" }
+        GAME.boardColorPatch.color = { CLR.HEX "B00000" }
         GAME.boardColorPatch.timer = 1e99
     end
 end
@@ -2745,7 +2745,7 @@ function GAME.finish(reason)
                     if not YOU_LOST_THE_GAME then YOU_LOST_THE_GAME = love.data.decompress('string', 'deflate', love.data.decode('string', 'base64', "NY5bboMwEEW3MgvIJib2BE9lbOoHKv1DgRaUBCi0XX/HlfJ5jubeO+8w9ftwXYdxOEVYf8d96pfP+3gccJuvN7Ev8JiPYV+3TcAWmMb7cEpwbPOyiPPwvffL8bHuDyGGr5++tJ0tVyYBqBxInzRFbzGxdwCBlEWuxRpsvQIwaJNQg05T7R3nGuA1ky0n7C4UnAegt8SuyhxNOc2hwuRDB5ACuqhIoqIpaH6OaKJSoDChsl2UzphDy604dI4NP//BlkLZx1BjRVoXd/GBYkJriz93MUqa8J8ar9B2TSTgCI4kDMkQyAd/")):split(',') end
                     t = YOU_LOST_THE_GAME[GAME.comboMP]
                     local p = (GAME.comboMP - 8) / 10
-                    color = { COLOR.HSL(MATH.lerp(-.2, 0, p), 1, MATH.lerp(.626, .5, p)) }
+                    color = { CLR.HSL(MATH.lerp(-.2, 0, p), 1, MATH.lerp(.626, .5, p)) }
                     size = GAME.comboMP == 18 and 2.6 or 1.626
                     duration = 12.6
                 else
@@ -2816,9 +2816,9 @@ function GAME.finish(reason)
             end
             local len = #GAME.endFloorFstr
             if GAME.finishTera then
-                for i = len, 1, -1 do ins(GAME.endFloorFstr, i, { COLOR.HSV(i / len, .42, 1) }) end
+                for i = len, 1, -1 do ins(GAME.endFloorFstr, i, { CLR.HSV(i / len, .42, 1) }) end
             else
-                for i = len, 1, -1 do ins(GAME.endFloorFstr, i, { COLOR.HSV(lerp(.026, .626, i / len), GAME.gigaTime and .6 or .2, 1) }) end
+                for i = len, 1, -1 do ins(GAME.endFloorFstr, i, { CLR.HSV(lerp(.026, .626, i / len), GAME.gigaTime and .6 or .2, 1) }) end
             end
             TEXTS.endFloor:set(GAME.endFloorFstr)
         else

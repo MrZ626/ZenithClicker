@@ -568,7 +568,7 @@ StarPS:setParticleLifetime(2.6)
 StarPS:setRotation(0, 6.26)
 StarPS:setEmissionRate(12)
 ---@diagnostic disable-next-line
-StarPS:setColors(COLOR.LX, CLR.L, CLR.L, CLR.L, CLR.L, CLR.L, CLR.L, COLOR.LX)
+StarPS:setColors(CLR.X, CLR.L, CLR.L, CLR.L, CLR.L, CLR.L, CLR.L, CLR.X)
 
 WoundPS = GC.newParticleSystem(GC.load { w = 16, h = 16,
     { 'clear', 1, 1, 1 },
@@ -580,7 +580,7 @@ WoundPS:setParticleLifetime(2.6, 6.2)
 WoundPS:setSpread(6.28)
 WoundPS:setSpeed(26, 42)
 ---@diagnostic disable-next-line
-WoundPS:setColors(COLOR.LX, CLR.L, CLR.L, CLR.L, CLR.L, CLR.L, CLR.L, COLOR.LX)
+WoundPS:setColors(CLR.X, CLR.L, CLR.L, CLR.L, CLR.L, CLR.L, CLR.L, CLR.X)
 
 
 SparkPS = {}
@@ -589,7 +589,7 @@ for i = 1, 3 do
     ps:setParticleLifetime(.26, .62)
     ps:setEmissionArea('ellipse', 62, 62, 0)
     ---@diagnostic disable-next-line
-    ps:setColors(CLR.L, COLOR.LX)
+    ps:setColors(CLR.L, CLR.LX)
     SparkPS[i] = ps
 end
 
@@ -613,7 +613,7 @@ MSG.addCategory('dark', CLR.D, CLR.L)
 MSG.addCategory('bright', CLR.L, CLR.D)
 MSG.addCategory('ultra', CLR.l2R, CLR.D)
 MSG.addCategory('ultra2', CLR.d3R, CLR.LD)
-MSG.addCategory('speedrun', COLOR.lG, CLR.D)
+MSG.addCategory('speedrun', CLR.lG, CLR.D)
 for i = 0, 6 do MSG.addCategory(AchvMsgStyle[i].id, AchvMsgStyle[i].bg, CLR.L, TEXTURE.achievement.frame[i]) end
 for i = 1, 6 do MSG.addCategory("wreath_" .. i, AchvMsgStyle[5].bg, CLR.L, GC.load { w = 256, { 'draw', TEXTURE.achievement.frame[5] }, { 'draw', TEXTURE.achievement.wreath[i] } }) end
 
@@ -643,14 +643,14 @@ TEXTS = { -- Font size should only be 30 50 70 here, to reduce memory usage of f
     b2b         = GC.newText(FONT.get(30), "B2B x"),
     spike       = GC.newText(FONT.get(50)),
     gigaspeed   = GC.newText(FONT.get(50), {
-        COLOR.dR, "G", COLOR.dO, "I", COLOR.dY, "G",
-        COLOR.dK, "A", COLOR.dG, "S", COLOR.dJ, "P",
-        COLOR.dC, "E", COLOR.dS, "E", COLOR.dB, "D"
+        CLR.dR, "G", CLR.dO, "I", CLR.dY, "G",
+        CLR.dK, "A", CLR.dG, "S", CLR.dJ, "P",
+        CLR.dC, "E", CLR.dS, "E", CLR.dB, "D"
     }),
     teraspeed   = GC.newText(FONT.get(50), {
-        COLOR.R, "T", COLOR.O, "E", COLOR.Y, "R",
-        COLOR.K, "A", COLOR.G, "S", COLOR.J, "P",
-        COLOR.C, "E", COLOR.S, "E", COLOR.B, "D",
+        CLR.R, "T", CLR.O, "E", CLR.Y, "R",
+        CLR.K, "A", CLR.G, "S", CLR.J, "P",
+        CLR.C, "E", CLR.S, "E", CLR.B, "D",
     }),
     gigatime    = GC.newText(FONT.get(50)),
     floorTime   = GC.newText(FONT.get(30)),
