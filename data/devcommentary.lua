@@ -272,6 +272,10 @@ return {
         The Masterful Juggler, an original combo from ZC community.
         Combined with the target "Highest B2B chain reached", this makes more sense.
     ]],
+    ['rNH VL rDP'] = STRING.trimIndent [[
+        Toxic Codependence, an original combo from ZC community.
+        A combo that beautifully justifies the title.
+    ]],
     ['rNH MS rGV AS'] = STRING.trimIndent [[
         Autoplay is Awesome, an original combo from ZC community.
         This achievement replaced "Patience is a Virtue" with mods specified, which makes it play much better.
