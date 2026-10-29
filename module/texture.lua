@@ -644,7 +644,7 @@ TEXTS = { -- Font size should only be 30 50 70 here, to reduce memory usage of f
     spike       = GC.newText(FONT.get(50)),
     gigaspeed   = GC.newText(FONT.get(50), {
         CLR.dR, "G", CLR.dO, "I", CLR.dY, "G",
-        CLR.dK, "A", CLR.dG, "S", CLR.dJ, "P",
+        CLR.dH, "A", CLR.dG, "S", CLR.dJ, "P",
         CLR.dC, "E", CLR.dS, "E", CLR.dB, "D"
     }),
     teraspeed   = GC.newText(FONT.get(50), {
