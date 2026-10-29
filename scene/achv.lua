@@ -463,7 +463,7 @@ function scene.draw()
                 -- Bottom rectangle
                 if hyper then
                     if overallProgress.countStart == 6 then
-                        gc_setColor(CLR.PSL(i / 2.6 - t * 2.6, .50, .4, .42))
+                        gc_setColor(CLR.PSL((i / 2.6 - t * 2.6) / 6.2, .50, .4, .42))
                     elseif a.type == 'competitive' and (notAllRank5 and a.rank or a.wreath) == overallProgress.countStart then
                         gc_setColor(.26 + .1 * sin(t * 2.6 + ceil(i / 2) * 1.2), 0, 0, .626)
                     else

@@ -579,9 +579,9 @@ function scene.draw()
         gc_setColor(clr.L)
         gc_rectangle('fill', 0, 46, len, 4)
         if GAME.bgm_playing == 'tera' then
-            gc_setColor(CLR.PSL(2.6 * t, .67, .7))
+            gc_setColor(CLR.PSL(.62 * t, .67, .7))
         elseif GAME.bgm_playing == 'terar' then
-            gc_setColor(CLR.PSL(20 * t, .67, .7))
+            gc_setColor(CLR.PSL(2.6 * t, .67, .7))
         else
             gc_setColor(bgmColors[GAME.bgm_playingName])
         end
