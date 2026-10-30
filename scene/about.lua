@@ -114,6 +114,7 @@ addText({
         "MOONIAK",
         "MRSHIMJSK",
         "MRZ",
+        "N-IN",
         "OBSIDIAN",
         "OSK",
         "PETRTECH",
