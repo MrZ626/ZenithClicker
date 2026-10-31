@@ -651,7 +651,7 @@ TEXTS = { -- Font size should only be 30 50 70 here, to reduce memory usage of f
     }),
     teraspeed   = GC.newText(FONT.get(50), {
         CLR.R, "T", CLR.O, "E", CLR.Y, "R",
-        CLR.K, "A", CLR.G, "S", CLR.J, "P",
+        CLR.H, "A", CLR.G, "S", CLR.J, "P",
         CLR.C, "E", CLR.S, "E", CLR.B, "D",
     }),
     gigatime    = GC.newText(FONT.get(50)),
