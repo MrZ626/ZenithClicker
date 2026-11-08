@@ -688,9 +688,9 @@ function IssueSpeedrunMilestone(id)
                 SR[id] = t
                 SaveSR()
             end
-        end
-        if t < 3600 * 2.6 then
-            MSG('speedrun', SpeedrunData[id].name .. ": " .. STRING.time(STAT.srMilestone[id]), 6.26)
+            if t < 3600 * 2.6 then
+                MSG('speedrun', SpeedrunData[id].name .. ": " .. STRING.time(t), 6.26)
+            end
         end
     end
 end
