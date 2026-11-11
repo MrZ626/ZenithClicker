@@ -18,7 +18,7 @@ Credits:
 **CreepercraftYT**: Mod Icons & Card Art  
 **DJ Asriel**: Background reconstruction  
 **Flowerling & MattMayuga**: Text Revision  
-**flomikel, Spritzy Sheep & Obsidian**: Additional text writing  
+**FMichael, Spritzy Sheep & Obsidian**: Additional text writing  
 **Dr Ocelot**: Audio & music  
 **petrtech & Ronezkj15**: Extra music  
 **osk**: Founder & lead producer of TETR.IO  

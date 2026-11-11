@@ -872,7 +872,7 @@ local d = {
         desc = [[Fastest time reaching F6 without entering GIGASPEED with VL IN AS]],
         quote = [[A face, blended into the crowd of mediocrity.]],
         comp = '<',
-        credit = "@flomikel",
+        credit = "@FMichael",
         scoreSimp = function(time) return string.format("%.2fs", time) end,
         rank = numberRankRev(260, 180, 162, 142, 135, 126, 120),
     },
