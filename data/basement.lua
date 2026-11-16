@@ -113,7 +113,7 @@ NegEvents = {
         event = function()
             GAME.attackMul = GAME.attackMul - .1
             GAME.dmgTimerMul = GAME.dmgTimerMul + .01
-            if GAME.mod.AS == 2 then Cards.AS.upright = false end
+            if GAME.mod.AS == 2 then Cards.AS.upright, Cards.AS.r_2d_rev = false, 0 end
             GAME.mod.AS = 0
             TEXTS.chain:set(tostring(GAME.chain))
             GAME.refreshModIcon()
