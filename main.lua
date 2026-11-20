@@ -178,9 +178,8 @@ function WIDGET._prototype.button:draw()
     gc_push()
     gc_translate(self._x, self._y + (SCN.cur == 'tower' and self.pos[1] == .5 and GAME.deckPress or 0))
 
-    if self._pressTime > 0 then
-        gc_scale(1 - self._pressTime / self._pressTimeMax * .0626)
-    end
+    local press = self._pressTime / self._pressTimeMax
+    if press > 0 then gc_scale(1 - press * .0626) end
     local w, h = self.w, self.h
 
     local fillC = self.fillColor
@@ -205,6 +204,13 @@ function WIDGET._prototype.button:draw()
     if self._hoverTime > 0 then
         gc_setColor(1, 1, 1, self._hoverTime / self._hoverTimeMax * .0626)
         gc_mRect('fill', 0, 0, w - 3, h - 3)
+    end
+    if press > 0 then
+        GC.setBlendMode('add', "alphamultiply")
+        gc_setColor(self.color)
+        GC.setAlpha(press * .42)
+        gc_mRect('fill', 0, 0, w - 3, h - 3)
+        GC.setBlendMode('alpha')
     end
 
     gc_pop()
