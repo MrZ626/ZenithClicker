@@ -1168,9 +1168,10 @@ function scene.overDraw()
             end
         end
         if GAME.rankupLast then
-            if GAME.xpLockLevel < GAME.xpLockLevelMax and not (URM and M.NH == 2) then
-                gc_mRect('fill', 800 - 105, 965, 2, 26 - 4)
-                gc_mRect('fill', 800 + 105, 965, 2, 26 - 4)
+            if GAME.xpLockLevel < GAME.xpLockLevelMax and GAME.rank > 1 and not (URM and M.NH == 2) then
+                local markerOffset = 105 * (1 - 1 / GAME.rank)
+                gc_mRect('fill', 800 - markerOffset, 965, 2, 26 - 4)
+                gc_mRect('fill', 800 + markerOffset, 965, 2, 26 - 4)
             end
         else
             gc_mRect('fill', 800, 965, 420, 1)
@@ -1181,7 +1182,7 @@ function scene.overDraw()
         elseif GAME.DPlock then
             gc_setAlpha(.26)
         end
-        gc_mRect('fill', 800, 965, 420 * GAME.xp / (4 * rank), 3 * min(GAME.xpLockLevel, 5))
+        gc_mRect('fill', 800, 965, 420 * clamp(GAME.xp / (4 * rank), 0, 1), 3 * min(GAME.xpLockLevel, 5))
 
         -- Height & Time
         altitudeText[1] = ("%.1f"):format(GAME.roundHeight)

@@ -178,7 +178,7 @@ function Card:setActive(auto, key)
         end
         if self.touchCount == 1 then
             if (self.required or self.required2) and not GAME.hardMode then
-                GAME.addXP(M.VL == 1 and 2 or 1)
+                GAME.xp = GAME.xp + (M.VL == 1 and 2 or 1)
             end
         elseif not GAME.fault and not self.burn then
             GAME.fault = true

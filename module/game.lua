@@ -9,6 +9,7 @@ local lLerp = MATH.lLerp
 local clampInterpolate = MATH.clampInterpolate
 
 local ins, rem = table.insert, table.remove
+local speedupSFX = { 0, 1, 1, 1, 2, 2, 2, 3, 3 }
 
 ---@class Question
 ---@field combo string[]
@@ -964,50 +965,6 @@ function GAME.addHeight(h, realHeight, bypassDPlock)
     GAME.heightBonus = GAME.heightBonus + h
     GAME.heightBuffer = GAME.heightBuffer + h
     if h >= 6 and TASK.lock('speed_tick_whirl', 2.6) then SFX.play('speed_tick_whirl') end
-end
-
-local speedupSFX = { 0, 1, 1, 1, 2, 2, 2, 3, 3 }
-function GAME.addXP(xp)
-    GAME.xp = GAME.xp + xp
-    if GAME.rankupLast and GAME.xp >= 2 * GAME.rank then GAME.xpLockLevel = GAME.xpLockLevelMax end
-
-    local oldRank = GAME.rank
-    local oldLockTimer = GAME.xpLockTimer
-    while GAME.xp >= 4 * GAME.rank do
-        GAME.xp = GAME.xp - 4 * GAME.rank
-        GAME.rank = GAME.rank + 1
-        GAME.xpLockLevel = max(GAME.xpLockLevel - 1, 1)
-
-        -- Rank skip
-        if GAME.xp >= 2 * GAME.rank then
-            GAME.xpLockLevel = GAME.xpLockLevelMax
-            if GAME.xp >= 4 * GAME.rank then
-                GAME.rank = GAME.rank + floor(GAME.xp / (4 * GAME.rank))
-            end
-        end
-    end
-    if GAME.rank > GAME.rankLimit then
-        GAME.rank = GAME.rankLimit
-        GAME.xp = 4 * GAME.rank
-    end
-    if GAME.rank ~= oldRank then
-        GAME.xpLockTimer = GAME.xpLockLevel
-        GAME.rankupLast = true
-        GAME.peakRank = max(GAME.peakRank, GAME.rank)
-        TEXTS.rank:set("R-" .. GAME.rank)
-        SFX.play('speed_up_' .. (speedupSFX[GAME.rank] or 4), .4 + .5 * GAME.xpLockLevel / (GAME.xpLockLevelMax + 1) * min(GAME.rank / 4, 1))
-        -- if GAME.height > 0 and not GAME.gigaspeedEntered and GAME.rank >= GigaSpeedReq[max(GAME.floor, (GAME.negFloor - 1) % 10 + 1)] then
-        if not GAME.gigaspeed and GAME.height > 0 and GAME.rank >= GigaSpeedReq[GAME.floor] then
-            GAME.setGigaspeedAnim(true)
-            GAME.refreshRPC()
-        end
-        if GAME.gigaspeed and not GAME.teramusic and GAME.rank >= TeraMusicReq[GAME.floor] then
-            GAME.startTeraAnim()
-            GAME.refreshRPC()
-        end
-    else
-        GAME.xpLockTimer = oldLockTimer
-    end
 end
 
 function GAME.setGigaspeedAnim(on)
@@ -2199,9 +2156,8 @@ function GAME.commit(auto)
         GAME.totalAttack = GAME.totalAttack + attack
         GAME.totalSurge = GAME.totalSurge + surge
 
-        if GAME.DPlock then attack = min(attack, URM and oldAllyHP * 2.6 or oldAllyHP * 4) end
         if attack > 0 then GAME.addHeight(attack * GAME.attackMul, false, oldAllyHP > 0) end
-        GAME.addXP(attack + xp)
+        GAME.xp = GAME.xp + attack + xp
 
         -- rMS shuffle
         if M.MS == 2 then
@@ -3144,20 +3100,9 @@ function GAME.update(dt)
 
     if not GAME.playing then return end
 
-    GAME.koCharge = max(GAME.koCharge - dt * min(abs(GAME.height), 6200) / 2600, 0)
-    while GAME.koCharge > 26 do
-        GAME.koCharge = GAME.koCharge - 26
-        local t = MATH.lerp(.62, 2.6, math.random() ^ 2)
-        ins(GAME.koBuffer, {
-            uid = GAME.getRandomUID(),
-            timer = t + math.random() * .1,
-            valid = true,
-        })
-    end
-
     if TestMode then
         if KBisDown(']') then
-            GAME.addXP(dt * GAME.rank * 8)
+            GAME.xp = GAME.xp + dt * GAME.rank * 8
         elseif KBisDown('[') then
             GAME.xp = GAME.xp - dt * GAME.rank * 8
             if GAME.xp < 0 then GAME.xpLockTimer = 0 end
@@ -3184,6 +3129,97 @@ function GAME.update(dt)
         if KBisDown('rshift') then
             GAME.time = GAME.time + dt * 62
         end
+    end
+
+    -- Update Rank & XP
+    do
+        local rank, xp = max(GAME.rank, 1), GAME.xp
+        local oldRank = rank
+
+        -- XP leak. rank_locked_until is represented by the countdown timer here.
+        if GAME.xpLockTimer > 0 then
+            GAME.xpLockTimer = max(GAME.xpLockTimer - dt, 0)
+        else
+            xp = xp - dt * GAME.leakSpeed * rank * (rank + 1) / 60
+        end
+
+        -- Rank limit
+        if rank >= GAME.rankLimit then xp = min(xp, 4 * rank - .05) end
+
+        local nextRankXP = 4 * rank
+        local storedXP = 4 * (rank - 1)
+        if xp < 0 then
+            -- Demote, keeping the XP that belonged to the lower rank.
+            if rank <= 1 then
+                xp = 0
+            else
+                xp = xp + storedXP
+                GAME.rankupLast = false
+                rank = rank - 1
+            end
+        elseif xp >= nextRankXP then
+            -- Promote. The lock starts before the fatigue level is decreased.
+            xp = xp - nextRankXP
+            rank = rank + 1
+
+            GAME.rankupLast = true
+            GAME.xpLockTimer = max(1, GAME.xpLockLevel)
+            GAME.xpLockLevel = max(GAME.xpLockLevel - 1, 1)
+        end
+
+        -- A large XP gain after a promotion cancels the promotion fatigue.
+        if GAME.rankupLast and xp >= 2 * (rank - 1) then
+            GAME.xpLockLevel = GAME.xpLockLevelMax
+        end
+
+        -- Rank skipping?
+        rank = floor(rank + xp / (4 * rank))
+
+        if rank > oldRank then
+            GAME.peakRank = max(GAME.peakRank, rank)
+            TEXTS.rank:set("R-" .. rank)
+            SFX.play('speed_up_' .. (speedupSFX[rank] or 4), .4 + .5 * GAME.xpLockLevel / (GAME.xpLockLevelMax + 1) * min(rank / 4, 1))
+        elseif rank < oldRank then
+            if GAME.gigaspeed then
+                if rank < GigaSpeedReq[0] then
+                    GAME.setGigaspeedAnim(false)
+                    SFX.play('zenith_speedrun_end')
+                    SFX.play('zenith_speedrun_end')
+                    if MATH.between(GAME.height, Floors[9].top - 50, Floors[9].top) then IssueAchv('cut_off') end
+                elseif GAME.teramusic and rank < TeraMusicReq[0] then
+                    GAME.stopTeraspeed('drop')
+                end
+            end
+            TEXTS.rank:set("R-" .. rank)
+            SFX.play('speed_down', .4 + .5 * GAME.xpLockLevel / (GAME.xpLockLevelMax + 1))
+            if not GAME.achv_demoteH then
+                GAME.achv_demoteH = GAME.roundHeight
+                if GAME.comboStr == 'EXVL' or GAME.floor >= 8 then SFX.play('btb_break') end
+            end
+        end
+
+        if not GAME.gigaspeed and GAME.height > 0 and rank >= GigaSpeedReq[GAME.floor] then
+            GAME.setGigaspeedAnim(true)
+            GAME.refreshRPC()
+        end
+        if GAME.gigaspeed and not GAME.teramusic and rank >= TeraMusicReq[GAME.floor] then
+            GAME.startTeraAnim()
+            GAME.refreshRPC()
+        end
+
+        GAME.rank, GAME.xp = rank, xp
+    end
+
+    -- KO simulation
+    GAME.koCharge = max(GAME.koCharge - dt * min(abs(GAME.height), 6200) / 2600, 0)
+    while GAME.koCharge > 26 do
+        GAME.koCharge = GAME.koCharge - 26
+        local t = MATH.lerp(.62, 2.6, math.random() ^ 2)
+        ins(GAME.koBuffer, {
+            uid = GAME.getRandomUID(),
+            timer = t + math.random() * .1,
+            valid = true,
+        })
     end
 
     -- Quest animattion
@@ -3277,37 +3313,6 @@ function GAME.update(dt)
 
     if floor(GAME.height * 2) > floor(oldHeight * 2) and TASK.lock('speed_tick', .026) then
         SFX.play('speed_tick_' .. rnd(4), clampInterpolate(4, 1, 12, .8, GAME.rank))
-    end
-
-    -- XP Leak & Demote
-    if GAME.xpLockTimer > 0 then
-        GAME.xpLockTimer = GAME.xpLockTimer - dt
-    else
-        GAME.xp = GAME.xp - dt * GAME.leakSpeed * GAME.rank * (GAME.rank + 1) / 60
-        if GAME.xp <= 0 then
-            GAME.xp = 0
-            if GAME.rank > 1 then
-                GAME.rank = GAME.rank - 1
-                GAME.xp = 4 * GAME.rank
-                GAME.rankupLast = false
-                if GAME.gigaspeed then
-                    if GAME.rank < GigaSpeedReq[0] then
-                        GAME.setGigaspeedAnim(false)
-                        SFX.play('zenith_speedrun_end')
-                        SFX.play('zenith_speedrun_end')
-                        if MATH.between(GAME.height, Floors[9].top - 50, Floors[9].top) then IssueAchv('cut_off') end
-                    elseif GAME.teramusic and GAME.rank < TeraMusicReq[0] then
-                        GAME.stopTeraspeed('drop')
-                    end
-                end
-                TEXTS.rank:set("R-" .. GAME.rank)
-                SFX.play('speed_down', .4 + .5 * GAME.xpLockLevel / (GAME.xpLockLevelMax + 1))
-                if not GAME.achv_demoteH then
-                    GAME.achv_demoteH = GAME.roundHeight
-                    if GAME.comboStr == 'EXVL' or GAME.floor >= 8 then SFX.play('btb_break') end
-                end
-            end
-        end
     end
 
     -- Gravity
