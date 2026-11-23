@@ -3008,7 +3008,7 @@ function GAME.finish(reason)
         SubmitAchv('supercharged_plus', GAME.achv_maxChain)
         if GAME.peakRank > GAME.rankLimit then
             IssueAchv('supraventricular_tachycardia')
-            StartBanAnim()
+            if TASK.lock('banAnim') then SCN.go('ban', 'none') end
         end
         if GAME.fullHealth <= 5 then IssueSecret('ultraheart') end
         if #GAME.secTime >= 10 and GAME.height < 0 then IssueSecret('universal_gravitation') end

@@ -15,7 +15,15 @@ local clr = {
     bar = { CLR.HEX 'EA122B' },
 }
 
+local function task_playWarnSFX()
+    TASK.yieldT(.62)
+    SFX.play('thunder2')
+    SFX.play('thunder6')
+    TASK.yieldT(.26)
+    SFX.play('staffwarning')
+end
 function scene.load()
+    TASK.new(task_playWarnSFX)
     timer = 0
     banDate = os.date("%m/%d/%Y, %I:%M:%S %p")
     clickRemain = 62
