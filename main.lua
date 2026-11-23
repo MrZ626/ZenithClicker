@@ -1483,6 +1483,13 @@ end
 
 -- Functions: Secret Content
 
+function StartBanAnim()
+    TASK.new(function()
+        SCN.go('ban', 'none')
+    end)
+    StartBanAnim = NULL
+end
+
 function UseAltName()
     TABLE.update(ModData, STRING.unpackTable("H4sIAAAAAAAAA3XPwQ6CMAwG4FchO/MExJjMUaXJKIQNokcT9WBQT54I7y501jCj139d+/2Dujz7no63s8oGpZ3K1CppKmuRdslapaqzHCE5rzdo0R84zguOS3SmQOiq1hE4x09I/FRgLjsoDGPTTJMmWlO/D5aaDHAE+7BZOw8NJ2VQmQLAhZldx0kOZnJqjxVN8Ziq++N5//R4t5AOiwbi/9KLPcjFvZ0uyKea17JVpMEpymAU4cI3646n6z9cyzgLP2QLVQ4UqSKSRxObtq2NWIeYNV8fxxd95CicAAIAAA=="))
     UseAltName = NULL

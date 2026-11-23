@@ -3006,6 +3006,10 @@ function GAME.finish(reason)
         end
         SubmitAchv('zenith_explorer_plus', GAME.roundHeight)
         SubmitAchv('supercharged_plus', GAME.achv_maxChain)
+        if GAME.peakRank > GAME.rankLimit then
+            IssueAchv('supraventricular_tachycardia')
+            StartBanAnim()
+        end
         if GAME.fullHealth <= 5 then IssueSecret('ultraheart') end
         if #GAME.secTime >= 10 and GAME.height < 0 then IssueSecret('universal_gravitation') end
         SaveStat()
@@ -3179,9 +3183,6 @@ function GAME.update(dt)
             GAME.peakRank = max(GAME.peakRank, rank)
             TEXTS.rank:set("R-" .. rank)
             SFX.play('speed_up_' .. (speedupSFX[rank] or 4), .4 + .5 * GAME.xpLockLevel / (GAME.xpLockLevelMax + 1) * min(rank / 4, 1))
-            if GAME.peakRank > GAME.rankLimit then
-                IssueAchv('supraventricular_tachycardia')
-            end
         elseif rank < oldRank then
             if GAME.gigaspeed then
                 if rank < GigaSpeedReq[0] then
