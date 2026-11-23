@@ -390,6 +390,7 @@ TEXTURE = {
             blazing_speed = aq(10, 4),
             dusty_memories = aq(11, 4),
             its_kinda_rare = aq(14, 4),
+            supraventricular_tachycardia = aq(15, 7),
             fruitless_effort = aq(6, 7),
             false_god = aq(2, 8),
 

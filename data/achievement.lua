@@ -1393,6 +1393,15 @@ local d = {
         hide = TRUE,
         type = 'issued',
     },
+    { -- supraventricular_tachycardia
+        ex = true,
+        id = 'supraventricular_tachycardia',
+        name = "Supraventricular Tachycardia",
+        desc = [[Break the max rank limit]],
+        quote = [[Essentially, what is a Bug and what is a Feature?]],
+        hide = TRUE,
+        type = 'issued',
+    },
     { -- fruitless_effort
         ex = true,
         id = 'fruitless_effort',

@@ -3179,6 +3179,9 @@ function GAME.update(dt)
             GAME.peakRank = max(GAME.peakRank, rank)
             TEXTS.rank:set("R-" .. rank)
             SFX.play('speed_up_' .. (speedupSFX[rank] or 4), .4 + .5 * GAME.xpLockLevel / (GAME.xpLockLevelMax + 1) * min(rank / 4, 1))
+            if GAME.peakRank > GAME.rankLimit then
+                IssueAchv('supraventricular_tachycardia')
+            end
         elseif rank < oldRank then
             if GAME.gigaspeed then
                 if rank < GigaSpeedReq[0] then
