@@ -143,7 +143,7 @@ NegEvents = {
         event = function()
             GAME.attackMul = GAME.attackMul - .1
             GAME.dmgTimerMul = GAME.dmgTimerMul + .01
-            if GAME.mod.VL == 2 then Cards.VL.upright = false end
+            if GAME.mod.VL == 2 then Cards.VL.upright, Cards.AS.r_2d_rev = false, 0 end
             GAME.mod.VL = 0
             GAME.refreshModIcon()
             GAME.refreshRPC()
@@ -159,7 +159,7 @@ NegEvents = {
             GAME.dmgCycle = GAME.dmgCycle + GAME.mod.IN * 1
             GAME.attackMul = GAME.attackMul - .1
             GAME.dmgTimerMul = GAME.dmgTimerMul + .01
-            if GAME.mod.IN == 2 then Cards.IN.upright = false end
+            if GAME.mod.IN == 2 then Cards.IN.upright, Cards.AS.r_2d_rev = false, 0 end
             GAME.mod.IN = 0
             RefreshBGM()
             for _, C in ipairs(Cards) do C:flip() end
@@ -228,7 +228,7 @@ NegEvents = {
             GAME.dmgDelay = GAME.dmgDelay + GAME.mod.GV * 4
             GAME.attackMul = GAME.attackMul - .1
             GAME.dmgTimerMul = GAME.dmgTimerMul + .01
-            if GAME.mod.GV == 2 then Cards.GV.upright = false end
+            if GAME.mod.GV == 2 then Cards.GV.upright, Cards.AS.r_2d_rev = false, 0 end
             GAME.mod.GV = 0
             GAME.refreshModIcon()
             GAME.refreshRPC()
@@ -296,7 +296,7 @@ NegEvents = {
             GAME.extraQuestBase = GAME.extraQuestBase - GAME.mod.MS * .2
             GAME.attackMul = GAME.attackMul - .1
             GAME.dmgTimerMul = GAME.dmgTimerMul + .01
-            if GAME.mod.MS == 2 then Cards.MS.upright = false end
+            if GAME.mod.MS == 2 then Cards.MS.upright, Cards.AS.r_2d_rev = false, 0 end
             GAME.mod.MS = 0
             GAME.sortCards()
             GAME.refreshModIcon()
@@ -334,7 +334,7 @@ NegEvents = {
             GAME.extraQuestVar = GAME.extraQuestVar - GAME.mod.DH * .2
             GAME.attackMul = GAME.attackMul - .1
             GAME.dmgTimerMul = GAME.dmgTimerMul + .01
-            if GAME.mod.DH == 2 then Cards.DH.upright = false end
+            if GAME.mod.DH == 2 then Cards.DH.upright, Cards.AS.r_2d_rev = false, 0 end
             GAME.mod.DH = 0
             GAME.refreshModIcon()
             GAME.refreshRPC()
@@ -372,7 +372,7 @@ NegEvents = {
             GAME.dmgHeal = GAME.dmgHeal + GAME.mod.NH * 3
             GAME.attackMul = GAME.attackMul - .1
             GAME.dmgTimerMul = GAME.dmgTimerMul + .01
-            if GAME.mod.NH == 2 then Cards.NH.upright = false end
+            if GAME.mod.NH == 2 then Cards.NH.upright, Cards.AS.r_2d_rev = false, 0 end
             GAME.mod.NH = 0
             GAME.maxQuestCount = 3
             GAME.xpLockLevelMax = 5
