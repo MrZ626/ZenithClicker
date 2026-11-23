@@ -326,7 +326,7 @@ jobs:
             file.write(data)
       - name: Build Windows packages
         id: build-packages
-        uses: love-actions/love-actions-windows@v2
+        uses: love-actions/love-actions-windows@b00dc79a07d7697203e8decee582de11b8d2c257 # Windows SDK resource fix
         with:
           icon-path: ${{ env.BUILD_ASSETS_FOLDER }}/windows/${{ env.BUILD_TYPE }}/icon.ico
           rc-path: ${{ env.BUILD_ASSETS_FOLDER }}/windows/${{ env.BUILD_TYPE }}/template.rc
