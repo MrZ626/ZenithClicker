@@ -3148,7 +3148,10 @@ function GAME.update(dt)
         end
 
         -- Rank limit
-        if rank >= GAME.rankLimit then xp = min(xp, 4 * rank - .05) end
+        if rank >= GAME.rankLimit then
+            xp = min(xp, 4 * rank - .05)
+            -- rank = GAME.rankLimit -- tetrio attempted to fix limit-breaking bug with this, not unapplied in ZC for gameplay design
+        end
 
         local nextRankXP = 4 * rank
         local storedXP = 4 * (rank - 1)
